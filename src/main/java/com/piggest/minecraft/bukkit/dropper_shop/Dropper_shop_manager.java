@@ -25,5 +25,9 @@ public class Dropper_shop_manager {
 	public Dropper_shop get_dropper_shop(Location loc) {
 		return this.shops_map.get(loc);
 	}
+
+	public void add(Dropper_shop new_shop) {
+		this.shops_map.put(new_shop.get_location(), new_shop);
+	}
 	
 }

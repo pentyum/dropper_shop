@@ -61,4 +61,8 @@ public class Dropper_shop {
 		}
 		return false;
 	}
+
+	public Location get_location() {
+		return this.dropper_block.getLocation();
+	}
 }

@@ -6,14 +6,14 @@ author: Pentyum
 commands:
   dropper_shop:
     description: place water on your foot.
-    usage: /<command> to place water on your foot or /<command> setprice [world] to change price.
-    permission: dropper_shop.use
+    usage: /<command> make to make a dropper shop which sell the item in you main hand.
+    permission: dropper_shop.make
     permission-message: You don't have permission
 permissions:
   dropper_shop.*:
     description: Gives access to all placewater commands
     default: op
-  dropper_shop.use:
+  dropper_shop.make:
     description: Gives access to place water
     default: true
   dropper_shop.changeprice:

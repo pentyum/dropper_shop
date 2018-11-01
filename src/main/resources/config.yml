@@ -1,3 +1,2 @@
-use-vault: true
-price: 15
-cycle: 3600
+make-price: 0
+material:
