@@ -1,0 +1,22 @@
+name: dropper_shop
+main: com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin
+api-version: 1.13
+version: 0.0.1
+author: Pentyum
+commands:
+  dropper_shop:
+    description: place water on your foot.
+    usage: /<command> to place water on your foot or /<command> setprice [world] to change price.
+    permission: dropper_shop.use
+    permission-message: You don't have permission
+permissions:
+  dropper_shop.*:
+    description: Gives access to all placewater commands
+    default: op
+  dropper_shop.use:
+    description: Gives access to place water
+    default: true
+  dropper_shop.changeprice:
+    description: change place water price
+    default: op
+softdepend: [Vault]
