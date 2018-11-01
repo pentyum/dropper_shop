@@ -3,12 +3,13 @@ package com.piggest.minecraft.bukkit.dropper_shop;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Set;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.Dropper;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -55,52 +56,72 @@ public class Dropper_shop_plugin extends JavaPlugin {
 			if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
 				sender.sendMessage("必须由玩家执行该命令");
 				return true;
-			} else {
-				Player player = (Player) sender;
-				if (args.length != 1) {
-					player.sendMessage("请使用/dropper_shop make");
-				} else if (args[0] == "make") {
+			}
+			Player player = (Player) sender;
+			if (args.length == 0) {
+				player.sendMessage("请使用/dropper_shop make");
+				return true;
+			}
+			if (args[0].equalsIgnoreCase("make")) {
+				Block look_block = player.getTargetBlockExact(4);
+				// player.sendMessage(look_block.getType().name());
+				if (look_block.getType() == Material.DROPPER) {
 					if (economy.has(player, make_price)) {
 						economy.withdrawPlayer(player, make_price);
 					} else {
 						player.sendMessage("钱不够");
 						return true;
 					}
-					Block look_block = null;
-					if(look_block instanceof Dropper) {
-						Dropper_shop new_shop = new Dropper_shop(this,look_block.getLocation());
-						Material item = player.getInventory().getItemInMainHand().getType();
-						new_shop.set_selling_item(item);
-						this.shop_manager.add(new_shop);
-					}else {
-						player.sendMessage("不是发射器");
-					}
-				} else if (args[0] == "setprice") {
-					if (args.length != 2) {
-						return true;
-					}
-					try {
-						int set_price = Integer.parseInt(args[1]);
-						ItemStack itemstack = player.getInventory().getItemInMainHand();
-						if (itemstack == null) {
-							this.config.set("make-price", set_price);
-							player.sendMessage("已设置创建投掷器商店价格为" + set_price);
+					Material item = player.getInventory().getItemInMainHand().getType();
+					if (this.get_price(item) == -1) {
+						player.sendMessage(item.name() + "不能被出售");
+					} else {
+						Dropper_shop shop = this.shop_manager.get_dropper_shop(look_block.getLocation());
+						if (shop != null) {
+							shop.set_selling_item(item);
+							player.sendMessage("投掷器商店已经变更为"+item.name());
 						} else {
-							Material item = player.getInventory().getItemInMainHand().getType();
-							this.price_map.put(item.name(), set_price);
-							this.config.set("material", this.price_map);
-							player.sendMessage("已设置" + item.name() + "的投掷器商店价格为" + set_price);
+							shop = new Dropper_shop(this, look_block.getLocation(), player.getName());
+							shop.set_selling_item(item);
+							this.shop_manager.add(shop);
+							player.sendMessage(item.name() + "的投掷器商店已经被设置");
 						}
-						saveConfig();
-					} catch (NumberFormatException e) {
-						player.sendMessage("请输入整数");
-						return true;
 					}
+				} else {
+					player.sendMessage("不是投掷器");
+					return true;
 				}
+			} else if (args[0].equalsIgnoreCase("setprice")) {
+				if (!player.hasPermission("dropper_shop.changeprice")) {
+					player.sendMessage("你没有权限修改价格");
+					return true;
+				}
+				if (args.length < 2) {
+					player.sendMessage("请输入价格");
+					return true;
+				}
+				try {
+					int set_price = Integer.parseInt(args[1]);
+					ItemStack itemstack = player.getInventory().getItemInMainHand();
+					if (itemstack == null) {
+						this.config.set("make-price", set_price);
+						player.sendMessage("已设置创建投掷器商店价格为" + set_price);
+					} else {
+						Material item = player.getInventory().getItemInMainHand().getType();
+						this.price_map.put(item.name(), set_price);
+						this.config.set("material", this.price_map);
+						player.sendMessage("已设置" + item.name() + "的投掷器商店价格为" + set_price);
+					}
+					this.saveConfig();
+				} catch (NumberFormatException e) {
+					player.sendMessage("请输入整数");
+				}
+				return true;
+			} else {
+				return false;
 			}
-			return true;
 		}
-		return false;
+		return true;
 	}
 
 	@Override
@@ -109,7 +130,11 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		saveResource("shops.yml", false);
 		this.config = getConfig();
 		this.make_price = this.config.getInt("make-price");
-		// this.price_map
+		ConfigurationSection price_section = this.config.getConfigurationSection("material");
+		Set<String> price_keys = price_section.getKeys(false);
+		for (String material_name : price_keys) {
+			this.price_map.put(material_name, price_section.getInt(material_name));
+		}
 		this.shop_file = new File(this.getDataFolder(), "shops.yml");
 		this.shop_config = YamlConfiguration.loadConfiguration(shop_file);
 		this.shop_manager = new Dropper_shop_manager(this);
@@ -131,7 +156,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		try {
 			shop_config.save(this.shop_file);
 		} catch (IOException e) {
-			getLogger().severe("结构文件保存错误!");
+			getLogger().severe("商店文件保存错误!");
 		}
 	}
 
@@ -140,8 +165,12 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	}
 
 	public int get_price(Material material) {
-		// return this.price_map.get(material.name());
-		return 0;
+		Integer price = this.price_map.get(material.name());
+		if (price == null) {
+			return -1;
+		} else {
+			return price;
+		}
 	}
 
 }

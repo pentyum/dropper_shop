@@ -1,5 +1,7 @@
 package com.piggest.minecraft.bukkit.dropper_shop;
 
+import java.util.HashMap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,16 +18,18 @@ public class Dropper_shop {
 	private Material sell_item = null;
 	private String owner = null;
 
-	public Dropper_shop(Dropper_shop_plugin plugin, Location loc) {
+	public Dropper_shop(Dropper_shop_plugin plugin, Location loc, String owner) {
 		this.plugin = plugin;
-		this.dropper_block = (Dropper) loc.getBlock();
+		this.dropper_block = (Dropper) loc.getBlock().getState();
+		this.owner = owner;
 	}
 
-	public Dropper_shop(Dropper_shop_plugin plugin, String world_name, int x, int y, int z) {
+	public Dropper_shop(Dropper_shop_plugin plugin, String world_name, int x, int y, int z, String owner) {
 		this.plugin = plugin;
 		World world = Bukkit.getWorld(world_name);
 		Location loc = new Location(world, x, y, z);
-		this.dropper_block = (Dropper) loc.getBlock();
+		this.dropper_block = (Dropper) loc.getBlock().getState();
+		this.owner = owner;
 	}
 
 	public void set_selling_item(Material sell_item) {
@@ -47,7 +51,9 @@ public class Dropper_shop {
 
 	public void add_item() {
 		ItemStack itemstack = new ItemStack(this.sell_item);
+		//plugin.getLogger().info("已添加"+itemstack.getType().name());
 		this.dropper_block.getInventory().addItem(itemstack);
+		//this.dropper_block.getBlock().setBlockData(this.dropper_block.getBlockData());
 	}
 
 	public boolean buy() {
@@ -64,5 +70,16 @@ public class Dropper_shop {
 
 	public Location get_location() {
 		return this.dropper_block.getLocation();
+	}
+
+	public HashMap<String, Object> get_save() {
+		HashMap<String, Object> save = new HashMap<String, Object>();
+		save.put("world", this.dropper_block.getWorld().getName());
+		save.put("owner", this.owner);
+		save.put("x", this.get_location().getBlockX());
+		save.put("y", this.get_location().getBlockY());
+		save.put("z", this.get_location().getBlockZ());
+		save.put("item", this.sell_item.name());
+		return save;
 	}
 }
