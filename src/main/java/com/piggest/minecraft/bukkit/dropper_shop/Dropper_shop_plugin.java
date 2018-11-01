@@ -2,7 +2,9 @@ package com.piggest.minecraft.bukkit.dropper_shop;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
@@ -13,13 +15,13 @@ import net.milkbowl.vault.economy.Economy;
 
 public class Dropper_shop_plugin extends JavaPlugin {
 	private Economy economy = null;
-	private int price = 0;
 	private FileConfiguration config = null;
 	private FileConfiguration shop_config = null;
 	private File shop_file = null;
 	private final Dropper_shop_listener shop_listener = new Dropper_shop_listener(this);
 	private Dropper_shop_manager shop_manager = null;
-
+	private HashMap<Material,Integer> price_map = new HashMap<Material,Integer>();
+	
 	public FileConfiguration get_shop_config() {
 		return this.shop_config;
 	}
@@ -45,7 +47,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		saveDefaultConfig();
 		saveResource("shops.yml", false);
 		this.config = getConfig();
-		this.price = config.getInt("price");
+		//this.price_map
 		this.shop_file = new File(this.getDataFolder(), "shops.yml");
 		this.shop_config = YamlConfiguration.loadConfiguration(shop_file);
 		this.shop_manager = new Dropper_shop_manager(this);
@@ -75,8 +77,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		return this.shop_manager;
 	}
 
-	public int get_price() {
-		return this.price;
+	public int get_price(Material material) {
+		//return this.price_map.get(material);
+		return 0;
 	}
 
 }
