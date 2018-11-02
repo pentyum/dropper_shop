@@ -33,8 +33,8 @@ public class Dropper_shop_listener implements Listener {
 		if (event.isCancelled() == false && (event.getAction() == Action.LEFT_CLICK_BLOCK) && event.getItem() == null) {
 			Dropper_shop shop = this.plugin.get_shop_manager().get_dropper_shop(event.getClickedBlock().getLocation());
 			if (shop != null) {
-				event.getPlayer().sendMessage("当前投掷器商店出售物品:" + shop.get_selling_item().name() + "\n价格:"
-						+ plugin.get_price(shop.get_selling_item()));
+				event.getPlayer().sendMessage("当前投掷器商店出售:" + shop.get_selling_item().name() + "\n拥有者:"
+						+ shop.get_owner_name() + "\n价格:" + plugin.get_price(shop.get_selling_item()));
 			}
 		}
 	}
@@ -52,6 +52,7 @@ public class Dropper_shop_listener implements Listener {
 		if (shop == null) {
 			return;
 		}
+		event.getPlayer().sendMessage("已破坏" + shop.get_owner_name() + "的" + shop.get_selling_item().name() + "投掷器商店");
 		this.plugin.get_shop_manager().remove(shop);
 	}
 }

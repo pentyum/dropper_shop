@@ -82,4 +82,8 @@ public class Dropper_shop {
 		save.put("item", this.sell_item.name());
 		return save;
 	}
+
+	public String get_owner_name() {
+		return this.owner;
+	}
 }
