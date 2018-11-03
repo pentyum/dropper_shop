@@ -18,6 +18,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.piggest.minecraft.bukkit.depository.Depository_manager;
+
 import net.milkbowl.vault.economy.Economy;
 
 public class Dropper_shop_plugin extends JavaPlugin {
@@ -26,8 +28,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private FileConfiguration shop_config = null;
 	private File shop_file = null;
 	private int make_price = 0;
-	private final Dropper_shop_listener shop_listener = new Dropper_shop_listener(this);
+	private final Dropper_shop_listener shop_listener = new Dropper_shop_listener();
 	private Dropper_shop_manager shop_manager = null;
+	private Depository_manager depository_manager = null;
 	private HashMap<String, Integer> price_map = new HashMap<String, Integer>();
 
 	public FileConfiguration get_shop_config() {
@@ -63,8 +66,16 @@ public class Dropper_shop_plugin extends JavaPlugin {
 				return true;
 			}
 			if (args[0].equalsIgnoreCase("make")) {
+				if (!player.hasPermission("dropper_shop.make")) {
+					player.sendMessage("你没有权限建立投掷器商店");
+					return true;
+				}
 				Block look_block = player.getTargetBlockExact(4);
 				// player.sendMessage(look_block.getType().name());
+				if (look_block == null) {
+					player.sendMessage("请指向投掷器方块");
+					return true;
+				}
 				if (look_block.getType() == Material.DROPPER) {
 					if (economy.has(player, make_price)) {
 						economy.withdrawPlayer(player, make_price);
@@ -76,12 +87,14 @@ public class Dropper_shop_plugin extends JavaPlugin {
 					if (this.get_price(item) == -1) {
 						player.sendMessage(item.name() + "不能被出售");
 					} else {
-						Dropper_shop shop = this.shop_manager.get_dropper_shop(look_block.getLocation());
+						Dropper_shop shop = this.shop_manager.get(look_block.getLocation());
 						if (shop != null) {
 							shop.set_selling_item(item);
-							player.sendMessage("投掷器商店已经变更为"+item.name());
+							player.sendMessage("投掷器商店已经变更为" + item.name());
 						} else {
-							shop = new Dropper_shop(this, look_block.getLocation(), player.getName());
+							shop = new Dropper_shop();
+							shop.set_location(look_block.getLocation());
+							shop.set_owner(player.getName());
 							shop.set_selling_item(item);
 							this.shop_manager.add(shop);
 							player.sendMessage(item.name() + "的投掷器商店已经被设置");
@@ -89,6 +102,23 @@ public class Dropper_shop_plugin extends JavaPlugin {
 					}
 				} else {
 					player.sendMessage("不是投掷器");
+					return true;
+				}
+			} else if (args[0].equalsIgnoreCase("remove")) {
+				Block look_block = player.getTargetBlockExact(4);
+				Dropper_shop shop = this.shop_manager.get(look_block.getLocation());
+				if (shop != null) {
+					if (shop.get_owner_name().equalsIgnoreCase(player.getName())
+							|| player.hasPermission("dropper_shop.remove.others")) {
+						player.sendMessage(
+								"已移除" + shop.get_owner_name() + "的" + shop.get_selling_item().name() + "投掷器商店");
+						this.shop_manager.remove(shop);
+					} else {
+						player.sendMessage("这不是你自己的投掷器商店，而是" + shop.get_owner_name() + "的");
+						return true;
+					}
+				} else {
+					player.sendMessage("不是投掷器商店");
 					return true;
 				}
 			} else if (args[0].equalsIgnoreCase("setprice")) {
@@ -138,7 +168,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.shop_file = new File(this.getDataFolder(), "shops.yml");
 		this.shop_config = YamlConfiguration.loadConfiguration(shop_file);
 		this.shop_manager = new Dropper_shop_manager(this);
-
+		this.depository_manager = new Depository_manager(this);
 		getLogger().info("使用Vault");
 		if (!initVault()) {
 			getLogger().severe("初始化Vault失败,请检测是否已经安装Vault插件和经济插件");

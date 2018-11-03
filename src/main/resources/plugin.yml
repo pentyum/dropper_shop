@@ -1,7 +1,7 @@
 name: dropper_shop
 main: com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin
 api-version: 1.13
-version: 0.0.1
+version: 0.0.2
 author: Pentyum
 commands:
   dropper_shop:
@@ -18,5 +18,14 @@ permissions:
     default: true
   dropper_shop.changeprice:
     description: Change price dropper shop.
+    default: op
+  dropper_shop.unexplodable:
+    description: Make unexplodable shop.
+    default: op
+  dropper_shop.remove:
+    description: Remove dropper shop.
+    default: true
+  dropper_shop.remove.others:
+    description: Remove others dropper shop.
     default: op
 softdepend: [Vault]

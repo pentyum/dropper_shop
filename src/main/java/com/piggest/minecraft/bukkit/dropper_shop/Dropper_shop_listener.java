@@ -10,18 +10,14 @@ import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public class Dropper_shop_listener implements Listener {
-	private Dropper_shop_plugin plugin = null;
-
-	public Dropper_shop_listener(Dropper_shop_plugin plugin) {
-		this.plugin = plugin;
-	}
+	//private Dropper_shop_plugin plugin = null;
 
 	@EventHandler
 	public void on_dispense(BlockDispenseEvent event) {
 		if (event.isCancelled() == true) {
 			return;
 		}
-		Dropper_shop shop = this.plugin.get_shop_manager().get_dropper_shop(event.getBlock().getLocation());
+		Dropper_shop shop = Dropper_shop_manager.instance.get(event.getBlock().getLocation());
 		if (shop == null) {
 			return;
 		}
@@ -31,10 +27,10 @@ public class Dropper_shop_listener implements Listener {
 	@EventHandler
 	public void on_look(PlayerInteractEvent event) {
 		if (event.isCancelled() == false && (event.getAction() == Action.LEFT_CLICK_BLOCK) && event.getItem() == null) {
-			Dropper_shop shop = this.plugin.get_shop_manager().get_dropper_shop(event.getClickedBlock().getLocation());
+			Dropper_shop shop = Dropper_shop_manager.instance.get(event.getClickedBlock().getLocation());
 			if (shop != null) {
 				event.getPlayer().sendMessage("当前投掷器商店出售:" + shop.get_selling_item().name() + "\n拥有者:"
-						+ shop.get_owner_name() + "\n价格:" + plugin.get_price(shop.get_selling_item()));
+						+ shop.get_owner_name() + "\n价格:" + Dropper_shop_manager.plugin.get_price(shop.get_selling_item()));
 			}
 		}
 	}
@@ -48,11 +44,11 @@ public class Dropper_shop_listener implements Listener {
 		if (break_block.getType() != Material.DROPPER) {
 			return;
 		}
-		Dropper_shop shop = this.plugin.get_shop_manager().get_dropper_shop(break_block.getLocation());
+		Dropper_shop shop = Dropper_shop_manager.instance.get(break_block.getLocation());
 		if (shop == null) {
 			return;
 		}
 		event.getPlayer().sendMessage("已破坏" + shop.get_owner_name() + "的" + shop.get_selling_item().name() + "投掷器商店");
-		this.plugin.get_shop_manager().remove(shop);
+		Dropper_shop_manager.instance.remove(shop);
 	}
 }

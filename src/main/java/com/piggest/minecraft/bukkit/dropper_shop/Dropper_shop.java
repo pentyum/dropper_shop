@@ -1,6 +1,7 @@
 package com.piggest.minecraft.bukkit.dropper_shop;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -10,27 +11,15 @@ import org.bukkit.World;
 import org.bukkit.block.Dropper;
 import org.bukkit.inventory.ItemStack;
 
+import com.piggest.minecraft.bukkit.Structure.Abstract_structure;
+import com.piggest.minecraft.bukkit.Structure.Ownable;
 import net.milkbowl.vault.economy.Economy;
 
-public class Dropper_shop {
-	private Dropper_shop_plugin plugin = null;
+public class Dropper_shop extends Abstract_structure implements Ownable {
 	private Dropper dropper_block = null;
 	private Material sell_item = null;
 	private String owner = null;
-
-	public Dropper_shop(Dropper_shop_plugin plugin, Location loc, String owner) {
-		this.plugin = plugin;
-		this.dropper_block = (Dropper) loc.getBlock().getState();
-		this.owner = owner;
-	}
-
-	public Dropper_shop(Dropper_shop_plugin plugin, String world_name, int x, int y, int z, String owner) {
-		this.plugin = plugin;
-		World world = Bukkit.getWorld(world_name);
-		Location loc = new Location(world, x, y, z);
-		this.dropper_block = (Dropper) loc.getBlock().getState();
-		this.owner = owner;
-	}
+	//private Depository assoc = null;
 
 	public void set_selling_item(Material sell_item) {
 		this.sell_item = sell_item;
@@ -51,14 +40,14 @@ public class Dropper_shop {
 
 	public void add_item() {
 		ItemStack itemstack = new ItemStack(this.sell_item);
-		//plugin.getLogger().info("已添加"+itemstack.getType().name());
+		// plugin.getLogger().info("已添加"+itemstack.getType().name());
 		this.dropper_block.getInventory().addItem(itemstack);
-		//this.dropper_block.getBlock().setBlockData(this.dropper_block.getBlockData());
+		// this.dropper_block.getBlock().setBlockData(this.dropper_block.getBlockData());
 	}
 
 	public boolean buy() {
-		int price = plugin.get_price(this.sell_item);
-		Economy economy = this.plugin.get_economy();
+		int price = Dropper_shop_manager.plugin.get_price(this.sell_item);
+		Economy economy = Dropper_shop_manager.plugin.get_economy();
 		OfflinePlayer player = this.get_owner();
 		if (economy.has(player, price)) {
 			economy.withdrawPlayer(player, price);
@@ -79,6 +68,9 @@ public class Dropper_shop {
 		save.put("x", this.get_location().getBlockX());
 		save.put("y", this.get_location().getBlockY());
 		save.put("z", this.get_location().getBlockZ());
+		//save.put("assoc-x", this.assoc.get_location().getBlockX());
+		//save.put("assoc-y", this.assoc.get_location().getBlockY());
+		//save.put("assoc-z", this.assoc.get_location().getBlockZ());
 		save.put("item", this.sell_item.name());
 		return save;
 	}
@@ -86,4 +78,50 @@ public class Dropper_shop {
 	public String get_owner_name() {
 		return this.owner;
 	}
+
+	public int completed() {
+		if (this.dropper_block.getBlock().getType() == Material.DROPPER) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+
+	@Override
+	public void set_from_save(Map<?, ?> shop_save) {
+		String world_name = (String) shop_save.get("world");
+		int x = (Integer) shop_save.get("x");
+		int y = (Integer) shop_save.get("y");
+		int z = (Integer) shop_save.get("z");
+		//int assoc_x = (Integer) shop_save.get("assoc_x");
+		//int assoc_y = (Integer) shop_save.get("assoc-y");
+		//int assoc_z = (Integer) shop_save.get("assoc-z");
+		String owner = (String) shop_save.get("owner");
+		Material item = Material.getMaterial((String) shop_save.get("item"));
+		this.set_selling_item(item);
+		this.set_location(world_name, x, y, z);
+		this.set_owner(owner);
+	}
+
+	@Override
+	public void set_location(Location loc) {
+		this.dropper_block = (Dropper) loc.getBlock().getState();
+	}
+
+	@Override
+	public void set_location(String world_name, int x, int y, int z) {
+		World world = Bukkit.getWorld(world_name);
+		Location loc = new Location(world, x, y, z);
+		this.dropper_block = (Dropper) loc.getBlock().getState();
+	}
+
+	@Override
+	public boolean in_structure(Location loc) {
+		if (loc.equals(this.get_location())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }
