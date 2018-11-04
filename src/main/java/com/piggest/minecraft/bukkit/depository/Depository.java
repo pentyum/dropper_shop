@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.Structure.Abstract_structure;
 import com.piggest.minecraft.bukkit.Structure.Ownable;
+import com.piggest.minecraft.bukkit.Structure.Structure_manager;
 
 public class Depository extends Abstract_structure implements Ownable {
 	public static int[] price_level = { 5, 10, 20, 30, 40 };
@@ -96,7 +97,7 @@ public class Depository extends Abstract_structure implements Ownable {
 		this.contents.put(type, current_num - num);
 		return item;
 	}
-
+	
 	public Depository_runner get_runner() {
 		return this.runner;
 	}
@@ -116,8 +117,13 @@ public class Depository extends Abstract_structure implements Ownable {
 
 	@Override
 	public void set_from_save(Map<?, ?> shop_save) {
-		// TODO Auto-generated method stub
-
+		this.x = (Integer) shop_save.get("x");
+		this.y = (Integer) shop_save.get("y");
+		this.z = (Integer) shop_save.get("z");
+		this.owner = (String) shop_save.get("owner");
+		this.world_name = (String) shop_save.get("world");
+		Structure_manager.plugin.getLogger().info(shop_save.get("levels").getClass().getName());
+		Structure_manager.plugin.getLogger().info(shop_save.get("contents").getClass().getName());
 	}
 
 	@Override
