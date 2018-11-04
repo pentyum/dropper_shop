@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 
 public abstract class Abstract_structure {
 
@@ -20,5 +21,9 @@ public abstract class Abstract_structure {
 	public abstract int completed();
 	
 	public abstract boolean in_structure(Location loc);
-
+	
+	public Block get_block(int relative_x,int relative_y,int relative_z) {
+		Location loc = this.get_location().add(relative_x, relative_y, relative_z);
+		return loc.getBlock();
+	}
 }

@@ -18,6 +18,7 @@ public class Depository_runner extends BukkitRunnable {
 		Economy economy = Structure_manager.plugin.get_economy();
 		if (economy.has(depository.get_owner(), price)) {
 			economy.withdrawPlayer(depository.get_owner(), price);
+			depository.set_accessible(true);
 		} else {
 			depository.set_accessible(false);
 		}

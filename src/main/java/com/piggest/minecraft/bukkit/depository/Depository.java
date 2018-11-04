@@ -17,6 +17,10 @@ import com.piggest.minecraft.bukkit.Structure.Ownable;
 public class Depository extends Abstract_structure implements Ownable {
 	public static int[] price_level = { 5, 10, 20, 30, 40 };
 	public static int[] capacity_level = { 5000, 10000, 20000, 30000, 50000 };
+	private String world_name = null;
+	private int x;
+	private int y;
+	private int z;
 	private Depository_runner runner = new Depository_runner(this);
 	private boolean accessible = true;
 	private HashMap<Material, Integer> contents = new HashMap<Material, Integer>();
@@ -93,6 +97,10 @@ public class Depository extends Abstract_structure implements Ownable {
 		return item;
 	}
 
+	public Depository_runner get_runner() {
+		return this.runner;
+	}
+
 	public void set_owner(String owner) {
 		this.owner = owner;
 	}
@@ -114,37 +122,73 @@ public class Depository extends Abstract_structure implements Ownable {
 
 	@Override
 	public void set_location(Location loc) {
-		// TODO Auto-generated method stub
-
+		this.set_location(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 	}
 
 	@Override
 	public void set_location(String world_name, int x, int y, int z) {
-		// TODO Auto-generated method stub
-
+		this.world_name = world_name;
+		this.x = x;
+		this.y = y;
+		this.z = z;
 	}
 
 	@Override
 	public Location get_location() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Location(Bukkit.getWorld(world_name), this.x, this.y, this.z);
 	}
 
 	@Override
 	public HashMap<String, Object> get_save() {
-		// TODO Auto-generated method stub
-		return null;
+		HashMap<String, Object> save = new HashMap<String, Object>();
+		save.put("world", this.world_name);
+		save.put("owner", this.owner);
+		save.put("x", this.x);
+		save.put("y", this.y);
+		save.put("z", this.z);
+		save.put("levels", this.levels);
+		save.put("contents", this.contents);
+		return save;
 	}
 
 	@Override
 	public int completed() {
-		// TODO Auto-generated method stub
-		return 0;
+		int x;
+		int y;
+		int z;
+		for (x = -1; x <= 1; x++) {
+			for (y = -1; y <= 1; y++) {
+				for (z = -1; z <= 1; z++) {
+					Material material = this.get_block(x, y, z).getType();
+					if (x == 0 && y == 0 && z == 0 && material != Material.END_ROD) {
+						return 0;
+					}
+					if (Math.abs(x) == 1 && Math.abs(y) == 1 && Math.abs(z) == 1 && material != Material.LAPIS_BLOCK) {
+						return 0;
+					}
+					if (Math.abs(x) + Math.abs(z) + Math.abs(y) == 2 && material != Material.IRON_BLOCK) {
+						return 0;
+					}
+					if (Math.abs(x) + Math.abs(z) == 1 & Math.abs(y) == 0 && material != Material.IRON_BARS) {
+						return 0;
+					}
+					if (Math.abs(x) == 0 && Math.abs(z) == 1 & Math.abs(y) == 1 && material != Material.DIAMOND_BLOCK) {
+						return 0;
+					}
+				}
+			}
+		}
+		return 1;
 	}
 
 	@Override
 	public boolean in_structure(Location loc) {
-		// TODO Auto-generated method stub
+		int r_x = loc.getBlockX() - this.x;
+		int r_y = loc.getBlockY() - this.y;
+		int r_z = loc.getBlockZ() - this.z;
+		if (Math.abs(r_x) <= 1 && Math.abs(r_y) <= 1 && Math.abs(r_z) <= 1) {
+			return true;
+		}
 		return false;
 	}
 
