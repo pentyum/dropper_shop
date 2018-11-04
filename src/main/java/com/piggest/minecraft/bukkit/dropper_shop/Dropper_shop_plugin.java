@@ -175,14 +175,15 @@ public class Dropper_shop_plugin extends JavaPlugin {
 			return;
 		}
 
-		shop_manager.load_shops();
+		shop_manager.load_structures();
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(shop_listener, this);
 	}
 
 	@Override
 	public void onDisable() {
-		shop_manager.save_shops();
+		shop_manager.save_structures();
+		depository_manager.save_structures();
 		try {
 			shop_config.save(this.shop_file);
 		} catch (IOException e) {

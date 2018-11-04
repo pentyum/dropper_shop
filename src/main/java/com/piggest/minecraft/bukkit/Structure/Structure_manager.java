@@ -37,14 +37,16 @@ public abstract class Structure_manager<T extends Abstract_structure> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void load_shops() {
+	public void load_structures() {
 		String structure_name = this.structure_class.getName().replace('.', '-');
 		List<Map<?, ?>> map_list = plugin.get_shop_config().getMapList(structure_name);
 		for (Map<?, ?> shop_save : map_list) {
 			try {
 				T shop = (T) structure_class.newInstance();
 				shop.set_from_save(shop_save);
-				this.structure_map.put(shop.get_location(), shop);
+				if (shop.completed() > 0) {
+					this.structure_map.put(shop.get_location(), shop);
+				}
 			} catch (InstantiationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -55,7 +57,7 @@ public abstract class Structure_manager<T extends Abstract_structure> {
 		}
 	}
 
-	public void save_shops() {
+	public void save_structures() {
 		String structure_name = this.structure_class.getName().replace('.', '-');
 		ArrayList<HashMap<String, Object>> shop_list = new ArrayList<HashMap<String, Object>>();
 		for (Entry<Location, T> entry : structure_map.entrySet()) {
