@@ -243,4 +243,13 @@ public class Depository extends Abstract_structure implements Ownable {
 	public Set<Entry<String, Integer>> get_contents_entry() {
 		return this.contents.entrySet();
 	}
+
+	public int get_material_num(String material_name) {
+		Integer num = this.contents.get(material_name);
+		if (num == null) {
+			return 0;
+		} else {
+			return num;
+		}
+	}
 }

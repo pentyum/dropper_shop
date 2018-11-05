@@ -6,11 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
@@ -19,15 +15,14 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.piggest.minecraft.bukkit.depository.Depository;
 import com.piggest.minecraft.bukkit.depository.Depository_command_executor;
 import com.piggest.minecraft.bukkit.depository.Depository_listener;
 import com.piggest.minecraft.bukkit.depository.Depository_manager;
+import com.piggest.minecraft.bukkit.depository.Reader;
 
 import net.milkbowl.vault.economy.Economy;
 
@@ -151,15 +146,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	}
 
 	public void init_reader_item() {
-		this.reader_item = new ItemStack(Material.ENDER_CHEST);
-		ItemMeta meta = reader_item.getItemMeta();
-		meta.setDisplayName("§r存储读取器");
-		ArrayList<String> lore = new ArrayList<String>();
-		lore.add("§r连接储存器: null");
-		lore.add("§r物品: null");
-		lore.add("§r数量: 0");
-		meta.setLore(lore);
-		this.reader_item.setItemMeta(meta);
+		this.reader_item = Reader.init_reader_item();
 	}
 
 	public ItemStack get_reader_item() {
