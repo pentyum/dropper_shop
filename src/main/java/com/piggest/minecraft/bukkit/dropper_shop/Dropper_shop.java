@@ -11,8 +11,9 @@ import org.bukkit.World;
 import org.bukkit.block.Dropper;
 import org.bukkit.inventory.ItemStack;
 
-import com.piggest.minecraft.bukkit.Structure.Abstract_structure;
-import com.piggest.minecraft.bukkit.Structure.Ownable;
+import com.piggest.minecraft.bukkit.structure.Abstract_structure;
+import com.piggest.minecraft.bukkit.structure.Ownable;
+
 import net.milkbowl.vault.economy.Economy;
 
 public class Dropper_shop extends Abstract_structure implements Ownable {

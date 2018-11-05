@@ -7,7 +7,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import com.piggest.minecraft.bukkit.Structure.Structure_manager;
+import com.piggest.minecraft.bukkit.structure.Structure_manager;
 
 public class Depository_listener implements Listener {
 	@EventHandler

@@ -1,4 +1,4 @@
-package com.piggest.minecraft.bukkit.Structure;
+package com.piggest.minecraft.bukkit.structure;
 
 import org.bukkit.OfflinePlayer;
 

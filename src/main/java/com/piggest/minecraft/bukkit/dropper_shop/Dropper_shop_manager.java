@@ -1,6 +1,6 @@
 package com.piggest.minecraft.bukkit.dropper_shop;
 
-import com.piggest.minecraft.bukkit.Structure.Structure_manager;
+import com.piggest.minecraft.bukkit.structure.Structure_manager;
 
 public class Dropper_shop_manager extends Structure_manager<Dropper_shop> {
 	public static Dropper_shop_manager instance = null;

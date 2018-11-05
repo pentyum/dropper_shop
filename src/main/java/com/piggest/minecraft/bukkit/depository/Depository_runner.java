@@ -3,7 +3,7 @@ package com.piggest.minecraft.bukkit.depository;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.piggest.minecraft.bukkit.Structure.Structure_manager;
+import com.piggest.minecraft.bukkit.structure.Structure_manager;
 
 import net.milkbowl.vault.economy.Economy;
 

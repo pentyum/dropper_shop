@@ -12,8 +12,8 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 
-import com.piggest.minecraft.bukkit.Structure.Abstract_structure;
-import com.piggest.minecraft.bukkit.Structure.Ownable;
+import com.piggest.minecraft.bukkit.structure.Abstract_structure;
+import com.piggest.minecraft.bukkit.structure.Ownable;
 
 public class Depository extends Abstract_structure implements Ownable {
 	public static int[] price_level = { 5, 10, 20, 30, 40 };

@@ -4,8 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
-import com.piggest.minecraft.bukkit.Structure.Structure_manager;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.structure.Structure_manager;
 
 public class Depository_manager extends Structure_manager<Depository> {
 	public static Depository_manager instance = null;
