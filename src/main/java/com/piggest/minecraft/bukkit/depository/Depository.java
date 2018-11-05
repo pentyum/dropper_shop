@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -13,7 +14,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.Structure.Abstract_structure;
 import com.piggest.minecraft.bukkit.Structure.Ownable;
-import com.piggest.minecraft.bukkit.Structure.Structure_manager;
 
 public class Depository extends Abstract_structure implements Ownable {
 	public static int[] price_level = { 5, 10, 20, 30, 40 };
@@ -23,10 +23,27 @@ public class Depository extends Abstract_structure implements Ownable {
 	private int y;
 	private int z;
 	private Depository_runner runner = new Depository_runner(this);
+	private Depository_item_importer importer = new Depository_item_importer(this);
 	private boolean accessible = true;
-	private HashMap<Material, Integer> contents = new HashMap<Material, Integer>();
-	private HashSet<Integer> levels = new HashSet<Integer>();
+	private HashMap<String, Integer> contents = new HashMap<String, Integer>();
+	private HashSet<Integer> levels = new HashSet<Integer>() {
+		{
+			add(0);
+		}
+	};
 	private String owner = null;
+
+	public String get_info() {
+		String msg = "存储器结构信息";
+		msg += "\n拥有者: " + this.get_owner_name();
+		msg += "\n物品种类: " + this.get_type() + "/" + this.get_max_type();
+		msg += "  容量: " + this.get_capacity() + "/" + this.get_max_capacity();
+		msg += "\n--------------------";
+		for (Entry<String, Integer> entry : this.get_contents_entry()) {
+			msg += "\n" + entry.getKey() + ": " + entry.getValue();
+		}
+		return msg;
+	}
 
 	public void set_accessible(boolean accessible) {
 		this.accessible = accessible;
@@ -62,14 +79,14 @@ public class Depository extends Abstract_structure implements Ownable {
 
 	public int get_capacity() {
 		int capacity = 0;
-		for (Entry<Material, Integer> entry : this.contents.entrySet()) {
+		for (Entry<String, Integer> entry : this.contents.entrySet()) {
 			capacity = capacity + entry.getValue();
 		}
 		return capacity;
 	}
 
 	public boolean add(ItemStack item) {
-		Integer current_num = this.contents.get(item.getType());
+		Integer current_num = this.contents.get(item.getType().name());
 		if (current_num == null) { // 存储器没有这种物品
 			if (this.get_max_type() == this.get_type()) { // 超出种类限制
 				return false;
@@ -82,7 +99,7 @@ public class Depository extends Abstract_structure implements Ownable {
 			add_num = this.get_max_capacity() - this.get_capacity();
 		}
 		if (current_num + add_num > 0) { // 大于0才添加内容
-			this.contents.put(item.getType(), current_num + add_num);
+			this.contents.put(item.getType().name(), current_num + add_num);
 			item.setAmount(item.getAmount() - add_num);
 			return true;
 		} else {
@@ -95,15 +112,15 @@ public class Depository extends Abstract_structure implements Ownable {
 	}
 
 	public ItemStack remove(Material type, int num) {
-		Integer current_num = this.contents.get(type);
+		Integer current_num = this.contents.get(type.name());
 		if (current_num == null) {
 			return null;
 		}
 		if (current_num - num <= 0) {
 			num = current_num;
-			this.contents.remove(type);
+			this.contents.remove(type.name());
 		} else {
-			this.contents.put(type, current_num - num);
+			this.contents.put(type.name(), current_num - num);
 		}
 		if (num > 0) {
 			ItemStack item = new ItemStack(type, num);
@@ -115,6 +132,10 @@ public class Depository extends Abstract_structure implements Ownable {
 
 	public Depository_runner get_runner() {
 		return this.runner;
+	}
+
+	public Depository_item_importer get_importer() {
+		return this.importer;
 	}
 
 	public void set_owner(String owner) {
@@ -130,6 +151,7 @@ public class Depository extends Abstract_structure implements Ownable {
 		return this.owner;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void set_from_save(Map<?, ?> shop_save) {
 		this.x = (Integer) shop_save.get("x");
@@ -137,8 +159,8 @@ public class Depository extends Abstract_structure implements Ownable {
 		this.z = (Integer) shop_save.get("z");
 		this.owner = (String) shop_save.get("owner");
 		this.world_name = (String) shop_save.get("world");
-		Structure_manager.plugin.getLogger().info(shop_save.get("levels").getClass().getName());
-		Structure_manager.plugin.getLogger().info(shop_save.get("contents").getClass().getName());
+		this.levels = (HashSet<Integer>) shop_save.get("levels");
+		this.contents = (HashMap<String, Integer>) shop_save.get("contents");
 	}
 
 	@Override
@@ -182,18 +204,23 @@ public class Depository extends Abstract_structure implements Ownable {
 				for (z = -1; z <= 1; z++) {
 					Material material = this.get_block(x, y, z).getType();
 					if (x == 0 && y == 0 && z == 0 && material != Material.END_ROD) {
+						Bukkit.getLogger().info("末地烛不对");
 						return 0;
 					}
 					if (Math.abs(x) == 1 && Math.abs(y) == 1 && Math.abs(z) == 1 && material != Material.LAPIS_BLOCK) {
+						Bukkit.getLogger().info("青金石不对");
 						return 0;
 					}
 					if (Math.abs(x) + Math.abs(z) + Math.abs(y) == 2 && material != Material.IRON_BLOCK) {
+						Bukkit.getLogger().info("铁块不对");
 						return 0;
 					}
 					if (Math.abs(x) + Math.abs(z) == 1 & Math.abs(y) == 0 && material != Material.IRON_BARS) {
+						Bukkit.getLogger().info("铁栏杆不对");
 						return 0;
 					}
-					if (Math.abs(x) == 0 && Math.abs(z) == 1 & Math.abs(y) == 1 && material != Material.DIAMOND_BLOCK) {
+					if (Math.abs(x) == 0 && Math.abs(z) == 0 & Math.abs(y) == 1 && material != Material.DIAMOND_BLOCK) {
+						Bukkit.getLogger().info("钻石块不对");
 						return 0;
 					}
 				}
@@ -213,4 +240,7 @@ public class Depository extends Abstract_structure implements Ownable {
 		return false;
 	}
 
+	public Set<Entry<String, Integer>> get_contents_entry() {
+		return this.contents.entrySet();
+	}
 }

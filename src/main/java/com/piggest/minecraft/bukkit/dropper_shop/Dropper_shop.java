@@ -19,7 +19,7 @@ public class Dropper_shop extends Abstract_structure implements Ownable {
 	private Dropper dropper_block = null;
 	private Material sell_item = null;
 	private String owner = null;
-	//private Depository assoc = null;
+	// private Depository assoc = null;
 
 	public void set_selling_item(Material sell_item) {
 		this.sell_item = sell_item;
@@ -68,9 +68,9 @@ public class Dropper_shop extends Abstract_structure implements Ownable {
 		save.put("x", this.get_location().getBlockX());
 		save.put("y", this.get_location().getBlockY());
 		save.put("z", this.get_location().getBlockZ());
-		//save.put("assoc-x", this.assoc.get_location().getBlockX());
-		//save.put("assoc-y", this.assoc.get_location().getBlockY());
-		//save.put("assoc-z", this.assoc.get_location().getBlockZ());
+		// save.put("assoc-x", this.assoc.get_location().getBlockX());
+		// save.put("assoc-y", this.assoc.get_location().getBlockY());
+		// save.put("assoc-z", this.assoc.get_location().getBlockZ());
 		save.put("item", this.sell_item.name());
 		return save;
 	}
@@ -93,9 +93,9 @@ public class Dropper_shop extends Abstract_structure implements Ownable {
 		int x = (Integer) shop_save.get("x");
 		int y = (Integer) shop_save.get("y");
 		int z = (Integer) shop_save.get("z");
-		//int assoc_x = (Integer) shop_save.get("assoc_x");
-		//int assoc_y = (Integer) shop_save.get("assoc-y");
-		//int assoc_z = (Integer) shop_save.get("assoc-z");
+		// int assoc_x = (Integer) shop_save.get("assoc_x");
+		// int assoc_y = (Integer) shop_save.get("assoc-y");
+		// int assoc_z = (Integer) shop_save.get("assoc-z");
 		String owner = (String) shop_save.get("owner");
 		Material item = Material.getMaterial((String) shop_save.get("item"));
 		this.set_selling_item(item);

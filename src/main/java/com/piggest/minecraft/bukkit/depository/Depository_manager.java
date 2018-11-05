@@ -1,5 +1,6 @@
 package com.piggest.minecraft.bukkit.depository;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
@@ -16,7 +17,21 @@ public class Depository_manager extends Structure_manager<Depository> {
 
 	@Override
 	public Depository get(Location loc) {
-		return null;
+		return this.structure_map.get(loc);
+	}
+
+	@Override
+	public void add(Depository depository) {
+		depository.get_runner().runTaskTimerAsynchronously(Structure_manager.plugin, 0, 20 * 3600);
+		depository.get_importer().runTaskTimer(Structure_manager.plugin, 10, 10);
+		super.add(depository);
+	}
+
+	@Override
+	public void remove(Depository depository) {
+		depository.get_runner().cancel();
+		depository.get_importer().cancel();
+		super.remove(depository);
 	}
 
 	public Depository find(String player_name, Location loc, boolean new_deop) {
@@ -29,7 +44,9 @@ public class Depository_manager extends Structure_manager<Depository> {
 				for (z = -1; z <= 1; z++) {
 					Location check_loc = loc.clone().add(x, y, z);
 					Material material = check_loc.getBlock().getType();
+					// Bukkit.getLogger().info("正在搜索"+check_loc.toString());
 					if (material == Material.END_ROD) {
+						Bukkit.getLogger().info("在" + check_loc.toString() + "找到了末地烛");
 						if (new_deop == true) {
 							depository = new Depository();
 							depository.set_location(check_loc);
@@ -39,8 +56,14 @@ public class Depository_manager extends Structure_manager<Depository> {
 							}
 						} else {
 							depository = this.get(check_loc);
-							if (depository != null && depository.get_owner_name().equalsIgnoreCase(player_name)) {
-								return depository;
+							if (player_name != null) {
+								if (depository != null && depository.get_owner_name().equalsIgnoreCase(player_name)) {
+									return depository;
+								}
+							} else {
+								if (depository != null) {
+									return depository;
+								}
 							}
 						}
 					}

@@ -10,7 +10,7 @@ import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public class Dropper_shop_listener implements Listener {
-	//private Dropper_shop_plugin plugin = null;
+	// private Dropper_shop_plugin plugin = null;
 
 	@EventHandler
 	public void on_dispense(BlockDispenseEvent event) {
@@ -29,8 +29,9 @@ public class Dropper_shop_listener implements Listener {
 		if (event.isCancelled() == false && (event.getAction() == Action.LEFT_CLICK_BLOCK) && event.getItem() == null) {
 			Dropper_shop shop = Dropper_shop_manager.instance.get(event.getClickedBlock().getLocation());
 			if (shop != null) {
-				event.getPlayer().sendMessage("当前投掷器商店出售:" + shop.get_selling_item().name() + "\n拥有者:"
-						+ shop.get_owner_name() + "\n价格:" + Dropper_shop_manager.plugin.get_price(shop.get_selling_item()));
+				event.getPlayer()
+						.sendMessage("当前投掷器商店出售:" + shop.get_selling_item().name() + "\n拥有者:" + shop.get_owner_name()
+								+ "\n价格:" + Dropper_shop_manager.plugin.get_price(shop.get_selling_item()));
 			}
 		}
 	}

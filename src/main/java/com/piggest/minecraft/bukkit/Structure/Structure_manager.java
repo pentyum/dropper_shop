@@ -45,7 +45,7 @@ public abstract class Structure_manager<T extends Abstract_structure> {
 				T shop = (T) structure_class.newInstance();
 				shop.set_from_save(shop_save);
 				if (shop.completed() > 0) {
-					this.structure_map.put(shop.get_location(), shop);
+					this.add(shop);
 				}
 			} catch (InstantiationException e) {
 				// TODO Auto-generated catch block
