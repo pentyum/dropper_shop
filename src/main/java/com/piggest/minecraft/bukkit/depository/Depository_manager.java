@@ -19,7 +19,7 @@ public class Depository_manager extends Structure_manager<Depository> {
 		return null;
 	}
 
-	public Depository find(String player_name, Location loc) {
+	public Depository find(String player_name, Location loc, boolean new_deop) {
 		int x;
 		int y;
 		int z;
@@ -30,11 +30,18 @@ public class Depository_manager extends Structure_manager<Depository> {
 					Location check_loc = loc.clone().add(x, y, z);
 					Material material = check_loc.getBlock().getType();
 					if (material == Material.END_ROD) {
-						depository = new Depository();
-						depository.set_location(check_loc);
-						if (depository.completed() > 0) {
-							depository.set_owner(player_name);
-							return depository;
+						if (new_deop == true) {
+							depository = new Depository();
+							depository.set_location(check_loc);
+							if (depository.completed() > 0) {
+								depository.set_owner(player_name);
+								return depository;
+							}
+						} else {
+							depository = this.get(check_loc);
+							if (depository != null && depository.get_owner_name().equalsIgnoreCase(player_name)) {
+								return depository;
+							}
 						}
 					}
 				}

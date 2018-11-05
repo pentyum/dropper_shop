@@ -9,6 +9,11 @@ commands:
     usage: /<command> make ,to make a dropper shop which sell the item in you main hand.
     permission: dropper_shop.make
     permission-message: You don't have permission
+  depository:
+    description: Make a depository.
+    usage: /<command> make ,to make a depository.
+    permission: depository.make
+    permission-message: You don't have permission
 permissions:
   dropper_shop.*:
     description: Gives access to all dropper shop commands.

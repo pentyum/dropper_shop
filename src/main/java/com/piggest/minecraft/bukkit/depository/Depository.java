@@ -40,6 +40,10 @@ public class Depository extends Abstract_structure implements Ownable {
 		return this.levels.size();
 	}
 
+	public int get_type() {
+		return this.contents.size();
+	}
+
 	public int get_max_capacity() {
 		int capacity = 0;
 		for (int level : this.levels) {
@@ -66,16 +70,24 @@ public class Depository extends Abstract_structure implements Ownable {
 
 	public boolean add(ItemStack item) {
 		Integer current_num = this.contents.get(item.getType());
-		if (current_num == null) {
-			return false;
+		if (current_num == null) { // 存储器没有这种物品
+			if (this.get_max_type() == this.get_type()) { // 超出种类限制
+				return false;
+			} else { // 没有超出种类限制
+				current_num = 0;
+			}
 		}
 		int add_num = item.getAmount();
 		if (this.get_capacity() + add_num > this.get_max_capacity()) {
 			add_num = this.get_max_capacity() - this.get_capacity();
 		}
-		this.contents.put(item.getType(), current_num + add_num);
-		item.setAmount(item.getAmount() - add_num);
-		return true;
+		if (current_num + add_num > 0) { // 大于0才添加内容
+			this.contents.put(item.getType(), current_num + add_num);
+			item.setAmount(item.getAmount() - add_num);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public ItemStack remove(Material type) {
@@ -87,17 +99,20 @@ public class Depository extends Abstract_structure implements Ownable {
 		if (current_num == null) {
 			return null;
 		}
-		if (current_num == 0) {
+		if (current_num - num <= 0) {
+			num = current_num;
+			this.contents.remove(type);
+		} else {
+			this.contents.put(type, current_num - num);
+		}
+		if (num > 0) {
+			ItemStack item = new ItemStack(type, num);
+			return item;
+		} else {
 			return null;
 		}
-		if (current_num - num < 0) {
-			num = current_num;
-		}
-		ItemStack item = new ItemStack(type, num);
-		this.contents.put(type, current_num - num);
-		return item;
 	}
-	
+
 	public Depository_runner get_runner() {
 		return this.runner;
 	}
