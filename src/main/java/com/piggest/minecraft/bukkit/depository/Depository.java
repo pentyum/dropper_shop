@@ -27,6 +27,11 @@ public class Depository extends Abstract_structure implements Ownable {
 	private boolean accessible = true;
 	private HashMap<String, Integer> contents = new HashMap<String, Integer>();
 	private HashSet<Integer> levels = new HashSet<Integer>() {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 8316011402040929743L;
+
 		{
 			add(0);
 		}
@@ -36,6 +41,7 @@ public class Depository extends Abstract_structure implements Ownable {
 	public String get_info() {
 		String msg = "存储器结构信息";
 		msg += "\n拥有者: " + this.get_owner_name();
+		msg += "  消耗: " + this.get_price();
 		msg += "\n物品种类: " + this.get_type() + "/" + this.get_max_type();
 		msg += "  容量: " + this.get_capacity() + "/" + this.get_max_capacity();
 		msg += "\n--------------------";

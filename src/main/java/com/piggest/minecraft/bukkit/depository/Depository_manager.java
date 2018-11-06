@@ -1,6 +1,5 @@
 package com.piggest.minecraft.bukkit.depository;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
@@ -46,7 +45,7 @@ public class Depository_manager extends Structure_manager<Depository> {
 					Material material = check_loc.getBlock().getType();
 					// Bukkit.getLogger().info("正在搜索"+check_loc.toString());
 					if (material == Material.END_ROD) {
-						Bukkit.getLogger().info("在" + check_loc.toString() + "找到了末地烛");
+						//Bukkit.getLogger().info("在" + check_loc.toString() + "找到了末地烛");
 						if (new_deop == true) {
 							depository = new Depository();
 							depository.set_location(check_loc);

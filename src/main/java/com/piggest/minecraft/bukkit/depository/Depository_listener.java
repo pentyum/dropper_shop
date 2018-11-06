@@ -55,16 +55,26 @@ public class Depository_listener implements Listener {
 			if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 				Material material = Reader.lore_parse_material(item_meta.getLore());
 				Location loc = Reader.lore_parse_loction(item_meta.getLore());
-				//Bukkit.getLogger().info(loc.toString());
+				// Bukkit.getLogger().info(loc.toString());
 				Depository depository = Structure_manager.plugin.get_depository_manager().get(loc);
 				if (material == null) {
+					event.setCancelled(true);
+					return;
+				}
+				if (depository == null) {
+					event.getPlayer().sendMessage("原存储器已经被移除");
+					event.setCancelled(true);
+					return;
+				}
+				if (depository.is_accessible() == false) {
+					event.getPlayer().sendMessage("原存储器目前处于不可访问的状态");
 					event.setCancelled(true);
 					return;
 				}
 				if (material.isBlock() == true) {
 					BlockFace face = event.getBlockFace();
 					Block block = event.getClickedBlock();
-					if (block.getType() == Material.GRASS) {
+					if (block.getType() == Material.GRASS || block.getType() == Material.TALL_GRASS) {
 						if (depository.remove(material) != null) {
 							block.setType(material);
 						}
@@ -73,7 +83,7 @@ public class Depository_listener implements Listener {
 						place_loc.add(face.getModX(), face.getModY(), face.getModZ());
 						Block replaced_block = place_loc.getBlock();
 						Material replaced = replaced_block.getType();
-						//event.getPlayer().sendMessage(replaced.name());
+						// event.getPlayer().sendMessage(replaced.name());
 						if (replaced == Material.AIR || replaced == Material.CAVE_AIR || replaced == Material.WATER
 								|| replaced == Material.GRASS || replaced == Material.LAVA) {
 							if (depository.remove(material) != null) {

@@ -17,7 +17,7 @@ import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 
 enum Sub_cmd {
 	make, info, input, output, remove, connect;
-	public static ArrayList<String> get_list() {
+	public static ArrayList<String> get_list(CommandSender sender) {
 		ArrayList<String> list = new ArrayList<String>();
 		for (Sub_cmd cmd : Sub_cmd.values()) {
 			list.add(cmd.name());
@@ -152,7 +152,7 @@ public class Depository_command_executor implements TabExecutor {
 
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 		if (args.length == 1) {
-			return Sub_cmd.get_list();
+			return Sub_cmd.get_list(sender);
 		}
 		if (args.length == 2 && args[0].equalsIgnoreCase(Sub_cmd.connect.name())) {
 			if (sender instanceof Player) {
