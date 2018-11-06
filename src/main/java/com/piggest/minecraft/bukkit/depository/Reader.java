@@ -69,7 +69,7 @@ public class Reader {
 		Matcher m = r.matcher(line);
 		if (m.find()) {
 			material_name = m.group(1);
-			Bukkit.getLogger().info(material_name);
+			//Bukkit.getLogger().info(material_name);
 			return Material.getMaterial(material_name);
 		}
 		return null;
