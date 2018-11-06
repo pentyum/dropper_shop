@@ -68,7 +68,7 @@ public class Depository extends Abstract_structure implements Ownable {
 	}
 
 	public int get_max_capacity() {
-		int capacity = 0;
+		int capacity = 1;
 		for (int level : this.levels) {
 			capacity = capacity + Depository.capacity_level[level];
 		}
