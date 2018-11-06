@@ -33,4 +33,19 @@ permissions:
   dropper_shop.remove.others:
     description: Remove others dropper shop.
     default: op
+  depository.make:
+    description: Make or remove a depository.
+    default: true
+  depository.connect:
+    description: Make a reader connect to a depository.
+    default: true
+  depository.input:
+    description: Input itemstack to a depository.
+    default: true
+  depository.output:
+    description: Get itemstack from a depository.
+    default: true
+  depository.god:
+    description: Change info.
+    default: op
 softdepend: [Vault]
