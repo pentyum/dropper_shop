@@ -80,10 +80,10 @@ public class Depository_command_executor implements TabExecutor {
 				}
 				if (args.length == 2) {
 					if (args[1].equalsIgnoreCase("all")) { // 输入全部
-						Material type = item.getType();
+						// Material type = item.getType();
 						for (ItemStack other_item : player.getInventory().getContents()) {
 							if (other_item != null) {
-								if (other_item.getType() == type) {
+								if (other_item.isSimilar(item)) {
 									depository.add(other_item);
 								}
 							}
