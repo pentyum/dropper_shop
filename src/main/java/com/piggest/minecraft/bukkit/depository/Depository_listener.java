@@ -51,7 +51,7 @@ public class Depository_listener implements Listener {
 			return;
 		}
 		ItemMeta item_meta = item.getItemMeta();
-		if (item_meta.getDisplayName().equals(Reader.name)) {
+		if (Reader.is_reader(item)) {
 			if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 				Material material = Reader.lore_parse_material(item_meta.getLore());
 				Location loc = Reader.lore_parse_loction(item_meta.getLore());

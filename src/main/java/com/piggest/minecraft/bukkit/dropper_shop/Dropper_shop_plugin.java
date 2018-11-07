@@ -12,7 +12,6 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.PluginManager;
@@ -38,7 +37,6 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private HashMap<String, Integer> price_map = new HashMap<String, Integer>();
 	private NamespacedKey namespace = new NamespacedKey(this, "Dropper_shop");
 	private ArrayList<ShapedRecipe> sr = new ArrayList<ShapedRecipe>();
-	private ItemStack reader_item = null;
 	private Depository_listener depository_listener = new Depository_listener();
 
 	public FileConfiguration get_shop_config() {
@@ -105,7 +103,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(shop_listener, this);
 		pm.registerEvents(depository_listener, this);
-		this.init_reader_item();
+		Reader.init_reader_item();
 		this.set_recipe();
 	}
 
@@ -145,16 +143,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		}
 	}
 
-	public void init_reader_item() {
-		this.reader_item = Reader.init_reader_item();
-	}
-
-	public ItemStack get_reader_item() {
-		return this.reader_item;
-	}
-
 	private void set_recipe() {
-		ShapedRecipe sr1 = new ShapedRecipe(this.namespace, this.reader_item);
+		ShapedRecipe sr1 = new ShapedRecipe(this.namespace, Reader.reader_item);
 		sr1.shape("rsr", "scs", "rsr");
 		sr1.setIngredient('s', Material.NETHER_STAR);
 		sr1.setIngredient('c', Material.ENDER_CHEST);

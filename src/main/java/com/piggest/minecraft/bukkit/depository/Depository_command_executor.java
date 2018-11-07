@@ -130,8 +130,7 @@ public class Depository_command_executor implements TabExecutor {
 					player.sendMessage("你的手中没有物品");
 					return true;
 				}
-				if (!item.getItemMeta().getDisplayName()
-						.equals(plugin.get_reader_item().getItemMeta().getDisplayName())) {
+				if (!Reader.is_reader(item)) {
 					player.sendMessage("你的手中没有连接器");
 					return true;
 				}

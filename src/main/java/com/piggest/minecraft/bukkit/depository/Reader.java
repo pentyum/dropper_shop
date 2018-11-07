@@ -15,7 +15,8 @@ import com.piggest.minecraft.bukkit.structure.Structure_manager;
 
 public class Reader {
 	public static String name = "§r存储读取器";
-
+	public static ItemStack reader_item = null;
+	
 	public static Location lore_parse_loction(List<String> lore) {
 		String world_name = null;
 		int x = 0;
@@ -121,7 +122,11 @@ public class Reader {
 		meta.setLore(lore_update(meta.getLore()));
 		item.setItemMeta(meta);
 	}
-
+	
+	public static boolean is_reader(ItemStack item) {
+		return item.getItemMeta().getDisplayName().equals(Reader.name);
+	}
+	
 	public static ItemStack init_reader_item() {
 		ItemStack reader_item = new ItemStack(Material.ENDER_CHEST);
 		ItemMeta meta = reader_item.getItemMeta();
@@ -135,6 +140,7 @@ public class Reader {
 		lore.add("§r数量: 0");
 		meta.setLore(lore);
 		reader_item.setItemMeta(meta);
+		Reader.reader_item = reader_item;
 		return reader_item;
 	}
 }
