@@ -47,8 +47,8 @@ public class Dropper_shop extends Abstract_structure implements Ownable {
 	}
 
 	public boolean buy() {
-		int price = Dropper_shop_manager.plugin.get_price(this.sell_item);
-		Economy economy = Dropper_shop_manager.plugin.get_economy();
+		int price = Dropper_shop_plugin.instance.get_price(this.sell_item);
+		Economy economy = Dropper_shop_plugin.instance.get_economy();
 		OfflinePlayer player = this.get_owner();
 		if (economy.has(player, price)) {
 			economy.withdrawPlayer(player, price);

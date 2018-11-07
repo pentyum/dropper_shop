@@ -9,8 +9,8 @@ import com.piggest.minecraft.bukkit.structure.Structure_manager;
 public class Depository_manager extends Structure_manager<Depository> {
 	public static Depository_manager instance = null;
 
-	public Depository_manager(Dropper_shop_plugin dropper_shop_plugin) {
-		super(dropper_shop_plugin, Depository.class);
+	public Depository_manager() {
+		super(Depository.class);
 		Depository_manager.instance = this;
 	}
 
@@ -21,8 +21,8 @@ public class Depository_manager extends Structure_manager<Depository> {
 
 	@Override
 	public void add(Depository depository) {
-		depository.get_runner().runTaskTimerAsynchronously(Structure_manager.plugin, 0, 20 * 3600);
-		depository.get_importer().runTaskTimer(Structure_manager.plugin, 10, 10);
+		depository.get_runner().runTaskTimerAsynchronously(Dropper_shop_plugin.instance, 0, 20 * 3600);
+		depository.get_importer().runTaskTimer(Dropper_shop_plugin.instance, 10, 10);
 		super.add(depository);
 	}
 
@@ -45,7 +45,7 @@ public class Depository_manager extends Structure_manager<Depository> {
 					Material material = check_loc.getBlock().getType();
 					// Bukkit.getLogger().info("正在搜索"+check_loc.toString());
 					if (material == Material.END_ROD) {
-						//Bukkit.getLogger().info("在" + check_loc.toString() + "找到了末地烛");
+						// Bukkit.getLogger().info("在" + check_loc.toString() + "找到了末地烛");
 						if (new_deop == true) {
 							depository = new Depository();
 							depository.set_location(check_loc);

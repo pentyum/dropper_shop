@@ -9,6 +9,7 @@ import org.bukkit.util.Vector;
 
 public class Depository_item_importer extends BukkitRunnable {
 	private Depository depository = null;
+	private int times = 0;
 
 	public Depository_item_importer(Depository depository) {
 		this.depository = depository;
@@ -36,6 +37,18 @@ public class Depository_item_importer extends BukkitRunnable {
 				}
 			}
 		}
+		if (this.times == 1) {
+			ItemStack components[] = depository.getInventory().getContents();
+			for (ItemStack component : components) {
+				if (Update_component.is_component(component)) {
+					if (Update_component.get_process(component) < 100) {
+						Update_component.set_process(component, Update_component.get_process(component) + 1);
+					}
+				}
+			}
+			this.times = 0;
+		}
+		this.times++;
 	}
 
 }

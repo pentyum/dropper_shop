@@ -3,8 +3,7 @@ package com.piggest.minecraft.bukkit.depository;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.piggest.minecraft.bukkit.structure.Structure_manager;
-
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import net.milkbowl.vault.economy.Economy;
 
 public class Depository_runner extends BukkitRunnable {
@@ -16,7 +15,7 @@ public class Depository_runner extends BukkitRunnable {
 
 	public void run() {
 		int price = depository.get_price();
-		Economy economy = Structure_manager.plugin.get_economy();
+		Economy economy = Dropper_shop_plugin.instance.get_economy();
 		if (economy.has(depository.get_owner(), price)) {
 			if (depository.get_owner().isOnline() == true) {
 				((Player) depository.get_owner()).sendMessage("存储器已扣除" + price);

@@ -9,14 +9,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.piggest.minecraft.bukkit.structure.Structure_manager;
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 
 public class Reader {
 	public static String name = "§r存储读取器";
 	public static ItemStack reader_item = null;
-	
+
 	public static Location lore_parse_loction(List<String> lore) {
 		String world_name = null;
 		int x = 0;
@@ -70,7 +71,7 @@ public class Reader {
 		Matcher m = r.matcher(line);
 		if (m.find()) {
 			material_name = m.group(1);
-			//Bukkit.getLogger().info(material_name);
+			// Bukkit.getLogger().info(material_name);
 			return Material.getMaterial(material_name);
 		}
 		return null;
@@ -103,7 +104,7 @@ public class Reader {
 	public static List<String> lore_update(List<String> lore) {
 		Location loc = lore_parse_loction(lore);
 		Material material = lore_parse_material(lore);
-		Depository depository = Structure_manager.plugin.get_depository_manager().get(loc);
+		Depository depository = Dropper_shop_plugin.instance.get_depository_manager().get(loc);
 		if (depository == null) {
 			lore.set(0, "§r存储器位置: null");
 			lore.set(1, "§rx: null");
@@ -112,7 +113,8 @@ public class Reader {
 			lore.set(4, "§r物品: null");
 			lore.set(5, "§r数量: 0");
 		}
-		//Bukkit.getLogger().info("new num" + depository.get_material_num(material.name()));
+		// Bukkit.getLogger().info("new num" +
+		// depository.get_material_num(material.name()));
 		lore.set(5, "§r数量: " + depository.get_material_num(material.name()));
 		return lore;
 	}
@@ -122,11 +124,17 @@ public class Reader {
 		meta.setLore(lore_update(meta.getLore()));
 		item.setItemMeta(meta);
 	}
-	
+
 	public static boolean is_reader(ItemStack item) {
+		if (item == null) {
+			return false;
+		}
+		if (item.getItemMeta().hasDisplayName() == false) {
+			return false;
+		}
 		return item.getItemMeta().getDisplayName().equals(Reader.name);
 	}
-	
+
 	public static ItemStack init_reader_item() {
 		ItemStack reader_item = new ItemStack(Material.ENDER_CHEST);
 		ItemMeta meta = reader_item.getItemMeta();
@@ -142,5 +150,16 @@ public class Reader {
 		reader_item.setItemMeta(meta);
 		Reader.reader_item = reader_item;
 		return reader_item;
+	}
+
+	public static void set_recipe() {
+		ShapedRecipe sr1 = new ShapedRecipe(Dropper_shop_plugin.instance.namespace, Reader.reader_item);
+		sr1.shape("rsr", "scs", "rsr");
+		sr1.setIngredient('s', Material.NETHER_STAR);
+		sr1.setIngredient('c', Material.ENDER_CHEST);
+		sr1.setIngredient('r', Material.END_CRYSTAL);
+		Dropper_shop_plugin.instance.getServer().addRecipe(sr1);
+		Dropper_shop_plugin.instance.get_sr().add(sr1);
+		Dropper_shop_plugin.instance.getLogger().info("存储读取器合成表已添加");
 	}
 }

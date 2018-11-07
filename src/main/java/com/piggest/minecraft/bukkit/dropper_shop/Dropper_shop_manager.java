@@ -7,8 +7,8 @@ public class Dropper_shop_manager extends Structure_manager<Dropper_shop> {
 	// private HashMap<Location, Dropper_shop> shops_map = new HashMap<Location,
 	// Dropper_shop>();
 
-	public Dropper_shop_manager(Dropper_shop_plugin plugin) {
-		super(plugin, Dropper_shop.class);
+	public Dropper_shop_manager() {
+		super(Dropper_shop.class);
 		Dropper_shop_manager.instance = this;
 	}
 

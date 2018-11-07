@@ -10,12 +10,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.structure.Abstract_structure;
 import com.piggest.minecraft.bukkit.structure.Ownable;
 
-public class Depository extends Abstract_structure implements Ownable {
+public class Depository extends Abstract_structure implements Ownable, InventoryHolder {
 	public static int[] price_level = { 5, 10, 20, 30, 40 };
 	public static int[] capacity_level = { 5000, 10000, 20000, 30000, 50000 };
 	private String world_name = null;
@@ -37,6 +40,7 @@ public class Depository extends Abstract_structure implements Ownable {
 		}
 	};
 	private String owner = null;
+	private Inventory gui = Bukkit.createInventory(this, InventoryType.HOPPER, "存储器");
 
 	public String get_info() {
 		String msg = "存储器结构信息";
@@ -257,5 +261,9 @@ public class Depository extends Abstract_structure implements Ownable {
 		} else {
 			return num;
 		}
+	}
+
+	public Inventory getInventory() {
+		return this.gui;
 	}
 }

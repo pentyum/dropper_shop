@@ -11,12 +11,10 @@ import org.bukkit.Location;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 
 public abstract class Structure_manager<T extends Abstract_structure> {
-	public static Dropper_shop_plugin plugin = null;
 	protected Class<? extends Abstract_structure> structure_class = null;
 	protected HashMap<Location, T> structure_map = new HashMap<Location, T>();
 
-	public Structure_manager(Dropper_shop_plugin plugin, Class<? extends Abstract_structure> structure_class) {
-		Structure_manager.plugin = plugin;
+	public Structure_manager(Class<? extends Abstract_structure> structure_class) {
 		try {
 			this.structure_class = (Class<? extends Abstract_structure>) structure_class;
 		} catch (Exception e) {
@@ -39,7 +37,7 @@ public abstract class Structure_manager<T extends Abstract_structure> {
 	@SuppressWarnings("unchecked")
 	public void load_structures() {
 		String structure_name = this.structure_class.getName().replace('.', '-');
-		List<Map<?, ?>> map_list = plugin.get_shop_config().getMapList(structure_name);
+		List<Map<?, ?>> map_list = Dropper_shop_plugin.instance.get_shop_config().getMapList(structure_name);
 		for (Map<?, ?> shop_save : map_list) {
 			try {
 				T shop = (T) structure_class.newInstance();
@@ -63,6 +61,6 @@ public abstract class Structure_manager<T extends Abstract_structure> {
 		for (Entry<Location, T> entry : structure_map.entrySet()) {
 			shop_list.add(entry.getValue().get_save());
 		}
-		plugin.get_shop_config().set(structure_name, shop_list);
+		Dropper_shop_plugin.instance.get_shop_config().set(structure_name, shop_list);
 	}
 }

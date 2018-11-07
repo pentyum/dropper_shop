@@ -22,20 +22,22 @@ import com.piggest.minecraft.bukkit.depository.Depository_command_executor;
 import com.piggest.minecraft.bukkit.depository.Depository_listener;
 import com.piggest.minecraft.bukkit.depository.Depository_manager;
 import com.piggest.minecraft.bukkit.depository.Reader;
+import com.piggest.minecraft.bukkit.depository.Update_component;
 
 import net.milkbowl.vault.economy.Economy;
 
 public class Dropper_shop_plugin extends JavaPlugin {
+	public static Dropper_shop_plugin instance = null;
 	private Economy economy = null;
 	private FileConfiguration config = null;
 	private FileConfiguration shop_config = null;
 	private File shop_file = null;
 	private int make_price = 0;
 	private final Dropper_shop_listener shop_listener = new Dropper_shop_listener();
-	private Dropper_shop_manager shop_manager = new Dropper_shop_manager(this);
-	private Depository_manager depository_manager = new Depository_manager(this);
+	private Dropper_shop_manager shop_manager = new Dropper_shop_manager();
+	private Depository_manager depository_manager = new Depository_manager();
 	private HashMap<String, Integer> price_map = new HashMap<String, Integer>();
-	private NamespacedKey namespace = new NamespacedKey(this, "Dropper_shop");
+	public NamespacedKey namespace = new NamespacedKey(this, "Dropper_shop");
 	private ArrayList<ShapedRecipe> sr = new ArrayList<ShapedRecipe>();
 	private Depository_listener depository_listener = new Depository_listener();
 
@@ -78,6 +80,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+		Dropper_shop_plugin.instance = this;
 		saveDefaultConfig();
 		saveResource("shops.yml", false);
 		this.config = getConfig();
@@ -104,7 +107,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		pm.registerEvents(shop_listener, this);
 		pm.registerEvents(depository_listener, this);
 		Reader.init_reader_item();
-		this.set_recipe();
+		Reader.set_recipe();
+		Update_component.init_component();
+		Update_component.set_recipe();
 	}
 
 	@Override
@@ -143,14 +148,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		}
 	}
 
-	private void set_recipe() {
-		ShapedRecipe sr1 = new ShapedRecipe(this.namespace, Reader.reader_item);
-		sr1.shape("rsr", "scs", "rsr");
-		sr1.setIngredient('s', Material.NETHER_STAR);
-		sr1.setIngredient('c', Material.ENDER_CHEST);
-		sr1.setIngredient('r', Material.END_CRYSTAL);
-		getServer().addRecipe(sr1);
-		this.sr.add(sr1);
-		getLogger().info("存储读取器合成表已添加");
+	public ArrayList<ShapedRecipe> get_sr() {
+		return this.sr;
 	}
 }

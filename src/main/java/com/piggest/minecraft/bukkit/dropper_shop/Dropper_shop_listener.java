@@ -31,7 +31,7 @@ public class Dropper_shop_listener implements Listener {
 			if (shop != null) {
 				event.getPlayer()
 						.sendMessage("当前投掷器商店出售:" + shop.get_selling_item().name() + "\n拥有者:" + shop.get_owner_name()
-								+ "\n价格:" + Dropper_shop_manager.plugin.get_price(shop.get_selling_item()));
+								+ "\n价格:" + Dropper_shop_plugin.instance.get_price(shop.get_selling_item()));
 			}
 		}
 	}

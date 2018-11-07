@@ -4,15 +4,17 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.piggest.minecraft.bukkit.structure.Structure_manager;
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 
 public class Depository_listener implements Listener {
 	@EventHandler
@@ -21,8 +23,8 @@ public class Depository_listener implements Listener {
 			return;
 		}
 		Block break_block = event.getBlock();
-		Depository depository = Structure_manager.plugin.get_depository_manager().find(null, break_block.getLocation(),
-				false);
+		Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(null,
+				break_block.getLocation(), false);
 		if (depository != null) {
 			event.getPlayer().sendMessage("使用/depository remove移除存储器后才能破坏存储器方块");
 			event.setCancelled(true);
@@ -31,12 +33,25 @@ public class Depository_listener implements Listener {
 
 	@EventHandler
 	public void on_look(PlayerInteractEvent event) {
-		if (event.isCancelled() == false && (event.getAction() == Action.LEFT_CLICK_BLOCK)) {
+		if (event.isCancelled() == true) {
+			return;
+		}
+		Player player = event.getPlayer();
+		if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
 			Block break_block = event.getClickedBlock();
-			Depository depository = Structure_manager.plugin.get_depository_manager().find(null,
+			Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(null,
 					break_block.getLocation(), false);
 			if (depository != null) {
-				event.getPlayer().sendMessage(depository.get_info());
+				player.sendMessage(depository.get_info());
+			}
+		} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+			Block break_block = event.getClickedBlock();
+			Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(null,
+					break_block.getLocation(), false);
+			if (depository != null) {
+				player.closeInventory();
+				player.openInventory(depository.getInventory());
+				event.setCancelled(true);
 			}
 		}
 	}
@@ -56,7 +71,7 @@ public class Depository_listener implements Listener {
 				Material material = Reader.lore_parse_material(item_meta.getLore());
 				Location loc = Reader.lore_parse_loction(item_meta.getLore());
 				// Bukkit.getLogger().info(loc.toString());
-				Depository depository = Structure_manager.plugin.get_depository_manager().get(loc);
+				Depository depository = Dropper_shop_plugin.instance.get_depository_manager().get(loc);
 				if (material == null) {
 					event.setCancelled(true);
 					return;
@@ -99,6 +114,25 @@ public class Depository_listener implements Listener {
 				}
 				Reader.item_lore_update(item);
 				event.setCancelled(true);
+			}
+		}
+	}
+
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent event) {
+		if (event.isCancelled() == true) {
+			return;
+		}
+		if (event.getClickedInventory() == null) {
+			return;
+		}
+		if (event.getClickedInventory().getName().equals("存储器")) {
+			ItemStack item = event.getCurrentItem();
+			if (item != null && item.getType() != Material.AIR) {
+				// event.getWhoClicked().sendMessage("你点击了" + item.getType().name());
+				if (Update_component.is_component(item)) {
+					Update_component.set_process(item, 0);
+				}
 			}
 		}
 	}
