@@ -16,6 +16,9 @@ public class Depository_item_importer extends BukkitRunnable {
 	}
 
 	public void run() {
+		if(this.depository.get_location().getChunk().isLoaded()==false) {
+			return;
+		}
 		if (this.depository.is_accessible() == true) {
 			int check_list[][] = { { 0, 2, 0 }, { 0, -1, 2 }, { 2, -1, 0 }, { 0, -1, -2 }, { -2, -1, 0 } };
 			for (int[] relative_coord : check_list) {

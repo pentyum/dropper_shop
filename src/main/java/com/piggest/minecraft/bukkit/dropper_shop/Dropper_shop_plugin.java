@@ -18,6 +18,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.piggest.minecraft.bukkit.depository.Chunk_load_listener;
 import com.piggest.minecraft.bukkit.depository.Depository_command_executor;
 import com.piggest.minecraft.bukkit.depository.Depository_listener;
 import com.piggest.minecraft.bukkit.depository.Depository_manager;
@@ -33,14 +34,18 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private FileConfiguration shop_config = null;
 	private File shop_file = null;
 	private int make_price = 0;
-	private final Dropper_shop_listener shop_listener = new Dropper_shop_listener();
+	
 	private Dropper_shop_manager shop_manager = new Dropper_shop_manager();
 	private Depository_manager depository_manager = new Depository_manager();
+	
 	private HashMap<String, Integer> price_map = new HashMap<String, Integer>();
 	public NamespacedKey namespace = new NamespacedKey(this, "Dropper_shop");
 	private ArrayList<ShapedRecipe> sr = new ArrayList<ShapedRecipe>();
-	private Depository_listener depository_listener = new Depository_listener();
-
+	
+	private final Depository_listener depository_listener = new Depository_listener();
+	private final Dropper_shop_listener shop_listener = new Dropper_shop_listener();
+	private final Chunk_load_listener chunk_listener = new Chunk_load_listener();
+	
 	public FileConfiguration get_shop_config() {
 		return this.shop_config;
 	}
@@ -106,6 +111,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(shop_listener, this);
 		pm.registerEvents(depository_listener, this);
+		pm.registerEvents(chunk_listener, this);
 		Reader.init_reader_item();
 		Reader.set_recipe();
 		Update_component.init_component();
