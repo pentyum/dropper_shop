@@ -1,6 +1,7 @@
 package com.piggest.minecraft.bukkit.depository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -113,7 +114,38 @@ public class Depository_command_executor implements TabExecutor {
 					player.sendMessage("/depository export <物品名称> <数量>");
 					return true;
 				}
-				player.sendMessage("暂时不支持命令取出");
+				int current_num = depository.get_material_num(args[1]);
+				if (current_num == 0) {
+					player.sendMessage("该存储器中没有存放这种物品");
+					return true;
+				}
+				if (args.length == 2) {
+					ItemStack item = depository.remove(Material.getMaterial(args[1]));
+					player.getInventory().addItem(item);
+				} else {
+					Material material = Material.getMaterial(args[1]);
+					int total_number = depository.get_material_num(args[1]);
+					int remove_number = 0;
+					if (args[2].equalsIgnoreCase("all")) {
+						remove_number = total_number;
+					} else {
+						try {
+							remove_number = Integer.parseInt(args[2]);
+						} catch (NumberFormatException e) {
+							player.sendMessage("输入的数字不对");
+							return true;
+						}
+						if (remove_number > total_number) {
+							remove_number = total_number;
+							player.sendMessage("数量不够，只取出了"+remove_number+"个物品");
+						}
+					}
+					ItemStack item = depository.remove(material, remove_number);
+					HashMap<Integer, ItemStack> unaddable = player.getInventory().addItem(item);
+					for (ItemStack unadd_item : unaddable.values()) {
+						player.getWorld().dropItemNaturally(player.getLocation(), unadd_item).setPickupDelay(40);
+					}
+				}
 			} else if (args[0].equalsIgnoreCase(Sub_cmd.connect.name())) {
 				Depository depository = plugin.get_depository_manager().find(player.getName(), look_block.getLocation(),
 						false);
@@ -153,7 +185,8 @@ public class Depository_command_executor implements TabExecutor {
 		if (args.length == 1) {
 			return Sub_cmd.get_list(sender);
 		}
-		if (args.length == 2 && args[0].equalsIgnoreCase(Sub_cmd.connect.name())) {
+		if (args.length == 2 && (args[0].equalsIgnoreCase(Sub_cmd.connect.name())
+				|| args[0].equalsIgnoreCase(Sub_cmd.output.name()))) {
 			if (sender instanceof Player) {
 				Player player = (Player) sender;
 				Block look_block = player.getTargetBlockExact(4);

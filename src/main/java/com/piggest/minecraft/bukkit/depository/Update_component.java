@@ -37,13 +37,13 @@ public class Update_component {
 
 	@SuppressWarnings("deprecation")
 	public static void set_process(ItemStack item, int process) {
-		short new_damage = (short) (process * 1561 / 100);
+		short new_damage = (short) (process * 250 / 100);
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = meta.getLore();
 		lore.set(1, "§r升级进度: " + process + "%");
 		meta.setLore(lore);
 		item.setItemMeta(meta);
-		item.setDurability((short) (1561 - new_damage));
+		item.setDurability((short) (250 - new_damage));
 	}
 
 	public static void set_level(ItemStack item, int level) {
