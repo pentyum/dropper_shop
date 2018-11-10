@@ -16,8 +16,7 @@ import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 
 public class Update_component {
 	public static String name = "§r存储升级组件";
-	public static ItemStack component_item;
-	public static NamespacedKey namespace = new NamespacedKey(Dropper_shop_plugin.instance, "update_component");
+	public static ItemStack[] component_item = new ItemStack[Depository.capacity_level.length];
 
 	public static boolean is_component(ItemStack item) {
 		if (item == null) {
@@ -49,8 +48,8 @@ public class Update_component {
 		item.setItemMeta(meta);
 	}
 
-	public static ItemStack init_component() {
-		ItemStack component_item = new ItemStack(Material.DIAMOND_PICKAXE);
+	public static ItemStack[] init_component() {
+		ItemStack component_item = new ItemStack(Material.IRON_PICKAXE);
 		ItemMeta meta = component_item.getItemMeta();
 		meta.setDisplayName(Update_component.name);
 		ArrayList<String> lore = new ArrayList<String>();
@@ -64,19 +63,34 @@ public class Update_component {
 		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 		component_item.setItemMeta(meta);
 		Update_component.set_process(component_item, 0);
-		Update_component.component_item = component_item;
-		return component_item;
+		for (int level = 0; level < Update_component.component_item.length; level++) {
+			Update_component.component_item[level] = component_item.clone();
+			Update_component.set_level(Update_component.component_item[level], level);
+		}
+		return Update_component.component_item;
 	}
 
 	public static void set_recipe() {
-		ShapedRecipe sr1 = new ShapedRecipe(Update_component.namespace, Update_component.component_item);
-		sr1.shape("ibi", "bcb", "ibi");
-		sr1.setIngredient('b', Material.IRON_BARS);
+		NamespacedKey namespace0 = new NamespacedKey(Dropper_shop_plugin.instance, "update_component_0");
+		NamespacedKey namespace1 = new NamespacedKey(Dropper_shop_plugin.instance, "update_component_1");
+
+		ShapedRecipe sr0 = new ShapedRecipe(namespace0, Update_component.component_item[0]);
+		sr0.shape("ibi", "bcb", "ibi");
+		sr0.setIngredient('b', Material.IRON_BARS);
+		sr0.setIngredient('c', Material.CHEST);
+		sr0.setIngredient('i', Material.IRON_BLOCK);
+		Dropper_shop_plugin.instance.getServer().addRecipe(sr0);
+		Dropper_shop_plugin.instance.get_sr().add(sr0);
+		Dropper_shop_plugin.instance.getLogger().info("升级模块合成表已经添加");
+
+		ShapedRecipe sr1 = new ShapedRecipe(namespace1, Update_component.component_item[1]);
+		sr1.shape("bcb", "cpc", "bcb");
 		sr1.setIngredient('c', Material.CHEST);
-		sr1.setIngredient('i', Material.IRON_BLOCK);
+		sr1.setIngredient('p', Material.IRON_PICKAXE);
+		sr1.setIngredient('b', Material.GOLD_BLOCK);
 		Dropper_shop_plugin.instance.getServer().addRecipe(sr1);
 		Dropper_shop_plugin.instance.get_sr().add(sr1);
-		Dropper_shop_plugin.instance.getLogger().info("升级模块合成表已经添加");
+		Dropper_shop_plugin.instance.getLogger().info("1级升级模块合成表已经添加");
 	}
 
 	public static int get_level(ItemStack item) {

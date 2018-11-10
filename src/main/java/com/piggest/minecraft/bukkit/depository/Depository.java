@@ -1,7 +1,7 @@
 package com.piggest.minecraft.bukkit.depository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -29,16 +29,6 @@ public class Depository extends Abstract_structure implements Ownable, Inventory
 	private Depository_item_importer importer = new Depository_item_importer(this);
 	private boolean accessible = true;
 	private HashMap<String, Integer> contents = new HashMap<String, Integer>();
-	private HashSet<Integer> levels = new HashSet<Integer>() {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 8316011402040929743L;
-
-		{
-			add(0);
-		}
-	};
 	private String owner = null;
 	private Inventory gui = Bukkit.createInventory(this, InventoryType.HOPPER, "存储器");
 
@@ -64,7 +54,15 @@ public class Depository extends Abstract_structure implements Ownable, Inventory
 	}
 
 	public int get_max_type() {
-		return this.levels.size() + 1;
+		int type = 2;
+		for (ItemStack item : this.getInventory().getContents()) {
+			if (Update_component.is_component(item)) {
+				if (Update_component.get_process(item) == 100) {
+					type++;
+				}
+			}
+		}
+		return type;
 	}
 
 	public int get_type() {
@@ -72,17 +70,23 @@ public class Depository extends Abstract_structure implements Ownable, Inventory
 	}
 
 	public int get_max_capacity() {
-		int capacity = 0;
-		for (int level : this.levels) {
-			capacity = capacity + Depository.capacity_level[level];
+		int capacity = 5000;
+		for (ItemStack item : this.getInventory().getContents()) {
+			if (Update_component.is_component(item)) {
+				if (Update_component.get_process(item) == 100) {
+					capacity += Depository.capacity_level[Update_component.get_level(item)];
+				}
+			}
 		}
 		return capacity;
 	}
 
 	public int get_price() {
-		int price = 0;
-		for (int level : this.levels) {
-			price = price + Depository.price_level[level];
+		int price = 5;
+		for (ItemStack item : this.getInventory().getContents()) {
+			if (Update_component.is_component(item)) {
+				price = price + Depository.price_level[Update_component.get_level(item)];
+			}
 		}
 		return price;
 	}
@@ -169,8 +173,13 @@ public class Depository extends Abstract_structure implements Ownable, Inventory
 		this.z = (Integer) shop_save.get("z");
 		this.owner = (String) shop_save.get("owner");
 		this.world_name = (String) shop_save.get("world");
-		this.levels = (HashSet<Integer>) shop_save.get("levels");
 		this.contents = (HashMap<String, Integer>) shop_save.get("contents");
+		ArrayList<ArrayList<Integer>> item_list = (ArrayList<ArrayList<Integer>>) shop_save.get("levels");
+		for (ArrayList<Integer> item_info : item_list) {
+			ItemStack item = Update_component.component_item[item_info.get(0)];
+			Update_component.set_process(item, item_info.get(1));
+			this.getInventory().addItem(item);
+		}
 	}
 
 	@Override
@@ -193,14 +202,21 @@ public class Depository extends Abstract_structure implements Ownable, Inventory
 
 	@Override
 	public HashMap<String, Object> get_save() {
+		ArrayList<int[]> levels = new ArrayList<int[]>();
 		HashMap<String, Object> save = new HashMap<String, Object>();
 		save.put("world", this.world_name);
 		save.put("owner", this.owner);
 		save.put("x", this.x);
 		save.put("y", this.y);
 		save.put("z", this.z);
-		save.put("levels", this.levels);
 		save.put("contents", this.contents);
+		for (ItemStack item : this.getInventory().getContents()) {
+			if (Update_component.is_component(item)) {
+				int[] item_info = { Update_component.get_level(item), Update_component.get_process(item) };
+				levels.add(item_info);
+			}
+		}
+		save.put("levels", levels);
 		return save;
 	}
 

@@ -18,12 +18,12 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.piggest.minecraft.bukkit.depository.Chunk_load_listener;
 import com.piggest.minecraft.bukkit.depository.Depository_command_executor;
 import com.piggest.minecraft.bukkit.depository.Depository_listener;
 import com.piggest.minecraft.bukkit.depository.Depository_manager;
 import com.piggest.minecraft.bukkit.depository.Reader;
 import com.piggest.minecraft.bukkit.depository.Update_component;
+import com.piggest.minecraft.bukkit.depository.Update_component_listener;
 
 import net.milkbowl.vault.economy.Economy;
 
@@ -44,7 +44,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	
 	private final Depository_listener depository_listener = new Depository_listener();
 	private final Dropper_shop_listener shop_listener = new Dropper_shop_listener();
-	private final Chunk_load_listener chunk_listener = new Chunk_load_listener();
+	private final Update_component_listener update_component_listener = new Update_component_listener();
 	
 	public FileConfiguration get_shop_config() {
 		return this.shop_config;
@@ -105,17 +105,19 @@ public class Dropper_shop_plugin extends JavaPlugin {
 			getLogger().severe("初始化Vault失败,请检测是否已经安装Vault插件和经济插件");
 			return;
 		}
-
-		this.shop_manager.load_structures();
-		this.depository_manager.load_structures();
-		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvents(shop_listener, this);
-		pm.registerEvents(depository_listener, this);
-		pm.registerEvents(chunk_listener, this);
+		
 		Reader.init_reader_item();
 		Reader.set_recipe();
 		Update_component.init_component();
 		Update_component.set_recipe();
+		
+		this.shop_manager.load_structures();
+		this.depository_manager.load_structures();
+		
+		PluginManager pm = getServer().getPluginManager();
+		pm.registerEvents(shop_listener, this);
+		pm.registerEvents(depository_listener, this);
+		pm.registerEvents(update_component_listener, this);
 	}
 
 	@Override
