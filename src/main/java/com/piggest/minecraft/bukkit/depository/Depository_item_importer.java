@@ -40,7 +40,7 @@ public class Depository_item_importer extends BukkitRunnable {
 				}
 			}
 		}
-		if (this.times == 1) {
+		if (this.times == 15) {
 			ItemStack components[] = depository.getInventory().getContents();
 			for (ItemStack component : components) {
 				if (Update_component.is_component(component)) {
