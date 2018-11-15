@@ -15,16 +15,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
-import com.piggest.minecraft.bukkit.structure.Abstract_structure;
+import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
 import com.piggest.minecraft.bukkit.structure.Ownable;
 
-public class Depository extends Abstract_structure implements Ownable, InventoryHolder {
+public class Depository extends Multi_block_structure implements Ownable, InventoryHolder {
 	public static int[] price_level = { 5, 10, 20, 30, 40 };
 	public static int[] capacity_level = { 5000, 10000, 20000, 30000, 50000 };
-	private String world_name = null;
-	private int x;
-	private int y;
-	private int z;
 	private Depository_runner runner = new Depository_runner(this);
 	private Depository_item_importer importer = new Depository_item_importer(this);
 	private boolean accessible = true;
@@ -168,11 +164,8 @@ public class Depository extends Abstract_structure implements Ownable, Inventory
 	@SuppressWarnings("unchecked")
 	@Override
 	public void set_from_save(Map<?, ?> shop_save) {
-		this.x = (Integer) shop_save.get("x");
-		this.y = (Integer) shop_save.get("y");
-		this.z = (Integer) shop_save.get("z");
+		super.set_from_save(shop_save);
 		this.owner = (String) shop_save.get("owner");
-		this.world_name = (String) shop_save.get("world");
 		this.contents = (HashMap<String, Integer>) shop_save.get("contents");
 		ArrayList<ArrayList<Integer>> item_list = (ArrayList<ArrayList<Integer>>) shop_save.get("levels");
 		for (ArrayList<Integer> item_info : item_list) {
@@ -183,32 +176,9 @@ public class Depository extends Abstract_structure implements Ownable, Inventory
 	}
 
 	@Override
-	public void set_location(Location loc) {
-		this.set_location(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
-	}
-
-	@Override
-	public void set_location(String world_name, int x, int y, int z) {
-		this.world_name = world_name;
-		this.x = x;
-		this.y = y;
-		this.z = z;
-	}
-
-	@Override
-	public Location get_location() {
-		return new Location(Bukkit.getWorld(world_name), this.x, this.y, this.z);
-	}
-
-	@Override
 	public HashMap<String, Object> get_save() {
 		ArrayList<int[]> levels = new ArrayList<int[]>();
-		HashMap<String, Object> save = new HashMap<String, Object>();
-		save.put("world", this.world_name);
-		save.put("owner", this.owner);
-		save.put("x", this.x);
-		save.put("y", this.y);
-		save.put("z", this.z);
+		HashMap<String, Object> save = super.get_save();
 		save.put("contents", this.contents);
 		for (ItemStack item : this.getInventory().getContents()) {
 			if (Update_component.is_component(item)) {
