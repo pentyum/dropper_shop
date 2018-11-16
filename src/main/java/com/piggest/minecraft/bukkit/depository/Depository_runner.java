@@ -26,5 +26,4 @@ public class Depository_runner extends BukkitRunnable {
 			depository.set_accessible(false);
 		}
 	}
-
 }

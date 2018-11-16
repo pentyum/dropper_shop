@@ -24,6 +24,9 @@ import com.piggest.minecraft.bukkit.depository.Depository_manager;
 import com.piggest.minecraft.bukkit.depository.Reader;
 import com.piggest.minecraft.bukkit.depository.Update_component;
 import com.piggest.minecraft.bukkit.depository.Update_component_listener;
+import com.piggest.minecraft.bukkit.grinder.Grinder_command_executor;
+import com.piggest.minecraft.bukkit.grinder.Grinder_listener;
+import com.piggest.minecraft.bukkit.grinder.Grinder_manager;
 
 import net.milkbowl.vault.economy.Economy;
 
@@ -37,6 +40,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	
 	private Dropper_shop_manager shop_manager = new Dropper_shop_manager();
 	private Depository_manager depository_manager = new Depository_manager();
+	private Grinder_manager grinder_manager = new Grinder_manager();
 	
 	private HashMap<String, Integer> price_map = new HashMap<String, Integer>();
 	public NamespacedKey namespace = new NamespacedKey(this, "Dropper_shop");
@@ -45,6 +49,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private final Depository_listener depository_listener = new Depository_listener();
 	private final Dropper_shop_listener shop_listener = new Dropper_shop_listener();
 	private final Update_component_listener update_component_listener = new Update_component_listener();
+	private final Grinder_listener grinder_listener = new Grinder_listener();
 	
 	public FileConfiguration get_shop_config() {
 		return this.shop_config;
@@ -97,9 +102,10 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		}
 		this.shop_file = new File(this.getDataFolder(), "shops.yml");
 		this.shop_config = YamlConfiguration.loadConfiguration(shop_file);
-		this.getCommand("depository").setExecutor(new Depository_command_executor(this));
-		this.getCommand("dropper_shop").setExecutor(new Dropper_shop_command_executor(this));
-
+		this.getCommand("depository").setExecutor(new Depository_command_executor());
+		this.getCommand("dropper_shop").setExecutor(new Dropper_shop_command_executor());
+		this.getCommand("grinder").setExecutor(new Grinder_command_executor());
+		
 		getLogger().info("使用Vault");
 		if (!initVault()) {
 			getLogger().severe("初始化Vault失败,请检测是否已经安装Vault插件和经济插件");
@@ -118,6 +124,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		pm.registerEvents(shop_listener, this);
 		pm.registerEvents(depository_listener, this);
 		pm.registerEvents(update_component_listener, this);
+		pm.registerEvents(grinder_listener, this);
 	}
 
 	@Override
@@ -146,7 +153,11 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public Depository_manager get_depository_manager() {
 		return this.depository_manager;
 	}
-
+	
+	public Grinder_manager get_grinder_manager() {
+		return this.grinder_manager;
+	}
+	
 	public int get_price(Material material) {
 		Integer price = this.price_map.get(material.name());
 		if (price == null) {

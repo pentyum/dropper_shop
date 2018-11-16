@@ -9,12 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class Dropper_shop_command_executor implements CommandExecutor {
-	private Dropper_shop_plugin plugin;
-
-	public Dropper_shop_command_executor(Dropper_shop_plugin dropper_shop_plugin) {
-		this.plugin = dropper_shop_plugin;
-	}
-
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
 			sender.sendMessage("必须由玩家执行该命令");
@@ -38,17 +32,17 @@ public class Dropper_shop_command_executor implements CommandExecutor {
 					return true;
 				}
 				if (look_block.getType() == Material.DROPPER) {
-					if (plugin.get_economy().has(player, plugin.get_make_shop_price())) {
-						plugin.get_economy().withdrawPlayer(player, plugin.get_make_shop_price());
+					if (Dropper_shop_plugin.instance.get_economy().has(player, Dropper_shop_plugin.instance.get_make_shop_price())) {
+						Dropper_shop_plugin.instance.get_economy().withdrawPlayer(player, Dropper_shop_plugin.instance.get_make_shop_price());
 					} else {
 						player.sendMessage("钱不够");
 						return true;
 					}
 					Material item = player.getInventory().getItemInMainHand().getType();
-					if (plugin.get_price(item) == -1) {
+					if (Dropper_shop_plugin.instance.get_price(item) == -1) {
 						player.sendMessage(item.name() + "不能被出售");
 					} else {
-						Dropper_shop shop = plugin.get_shop_manager().get(look_block.getLocation());
+						Dropper_shop shop = Dropper_shop_plugin.instance.get_shop_manager().get(look_block.getLocation());
 						if (shop != null) {
 							shop.set_selling_item(item);
 							player.sendMessage("投掷器商店已经变更为" + item.name());
@@ -57,7 +51,7 @@ public class Dropper_shop_command_executor implements CommandExecutor {
 							shop.set_location(look_block.getLocation());
 							shop.set_owner(player.getName());
 							shop.set_selling_item(item);
-							plugin.get_shop_manager().add(shop);
+							Dropper_shop_plugin.instance.get_shop_manager().add(shop);
 							player.sendMessage(item.name() + "的投掷器商店已经被设置");
 						}
 					}
@@ -67,13 +61,13 @@ public class Dropper_shop_command_executor implements CommandExecutor {
 				}
 			} else if (args[0].equalsIgnoreCase("remove")) {
 				Block look_block = player.getTargetBlockExact(4);
-				Dropper_shop shop = plugin.get_shop_manager().get(look_block.getLocation());
+				Dropper_shop shop = Dropper_shop_plugin.instance.get_shop_manager().get(look_block.getLocation());
 				if (shop != null) {
 					if (shop.get_owner_name().equalsIgnoreCase(player.getName())
 							|| player.hasPermission("dropper_shop.remove.others")) {
 						player.sendMessage(
 								"已移除" + shop.get_owner_name() + "的" + shop.get_selling_item().name() + "投掷器商店");
-						plugin.get_shop_manager().remove(shop);
+						Dropper_shop_plugin.instance.get_shop_manager().remove(shop);
 					} else {
 						player.sendMessage("这不是你自己的投掷器商店，而是" + shop.get_owner_name() + "的");
 						return true;
@@ -95,15 +89,15 @@ public class Dropper_shop_command_executor implements CommandExecutor {
 					int set_price = Integer.parseInt(args[1]);
 					ItemStack itemstack = player.getInventory().getItemInMainHand();
 					if (itemstack == null || itemstack.getType() == Material.AIR) {
-						plugin.set_make_shop_price(set_price);
+						Dropper_shop_plugin.instance.set_make_shop_price(set_price);
 						player.sendMessage("已设置创建投掷器商店价格为" + set_price);
 					} else {
 						Material item = player.getInventory().getItemInMainHand().getType();
-						plugin.get_shop_price_map().put(item.name(), set_price);
-						plugin.get_config().set("material", plugin.get_shop_price_map());
+						Dropper_shop_plugin.instance.get_shop_price_map().put(item.name(), set_price);
+						Dropper_shop_plugin.instance.get_config().set("material", Dropper_shop_plugin.instance.get_shop_price_map());
 						player.sendMessage("已设置" + item.name() + "的投掷器商店价格为" + set_price);
 					}
-					plugin.saveConfig();
+					Dropper_shop_plugin.instance.saveConfig();
 				} catch (NumberFormatException e) {
 					player.sendMessage("请输入整数");
 				}

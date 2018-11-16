@@ -39,7 +39,7 @@ public abstract class Multi_block_structure extends Abstract_structure {
 
 	@Override
 	public Location get_location() {
-		return new Location(Bukkit.getWorld(world_name), this.x, this.y, this.z);
+		return new Location(Bukkit.getWorld(this.world_name), this.x, this.y, this.z);
 	}
 
 	@Override

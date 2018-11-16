@@ -28,11 +28,6 @@ enum Sub_cmd {
 }
 
 public class Depository_command_executor implements TabExecutor {
-	private Dropper_shop_plugin plugin;
-
-	public Depository_command_executor(Dropper_shop_plugin dropper_shop_plugin) {
-		this.plugin = dropper_shop_plugin;
-	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
@@ -51,25 +46,31 @@ public class Depository_command_executor implements TabExecutor {
 				return true;
 			}
 			if (args[0].equalsIgnoreCase(Sub_cmd.make.name())) {
-				Depository depository = plugin.get_depository_manager().find(player.getName(), look_block.getLocation(),
-						true);
+				Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(null,
+						look_block.getLocation(), false);
+				if (depository != null) {
+					player.sendMessage("这里已经有存储器了");
+					return true;
+				}
+				depository = Dropper_shop_plugin.instance.get_depository_manager().find(player.getName(),
+						look_block.getLocation(), true);
 				if (depository == null) {
 					player.sendMessage("没有检测到完整的存储器结构");
 					return true;
 				}
-				plugin.get_depository_manager().add(depository);
+				Dropper_shop_plugin.instance.get_depository_manager().add(depository);
 				player.sendMessage("存储器结构建立完成");
 			} else if (args[0].equalsIgnoreCase("info")) {
-				Depository depository = plugin.get_depository_manager().find(player.getName(), look_block.getLocation(),
-						false);
+				Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(player.getName(),
+						look_block.getLocation(), false);
 				if (depository == null) {
 					player.sendMessage("没有检测到完整的存储器结构");
 					return true;
 				}
 				player.sendMessage(depository.get_info());
 			} else if (args[0].equalsIgnoreCase(Sub_cmd.input.name())) {
-				Depository depository = plugin.get_depository_manager().find(player.getName(), look_block.getLocation(),
-						false);
+				Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(player.getName(),
+						look_block.getLocation(), false);
 				if (depository == null) {
 					player.sendMessage("没有检测到完整的存储器结构");
 					return true;
@@ -95,17 +96,17 @@ public class Depository_command_executor implements TabExecutor {
 					depository.add(item);
 				}
 			} else if (args[0].equalsIgnoreCase(Sub_cmd.remove.name())) {
-				Depository depository = plugin.get_depository_manager().find(player.getName(), look_block.getLocation(),
-						false);
+				Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(player.getName(),
+						look_block.getLocation(), false);
 				if (depository == null) {
 					player.sendMessage("没有检测到完整的存储器结构");
 					return true;
 				}
-				plugin.get_depository_manager().remove(depository);
+				Dropper_shop_plugin.instance.get_depository_manager().remove(depository);
 				player.sendMessage("存储器结构已经移除");
 			} else if (args[0].equalsIgnoreCase(Sub_cmd.output.name())) {
-				Depository depository = plugin.get_depository_manager().find(player.getName(), look_block.getLocation(),
-						false);
+				Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(player.getName(),
+						look_block.getLocation(), false);
 				if (depository == null) {
 					player.sendMessage("没有检测到完整的存储器结构");
 					return true;
@@ -137,7 +138,7 @@ public class Depository_command_executor implements TabExecutor {
 						}
 						if (remove_number > total_number) {
 							remove_number = total_number;
-							player.sendMessage("数量不够，只取出了"+remove_number+"个物品");
+							player.sendMessage("数量不够，只取出了" + remove_number + "个物品");
 						}
 					}
 					ItemStack item = depository.remove(material, remove_number);
@@ -147,8 +148,8 @@ public class Depository_command_executor implements TabExecutor {
 					}
 				}
 			} else if (args[0].equalsIgnoreCase(Sub_cmd.connect.name())) {
-				Depository depository = plugin.get_depository_manager().find(player.getName(), look_block.getLocation(),
-						false);
+				Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(player.getName(),
+						look_block.getLocation(), false);
 				if (depository == null) {
 					player.sendMessage("没有检测到完整的存储器结构");
 					return true;
@@ -191,7 +192,7 @@ public class Depository_command_executor implements TabExecutor {
 				Player player = (Player) sender;
 				Block look_block = player.getTargetBlockExact(4);
 				if (look_block != null) {
-					Depository depository = plugin.get_depository_manager().find(player.getName(),
+					Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(player.getName(),
 							look_block.getLocation(), false);
 					if (depository != null) {
 						ArrayList<String> list = new ArrayList<String>();

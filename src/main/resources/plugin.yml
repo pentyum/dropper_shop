@@ -14,6 +14,11 @@ commands:
     usage: /<command> make ,to make a depository.
     permission: depository.make
     permission-message: You don't have permission
+  grinder:
+    description: Make a grinder.
+    usage: /<command> make ,to make a grinder.
+    permission: grinder.make
+    permission-message: You don't have permission
 permissions:
   dropper_shop.*:
     description: Gives access to all dropper shop commands.
@@ -48,4 +53,7 @@ permissions:
   depository.god:
     description: Change info.
     default: op
+  grinder.make:
+    description: Make or remove a grinder.
+    default: true
 softdepend: [Vault]

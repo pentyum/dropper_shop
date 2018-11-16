@@ -26,7 +26,7 @@ public class Depository_listener implements Listener {
 		Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(null,
 				break_block.getLocation(), false);
 		if (depository != null) {
-			event.getPlayer().sendMessage("使用/depository remove移除存储器后才能破坏存储器方块");
+			event.getPlayer().sendMessage("使用/depository remove移除存储器后才能破坏存储器方块(所有物品都会消失!)");
 			event.setCancelled(true);
 		}
 	}
