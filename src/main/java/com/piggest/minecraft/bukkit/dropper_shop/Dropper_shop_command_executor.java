@@ -32,8 +32,10 @@ public class Dropper_shop_command_executor implements CommandExecutor {
 					return true;
 				}
 				if (look_block.getType() == Material.DROPPER) {
-					if (Dropper_shop_plugin.instance.get_economy().has(player, Dropper_shop_plugin.instance.get_make_shop_price())) {
-						Dropper_shop_plugin.instance.get_economy().withdrawPlayer(player, Dropper_shop_plugin.instance.get_make_shop_price());
+					if (Dropper_shop_plugin.instance.get_economy().has(player,
+							Dropper_shop_plugin.instance.get_make_shop_price())) {
+						Dropper_shop_plugin.instance.get_economy().withdrawPlayer(player,
+								Dropper_shop_plugin.instance.get_make_shop_price());
 					} else {
 						player.sendMessage("钱不够");
 						return true;
@@ -42,7 +44,8 @@ public class Dropper_shop_command_executor implements CommandExecutor {
 					if (Dropper_shop_plugin.instance.get_price(item) == -1) {
 						player.sendMessage(item.name() + "不能被出售");
 					} else {
-						Dropper_shop shop = Dropper_shop_plugin.instance.get_shop_manager().get(look_block.getLocation());
+						Dropper_shop shop = Dropper_shop_plugin.instance.get_shop_manager()
+								.get(look_block.getLocation());
 						if (shop != null) {
 							shop.set_selling_item(item);
 							player.sendMessage("投掷器商店已经变更为" + item.name());
@@ -94,7 +97,8 @@ public class Dropper_shop_command_executor implements CommandExecutor {
 					} else {
 						Material item = player.getInventory().getItemInMainHand().getType();
 						Dropper_shop_plugin.instance.get_shop_price_map().put(item.name(), set_price);
-						Dropper_shop_plugin.instance.get_config().set("material", Dropper_shop_plugin.instance.get_shop_price_map());
+						Dropper_shop_plugin.instance.get_config().set("material",
+								Dropper_shop_plugin.instance.get_shop_price_map());
 						player.sendMessage("已设置" + item.name() + "的投掷器商店价格为" + set_price);
 					}
 					Dropper_shop_plugin.instance.saveConfig();

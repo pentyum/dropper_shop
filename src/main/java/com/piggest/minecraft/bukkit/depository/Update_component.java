@@ -17,13 +17,12 @@ import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 public class Update_component {
 	public static String name = "§r存储升级组件";
 	public static ItemStack[] component_item = new ItemStack[Depository.capacity_level.length];
-	
+
 	public static NamespacedKey namespace0 = new NamespacedKey(Dropper_shop_plugin.instance, "update_component_0");
 	public static NamespacedKey namespace1 = new NamespacedKey(Dropper_shop_plugin.instance, "update_component_1");
 	public static NamespacedKey namespace2 = new NamespacedKey(Dropper_shop_plugin.instance, "update_component_2");
 	public static NamespacedKey namespace3 = new NamespacedKey(Dropper_shop_plugin.instance, "update_component_3");
 	public static NamespacedKey namespace4 = new NamespacedKey(Dropper_shop_plugin.instance, "update_component_4");
-	
 
 	public static boolean is_component(ItemStack item) {
 		if (item == null) {
@@ -78,8 +77,7 @@ public class Update_component {
 	}
 
 	public static void set_recipe() {
-		
-		
+
 		ShapedRecipe sr0 = new ShapedRecipe(namespace0, Update_component.component_item[0]);
 		sr0.shape("ibi", "bcb", "ibi");
 		sr0.setIngredient('b', Material.IRON_BARS);
@@ -97,7 +95,7 @@ public class Update_component {
 		Dropper_shop_plugin.instance.getServer().addRecipe(sr1);
 		Dropper_shop_plugin.instance.get_sr().add(sr1);
 		Dropper_shop_plugin.instance.getLogger().info("1级升级模块合成表已经添加");
-		
+
 		ShapedRecipe sr2 = new ShapedRecipe(namespace2, Update_component.component_item[2]);
 		sr2.shape("bcb", "cpc", "bcb");
 		sr2.setIngredient('c', Material.CHEST);
@@ -106,7 +104,7 @@ public class Update_component {
 		Dropper_shop_plugin.instance.getServer().addRecipe(sr2);
 		Dropper_shop_plugin.instance.get_sr().add(sr2);
 		Dropper_shop_plugin.instance.getLogger().info("2级升级模块合成表已经添加");
-		
+
 		ShapedRecipe sr3 = new ShapedRecipe(namespace3, Update_component.component_item[3]);
 		sr3.shape("bcb", "cpc", "bcb");
 		sr3.setIngredient('c', Material.CHEST);
@@ -115,7 +113,7 @@ public class Update_component {
 		Dropper_shop_plugin.instance.getServer().addRecipe(sr3);
 		Dropper_shop_plugin.instance.get_sr().add(sr3);
 		Dropper_shop_plugin.instance.getLogger().info("3级升级模块合成表已经添加");
-		
+
 		ShapedRecipe sr4 = new ShapedRecipe(namespace4, Update_component.component_item[4]);
 		sr4.shape("bcb", "cpc", "bcb");
 		sr4.setIngredient('c', Material.ENDER_CHEST);

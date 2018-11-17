@@ -3,6 +3,8 @@ package com.piggest.minecraft.bukkit.grinder;
 import org.bukkit.Material;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+
 public class Grinder_runner extends BukkitRunnable {
 	private Grinder grinder;
 	private int working_ticks;
@@ -17,12 +19,12 @@ public class Grinder_runner extends BukkitRunnable {
 		}
 		if (!Grinder.is_empty(grinder.get_flint())) {
 			if (grinder.get_flint_storage() <= 1000) {
-				if (grinder.get_flint().getType() == Material.FLINT) {
-					grinder.set_flint_storge(grinder.get_flint_storage() + 16);
-				} else if (grinder.get_flint().getType() == Material.OBSIDIAN) {
-					grinder.set_flint_storge(grinder.get_flint_storage() + 24);
+				Material material = grinder.get_flint().getType();
+				int unit = Dropper_shop_plugin.instance.get_unit(material);
+				if (unit != 0) {
+					grinder.set_flint_storge(grinder.get_flint_storage() + unit);
+					grinder.get_flint().setAmount(grinder.get_flint().getAmount() - 1);
 				}
-				grinder.get_flint().setAmount(grinder.get_flint().getAmount() - 1);
 			}
 		}
 		if (Grinder.is_empty(grinder.get_raw())) {

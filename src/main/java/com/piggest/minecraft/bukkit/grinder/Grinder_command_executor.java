@@ -38,6 +38,14 @@ public class Grinder_command_executor implements CommandExecutor {
 					player.sendMessage("没有检测到完整的磨粉机结构");
 					return true;
 				}
+				if (Dropper_shop_plugin.instance.get_economy().has(player,
+						Dropper_shop_plugin.instance.get_make_grinder_price())) {
+					Dropper_shop_plugin.instance.get_economy().withdrawPlayer(player,
+							Dropper_shop_plugin.instance.get_make_grinder_price());
+				} else {
+					player.sendMessage("钱不够");
+					return true;
+				}
 				Dropper_shop_plugin.instance.get_grinder_manager().add(grinder);
 				player.sendMessage("磨粉机建立完成");
 				return true;

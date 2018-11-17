@@ -36,7 +36,7 @@ public class Grinder extends Multi_block_structure implements InventoryHolder {
 		ItemMeta flint_info_meta = flint_info.getItemMeta();
 		flint_info_meta.setDisplayName("§r燧石储量");
 		ArrayList<String> lore = new ArrayList<String>();
-		lore.add("§r0");
+		lore.add("§r0 单位");
 		flint_info_meta.setLore(lore);
 		flint_info.setItemMeta(flint_info_meta);
 		this.gui.setItem(17, flint_info);
@@ -48,7 +48,7 @@ public class Grinder extends Multi_block_structure implements InventoryHolder {
 		ItemMeta flint_info_meta = flint_info.getItemMeta();
 		List<String> lore = flint_info_meta.getLore();
 		String line = lore.get(0);
-		String pattern = "§r([1-9]\\d*|0)";
+		String pattern = "§r([1-9]\\d*|0) 单位";
 		Pattern r = Pattern.compile(pattern);
 		Matcher m = r.matcher(line);
 		if (m.find()) {
@@ -62,7 +62,7 @@ public class Grinder extends Multi_block_structure implements InventoryHolder {
 		ItemStack flint_info = this.gui.getContents()[17];
 		ItemMeta flint_info_meta = flint_info.getItemMeta();
 		ArrayList<String> lore = new ArrayList<String>();
-		lore.add("§r" + storage);
+		lore.add("§r" + storage + " 单位");
 		flint_info_meta.setLore(lore);
 		flint_info.setItemMeta(flint_info_meta);
 	}
@@ -89,6 +89,14 @@ public class Grinder extends Multi_block_structure implements InventoryHolder {
 
 	public void set_product(ItemStack product_item) {
 		this.gui.setItem(13, product_item);
+	}
+
+	public void set_raw(ItemStack raw_item) {
+		this.gui.setItem(9, raw_item);
+	}
+
+	public void set_flint(ItemStack flint_item) {
+		this.gui.setItem(11, flint_item);
 	}
 
 	private static void add_recipe(Material material, Material out, int num, int time) {
@@ -266,6 +274,44 @@ public class Grinder extends Multi_block_structure implements InventoryHolder {
 						this.get_raw().setAmount(this.get_raw().getAmount() - 1);
 						return true;
 					}
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean add_a_raw(ItemStack src_item) {
+		if (!Grinder.is_empty(src_item)) {
+			if (Grinder.is_empty(this.get_raw())) {
+				this.set_raw(src_item.clone());
+				this.get_raw().setAmount(1);
+				src_item.setAmount(src_item.getAmount() - 1);
+				return true;
+			} else if (src_item.getType() == this.get_raw().getType()) {
+				int new_num = 1 + this.get_raw().getAmount();
+				if (new_num <= src_item.getMaxStackSize()) {
+					this.get_raw().setAmount(new_num);
+					src_item.setAmount(src_item.getAmount() - 1);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public boolean add_a_flint(ItemStack src_item) {
+		if (!Grinder.is_empty(src_item)) {
+			if (Grinder.is_empty(this.get_flint())) {
+				this.set_flint(src_item.clone());
+				this.get_flint().setAmount(1);
+				src_item.setAmount(src_item.getAmount() - 1);
+				return true;
+			} else if (src_item.getType() == this.get_flint().getType()) {
+				int new_num = 1 + this.get_flint().getAmount();
+				if (new_num <= src_item.getMaxStackSize()) {
+					this.get_flint().setAmount(new_num);
+					src_item.setAmount(src_item.getAmount() - 1);
+					return true;
 				}
 			}
 		}

@@ -16,7 +16,7 @@ public class Depository_item_importer extends BukkitRunnable {
 	}
 
 	public void run() {
-		if(this.depository.get_location().getChunk().isLoaded()==false) {
+		if (this.depository.get_location().getChunk().isLoaded() == false) {
 			return;
 		}
 		if (this.depository.is_accessible() == true) {

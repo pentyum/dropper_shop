@@ -14,7 +14,7 @@ import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
 public class Advanced_furnace extends Multi_block_structure implements InventoryHolder {
 	private int temperature = 0;
 	private Inventory gui = Bukkit.createInventory(this, InventoryType.CHEST, "高级熔炉");
-	
+
 	public void set_temperature(int T) {
 		this.temperature = T;
 	}

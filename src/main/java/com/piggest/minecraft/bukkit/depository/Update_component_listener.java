@@ -20,12 +20,12 @@ public class Update_component_listener implements Listener {
 			}
 			CraftingInventory inventory = event.getInventory();
 			ItemStack basis = inventory.getContents()[5];
-			if(!Update_component.is_component(basis)) {
-				event.getWhoClicked().sendMessage("必须使用升级组件合成，而你使用的是"+basis.getType().name());
+			if (!Update_component.is_component(basis)) {
+				event.getWhoClicked().sendMessage("必须使用升级组件合成，而你使用的是" + basis.getType().name());
 				event.setCancelled(true);
 				return;
 			}
-			if(Update_component.get_level(basis)!=level-1) {
+			if (Update_component.get_level(basis) != level - 1) {
 				event.getWhoClicked().sendMessage("必须使用" + (level - 1) + "级升级组件合成" + level + "级升级组件");
 				event.setCancelled(true);
 				return;

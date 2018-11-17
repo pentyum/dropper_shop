@@ -1,13 +1,16 @@
 package com.piggest.minecraft.bukkit.grinder;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
+
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 
 public class Grinder_listener implements Listener {
@@ -46,5 +49,22 @@ public class Grinder_listener implements Listener {
 				event.setCancelled(true);
 			}
 		}
+	}
+	
+	@EventHandler
+	public void on_break_grinder(BlockBreakEvent event) {
+		if (event.isCancelled() == true) {
+			return;
+		}
+		Block break_block = event.getBlock();
+		if (break_block.getType() != Material.SMOOTH_STONE) {
+			return;
+		}
+		Grinder grinder = Dropper_shop_plugin.instance.get_grinder_manager().get(break_block.getLocation());
+		if (grinder == null) {
+			return;
+		}
+		event.getPlayer().sendMessage("磨粉机已被破坏");
+		Dropper_shop_plugin.instance.get_grinder_manager().remove(grinder);
 	}
 }
