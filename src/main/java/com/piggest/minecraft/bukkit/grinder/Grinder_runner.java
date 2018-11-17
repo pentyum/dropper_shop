@@ -1,5 +1,6 @@
 package com.piggest.minecraft.bukkit.grinder;
 
+import org.bukkit.Material;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class Grinder_runner extends BukkitRunnable {
@@ -14,11 +15,19 @@ public class Grinder_runner extends BukkitRunnable {
 		if (grinder.get_location().getChunk().isLoaded() == false) {
 			return;
 		}
+		if (!Grinder.is_empty(grinder.get_flint())) {
+			if (grinder.get_flint().getType() == Material.FLINT) {
+				grinder.set_flint_storge(grinder.get_flint_storage() + 16);
+			} else if (grinder.get_flint().getType() == Material.OBSIDIAN) {
+				grinder.set_flint_storge(grinder.get_flint_storage() + 24);
+			}
+			grinder.get_flint().setAmount(grinder.get_flint().getAmount() - 1);
+		}
 		if (Grinder.is_empty(grinder.get_raw())) {
 			grinder.set_process(0);
 			this.working_ticks = 0;
 		} else {
-			if (Grinder.recipe.get(grinder.get_raw().getType()) == null) {
+			if (Grinder.recipe.get(grinder.get_raw().getType()) == null || grinder.get_flint_storage() == 0) {
 				grinder.set_process(0);
 				this.working_ticks = 0;
 				return;
@@ -32,6 +41,7 @@ public class Grinder_runner extends BukkitRunnable {
 				if (grinder.to_product() == true) {
 					grinder.set_process(0);
 					this.working_ticks = 0;
+					grinder.set_flint_storge(grinder.get_flint_storage() - 1);
 				}
 			}
 		}

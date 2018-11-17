@@ -1,6 +1,10 @@
 package com.piggest.minecraft.bukkit.grinder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -11,6 +15,7 @@ import org.bukkit.block.Hopper;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
@@ -26,12 +31,46 @@ public class Grinder extends Multi_block_structure implements InventoryHolder {
 		this.gui.setItem(10, new ItemStack(Material.BLUE_STAINED_GLASS_PANE));
 		this.gui.setItem(12, new ItemStack(Material.BLUE_STAINED_GLASS_PANE));
 		this.gui.setItem(14, new ItemStack(Material.BLUE_STAINED_GLASS_PANE));
+		this.gui.setItem(16, new ItemStack(Material.BLUE_STAINED_GLASS_PANE));
+		ItemStack flint_info =  new ItemStack(Material.FLINT);
+		ItemMeta flint_info_meta = flint_info.getItemMeta();
+		flint_info_meta.setDisplayName("§r燧石储量");
+		ArrayList<String> lore = new ArrayList<String>();
+		lore.add("§r0");
+		flint_info_meta.setLore(lore);
+		flint_info.setItemMeta(flint_info_meta);
+		this.gui.setItem(17, flint_info);
 	}
-
+	
+	public int get_flint_storage() {
+		int storage = 0;
+		ItemStack flint_info = this.gui.getContents()[17];
+		ItemMeta flint_info_meta = flint_info.getItemMeta();
+		List<String> lore = flint_info_meta.getLore();
+		String line = lore.get(0);
+		String pattern = "§r([1-9]\\d*|0)";
+		Pattern r = Pattern.compile(pattern);
+		Matcher m = r.matcher(line);
+		if (m.find()) {
+			storage = Integer.parseInt(m.group(1));
+			return storage;
+		}
+		return 0;
+	}
+	
+	public void set_flint_storge(int storage) {
+		ItemStack flint_info = this.gui.getContents()[17];
+		ItemMeta flint_info_meta = flint_info.getItemMeta();
+		ArrayList<String> lore = new ArrayList<String>();
+		lore.add("§r"+storage);
+		flint_info_meta.setLore(lore);
+		flint_info.setItemMeta(flint_info_meta);
+	}
+	
 	public Inventory get_gui() {
 		return this.gui;
 	}
-
+	
 	public ItemStack get_raw() {
 		return this.gui.getContents()[9];
 	}
