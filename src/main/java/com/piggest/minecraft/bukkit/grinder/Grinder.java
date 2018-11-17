@@ -112,8 +112,8 @@ public class Grinder extends Multi_block_structure implements InventoryHolder {
 		Grinder.add_recipe(Material.PRISMARINE_BRICKS, Material.PRISMARINE_SHARD, 8, 800); // 海晶石砖
 		Grinder.add_recipe(Material.DARK_PRISMARINE, Material.PRISMARINE_SHARD, 8, 800); // 暗海晶石砖
 		Grinder.add_recipe(Material.GLOWSTONE, Material.GLOWSTONE_DUST, 4, 400); // 荧石
-		Grinder.add_recipe(Material.QUARTZ_BLOCK, Material.QUARTZ, 4, 400); // 石英
-		Grinder.add_recipe(Material.REDSTONE_ORE, Material.REDSTONE, 8, 400); // 红石矿
+		Grinder.add_recipe(Material.QUARTZ_BLOCK, Material.QUARTZ, 4, 800); // 石英
+		Grinder.add_recipe(Material.REDSTONE_ORE, Material.REDSTONE, 8, 500); // 红石矿
 
 		Grinder.add_recipe(Material.DIRT, Material.CLAY_BALL, 2, 300); // 泥土
 		Grinder.add_recipe(Material.BRICK, Material.CLAY_BALL, 1, 100); // 红砖
@@ -126,7 +126,7 @@ public class Grinder extends Multi_block_structure implements InventoryHolder {
 		Grinder.add_recipe(Material.NETHER_BRICKS, Material.NETHERRACK, 4, 400); // 地狱砖块
 		Grinder.add_recipe(Material.MAGMA_BLOCK, Material.SOUL_SAND, 2, 400); // 岩浆块
 
-		Grinder.add_recipe(Material.COBBLESTONE_SLAB, Material.GRAVEL, 2, 300); // 圆石半砖
+		Grinder.add_recipe(Material.COBBLESTONE_SLAB, Material.GRAVEL, 1, 300); // 圆石半砖
 		Grinder.add_recipe(Material.STONE_BRICK_SLAB, Material.COBBLESTONE_SLAB, 1, 150); // 石砖半砖
 		Grinder.add_recipe(Material.STONE_SLAB, Material.COBBLESTONE_SLAB, 1, 150); // 石头半砖
 		Grinder.add_recipe(Material.BRICK_SLAB, Material.CLAY_BALL, 2, 200); // 红砖半砖
