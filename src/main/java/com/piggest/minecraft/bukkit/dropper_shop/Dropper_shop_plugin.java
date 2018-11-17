@@ -24,6 +24,7 @@ import com.piggest.minecraft.bukkit.depository.Depository_manager;
 import com.piggest.minecraft.bukkit.depository.Reader;
 import com.piggest.minecraft.bukkit.depository.Update_component;
 import com.piggest.minecraft.bukkit.depository.Update_component_listener;
+import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.grinder.Grinder_command_executor;
 import com.piggest.minecraft.bukkit.grinder.Grinder_listener;
 import com.piggest.minecraft.bukkit.grinder.Grinder_manager;
@@ -116,6 +117,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		Reader.set_recipe();
 		Update_component.init_component();
 		Update_component.set_recipe();
+		Grinder.init_recipe();
 		
 		this.shop_manager.load_structures();
 		this.depository_manager.load_structures();

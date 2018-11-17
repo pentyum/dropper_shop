@@ -4,14 +4,36 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class Grinder_runner extends BukkitRunnable {
 	private Grinder grinder;
+	private int working_ticks;
 
 	public Grinder_runner(Grinder grinder) {
 		this.grinder = grinder;
 	}
 
 	public void run() {
-		// TODO Auto-generated method stub
-
+		if (grinder.get_location().getChunk().isLoaded() == false) {
+			return;
+		}
+		if (Grinder.is_empty(grinder.get_raw())) {
+			grinder.set_process(0);
+			this.working_ticks = 0;
+		} else {
+			if (Grinder.recipe.get(grinder.get_raw().getType()) == null) {
+				grinder.set_process(0);
+				this.working_ticks = 0;
+				return;
+			}
+			// Dropper_shop_plugin.instance.getLogger().info(Grinder.recipe_time.toString());
+			int need_ticks = Grinder.recipe_time.get(grinder.get_raw().getType());
+			if (this.working_ticks <= need_ticks) { // 工作中
+				grinder.set_process(this.working_ticks * 100 / need_ticks);
+				this.working_ticks++;
+			} else { // 工作完成
+				if (grinder.to_product() == true) {
+					grinder.set_process(0);
+					this.working_ticks = 0;
+				}
+			}
+		}
 	}
-
 }

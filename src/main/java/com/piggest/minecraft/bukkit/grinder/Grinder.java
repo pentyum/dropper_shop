@@ -18,9 +18,39 @@ import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
 public class Grinder extends Multi_block_structure implements InventoryHolder {
 	public static HashMap<Material, ItemStack> recipe = new HashMap<Material, ItemStack>();
 	public static HashMap<Material, Integer> recipe_time = new HashMap<Material, Integer>();
-	private Inventory gui = Bukkit.createInventory(this, 54, "磨粉机");
+	private Inventory gui = Bukkit.createInventory(this, 18, "磨粉机");
 	private Grinder_runner runner = new Grinder_runner(this);
 	private Grinder_io_runner io_runner = new Grinder_io_runner(this);
+
+	public Grinder() {
+		this.gui.setItem(10, new ItemStack(Material.BLUE_STAINED_GLASS_PANE));
+		this.gui.setItem(12, new ItemStack(Material.BLUE_STAINED_GLASS_PANE));
+		this.gui.setItem(14, new ItemStack(Material.BLUE_STAINED_GLASS_PANE));
+	}
+
+	public Inventory get_gui() {
+		return this.gui;
+	}
+
+	public ItemStack get_raw() {
+		return this.gui.getContents()[9];
+	}
+
+	public ItemStack get_flint() {
+		return this.gui.getContents()[11];
+	}
+
+	public ItemStack get_product() {
+		return this.gui.getContents()[13];
+	}
+
+	public ItemStack get_product_2() {
+		return this.gui.getContents()[15];
+	}
+
+	public void set_product(ItemStack product_item) {
+		this.gui.setItem(13, product_item);
+	}
 
 	private static void add_recipe(Material material, Material out, int num, int time) {
 		Grinder.recipe.put(material, new ItemStack(out, num));
@@ -48,6 +78,16 @@ public class Grinder extends Multi_block_structure implements InventoryHolder {
 		Grinder.add_recipe(Material.NETHER_BRICK, Material.NETHERRACK, 1, 40);
 		Grinder.add_recipe(Material.NETHER_BRICKS, Material.NETHERRACK, 4, 120);
 
+	}
+
+	public static boolean is_empty(ItemStack item) {
+		if (item == null) {
+			return true;
+		}
+		if (item.getType() == Material.AIR) {
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -124,31 +164,26 @@ public class Grinder extends Multi_block_structure implements InventoryHolder {
 	public BukkitRunnable get_io_runner() {
 		return this.io_runner;
 	}
-}
 
-class Grinder_contents {
-	public static int get_line_start(int line) {
-		return 9 * (line - 1);
-	}
-
-	private Inventory gui;
-	private Inventory raw = Bukkit.createInventory(null, 9);
-	private Inventory flint = Bukkit.createInventory(null, 9);
-	private Inventory product = Bukkit.createInventory(null, 9);
-
-	public Grinder_contents(Inventory gui) {
-		this.gui = gui;
-	}
-
-	public void init() {
-		int i = 0;
-		ItemStack orange = new ItemStack(Material.ORANGE_STAINED_GLASS_PANE);
-		for (i = get_line_start(3); i < get_line_start(4); i++) {
-			this.gui.setItem(i, orange.clone());
+	public boolean to_product() {
+		if (!Grinder.is_empty(this.get_raw())) {
+			ItemStack product_item = recipe.get(this.get_raw().getType());
+			if (product_item != null) {
+				if (Grinder.is_empty(this.get_product())) {
+					this.set_product(product_item.clone());
+					this.get_raw().setAmount(this.get_raw().getAmount() - 1);
+					return true;
+				} else if (this.get_product().getType() == product_item.getType()) {
+					int new_num = this.get_product().getAmount() + product_item.getAmount();
+					if (new_num <= product_item.getMaxStackSize()) {
+						this.get_product().setAmount(new_num);
+						this.get_raw().setAmount(this.get_raw().getAmount() - 1);
+						return true;
+					}
+				}
+			}
 		}
-		for (i = get_line_start(5); i < get_line_start(6); i++) {
-			this.gui.setItem(i, orange.clone());
-		}
+		return false;
 	}
 
 	public void set_process(int process) {
@@ -162,27 +197,5 @@ class Grinder_contents {
 		for (i = n; i < 9; i++) {
 			this.gui.setItem(i, white.clone());
 		}
-	}
-
-	public void gui_to_subinv() {
-		int i = 0;
-		for (i = 0; i < 9; i++) {
-			this.raw.setItem(i, this.gui.getItem(i + get_line_start(2)));
-			this.flint.setItem(i, this.gui.getItem(i + get_line_start(4)));
-			this.product.setItem(i, this.gui.getItem(i + get_line_start(6)));
-		}
-	}
-
-	public void subinv_to_gui() {
-		int i = 0;
-		for (i = 0; i < 9; i++) {
-			this.gui.setItem(i + get_line_start(2), this.raw.getItem(i));
-			this.gui.setItem(i + get_line_start(4), this.flint.getItem(i));
-			this.gui.setItem(i + get_line_start(6), this.product.getItem(i));
-		}
-	}
-	
-	public void add_raw(ItemStack raw_item) {
-		raw_item.getAmount();
 	}
 }

@@ -1,6 +1,5 @@
 package com.piggest.minecraft.bukkit.grinder;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,8 +8,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 
 public class Grinder_listener implements Listener {
@@ -45,7 +42,7 @@ public class Grinder_listener implements Listener {
 		if (event.getClickedInventory().getName().equals("磨粉机")) {
 			event.getWhoClicked().sendMessage("编号" + event.getSlot());
 			int slot = event.getSlot();
-			if (slot >= 0 && slot <= 8 || slot >= 18 && slot <= 26 || slot >= 36 && slot <= 44) {
+			if (slot >= 0 && slot <= 8 || slot == 10 || slot == 12 || slot == 14) {
 				event.setCancelled(true);
 			}
 		}
