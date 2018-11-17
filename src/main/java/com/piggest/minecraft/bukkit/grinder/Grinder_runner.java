@@ -16,12 +16,14 @@ public class Grinder_runner extends BukkitRunnable {
 			return;
 		}
 		if (!Grinder.is_empty(grinder.get_flint())) {
-			if (grinder.get_flint().getType() == Material.FLINT) {
-				grinder.set_flint_storge(grinder.get_flint_storage() + 16);
-			} else if (grinder.get_flint().getType() == Material.OBSIDIAN) {
-				grinder.set_flint_storge(grinder.get_flint_storage() + 24);
+			if (grinder.get_flint_storage() <= 1000) {
+				if (grinder.get_flint().getType() == Material.FLINT) {
+					grinder.set_flint_storge(grinder.get_flint_storage() + 16);
+				} else if (grinder.get_flint().getType() == Material.OBSIDIAN) {
+					grinder.set_flint_storge(grinder.get_flint_storage() + 24);
+				}
+				grinder.get_flint().setAmount(grinder.get_flint().getAmount() - 1);
 			}
-			grinder.get_flint().setAmount(grinder.get_flint().getAmount() - 1);
 		}
 		if (Grinder.is_empty(grinder.get_raw())) {
 			grinder.set_process(0);

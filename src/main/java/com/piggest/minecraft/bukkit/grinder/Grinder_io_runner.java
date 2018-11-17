@@ -14,11 +14,11 @@ public class Grinder_io_runner extends BukkitRunnable {
 	public void run() {
 		Hopper hopper = grinder.get_hopper();
 		Chest chest = grinder.get_chest();
-		if(hopper!=null) {
-			
+		if (hopper != null) {
+
 		}
-		if(chest!=null) {
-			
+		if (chest != null) {
+
 		}
 	}
 
