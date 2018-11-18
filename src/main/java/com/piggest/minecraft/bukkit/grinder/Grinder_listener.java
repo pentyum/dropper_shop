@@ -43,7 +43,6 @@ public class Grinder_listener implements Listener {
 			return;
 		}
 		if (event.getClickedInventory().getName().equals("磨粉机")) {
-			event.getWhoClicked().sendMessage("编号" + event.getSlot());
 			int slot = event.getSlot();
 			if (slot >= 0 && slot <= 8 || slot == 10 || slot == 12 || slot == 14 || slot == 16 || slot == 17) {
 				event.setCancelled(true);

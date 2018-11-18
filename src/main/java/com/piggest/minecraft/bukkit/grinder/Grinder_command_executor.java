@@ -42,6 +42,7 @@ public class Grinder_command_executor implements CommandExecutor {
 						Dropper_shop_plugin.instance.get_make_grinder_price())) {
 					Dropper_shop_plugin.instance.get_economy().withdrawPlayer(player,
 							Dropper_shop_plugin.instance.get_make_grinder_price());
+					player.sendMessage("已扣除" + Dropper_shop_plugin.instance.get_make_grinder_price());
 				} else {
 					player.sendMessage("钱不够");
 					return true;

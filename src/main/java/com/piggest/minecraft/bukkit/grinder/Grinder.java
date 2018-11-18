@@ -30,18 +30,32 @@ public class Grinder extends Multi_block_structure implements InventoryHolder {
 	private Grinder_io_runner io_runner = new Grinder_io_runner(this);
 
 	public Grinder() {
-		this.gui.setItem(10, new ItemStack(Material.BLUE_STAINED_GLASS_PANE));
-		this.gui.setItem(12, new ItemStack(Material.BLUE_STAINED_GLASS_PANE));
-		this.gui.setItem(14, new ItemStack(Material.BLUE_STAINED_GLASS_PANE));
-		this.gui.setItem(16, new ItemStack(Material.BLUE_STAINED_GLASS_PANE));
+		ItemStack raw_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
+		ItemStack flint_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
+		ItemStack product_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
+		ItemStack product2_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
+		set_item_name(raw_sign, "§r左边放原料");
+		set_item_name(flint_sign, "§r左边放燧石或者黑曜石");
+		set_item_name(product_sign, "§r左边为产品");
+		set_item_name(product2_sign, "§r右边为燧石单元储量");
+		this.gui.setItem(10, raw_sign);
+		this.gui.setItem(12, flint_sign);
+		this.gui.setItem(14, product_sign);
+		this.gui.setItem(16, product2_sign);
 		ItemStack flint_info = new ItemStack(Material.FLINT);
 		ItemMeta flint_info_meta = flint_info.getItemMeta();
-		flint_info_meta.setDisplayName("§r燧石储量");
+		flint_info_meta.setDisplayName("§e燧石储量");
 		ArrayList<String> lore = new ArrayList<String>();
 		lore.add("§r0 单位");
 		flint_info_meta.setLore(lore);
 		flint_info.setItemMeta(flint_info_meta);
 		this.gui.setItem(17, flint_info);
+	}
+
+	private static void set_item_name(ItemStack item, String name) {
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName(name);
+		item.setItemMeta(meta);
 	}
 
 	public int get_flint_storage() {
@@ -325,6 +339,10 @@ public class Grinder extends Multi_block_structure implements InventoryHolder {
 		int i = 0;
 		ItemStack red = new ItemStack(Material.RED_STAINED_GLASS_PANE);
 		ItemStack white = new ItemStack(Material.WHITE_STAINED_GLASS_PANE);
+		ItemMeta meta = red.getItemMeta();
+		meta.setDisplayName("§e磨粉机工作进度: " + process + "%");
+		red.setItemMeta(meta);
+		white.setItemMeta(meta);
 		for (i = 0; i < n; i++) {
 			this.gui.setItem(i, red.clone());
 		}
@@ -338,6 +356,21 @@ public class Grinder extends Multi_block_structure implements InventoryHolder {
 		super.set_from_save(shop_save);
 		this.set_flint_storge((Integer) shop_save.get("flint-storge"));
 		this.runner.working_ticks = (Integer) shop_save.get("working-ticks");
+		if (shop_save.get("raw") != null) {
+			ItemStack raw_item = new ItemStack(Material.getMaterial((String) shop_save.get("raw")),
+					(Integer) shop_save.get("raw-num"));
+			this.set_raw(raw_item);
+		}
+		if (shop_save.get("flint") != null) {
+			ItemStack flint_item = new ItemStack(Material.getMaterial((String) shop_save.get("flint")),
+					(Integer) shop_save.get("flint-num"));
+			this.set_flint(flint_item);
+		}
+		if (shop_save.get("product") != null) {
+			ItemStack product_item = new ItemStack(Material.getMaterial((String) shop_save.get("product")),
+					(Integer) shop_save.get("product-num"));
+			this.set_product(product_item);
+		}
 	}
 
 	@Override
