@@ -3,6 +3,7 @@ package com.piggest.minecraft.bukkit.grinder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.piggest.minecraft.bukkit.depository.Update_component;
 import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
 
 public class Grinder extends Multi_block_structure implements InventoryHolder {
@@ -280,7 +282,7 @@ public class Grinder extends Multi_block_structure implements InventoryHolder {
 		return false;
 	}
 
-	public boolean add_a_raw(ItemStack src_item) {
+	public synchronized boolean add_a_raw(ItemStack src_item) {
 		if (!Grinder.is_empty(src_item)) {
 			if (Grinder.is_empty(this.get_raw())) {
 				this.set_raw(src_item.clone());
@@ -298,8 +300,8 @@ public class Grinder extends Multi_block_structure implements InventoryHolder {
 		}
 		return false;
 	}
-	
-	public boolean add_a_flint(ItemStack src_item) {
+
+	public synchronized boolean add_a_flint(ItemStack src_item) {
 		if (!Grinder.is_empty(src_item)) {
 			if (Grinder.is_empty(this.get_flint())) {
 				this.set_flint(src_item.clone());
@@ -329,5 +331,32 @@ public class Grinder extends Multi_block_structure implements InventoryHolder {
 		for (i = n; i < 9; i++) {
 			this.gui.setItem(i, white.clone());
 		}
+	}
+
+	@Override
+	public void set_from_save(Map<?, ?> shop_save) {
+		super.set_from_save(shop_save);
+		this.set_flint_storge((Integer) shop_save.get("flint-storge"));
+		this.runner.working_ticks = (Integer) shop_save.get("working-ticks");
+	}
+
+	@Override
+	public HashMap<String, Object> get_save() {
+		HashMap<String, Object> save = super.get_save();
+		save.put("flint-storge", this.get_flint_storage());
+		save.put("working-ticks", this.runner.working_ticks);
+		if (!Grinder.is_empty(this.get_raw())) {
+			save.put("raw", this.get_raw().getType().name());
+			save.put("raw-num", this.get_raw().getAmount());
+		}
+		if (!Grinder.is_empty(this.get_flint())) {
+			save.put("flint", this.get_flint().getType().name());
+			save.put("flint-num", this.get_flint().getAmount());
+		}
+		if (!Grinder.is_empty(this.get_product())) {
+			save.put("product", this.get_product().getType().name());
+			save.put("product-num", this.get_product().getAmount());
+		}
+		return save;
 	}
 }

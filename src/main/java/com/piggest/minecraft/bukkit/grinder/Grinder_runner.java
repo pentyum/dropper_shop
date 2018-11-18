@@ -7,12 +7,12 @@ import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 
 public class Grinder_runner extends BukkitRunnable {
 	private Grinder grinder;
-	private int working_ticks;
+	public int working_ticks;
 
 	public Grinder_runner(Grinder grinder) {
 		this.grinder = grinder;
 	}
-
+	
 	public void run() {
 		if (grinder.get_location().getChunk().isLoaded() == false) {
 			return;
