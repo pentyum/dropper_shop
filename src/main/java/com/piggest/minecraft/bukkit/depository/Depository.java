@@ -118,14 +118,10 @@ public class Depository extends Multi_block_structure implements Ownable, Invent
 		}
 	}
 
-	public ItemStack remove(Material type) {
+	public ItemStack remove(String type) {
 		return this.remove(type, 1);
 	}
-
-	public ItemStack remove(Material type, int num) {
-		return this.remove(type.name(), num);
-	}
-
+	
 	public ItemStack remove(String name, int num) {
 		Integer current_num = this.contents.get(name);
 		if (current_num == null) {

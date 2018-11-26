@@ -11,10 +11,12 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
 public class Depository_listener implements Listener {
 	@EventHandler
@@ -49,9 +51,11 @@ public class Depository_listener implements Listener {
 			Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(null,
 					break_block.getLocation(), false);
 			if (depository != null) {
-				player.closeInventory();
-				player.openInventory(depository.getInventory());
-				event.setCancelled(true);
+				if (player.isSneaking() == false) {
+					player.closeInventory();
+					player.openInventory(depository.getInventory());
+					event.setCancelled(true);
+				}
 			}
 		}
 	}
@@ -68,7 +72,8 @@ public class Depository_listener implements Listener {
 		ItemMeta item_meta = item.getItemMeta();
 		if (Reader.is_reader(item)) {
 			if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-				Material material = Reader.lore_parse_material(item_meta.getLore());
+				String material_str = Reader.lore_parse_material_str(item_meta.getLore());
+				Material material = Material_ext.get_material(material_str);
 				Location loc = Reader.lore_parse_loction(item_meta.getLore());
 				// Bukkit.getLogger().info(loc.toString());
 				Depository depository = Dropper_shop_plugin.instance.get_depository_manager().get(loc);
@@ -86,11 +91,16 @@ public class Depository_listener implements Listener {
 					event.setCancelled(true);
 					return;
 				}
+				Block block = event.getClickedBlock();
+				if (block.getState() instanceof InventoryHolder) {
+					if (!event.getPlayer().isSneaking()) {
+						return;
+					}
+				}
 				if (material.isBlock() == true) {
 					BlockFace face = event.getBlockFace();
-					Block block = event.getClickedBlock();
 					if (block.getType() == Material.GRASS || block.getType() == Material.TALL_GRASS) {
-						if (depository.remove(material) != null) {
+						if (depository.remove(material_str) != null) {
 							block.setType(material);
 						}
 					} else {
@@ -101,13 +111,13 @@ public class Depository_listener implements Listener {
 						// event.getPlayer().sendMessage(replaced.name());
 						if (replaced == Material.AIR || replaced == Material.CAVE_AIR || replaced == Material.WATER
 								|| replaced == Material.GRASS || replaced == Material.LAVA) {
-							if (depository.remove(material) != null) {
+							if (depository.remove(material_str) != null) {
 								replaced_block.setType(material);
 							}
 						}
 					}
 				} else {
-					ItemStack new_item = depository.remove(material);
+					ItemStack new_item = depository.remove(material_str);
 					if (new_item != null) {
 						event.getPlayer().getInventory().addItem(new_item);
 					}

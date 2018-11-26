@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
 enum Sub_cmd {
 	make, info, input, output, remove, connect;
@@ -121,10 +122,9 @@ public class Depository_command_executor implements TabExecutor {
 					return true;
 				}
 				if (args.length == 2) {
-					ItemStack item = depository.remove(Material.getMaterial(args[1]));
+					ItemStack item = depository.remove(args[1]);
 					player.getInventory().addItem(item);
 				} else {
-					Material material = Material.getMaterial(args[1]);
 					int total_number = depository.get_material_num(args[1]);
 					int remove_number = 0;
 					if (args[2].equalsIgnoreCase("all")) {
@@ -141,7 +141,7 @@ public class Depository_command_executor implements TabExecutor {
 							player.sendMessage("数量不够，只取出了" + remove_number + "个物品");
 						}
 					}
-					ItemStack item = depository.remove(material, remove_number);
+					ItemStack item = depository.remove(args[1], remove_number);
 					HashMap<Integer, ItemStack> unaddable = player.getInventory().addItem(item);
 					for (ItemStack unadd_item : unaddable.values()) {
 						player.getWorld().dropItemNaturally(player.getLocation(), unadd_item).setPickupDelay(40);
@@ -175,7 +175,7 @@ public class Depository_command_executor implements TabExecutor {
 				ItemMeta item_meta = item.getItemMeta();
 				item_meta.setLore(Reader.get_lore(depository.get_location(), args[1], current_num));
 				item.setItemMeta(item_meta);
-				item.setType(Material.getMaterial(args[1]));
+				item.setType(Material_ext.get_material(args[1]));
 				player.sendMessage("连接成功");
 			}
 		}

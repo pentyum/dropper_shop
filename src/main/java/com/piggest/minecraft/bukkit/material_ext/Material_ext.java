@@ -40,4 +40,13 @@ public class Material_ext {
 	public static ItemStack register(String name, ItemStack itemstack) {
 		return Material_ext.ext_material_map.put(name, itemstack.clone());
 	}
+	
+	public static Material get_material(String name) {
+		ItemStack item = Material_ext.ext_material_map.get(name);
+		if(item!=null) {
+			return item.getType();
+		}else {
+			return Material.getMaterial(name);
+		}
+	}
 }

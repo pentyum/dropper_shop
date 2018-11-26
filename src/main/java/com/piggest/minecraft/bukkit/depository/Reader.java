@@ -64,6 +64,14 @@ public class Reader {
 	}
 
 	public static Material lore_parse_material(List<String> lore) {
+		String str = lore_parse_material_str(lore);
+		if (str != null) {
+			return Material.getMaterial(str);
+		}
+		return null;
+	}
+
+	public static String lore_parse_material_str(List<String> lore) {
 		String material_name;
 		String line = lore.get(4);
 		String pattern = "§r物品: (.+)";
@@ -72,7 +80,7 @@ public class Reader {
 		if (m.find()) {
 			material_name = m.group(1);
 			// Bukkit.getLogger().info(material_name);
-			return Material.getMaterial(material_name);
+			return material_name;
 		}
 		return null;
 	}
@@ -103,7 +111,7 @@ public class Reader {
 
 	public static List<String> lore_update(List<String> lore) {
 		Location loc = lore_parse_loction(lore);
-		Material material = lore_parse_material(lore);
+		String material_name = lore_parse_material_str(lore);
 		Depository depository = Dropper_shop_plugin.instance.get_depository_manager().get(loc);
 		if (depository == null) {
 			lore.set(0, "§r存储器位置: null");
@@ -115,7 +123,7 @@ public class Reader {
 		}
 		// Bukkit.getLogger().info("new num" +
 		// depository.get_material_num(material.name()));
-		lore.set(5, "§r数量: " + depository.get_material_num(material.name()));
+		lore.set(5, "§r数量: " + depository.get_material_num(material_name));
 		return lore;
 	}
 
