@@ -54,6 +54,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private final Dropper_shop_listener shop_listener = new Dropper_shop_listener();
 	private final Update_component_listener update_component_listener = new Update_component_listener();
 	private final Grinder_listener grinder_listener = new Grinder_listener();
+	//private final Ship_listener ship_listener = new Ship_listener();
 
 	public FileConfiguration get_shop_config() {
 		return this.shop_config;
@@ -141,6 +142,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		pm.registerEvents(depository_listener, this);
 		pm.registerEvents(update_component_listener, this);
 		pm.registerEvents(grinder_listener, this);
+		//pm.registerEvents(ship_listener, this);
 	}
 
 	@Override

@@ -20,6 +20,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.piggest.minecraft.bukkit.depository.Update_component;
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
 
 public class Grinder extends Multi_block_structure implements InventoryHolder {
@@ -188,6 +189,20 @@ public class Grinder extends Multi_block_structure implements InventoryHolder {
 		Grinder.add_recipe(Material.SUNFLOWER, Material.DANDELION_YELLOW, 3, 200); // 蒲公英黄染料
 
 		Grinder.add_recipe(Material.ORANGE_TULIP, Material.ORANGE_DYE, 2, 200); // 橙色染料
+
+		Grinder.add_recipe(Material.WHEAT, Material_ext.new_item("面粉", 1), 100); // 面粉
+
+		Grinder.add_recipe(Material.IRON_ORE, Material_ext.new_item("铁粉", 2), 400); // 铁粉
+		Grinder.add_recipe(Material.IRON_INGOT, Material_ext.new_item("铁粉", 1), 200); // 铁粉
+
+		Grinder.add_recipe(Material.GOLD_ORE, Material_ext.new_item("金粉", 2), 400); // 金粉
+		Grinder.add_recipe(Material.GOLD_INGOT, Material_ext.new_item("金粉", 1), 200); // 金粉
+
+		Grinder.add_recipe(Material.COAL_ORE, Material_ext.new_item("煤粉", 2), 400); // 煤粉
+		Grinder.add_recipe(Material.COAL, Material_ext.new_item("煤粉", 1), 200); // 煤粉
+
+		Grinder.add_recipe(Material.LAPIS_ORE, Material_ext.new_item("青金石粉", 12), 400); // 青金石粉
+		Grinder.add_recipe(Material.LAPIS_LAZULI, Material_ext.new_item("青金石粉", 1), 100); // 青金石粉
 	}
 
 	public static boolean is_empty(ItemStack item) {

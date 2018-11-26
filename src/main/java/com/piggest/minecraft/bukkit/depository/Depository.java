@@ -15,6 +15,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
 import com.piggest.minecraft.bukkit.structure.Ownable;
 
@@ -96,7 +97,7 @@ public class Depository extends Multi_block_structure implements Ownable, Invent
 	}
 
 	public boolean add(ItemStack item) {
-		Integer current_num = this.contents.get(item.getType().name());
+		Integer current_num = this.contents.get(Material_ext.get_name(item));
 		if (current_num == null) { // 存储器没有这种物品
 			if (this.get_max_type() == this.get_type()) { // 超出种类限制
 				return false;
@@ -109,7 +110,7 @@ public class Depository extends Multi_block_structure implements Ownable, Invent
 			add_num = this.get_max_capacity() - this.get_capacity();
 		}
 		if (current_num + add_num > 0) { // 大于0才添加内容
-			this.contents.put(item.getType().name(), current_num + add_num);
+			this.contents.put(Material_ext.get_name(item), current_num + add_num);
 			item.setAmount(item.getAmount() - add_num);
 			return true;
 		} else {
@@ -122,18 +123,22 @@ public class Depository extends Multi_block_structure implements Ownable, Invent
 	}
 
 	public ItemStack remove(Material type, int num) {
-		Integer current_num = this.contents.get(type.name());
+		return this.remove(type.name(), num);
+	}
+
+	public ItemStack remove(String name, int num) {
+		Integer current_num = this.contents.get(name);
 		if (current_num == null) {
 			return null;
 		}
 		if (current_num - num <= 0) {
 			num = current_num;
-			this.contents.remove(type.name());
+			this.contents.remove(name);
 		} else {
-			this.contents.put(type.name(), current_num - num);
+			this.contents.put(name, current_num - num);
 		}
 		if (num > 0) {
-			ItemStack item = new ItemStack(type, num);
+			ItemStack item = Material_ext.new_item(name, num);
 			return item;
 		} else {
 			return null;
