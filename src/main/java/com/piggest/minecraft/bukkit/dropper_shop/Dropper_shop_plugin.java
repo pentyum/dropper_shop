@@ -18,6 +18,9 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_command_executor;
+import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_listener;
+import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_manager;
 import com.piggest.minecraft.bukkit.depository.Depository_command_executor;
 import com.piggest.minecraft.bukkit.depository.Depository_listener;
 import com.piggest.minecraft.bukkit.depository.Depository_manager;
@@ -44,6 +47,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private Dropper_shop_manager shop_manager = new Dropper_shop_manager();
 	private Depository_manager depository_manager = new Depository_manager();
 	private Grinder_manager grinder_manager = new Grinder_manager();
+	private Advanced_furnace_manager adv_furnace_manager = new Advanced_furnace_manager();
 
 	private HashMap<String, Integer> price_map = new HashMap<String, Integer>();
 	private HashMap<String, Integer> unit_map = new HashMap<String, Integer>();
@@ -55,7 +59,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private final Dropper_shop_listener shop_listener = new Dropper_shop_listener();
 	private final Update_component_listener update_component_listener = new Update_component_listener();
 	private final Grinder_listener grinder_listener = new Grinder_listener();
-	// private final Ship_listener ship_listener = new Ship_listener();
+	private final Advanced_furnace_listener adv_furnace_listener = new Advanced_furnace_listener();
 
 	public FileConfiguration get_shop_config() {
 		return this.shop_config;
@@ -121,6 +125,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.getCommand("depository").setExecutor(new Depository_command_executor());
 		this.getCommand("dropper_shop").setExecutor(new Dropper_shop_command_executor());
 		this.getCommand("grinder").setExecutor(new Grinder_command_executor());
+		this.getCommand("adv_furnace").setExecutor(new Advanced_furnace_command_executor());
 
 		getLogger().info("使用Vault");
 		if (!initVault()) {
@@ -138,13 +143,15 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.shop_manager.load_structures();
 		this.depository_manager.load_structures();
 		this.grinder_manager.load_structures();
+		this.adv_furnace_manager.load_structures();
 
 		PluginManager pm = getServer().getPluginManager();
+
 		pm.registerEvents(shop_listener, this);
 		pm.registerEvents(depository_listener, this);
 		pm.registerEvents(update_component_listener, this);
 		pm.registerEvents(grinder_listener, this);
-		// pm.registerEvents(ship_listener, this);
+		pm.registerEvents(adv_furnace_listener, this);
 	}
 
 	@Override
@@ -152,6 +159,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.shop_manager.save_structures();
 		this.depository_manager.save_structures();
 		this.grinder_manager.save_structures();
+		this.adv_furnace_manager.save_structures();
 		try {
 			shop_config.save(this.shop_file);
 		} catch (IOException e) {
@@ -179,6 +187,10 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		return this.grinder_manager;
 	}
 
+	public Advanced_furnace_manager get_adv_furnace_manager() {
+		return this.adv_furnace_manager;
+	}
+
 	public int get_price(Material material) {
 		Integer price = this.price_map.get(material.name());
 		if (price == null) {
@@ -200,4 +212,5 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public ArrayList<ShapedRecipe> get_sr() {
 		return this.sr;
 	}
+
 }

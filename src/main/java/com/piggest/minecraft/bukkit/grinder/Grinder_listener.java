@@ -49,7 +49,7 @@ public class Grinder_listener implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void on_break_grinder(BlockBreakEvent event) {
 		if (event.isCancelled() == true) {

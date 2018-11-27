@@ -12,7 +12,7 @@ public class Grinder_runner extends BukkitRunnable {
 	public Grinder_runner(Grinder grinder) {
 		this.grinder = grinder;
 	}
-	
+
 	public void run() {
 		if (grinder.get_location().getChunk().isLoaded() == false) {
 			return;

@@ -52,7 +52,7 @@ public class Grinder extends Multi_block_structure implements InventoryHolder {
 		this.gui.setItem(17, flint_info);
 	}
 
-	private static void set_item_name(ItemStack item, String name) {
+	public static void set_item_name(ItemStack item, String name) {
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(name);
 		item.setItemMeta(meta);
