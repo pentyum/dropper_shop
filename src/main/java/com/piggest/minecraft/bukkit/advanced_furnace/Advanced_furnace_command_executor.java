@@ -22,8 +22,9 @@ public class Advanced_furnace_command_executor implements CommandExecutor {
 				return true;
 			}
 			if (args[0].equalsIgnoreCase("temp")) {
-				player.sendMessage(
-						"温度:" + Advanced_furnace.get_block_temperature(player.getLocation().getBlock()) + "K");
+				player.sendMessage("温度:"
+						+ String.format("%.1f", Advanced_furnace.get_block_temperature(player.getLocation().getBlock()))
+						+ "K");
 				return true;
 			}
 			Block look_block = player.getTargetBlockExact(4);

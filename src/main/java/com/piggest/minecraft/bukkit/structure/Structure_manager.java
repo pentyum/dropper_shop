@@ -22,8 +22,12 @@ public abstract class Structure_manager<T extends Abstract_structure> {
 		return this.structure_map.get(loc);
 	}
 
-	public void add(T new_shop) {
-		this.structure_map.put(new_shop.get_location(), new_shop);
+	public void add(T new_structure) {
+		if(new_structure instanceof HasRunner) {
+			HasRunner new_HasRunner = (HasRunner) new_structure;
+			new_HasRunner.get_runner().runTaskTimerAsynchronously(Dropper_shop_plugin.instance, new_HasRunner.get_runner_delay(), new_HasRunner.get_runner_cycle());
+		}
+		this.structure_map.put(new_structure.get_location(), new_structure);
 	}
 
 	public void remove(T shop) {

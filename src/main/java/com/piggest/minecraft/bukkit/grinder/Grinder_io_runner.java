@@ -21,6 +21,9 @@ public class Grinder_io_runner extends BukkitRunnable {
 	public void run() {
 		Hopper hopper = grinder.get_hopper();
 		Chest chest = grinder.get_chest();
+		if (this.grinder.get_location().getChunk().isLoaded() == false) {
+			return;
+		}
 		if (hopper != null) {
 			org.bukkit.block.data.type.Hopper hopper_data = (org.bukkit.block.data.type.Hopper) hopper.getBlockData();
 			if (hopper_data.getFacing() == BlockFace.DOWN) {

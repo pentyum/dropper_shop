@@ -20,9 +20,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
 
-public class Grinder extends Multi_block_structure implements InventoryHolder {
+public class Grinder extends Multi_block_structure implements InventoryHolder, HasRunner {
 	public static HashMap<Material, ItemStack> recipe = new HashMap<Material, ItemStack>();
 	public static HashMap<Material, Integer> recipe_time = new HashMap<Material, Integer>();
 	private Inventory gui = Bukkit.createInventory(this, 18, "磨粉机");
@@ -285,6 +286,14 @@ public class Grinder extends Multi_block_structure implements InventoryHolder {
 		return this.runner;
 	}
 
+	public int get_runner_cycle() {
+		return 1;
+	}
+	
+	public int get_runner_delay() {
+		return 10;
+	}
+	
 	public BukkitRunnable get_io_runner() {
 		return this.io_runner;
 	}

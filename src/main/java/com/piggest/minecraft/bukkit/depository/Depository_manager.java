@@ -16,7 +16,6 @@ public class Depository_manager extends Structure_manager<Depository> {
 
 	@Override
 	public void add(Depository depository) {
-		depository.get_runner().runTaskTimerAsynchronously(Dropper_shop_plugin.instance, 0, 20 * 3600);
 		depository.get_importer().runTaskTimer(Dropper_shop_plugin.instance, 10, 10);
 		super.add(depository);
 	}
