@@ -25,6 +25,7 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 	private Inventory gui = Bukkit.createInventory(this, 27, "高级熔炉");
 	private Advanced_furnace_temp_runner temp_runner = new Advanced_furnace_temp_runner(this);
 	private Fuel fuel;
+	public int fuel_ticks = 0;
 
 	public static double get_block_temperature(Block block) {
 		double base_temp = block.getTemperature() * 20 + 270;
@@ -64,12 +65,12 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		lore.add("§r温度: 0 K");
 		lore.add("§r燃料: ");
 		lore.add("§r燃料功率: " + 0 + " K/tick");
+		lore.add("§r剩余燃烧时间: " + 0 + " s");
 		temp_info_meta.setLore(lore);
 		temp_info.setItemMeta(temp_info_meta);
 		this.gui.setItem(26, temp_info);
-		
-		this.set_fuel(Fuel.coal);
-		this.set_power(0.1);
+
+		// this.set_fuel(Fuel.coal);
 	}
 
 	public double get_base_temperature() {
@@ -78,7 +79,7 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 
 	public void set_temperature(double temperature) {
 		this.temperature = temperature;
-		ItemStack temp_info = this.gui.getContents()[26];
+		ItemStack temp_info = this.gui.getItem(26);
 		ItemMeta temp_info_meta = temp_info.getItemMeta();
 		List<String> lore = temp_info_meta.getLore();
 		lore.set(0, "§r温度: " + String.format("%.1f", temperature) + " K");
@@ -94,12 +95,25 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 	public void set_from_save(Map<?, ?> shop_save) {
 		super.set_from_save(shop_save);
 		this.set_temperature((Double) shop_save.get("temperature"));
+		this.fuel_ticks = ((Integer) shop_save.get("fuel-ticks"));
+		String fuel_type = (String) shop_save.get("fuel-type");
+		if (fuel_type.equals("null")) {
+			this.set_fuel(null);
+		} else {
+			this.set_fuel(Fuel.valueOf(fuel_type));
+		}
 	}
 
 	@Override
 	public HashMap<String, Object> get_save() {
 		HashMap<String, Object> save = super.get_save();
 		save.put("temperature", this.get_temperature());
+		save.put("fuel-ticks", this.fuel_ticks);
+		if (this.fuel != null) {
+			save.put("fuel-type", this.fuel.name());
+		} else {
+			save.put("fuel-type", "null");
+		}
 		return save;
 	}
 
@@ -153,9 +167,18 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		return (Furnace) this.get_location().getBlock().getState();
 	}
 
+	public void set_last_sec(int last_sec) {
+		ItemStack temp_info = this.gui.getItem(26);
+		ItemMeta temp_info_meta = temp_info.getItemMeta();
+		List<String> lore = temp_info_meta.getLore();
+		lore.set(3, "§r剩余燃烧时间: " + last_sec + " s");
+		temp_info_meta.setLore(lore);
+		temp_info.setItemMeta(temp_info_meta);
+	}
+
 	public void set_power(double power) {
 		this.power = power;
-		ItemStack temp_info = this.gui.getContents()[26];
+		ItemStack temp_info = this.gui.getItem(26);
 		ItemMeta temp_info_meta = temp_info.getItemMeta();
 		List<String> lore = temp_info_meta.getLore();
 		lore.set(2, "§r燃料功率: " + String.format("%.2f", power) + " K/tick");
@@ -173,16 +196,23 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 
 	public void set_fuel(Fuel fuel) {
 		this.fuel = fuel;
-		ItemStack temp_info = this.gui.getContents()[26];
+		ItemStack temp_info = this.gui.getItem(26);
 		ItemMeta temp_info_meta = temp_info.getItemMeta();
 		List<String> lore = temp_info_meta.getLore();
-		lore.set(1, "§r燃料: " + fuel.name());
+		double power = 0;
+		if (fuel != null) {
+			lore.set(1, "§r燃料: " + fuel.name());
+			power = fuel.get_power();
+		} else {
+			lore.set(1, "§r燃料: null");
+		}
 		temp_info_meta.setLore(lore);
 		temp_info.setItemMeta(temp_info_meta);
+		this.set_power(power);
 	}
 
 	public double get_k() { // 热传导率 K/(deltaK tick)
-		return 0.001;
+		return 0.0015;
 	}
 
 	public double get_power_loss() {
@@ -194,11 +224,14 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 	}
 
 	public int get_runner_cycle() {
-		return 1;
+		return this.temp_runner.get_cycle();
 	}
 
 	public int get_runner_delay() {
 		return 10;
 	}
 
+	public ItemStack get_fuel_slot() {
+		return this.gui.getItem(17);
+	}
 }

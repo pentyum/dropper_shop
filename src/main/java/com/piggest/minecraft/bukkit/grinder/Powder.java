@@ -26,6 +26,13 @@ public class Powder {
 		ItemMeta itemmeta = item.getItemMeta();
 		itemmeta.setDisplayName("§r" + name);
 		item.setItemMeta(itemmeta);
-		Material_ext.register(name, item);
+		Material_ext.register(item);
+	}
+
+	public static boolean is_powder(ItemStack item, String name) {
+		if (item.getType() != Material.SUGAR) {
+			return false;
+		}
+		return Material_ext.get_name(item).equals(name);
 	}
 }
