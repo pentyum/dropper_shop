@@ -1,8 +1,6 @@
 package com.piggest.minecraft.bukkit.material_ext;
 
 import java.util.HashMap;
-import java.util.Map.Entry;
-
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;

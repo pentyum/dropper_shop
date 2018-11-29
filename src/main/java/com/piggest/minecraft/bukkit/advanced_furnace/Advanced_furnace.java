@@ -41,6 +41,20 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		return base_temp + height_temp + env_temp + light_temp;
 	}
 
+	public static void init_reaction() {
+		Reaction ammonia_synthesis = new Reaction(true, 1, 1);
+		ammonia_synthesis.set_reactants(Gas.nitrogen, Gas.hydrogen);
+		ammonia_synthesis.set_products(Gas.hydrogen);
+		ammonia_synthesis.set_reactants_coef(1, 3);
+		ammonia_synthesis.set_products_coef(2);
+		
+		Reaction get_iron = new Reaction(false, 1, 1);
+		get_iron.set_reactants(Solid.iron_powder);
+		get_iron.set_products(Solid.iron_powder);
+		get_iron.set_reactants_coef(1);
+		get_iron.set_products_coef(1);
+	}
+
 	public Advanced_furnace() {
 		ItemStack raw_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
 		ItemStack fuel_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
@@ -69,7 +83,6 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		temp_info_meta.setLore(lore);
 		temp_info.setItemMeta(temp_info_meta);
 		this.gui.setItem(26, temp_info);
-
 		// this.set_fuel(Fuel.coal);
 	}
 
