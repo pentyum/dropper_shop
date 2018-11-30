@@ -20,7 +20,7 @@ import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
 
 public class Advanced_furnace extends Multi_block_structure implements InventoryHolder, HasRunner {
-	private double temperature = 0;
+	private Reaction_container reaction_container = new Reaction_container();
 	private double power = 0;
 	private Inventory gui = Bukkit.createInventory(this, 27, "高级熔炉");
 	private Advanced_furnace_temp_runner temp_runner = new Advanced_furnace_temp_runner(this);
@@ -39,20 +39,6 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		// Dropper_shop_plugin.instance.getLogger().info("温度=" + base_temp + "+" +
 		// height_temp + "+" + env_temp + "+" + light_temp);
 		return base_temp + height_temp + env_temp + light_temp;
-	}
-
-	public static void init_reaction() {
-		Reaction ammonia_synthesis = new Reaction(true, 1, 1);
-		ammonia_synthesis.set_reactants(Gas.nitrogen, Gas.hydrogen);
-		ammonia_synthesis.set_products(Gas.hydrogen);
-		ammonia_synthesis.set_reactants_coef(1, 3);
-		ammonia_synthesis.set_products_coef(2);
-		
-		Reaction get_iron = new Reaction(false, 1, 1);
-		get_iron.set_reactants(Solid.iron_powder);
-		get_iron.set_products(Solid.iron_powder);
-		get_iron.set_reactants_coef(1);
-		get_iron.set_products_coef(1);
 	}
 
 	public Advanced_furnace() {
@@ -91,7 +77,7 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 	}
 
 	public void set_temperature(double temperature) {
-		this.temperature = temperature;
+		this.reaction_container.set_temperature(temperature);
 		ItemStack temp_info = this.gui.getItem(26);
 		ItemMeta temp_info_meta = temp_info.getItemMeta();
 		List<String> lore = temp_info_meta.getLore();
@@ -101,7 +87,7 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 	}
 
 	public double get_temperature() {
-		return this.temperature;
+		return this.reaction_container.get_temperature();
 	}
 
 	@Override
@@ -229,7 +215,7 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 	}
 
 	public double get_power_loss() {
-		return this.get_k() * (this.temperature - this.get_base_temperature());
+		return this.get_k() * (this.reaction_container.get_temperature() - this.get_base_temperature());
 	}
 
 	public Advanced_furnace_temp_runner get_runner() {

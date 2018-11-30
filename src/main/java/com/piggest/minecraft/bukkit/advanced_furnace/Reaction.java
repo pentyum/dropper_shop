@@ -22,24 +22,32 @@ public class Reaction {
 	public void set_products(Chemical... chemicals) {
 		this.products_chemicals = chemicals;
 	}
-	
+
 	public void set_reactants_coef(int... coefs) {
-		this.reactants_coefficients = coef;
+		this.reactants_coefficients = coefs;
 	}
 
 	public void set_products_coef(int... coefs) {
-		this.products_coefficients = coef;
+		this.products_coefficients = coefs;
 	}
-	
+
 	public Chemical[] get_reactants() {
 		return this.reactants_chemicals;
+	}
+
+	public int[] get_reactants_coef() {
+		return this.reactants_coefficients;
 	}
 
 	public Chemical[] get_products() {
 		return this.products_chemicals;
 	}
 
-	public double get_current_positive_rate(double[] c, double temp) {
+	public int[] get_products_coef() {
+		return this.products_coefficients;
+	}
+
+	public int get_current_positive_rate(double[] c, double temp) {
 		if (c.length != reactants_chemicals.length) {
 			return 0;
 		}
@@ -50,10 +58,10 @@ public class Reaction {
 			}
 			i++;
 		}
-		return k;
+		return (int) k;
 	}
 
-	public double get_current_negative_rate(double[] c, double temp) {
+	public int get_current_negative_rate(double[] c, double temp) {
 		if (this.reversible == false) {
 			return 0;
 		} else {
@@ -67,7 +75,7 @@ public class Reaction {
 				}
 				i++;
 			}
-			return k;
+			return (int) k;
 		}
 	}
 }
