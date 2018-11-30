@@ -80,7 +80,7 @@ public class Reaction_container {
 				}
 			}
 			
-			for (i = 0; i < reactants.length; i++) {
+			for (i = 0; i < reactants.length; i++) {  //计算反应物变化量
 				current_unit = this.get_unit(reactants[i]);
 				d_current_unit = -rate * reactants_coef[i];
 				int new_unit = current_unit + d_current_unit;
@@ -92,7 +92,7 @@ public class Reaction_container {
 					}
 				}
 			}
-			for (i = 0; i < products.length; i++) {
+			for (i = 0; i < products.length; i++) {  //计算生成物变化量
 				current_unit = this.get_unit(products[i]);
 				d_current_unit = rate * products_coef[i];
 				int new_unit = current_unit + d_current_unit;
