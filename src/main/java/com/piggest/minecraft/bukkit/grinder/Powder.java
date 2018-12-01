@@ -11,7 +11,7 @@ public class Powder {
 		Powder.register_powder("iron_powder", "铁粉");
 		Powder.register_powder("gold_powder", "金粉");
 		Powder.register_powder("coal_powder", "煤粉");
-		Powder.register_powder("lap_powder", "青金石粉");
+		Powder.register_powder("lapis_powder", "青金石粉");
 		Powder.register_powder("copper_powder", "铜粉");
 		Powder.register_powder("al_powder", "铝粉");
 		Powder.register_powder("sn_powder", "锡粉");

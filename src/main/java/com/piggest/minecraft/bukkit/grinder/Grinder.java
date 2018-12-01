@@ -201,8 +201,8 @@ public class Grinder extends Multi_block_structure implements InventoryHolder, H
 		Grinder.add_recipe(Material.COAL_ORE, Material_ext.new_item("coal_powder", 2), 400); // 煤粉
 		Grinder.add_recipe(Material.COAL, Material_ext.new_item("coal_powder", 1), 200); // 煤粉
 
-		Grinder.add_recipe(Material.LAPIS_ORE, Material_ext.new_item("lap_powder", 12), 400); // 青金石粉
-		Grinder.add_recipe(Material.LAPIS_LAZULI, Material_ext.new_item("lap_powder", 1), 100); // 青金石粉
+		Grinder.add_recipe(Material.LAPIS_ORE, Material_ext.new_item("lapis_powder", 12), 400); // 青金石粉
+		Grinder.add_recipe(Material.LAPIS_LAZULI, Material_ext.new_item("lapis_powder", 1), 100); // 青金石粉
 	}
 
 	public static boolean is_empty(ItemStack item) {
