@@ -245,7 +245,7 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 	}
 
 	public int[] get_runner_cycle() {
-		return new int[] { this.temp_runner.get_cycle(), 10 };
+		return new int[] { this.temp_runner.get_cycle(), this.reaction_runner.get_cycle() };
 	}
 
 	public int[] get_runner_delay() {
@@ -300,5 +300,9 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		}
 		int last = this.reaction_container.get_unit(solid) - move_num * item_unit;
 		this.reaction_container.set_unit(solid, last);
+	}
+
+	public ItemStack get_solid_reactant_slot() {
+		return this.gui.getItem(9);
 	}
 }

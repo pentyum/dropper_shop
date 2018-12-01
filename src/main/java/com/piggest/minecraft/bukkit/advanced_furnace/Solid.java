@@ -13,13 +13,13 @@ public enum Solid implements Chemical {
 	}
 
 	public static Solid get_solid(ItemStack itemstack) {
-		return null;
+		return Solid.valueOf(Material_ext.get_id_name(itemstack));
 	}
 
 	public int get_unit() {
 		return this.unit;
 	}
-	
+
 	public ItemStack get_item_stack() {
 		return Material_ext.new_item(this.name(), 1);
 	}
