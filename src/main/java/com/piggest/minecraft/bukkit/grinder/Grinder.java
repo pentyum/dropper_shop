@@ -190,19 +190,19 @@ public class Grinder extends Multi_block_structure implements InventoryHolder, H
 
 		Grinder.add_recipe(Material.ORANGE_TULIP, Material.ORANGE_DYE, 2, 200); // 橙色染料
 
-		Grinder.add_recipe(Material.WHEAT, Material_ext.new_item("面粉", 1), 100); // 面粉
+		Grinder.add_recipe(Material.WHEAT, Material_ext.new_item("wheat_powder", 1), 100); // 面粉
 
-		Grinder.add_recipe(Material.IRON_ORE, Material_ext.new_item("铁粉", 2), 400); // 铁粉
-		Grinder.add_recipe(Material.IRON_INGOT, Material_ext.new_item("铁粉", 1), 200); // 铁粉
+		Grinder.add_recipe(Material.IRON_ORE, Material_ext.new_item("iron_powder", 2), 400); // 铁粉
+		Grinder.add_recipe(Material.IRON_INGOT, Material_ext.new_item("iron_powder", 1), 200); // 铁粉
 
-		Grinder.add_recipe(Material.GOLD_ORE, Material_ext.new_item("金粉", 2), 400); // 金粉
-		Grinder.add_recipe(Material.GOLD_INGOT, Material_ext.new_item("金粉", 1), 200); // 金粉
+		Grinder.add_recipe(Material.GOLD_ORE, Material_ext.new_item("gold_powder", 2), 400); // 金粉
+		Grinder.add_recipe(Material.GOLD_INGOT, Material_ext.new_item("gold_powder", 1), 200); // 金粉
 
-		Grinder.add_recipe(Material.COAL_ORE, Material_ext.new_item("煤粉", 2), 400); // 煤粉
-		Grinder.add_recipe(Material.COAL, Material_ext.new_item("煤粉", 1), 200); // 煤粉
+		Grinder.add_recipe(Material.COAL_ORE, Material_ext.new_item("coal_powder", 2), 400); // 煤粉
+		Grinder.add_recipe(Material.COAL, Material_ext.new_item("coal_powder", 1), 200); // 煤粉
 
-		Grinder.add_recipe(Material.LAPIS_ORE, Material_ext.new_item("青金石粉", 12), 400); // 青金石粉
-		Grinder.add_recipe(Material.LAPIS_LAZULI, Material_ext.new_item("青金石粉", 1), 100); // 青金石粉
+		Grinder.add_recipe(Material.LAPIS_ORE, Material_ext.new_item("lap_powder", 12), 400); // 青金石粉
+		Grinder.add_recipe(Material.LAPIS_LAZULI, Material_ext.new_item("lap_powder", 1), 100); // 青金石粉
 	}
 
 	public static boolean is_empty(ItemStack item) {
@@ -282,18 +282,18 @@ public class Grinder extends Multi_block_structure implements InventoryHolder, H
 		return null;
 	}
 
-	public Grinder_runner get_runner() {
-		return this.runner;
+	public BukkitRunnable[] get_runner() {
+		return new BukkitRunnable[] { this.runner, this.io_runner };
 	}
 
-	public int get_runner_cycle() {
-		return 1;
+	public int[] get_runner_cycle() {
+		return new int[] { 1, 10 };
 	}
-	
-	public int get_runner_delay() {
-		return 10;
+
+	public int[] get_runner_delay() {
+		return new int[] { 10, 10 };
 	}
-	
+
 	public BukkitRunnable get_io_runner() {
 		return this.io_runner;
 	}
@@ -390,7 +390,7 @@ public class Grinder extends Multi_block_structure implements InventoryHolder, H
 			this.set_flint(flint_item);
 		}
 		if (shop_save.get("product") != null) {
-			ItemStack product_item = new ItemStack(Material.getMaterial((String) shop_save.get("product")),
+			ItemStack product_item = Material_ext.new_item((String) shop_save.get("product"),
 					(Integer) shop_save.get("product-num"));
 			this.set_product(product_item);
 		}

@@ -8,11 +8,15 @@ public class Reaction {
 	private boolean reversible;
 	private double positive_rate;
 	private double negative_rate;
+	private double ea_p;
+	private double ea_n;
 
-	public Reaction(boolean reversible, double positive_rate, double negative_rate) {
+	public Reaction(boolean reversible, double positive_rate, double ea_p, double negative_rate, double ea_n) {
 		this.reversible = reversible;
 		this.positive_rate = positive_rate;
 		this.negative_rate = negative_rate;
+		this.ea_n = ea_n;
+		this.ea_p = ea_p;
 	}
 
 	public void set_reactants(Chemical... chemicals) {
@@ -51,7 +55,7 @@ public class Reaction {
 		if (c.length != reactants_chemicals.length) {
 			return 0;
 		}
-		double k = this.positive_rate * Math.exp(-1 / temp);
+		double k = this.positive_rate * Math.exp(-ea_p / temp);
 		for (int i = 0; i < this.reactants_chemicals.length; i++) {
 			if (this.reactants_chemicals[i] instanceof Gas) {
 				k *= Math.pow(c[i], this.reactants_coefficients[i]);
@@ -68,7 +72,7 @@ public class Reaction {
 			if (c.length != products_chemicals.length) {
 				return 0;
 			}
-			double k = this.negative_rate * Math.exp(-1 / temp);
+			double k = this.negative_rate * Math.exp(-ea_n / temp);
 			for (int i = 0; i < this.products_chemicals.length; i++) {
 				if (this.products_chemicals[i] instanceof Gas) {
 					k *= Math.pow(c[i], this.products_coefficients[i]);

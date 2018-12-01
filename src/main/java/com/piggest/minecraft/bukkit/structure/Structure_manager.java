@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.Location;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 
@@ -25,13 +26,24 @@ public abstract class Structure_manager<T extends Abstract_structure> {
 	public void add(T new_structure) {
 		if(new_structure instanceof HasRunner) {
 			HasRunner new_HasRunner = (HasRunner) new_structure;
-			new_HasRunner.get_runner().runTaskTimerAsynchronously(Dropper_shop_plugin.instance, new_HasRunner.get_runner_delay(), new_HasRunner.get_runner_cycle());
+			BukkitRunnable[] runnable_list = new_HasRunner.get_runner();
+			int i=0;
+			for(i=0;i<runnable_list.length;i++) {
+				Dropper_shop_plugin.instance.getLogger().info("已启动"+runnable_list[i].getClass().getName());
+				runnable_list[i].runTaskTimerAsynchronously(Dropper_shop_plugin.instance, new_HasRunner.get_runner_delay()[i], new_HasRunner.get_runner_cycle()[i]);
+			}
 		}
 		this.structure_map.put(new_structure.get_location(), new_structure);
 	}
 
-	public void remove(T shop) {
-		this.structure_map.remove(shop.get_location());
+	public void remove(T structure) {
+		if(structure instanceof HasRunner) {
+			HasRunner new_HasRunner = (HasRunner) structure;
+			for(BukkitRunnable runnable:new_HasRunner.get_runner()) {
+				runnable.cancel();
+			}
+		}
+		this.structure_map.remove(structure.get_location());
 	}
 
 	public void load_structures() {

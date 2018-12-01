@@ -14,6 +14,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
@@ -98,7 +99,7 @@ public class Depository extends Multi_block_structure implements Ownable, Invent
 	}
 
 	public boolean add(ItemStack item) {
-		Integer current_num = this.contents.get(Material_ext.get_name(item));
+		Integer current_num = this.contents.get(Material_ext.get_id_name(item));
 		if (current_num == null) { // 存储器没有这种物品
 			if (this.get_max_type() == this.get_type()) { // 超出种类限制
 				return false;
@@ -111,7 +112,7 @@ public class Depository extends Multi_block_structure implements Ownable, Invent
 			add_num = this.get_max_capacity() - this.get_capacity();
 		}
 		if (current_num + add_num > 0) { // 大于0才添加内容
-			this.contents.put(Material_ext.get_name(item), current_num + add_num);
+			this.contents.put(Material_ext.get_id_name(item), current_num + add_num);
 			item.setAmount(item.getAmount() - add_num);
 			return true;
 		} else {
@@ -142,18 +143,18 @@ public class Depository extends Multi_block_structure implements Ownable, Invent
 		}
 	}
 
-	public Depository_runner get_runner() {
-		return this.runner;
+	public BukkitRunnable[] get_runner() {
+		return new BukkitRunnable[] { this.runner, this.importer };
 	}
 
-	public int get_runner_cycle() {
-		return 20 * 3600;
+	public int[] get_runner_cycle() {
+		return new int[] { 20 * 3600, 10 };
 	}
-	
-	public int get_runner_delay() {
-		return 20;
+
+	public int[] get_runner_delay() {
+		return new int[] { 20, 10 };
 	}
-	
+
 	public Depository_item_importer get_importer() {
 		return this.importer;
 	}

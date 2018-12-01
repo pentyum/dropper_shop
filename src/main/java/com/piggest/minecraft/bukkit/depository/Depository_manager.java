@@ -3,7 +3,6 @@ package com.piggest.minecraft.bukkit.depository;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.structure.Structure_manager;
 
 public class Depository_manager extends Structure_manager<Depository> {
@@ -12,19 +11,6 @@ public class Depository_manager extends Structure_manager<Depository> {
 	public Depository_manager() {
 		super(Depository.class);
 		Depository_manager.instance = this;
-	}
-
-	@Override
-	public void add(Depository depository) {
-		depository.get_importer().runTaskTimer(Dropper_shop_plugin.instance, 10, 10);
-		super.add(depository);
-	}
-
-	@Override
-	public void remove(Depository depository) {
-		depository.get_runner().cancel();
-		depository.get_importer().cancel();
-		super.remove(depository);
 	}
 
 	public Depository find(String player_name, Location loc, boolean new_deop) {

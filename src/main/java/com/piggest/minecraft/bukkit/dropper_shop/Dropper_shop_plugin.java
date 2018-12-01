@@ -21,6 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_command_executor;
 import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_listener;
 import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_manager;
+import com.piggest.minecraft.bukkit.advanced_furnace.Reaction_container;
 import com.piggest.minecraft.bukkit.depository.Depository_command_executor;
 import com.piggest.minecraft.bukkit.depository.Depository_listener;
 import com.piggest.minecraft.bukkit.depository.Depository_manager;
@@ -139,7 +140,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		Update_component.init_component();
 		Update_component.set_recipe();
 		Grinder.init_recipe();
-
+		Reaction_container.init_reaction();
+		
 		this.shop_manager.load_structures();
 		this.depository_manager.load_structures();
 		this.grinder_manager.load_structures();

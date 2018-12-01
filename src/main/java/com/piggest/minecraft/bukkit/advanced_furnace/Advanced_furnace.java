@@ -15,7 +15,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.piggest.minecraft.bukkit.grinder.Grinder;
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
 
@@ -24,6 +27,7 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 	private double power = 0;
 	private Inventory gui = Bukkit.createInventory(this, 27, "高级熔炉");
 	private Advanced_furnace_temp_runner temp_runner = new Advanced_furnace_temp_runner(this);
+	private Advanced_furnace_reaction_runner reaction_runner = new Advanced_furnace_reaction_runner(this);
 	private Fuel fuel;
 	public int fuel_ticks = 0;
 
@@ -46,10 +50,12 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		ItemStack fuel_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
 		ItemStack product_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
 		ItemStack temp_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
+		ItemStack info_sign = new ItemStack(Material.CRAFTING_TABLE);
 		Grinder.set_item_name(raw_sign, "§r左边放原料");
 		Grinder.set_item_name(fuel_sign, "§r右边放燃料");
 		Grinder.set_item_name(product_sign, "§r左边为产品");
 		Grinder.set_item_name(temp_sign, "§r右边为温度");
+		Grinder.set_item_name(info_sign, "§r内部信息");
 		this.gui.setItem(10, raw_sign);
 		this.gui.setItem(12, raw_sign.clone());
 		this.gui.setItem(14, raw_sign.clone());
@@ -58,18 +64,20 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		this.gui.setItem(21, product_sign.clone());
 		this.gui.setItem(23, product_sign.clone());
 		this.gui.setItem(25, temp_sign);
+		this.gui.setItem(0, info_sign);
 		ItemStack temp_info = new ItemStack(Material.FURNACE);
 		ItemMeta temp_info_meta = temp_info.getItemMeta();
 		temp_info_meta.setDisplayName("§e信息");
 		ArrayList<String> lore = new ArrayList<String>();
 		lore.add("§r温度: 0 K");
-		lore.add("§r燃料: ");
+		lore.add("§r燃料: null");
 		lore.add("§r燃料功率: " + 0 + " K/tick");
 		lore.add("§r剩余燃烧时间: " + 0 + " s");
 		temp_info_meta.setLore(lore);
 		temp_info.setItemMeta(temp_info_meta);
 		this.gui.setItem(26, temp_info);
 		// this.set_fuel(Fuel.coal);
+		this.reaction_container.get_all_chemical().put(Solid.iron_powder, 10000);
 	}
 
 	public double get_base_temperature() {
@@ -101,6 +109,15 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		} else {
 			this.set_fuel(Fuel.valueOf(fuel_type));
 		}
+		if (shop_save.get("fuel-slot") != null) {
+			ItemStack slot_item = Material_ext.new_item((String) shop_save.get("fuel-slot"),
+					(Integer) shop_save.get("fuel-slot-num"));
+			this.set_fuel_slot(slot_item);
+		}
+	}
+
+	public void set_fuel_slot(ItemStack slot_item) {
+		this.gui.setItem(17, slot_item);
 	}
 
 	@Override
@@ -112,6 +129,11 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 			save.put("fuel-type", this.fuel.name());
 		} else {
 			save.put("fuel-type", "null");
+		}
+		ItemStack fuel_slot = get_fuel_slot();
+		if (!Grinder.is_empty(fuel_slot)) {
+			save.put("fuel-slot", Material_ext.get_id_name(fuel_slot));
+			save.put("fuel-slot-num", fuel_slot.getAmount());
 		}
 		return save;
 	}
@@ -218,19 +240,65 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		return this.get_k() * (this.reaction_container.get_temperature() - this.get_base_temperature());
 	}
 
-	public Advanced_furnace_temp_runner get_runner() {
-		return this.temp_runner;
+	public BukkitRunnable[] get_runner() {
+		return new BukkitRunnable[] { this.temp_runner, this.reaction_runner };
 	}
 
-	public int get_runner_cycle() {
-		return this.temp_runner.get_cycle();
+	public int[] get_runner_cycle() {
+		return new int[] { this.temp_runner.get_cycle(), 10 };
 	}
 
-	public int get_runner_delay() {
-		return 10;
+	public int[] get_runner_delay() {
+		return new int[] { 10, 10 };
 	}
 
 	public ItemStack get_fuel_slot() {
 		return this.gui.getItem(17);
+	}
+
+	public ItemStack get_solid_product_slot() {
+		return this.gui.getItem(18);
+	}
+
+	public void set_solid_product_slot(ItemStack item) {
+		this.gui.setItem(18, item);
+	}
+
+	public Reaction_container get_reaction_container() {
+		return this.reaction_container;
+	}
+
+	public void set_reactor_info(List<String> lore) {
+		ItemStack item = this.gui.getItem(0);
+		ItemMeta meta = item.getItemMeta();
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+	}
+
+	public void solid_to_product(Solid solid) {
+		ItemStack item = solid.get_item_stack();
+		int item_unit = solid.get_unit();
+		int move_num = this.reaction_container.get_unit(solid) / item_unit;
+		int max_stack_num = item.getMaxStackSize();
+		if (Grinder.is_empty(this.get_solid_product_slot())) {
+			if (move_num > max_stack_num) {
+				move_num = max_stack_num;
+			}
+			item.setAmount(move_num);
+			this.set_solid_product_slot(item);
+		} else {
+			ItemStack current_item = this.get_solid_product_slot();
+			if (current_item.isSimilar(item)) {
+				int current_num = current_item.getAmount();
+				if (current_num + move_num > max_stack_num) {
+					move_num = max_stack_num - current_num;
+				}
+				current_item.setAmount(current_num + move_num);
+			} else {
+				move_num = 0;
+			}
+		}
+		int last = this.reaction_container.get_unit(solid) - move_num * item_unit;
+		this.reaction_container.set_unit(solid, last);
 	}
 }
