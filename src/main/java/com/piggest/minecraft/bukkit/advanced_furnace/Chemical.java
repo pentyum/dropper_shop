@@ -7,10 +7,8 @@ public interface Chemical {
 	public String get_name();
 
 	public static Chemical get_chemical(String name) {
-		if(name.contains("_LOG")) {
+		if (name.contains("_LOG")) {
 			name = "LOG";
-		}else if(name.contains("")) {
-			name = "";
 		}
 		Solid solid = Solid.valueOf(name);
 		if (solid != null) {
