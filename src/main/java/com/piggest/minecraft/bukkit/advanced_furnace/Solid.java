@@ -27,4 +27,8 @@ public enum Solid implements Chemical {
 	public String get_displayname() {
 		return this.name() + "(s)";
 	}
+
+	public String get_name() {
+		return this.name();
+	}
 }

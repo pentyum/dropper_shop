@@ -7,4 +7,8 @@ public enum Gas implements Chemical {
 		return this.name() + "(g)";
 	}
 
+	public String get_name() {
+		return this.name();
+	}
+
 }

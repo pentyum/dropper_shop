@@ -163,11 +163,11 @@ public class Reaction_container {
 		return this.rate_map.get(chemical);
 	}
 
-	public void set_unit(Solid solid, int unit) {
+	public void set_unit(Chemical chemical, int unit) {
 		if (unit <= 0) {
-			this.unit_map.remove(solid);
+			this.unit_map.remove(chemical);
 		} else {
-			this.unit_map.put(solid, unit);
+			this.unit_map.put(chemical, unit);
 		}
 	}
 }

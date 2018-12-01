@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -104,16 +105,37 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		this.set_temperature((Double) shop_save.get("temperature"));
 		this.fuel_ticks = ((Integer) shop_save.get("fuel-ticks"));
 		String fuel_type = (String) shop_save.get("fuel-type");
+		@SuppressWarnings("unchecked")
+		HashMap<String, Integer> contents = (HashMap<String, Integer>) shop_save.get("contents");
 		if (fuel_type.equals("null")) {
 			this.set_fuel(null);
 		} else {
 			this.set_fuel(Fuel.valueOf(fuel_type));
 		}
 		if (shop_save.get("fuel-slot") != null) {
-			ItemStack slot_item = Material_ext.new_item((String) shop_save.get("fuel-slot"),
+			ItemStack fuel_slot_item = Material_ext.new_item((String) shop_save.get("fuel-slot"),
 					(Integer) shop_save.get("fuel-slot-num"));
-			this.set_fuel_slot(slot_item);
+			this.set_fuel_slot(fuel_slot_item);
 		}
+		if (shop_save.get("solid-product-slot") != null) {
+			ItemStack solid_product_slot_item = Material_ext.new_item((String) shop_save.get("solid-product-slot"),
+					(Integer) shop_save.get("solid-product-slot-num"));
+			this.set_solid_product_slot(solid_product_slot_item);
+		}
+		if (shop_save.get("solid-reactant-slot") != null) {
+			ItemStack solid_reactant_slot_item = Material_ext.new_item((String) shop_save.get("solid-reactant-slot"),
+					(Integer) shop_save.get("solid-reactant-slot-num"));
+			this.set_solid_reactant_slot(solid_reactant_slot_item);
+		}
+		for (Entry<String, Integer> entry : contents.entrySet()) {
+			String name = entry.getKey();
+			Integer unit = entry.getValue();
+			this.reaction_container.set_unit(Chemical.get_chemical(name), unit);
+		}
+	}
+
+	public void set_solid_reactant_slot(ItemStack slot_item) {
+		this.gui.setItem(9, slot_item);
 	}
 
 	public void set_fuel_slot(ItemStack slot_item) {
@@ -123,6 +145,7 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 	@Override
 	public HashMap<String, Object> get_save() {
 		HashMap<String, Object> save = super.get_save();
+		HashMap<String, Integer> contents = new HashMap<String, Integer>();
 		save.put("temperature", this.get_temperature());
 		save.put("fuel-ticks", this.fuel_ticks);
 		if (this.fuel != null) {
@@ -130,11 +153,27 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		} else {
 			save.put("fuel-type", "null");
 		}
-		ItemStack fuel_slot = get_fuel_slot();
+		ItemStack fuel_slot = this.get_fuel_slot();
+		ItemStack solid_product_slot = this.get_solid_product_slot();
+		ItemStack solid_reactant_slot = this.get_solid_reactant_slot();
 		if (!Grinder.is_empty(fuel_slot)) {
 			save.put("fuel-slot", Material_ext.get_id_name(fuel_slot));
 			save.put("fuel-slot-num", fuel_slot.getAmount());
 		}
+		if (!Grinder.is_empty(solid_product_slot)) {
+			save.put("solid-product-slot", Material_ext.get_id_name(solid_product_slot));
+			save.put("solid-product-slot-num", solid_product_slot.getAmount());
+		}
+		if (!Grinder.is_empty(solid_reactant_slot)) {
+			save.put("solid-reactant-slot", Material_ext.get_id_name(solid_reactant_slot));
+			save.put("solid-reactant-slot-num", solid_reactant_slot.getAmount());
+		}
+		for (Entry<Chemical, Integer> entry : this.get_reaction_container().get_all_chemical().entrySet()) {
+			Chemical chemical = entry.getKey();
+			Integer unit = entry.getValue();
+			contents.put(chemical.get_name(), unit);
+		}
+		save.put("contents", contents);
 		return save;
 	}
 
