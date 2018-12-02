@@ -11,4 +11,9 @@ public enum Gas implements Chemical {
 		return this.name();
 	}
 
+	public static Gas get_gas(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
