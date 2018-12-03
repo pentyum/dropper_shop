@@ -2,6 +2,7 @@ package com.piggest.minecraft.bukkit.advanced_furnace;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map.Entry;
 
 import org.bukkit.inventory.ItemStack;
@@ -35,14 +36,31 @@ public class Advanced_furnace_reaction_runner extends BukkitRunnable {
 					+ reaction_container.get_rate(entry.getKey()) * (20 / this.get_cycle()) + "/s)");
 		}
 		advanced_furnace.set_reactor_info(lore);
-		for (Entry<Chemical, Integer> entry : all_chemical.entrySet()) {
-			Chemical chemical = entry.getKey();
-			if (chemical instanceof Solid) {
-				Solid solid = (Solid) chemical;
-				if (reaction_container.get_rate(solid) > 0) {
-					advanced_furnace.solid_to_product(solid);
+		if (advanced_furnace.get_auto_product() == true) {
+			Iterator<Entry<Chemical, Integer>> iterator = all_chemical.entrySet().iterator();
+			while (iterator.hasNext()) {
+				Entry<Chemical, Integer> entry = iterator.next();
+				Chemical chemical = entry.getKey();
+				if (chemical instanceof Solid) {
+					Solid solid = (Solid) chemical;
+					if (reaction_container.get_rate(solid) > 0) {
+						advanced_furnace.solid_to_product(solid, iterator);
+					}
 				}
 			}
+		}
+		if (advanced_furnace.pressed_to_product() == true) {
+			Iterator<Entry<Chemical, Integer>> iterator = all_chemical.entrySet().iterator();
+			while (iterator.hasNext()) {
+				Entry<Chemical, Integer> entry = iterator.next();
+				Chemical chemical = entry.getKey();
+				if (chemical instanceof Solid) {
+					Solid solid = (Solid) chemical;
+					advanced_furnace.solid_to_product(solid, iterator);
+				}
+
+			}
+			advanced_furnace.unpress_to_product();
 		}
 	}
 

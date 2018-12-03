@@ -2,6 +2,7 @@ package com.piggest.minecraft.bukkit.advanced_furnace;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -32,7 +33,6 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 	private Advanced_furnace_io_runner io_runner = new Advanced_furnace_io_runner(this);
 	private Fuel fuel;
 	public int fuel_ticks = 0;
-	private int io;
 
 	public static double get_block_temperature(Block block) {
 		double base_temp = block.getTemperature() * 20 + 270;
@@ -53,12 +53,18 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		ItemStack fuel_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
 		ItemStack product_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
 		ItemStack temp_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
-		ItemStack info_sign = new ItemStack(Material.CRAFTING_TABLE);
+		ItemStack info_workbench = new ItemStack(Material.CRAFTING_TABLE);
+		ItemStack auto_product = new ItemStack(Material.HOPPER_MINECART);
+		ItemStack to_product = new ItemStack(Material.CHEST_MINECART);
+
 		Grinder.set_item_name(raw_sign, "§r左边放原料");
 		Grinder.set_item_name(fuel_sign, "§r右边放燃料");
 		Grinder.set_item_name(product_sign, "§r左边为产品");
 		Grinder.set_item_name(temp_sign, "§r右边为温度");
-		Grinder.set_item_name(info_sign, "§r内部信息");
+		Grinder.set_item_name(info_workbench, "§e内部信息");
+		Grinder.set_item_name(auto_product, "§e固体产品自动提取");
+		Grinder.set_item_name(to_product, "§r立刻取出固体");
+
 		this.gui.setItem(10, raw_sign);
 		this.gui.setItem(12, raw_sign.clone());
 		this.gui.setItem(14, raw_sign.clone());
@@ -67,7 +73,10 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		this.gui.setItem(21, product_sign.clone());
 		this.gui.setItem(23, product_sign.clone());
 		this.gui.setItem(25, temp_sign);
-		this.gui.setItem(0, info_sign);
+		this.gui.setItem(0, info_workbench);
+		this.gui.setItem(2, auto_product);
+		this.gui.setItem(3, to_product);
+
 		ItemStack temp_info = new ItemStack(Material.FURNACE);
 		ItemMeta temp_info_meta = temp_info.getItemMeta();
 		temp_info_meta.setDisplayName("§e信息");
@@ -79,8 +88,9 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		temp_info_meta.setLore(lore);
 		temp_info.setItemMeta(temp_info_meta);
 		this.gui.setItem(26, temp_info);
+		this.set_auto_product(true);
 		// this.set_fuel(Fuel.coal);
-		this.reaction_container.get_all_chemical().put(Solid.iron_powder, 10000);
+		// this.reaction_container.get_all_chemical().put(Solid.iron_powder, 10000);
 	}
 
 	public double get_base_temperature() {
@@ -282,15 +292,15 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 	}
 
 	public BukkitRunnable[] get_runner() {
-		return new BukkitRunnable[] { this.temp_runner, this.reaction_runner,this.io_runner };
+		return new BukkitRunnable[] { this.temp_runner, this.reaction_runner, this.io_runner };
 	}
 
 	public int[] get_runner_cycle() {
-		return new int[] { this.temp_runner.get_cycle(), this.reaction_runner.get_cycle() ,2};
+		return new int[] { this.temp_runner.get_cycle(), this.reaction_runner.get_cycle(), 2 };
 	}
 
 	public int[] get_runner_delay() {
-		return new int[] { 10, 10,10 };
+		return new int[] { 10, 10, 10 };
 	}
 
 	public ItemStack get_fuel_slot() {
@@ -316,7 +326,7 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		item.setItemMeta(meta);
 	}
 
-	public void solid_to_product(Solid solid) {
+	public void solid_to_product(Solid solid, Iterator<Entry<Chemical, Integer>> iterator) {
 		ItemStack item = solid.get_item_stack();
 		int item_unit = solid.get_unit();
 		int move_num = this.reaction_container.get_unit(solid) / item_unit;
@@ -340,10 +350,48 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 			}
 		}
 		int last = this.reaction_container.get_unit(solid) - move_num * item_unit;
-		this.reaction_container.set_unit(solid, last);
+		if (last != 0) {
+			this.reaction_container.set_unit(solid, last);
+		} else {
+			iterator.remove();
+		}
 	}
 
 	public ItemStack get_solid_reactant_slot() {
 		return this.gui.getItem(9);
+	}
+
+	public void set_auto_product(boolean auto_product) {
+		ItemStack item = this.gui.getItem(2);
+		ItemMeta meta = item.getItemMeta();
+		ArrayList<String> lore = new ArrayList<String>();
+		lore.add(auto_product ? "§r开启" : "§r关闭");
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+	}
+
+	public boolean get_auto_product() {
+		ItemStack item = this.gui.getItem(2);
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = meta.getLore();
+		String info = lore.get(0);
+		if (info.equals("§r开启")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public void unpress_to_product() {
+		ItemStack item = this.gui.getItem(3);
+		ItemMeta meta = item.getItemMeta();
+		meta.setLore(null);
+		item.setItemMeta(meta);
+	}
+
+	public boolean pressed_to_product() {
+		ItemStack item = this.gui.getItem(3);
+		ItemMeta meta = item.getItemMeta();
+		return meta.hasLore();
 	}
 }

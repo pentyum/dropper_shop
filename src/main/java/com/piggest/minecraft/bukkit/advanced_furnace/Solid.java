@@ -8,7 +8,8 @@ public enum Solid implements Chemical {
 	IRON_ORE(1000), iron_powder(1000), IRON_INGOT(1000), GOLD_ORE(1000), gold_powder(1000), GOLD_INGOT(1000),
 	LAPIS_ORE(1000), lapis_powder(1000), LAPIS_LAZULI(1000), LOG(1000), CHARCOAL(1000), COBBLESTONE(1000), STONE(1000),
 	GLASS(1000), SAND(1000), CLAY(1000), TERRACOTTA(1000), CLAY_BALL(1000), BRICK(1000), NETHERRACK(1000),
-	NETHER_BRICK(1000), copper_powder(1000), sliver_powder(1000), GRAVEL(1000), FLINT(1000);
+	NETHER_BRICK(1000), copper_powder(1000), sliver_powder(1000), GRAVEL(1000), FLINT(1000), QUARTZ(1000),
+	OBSIDIAN(1000), REDSTONE(1000), aluminium_oxide(1000);
 
 	private int unit;
 
@@ -44,6 +45,7 @@ public enum Solid implements Chemical {
 		Solid solid = null;
 		try {
 			solid = Solid.valueOf(name);
+		} catch (Exception e) {
 		} finally {
 		}
 		return solid;

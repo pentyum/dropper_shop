@@ -24,69 +24,77 @@ public class Reaction_container {
 		get_iron.set_reactants_coef(1);
 		get_iron.set_products_coef(1);
 		reactions.put("get_iron", get_iron);
-		
-		Reaction get_gold = new Reaction(false, 120, 1200, 1, 1000);
+
+		Reaction get_gold = new Reaction(false, 120, 1400, 1, 1000);
 		get_gold.set_reactants(Solid.gold_powder);
 		get_gold.set_products(Solid.GOLD_INGOT);
 		get_gold.set_reactants_coef(1);
 		get_gold.set_products_coef(1);
 		reactions.put("get_gold", get_gold);
-		
-		Reaction get_lapis = new Reaction(false, 120, 1400, 1, 1000);
+
+		Reaction get_lapis = new Reaction(false, 120, 1500, 1, 1000);
 		get_lapis.set_reactants(Solid.lapis_powder);
 		get_lapis.set_products(Solid.LAPIS_LAZULI);
 		get_lapis.set_reactants_coef(1);
 		get_lapis.set_products_coef(1);
 		reactions.put("get_lapis", get_lapis);
-		
+
 		Reaction get_glass = new Reaction(false, 200, 1900, 1, 1000);
 		get_glass.set_reactants(Solid.SAND);
 		get_glass.set_products(Solid.GLASS);
 		get_glass.set_reactants_coef(1);
 		get_glass.set_products_coef(1);
 		reactions.put("get_glass", get_glass);
-		
-		Reaction get_stone = new Reaction(false, 120, 1300, 1, 1000);
+
+		Reaction get_stone = new Reaction(false, 120, 1400, 1, 1000);
 		get_stone.set_reactants(Solid.COBBLESTONE);
 		get_stone.set_products(Solid.STONE);
 		get_stone.set_reactants_coef(1);
 		get_stone.set_products_coef(1);
 		reactions.put("get_stone", get_stone);
-		
-		Reaction get_brick = new Reaction(false, 150, 1400, 1, 1000);
+
+		Reaction get_brick = new Reaction(false, 150, 1700, 1, 1000);
 		get_brick.set_reactants(Solid.CLAY_BALL);
 		get_brick.set_products(Solid.BRICK);
 		get_brick.set_reactants_coef(1);
 		get_brick.set_products_coef(1);
 		reactions.put("get_brick", get_brick);
-		
-		Reaction get_terracotta = new Reaction(false, 150, 1400, 1, 1000);
+
+		Reaction get_terracotta = new Reaction(false, 150, 1500, 1, 1000);
 		get_terracotta.set_reactants(Solid.CLAY);
 		get_terracotta.set_products(Solid.TERRACOTTA);
 		get_terracotta.set_reactants_coef(1);
 		get_terracotta.set_products_coef(1);
 		reactions.put("get_terracotta", get_terracotta);
-		
+
 		Reaction get_nether_brick = new Reaction(false, 180, 2000, 1, 1000);
 		get_nether_brick.set_reactants(Solid.NETHERRACK);
 		get_nether_brick.set_products(Solid.NETHER_BRICK);
 		get_nether_brick.set_reactants_coef(1);
 		get_nether_brick.set_products_coef(1);
 		reactions.put("get_nether_brick", get_nether_brick);
-		
-		Reaction get_charcoal = new Reaction(false, 150, 1300, 1, 1000);
+
+		Reaction get_charcoal = new Reaction(false, 80, 1300, 1, 1000);
 		get_charcoal.set_reactants(Solid.LOG);
 		get_charcoal.set_products(Solid.CHARCOAL);
 		get_charcoal.set_reactants_coef(1);
 		get_charcoal.set_products_coef(1);
 		reactions.put("get_charcoal", get_charcoal);
-		
-		Reaction get_flint = new Reaction(false, 150, 1600, 1, 1000);
+
+		Reaction get_flint = new Reaction(false, 130, 1600, 1, 1000);
 		get_flint.set_reactants(Solid.GRAVEL);
 		get_flint.set_products(Solid.FLINT);
 		get_flint.set_reactants_coef(2);
 		get_flint.set_products_coef(1);
 		reactions.put("get_flint", get_flint);
+
+		Reaction get_obsidian = new Reaction(false, 130, 2500, 1, 1000);
+		get_obsidian.set_reactants(Solid.STONE, Solid.QUARTZ);
+		get_obsidian.set_products(Solid.OBSIDIAN);
+		get_obsidian.set_reactants_coef(1, 4);
+		get_obsidian.set_products_coef(1);
+		reactions.put("get_obsidian", get_obsidian);
+
 	}
 
 	public int get_unit(Chemical chemical) {
@@ -106,6 +114,7 @@ public class Reaction_container {
 	}
 
 	public void run_all_reactions() {
+		this.rate_map = new HashMap<Chemical, Integer>();
 		for (Entry<String, Reaction> entry : reactions.entrySet()) {
 			Reaction reaction = entry.getValue();
 			int i;
@@ -156,7 +165,8 @@ public class Reaction_container {
 				d_current_unit = -rate * reactants_coef[i];
 				int new_unit = current_unit + d_current_unit;
 				if (new_unit > 0) {
-					this.rate_map.put(reactants[i], d_current_unit);
+					int old_rate = this.get_rate(reactants[i]);
+					this.rate_map.put(reactants[i], old_rate + d_current_unit);
 					this.unit_map.put(reactants[i], current_unit + d_current_unit);
 				} else {
 					if (current_unit > 0) {
@@ -181,7 +191,7 @@ public class Reaction_container {
 			}
 		}
 	}
-
+	
 	public void set_temperature(double temperature) {
 		this.temperature = temperature;
 	}
@@ -189,7 +199,7 @@ public class Reaction_container {
 	public double get_temperature() {
 		return this.temperature;
 	}
-
+	
 	public void clear_gas() {
 		for (Chemical chemical : this.unit_map.keySet()) {
 			if (chemical instanceof Gas) {
@@ -223,7 +233,12 @@ public class Reaction_container {
 	}
 
 	public int get_rate(Chemical chemical) {
-		return this.rate_map.get(chemical);
+		Integer rate = this.rate_map.get(chemical);
+		if (rate != null) {
+			return this.rate_map.get(chemical);
+		} else {
+			return 0;
+		}
 	}
 
 	public void set_unit(Chemical chemical, int unit) {

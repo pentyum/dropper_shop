@@ -1,5 +1,8 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -7,6 +10,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 
@@ -43,6 +48,26 @@ public class Advanced_furnace_listener implements Listener {
 			int slot = event.getSlot();
 			if (slot >= 0 && slot <= 8 || slot == 10 || slot == 12 || slot == 14 || slot == 16 || slot == 19
 					|| slot == 21 || slot == 23 || slot == 25 || slot == 26) {
+				if (slot == 2) {
+					ItemStack item = event.getCurrentItem();
+					ItemMeta meta = item.getItemMeta();
+					List<String> lore = meta.getLore();
+					String info = lore.get(0);
+					if (info.equals("§r开启")) {
+						lore.set(0, "§r关闭");
+					} else {
+						lore.set(0, "§r开启");
+					}
+					meta.setLore(lore);
+					item.setItemMeta(meta);
+				}else if (slot == 3) {
+					ItemStack item = event.getCurrentItem();
+					ItemMeta meta = item.getItemMeta();
+					List<String> lore = new ArrayList<String>();
+					lore.add("true");
+					meta.setLore(lore);
+					item.setItemMeta(meta);
+				}
 				event.setCancelled(true);
 			}
 		}
