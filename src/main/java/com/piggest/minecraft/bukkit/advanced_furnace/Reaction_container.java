@@ -18,61 +18,75 @@ public class Reaction_container {
 		 * ammonia_synthesis.set_products_coef(2); reactions.put("ammonia_synthesis",
 		 * ammonia_synthesis);
 		 */
-		Reaction get_iron = new Reaction(false, 150, 1700, 1, 1000);
+		Reaction get_iron = new Reaction(false, 150, 1800, 1, 1000);
 		get_iron.set_reactants(Solid.iron_powder);
 		get_iron.set_products(Solid.IRON_INGOT);
 		get_iron.set_reactants_coef(1);
 		get_iron.set_products_coef(1);
 		reactions.put("get_iron", get_iron);
 		
-		Reaction get_gold = new Reaction(false, 120, 1000, 1, 1000);
+		Reaction get_gold = new Reaction(false, 120, 1200, 1, 1000);
 		get_gold.set_reactants(Solid.gold_powder);
 		get_gold.set_products(Solid.GOLD_INGOT);
 		get_gold.set_reactants_coef(1);
 		get_gold.set_products_coef(1);
 		reactions.put("get_gold", get_gold);
 		
-		Reaction get_lapis = new Reaction(false, 120, 1200, 1, 1000);
+		Reaction get_lapis = new Reaction(false, 120, 1400, 1, 1000);
 		get_lapis.set_reactants(Solid.lapis_powder);
 		get_lapis.set_products(Solid.LAPIS_LAZULI);
 		get_lapis.set_reactants_coef(1);
 		get_lapis.set_products_coef(1);
 		reactions.put("get_lapis", get_lapis);
 		
-		Reaction get_glass = new Reaction(false, 170, 1500, 1, 1000);
+		Reaction get_glass = new Reaction(false, 200, 1900, 1, 1000);
 		get_glass.set_reactants(Solid.SAND);
 		get_glass.set_products(Solid.GLASS);
 		get_glass.set_reactants_coef(1);
 		get_glass.set_products_coef(1);
 		reactions.put("get_glass", get_glass);
 		
-		Reaction get_stone = new Reaction(false, 120, 800, 1, 1000);
+		Reaction get_stone = new Reaction(false, 120, 1300, 1, 1000);
 		get_stone.set_reactants(Solid.COBBLESTONE);
 		get_stone.set_products(Solid.STONE);
 		get_stone.set_reactants_coef(1);
 		get_stone.set_products_coef(1);
 		reactions.put("get_stone", get_stone);
 		
-		Reaction get_brick = new Reaction(false, 150, 1200, 1, 1000);
+		Reaction get_brick = new Reaction(false, 150, 1400, 1, 1000);
 		get_brick.set_reactants(Solid.CLAY_BALL);
 		get_brick.set_products(Solid.BRICK);
 		get_brick.set_reactants_coef(1);
 		get_brick.set_products_coef(1);
 		reactions.put("get_brick", get_brick);
 		
-		Reaction get_nether_brick = new Reaction(false, 180, 1700, 1, 1000);
+		Reaction get_terracotta = new Reaction(false, 150, 1400, 1, 1000);
+		get_terracotta.set_reactants(Solid.CLAY);
+		get_terracotta.set_products(Solid.TERRACOTTA);
+		get_terracotta.set_reactants_coef(1);
+		get_terracotta.set_products_coef(1);
+		reactions.put("get_terracotta", get_terracotta);
+		
+		Reaction get_nether_brick = new Reaction(false, 180, 2000, 1, 1000);
 		get_nether_brick.set_reactants(Solid.NETHERRACK);
 		get_nether_brick.set_products(Solid.NETHER_BRICK);
 		get_nether_brick.set_reactants_coef(1);
 		get_nether_brick.set_products_coef(1);
 		reactions.put("get_nether_brick", get_nether_brick);
 		
-		Reaction get_charcoal = new Reaction(false, 150, 700, 1, 1000);
+		Reaction get_charcoal = new Reaction(false, 150, 1300, 1, 1000);
 		get_charcoal.set_reactants(Solid.LOG);
 		get_charcoal.set_products(Solid.CHARCOAL);
 		get_charcoal.set_reactants_coef(1);
 		get_charcoal.set_products_coef(1);
 		reactions.put("get_charcoal", get_charcoal);
+		
+		Reaction get_flint = new Reaction(false, 150, 1600, 1, 1000);
+		get_flint.set_reactants(Solid.GRAVEL);
+		get_flint.set_products(Solid.FLINT);
+		get_flint.set_reactants_coef(2);
+		get_flint.set_products_coef(1);
+		reactions.put("get_flint", get_flint);
 	}
 
 	public int get_unit(Chemical chemical) {

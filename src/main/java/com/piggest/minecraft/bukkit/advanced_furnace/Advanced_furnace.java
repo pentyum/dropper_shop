@@ -29,8 +29,10 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 	private Inventory gui = Bukkit.createInventory(this, 27, "高级熔炉");
 	private Advanced_furnace_temp_runner temp_runner = new Advanced_furnace_temp_runner(this);
 	private Advanced_furnace_reaction_runner reaction_runner = new Advanced_furnace_reaction_runner(this);
+	private Advanced_furnace_io_runner io_runner = new Advanced_furnace_io_runner(this);
 	private Fuel fuel;
 	public int fuel_ticks = 0;
+	private int io;
 
 	public static double get_block_temperature(Block block) {
 		double base_temp = block.getTemperature() * 20 + 270;
@@ -280,15 +282,15 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 	}
 
 	public BukkitRunnable[] get_runner() {
-		return new BukkitRunnable[] { this.temp_runner, this.reaction_runner };
+		return new BukkitRunnable[] { this.temp_runner, this.reaction_runner,this.io_runner };
 	}
 
 	public int[] get_runner_cycle() {
-		return new int[] { this.temp_runner.get_cycle(), this.reaction_runner.get_cycle() };
+		return new int[] { this.temp_runner.get_cycle(), this.reaction_runner.get_cycle() ,2};
 	}
 
 	public int[] get_runner_delay() {
-		return new int[] { 10, 10 };
+		return new int[] { 10, 10,10 };
 	}
 
 	public ItemStack get_fuel_slot() {
