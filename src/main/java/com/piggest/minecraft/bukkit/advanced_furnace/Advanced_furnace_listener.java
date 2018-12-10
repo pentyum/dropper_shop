@@ -38,12 +38,10 @@ public class Advanced_furnace_listener implements Listener {
 
 	@EventHandler
 	public void on_use_gas_bottle(PlayerInteractEvent event) {
-		if (event.isCancelled() == true) {
-			return;
-		}
 		if (event.getAction() == Action.RIGHT_CLICK_AIR) {
 			ItemStack item = event.getItem();
 			if (Gas_bottle.is_gas_bottle(item)) {
+				event.getPlayer().sendMessage("使用了气体瓶");
 				Gas_bottle.clean_contents(item);
 				Gas_bottle.set_contents(item, Gas.oxygen, 210);
 				Gas_bottle.set_contents(item, Gas.nitrogen, 790);
@@ -63,7 +61,7 @@ public class Advanced_furnace_listener implements Listener {
 			int slot = event.getSlot();
 			if (slot >= 0 && slot <= 8 || slot == 10 || slot == 12 || slot == 14 || slot == 16 || slot == 19
 					|| slot == 21 || slot == 23 || slot == 25 || slot == 26) {
-				if (slot == 2) {
+				if (slot == 2 || slot == 5) {
 					ItemStack item = event.getCurrentItem();
 					ItemMeta meta = item.getItemMeta();
 					List<String> lore = meta.getLore();
@@ -75,7 +73,7 @@ public class Advanced_furnace_listener implements Listener {
 					}
 					meta.setLore(lore);
 					item.setItemMeta(meta);
-				} else if (slot == 3) {
+				} else if (slot == 3 || slot == 4 || slot == 6) {
 					ItemStack item = event.getCurrentItem();
 					ItemMeta meta = item.getItemMeta();
 					List<String> lore = new ArrayList<String>();

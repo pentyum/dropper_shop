@@ -62,9 +62,6 @@ public class Depository_listener implements Listener {
 
 	@EventHandler
 	public void on_use_reader(PlayerInteractEvent event) {
-		if (event.isCancelled() == true) {
-			return;
-		}
 		ItemStack item = event.getItem();
 		if (item == null) {
 			return;
@@ -98,6 +95,9 @@ public class Depository_listener implements Listener {
 					}
 				}
 				if (material.isBlock() == true) {
+					if (event.isCancelled() == true) {
+						return;
+					}
 					BlockFace face = event.getBlockFace();
 					if (block.getType() == Material.GRASS || block.getType() == Material.TALL_GRASS) {
 						if (depository.remove(material_str) != null) {

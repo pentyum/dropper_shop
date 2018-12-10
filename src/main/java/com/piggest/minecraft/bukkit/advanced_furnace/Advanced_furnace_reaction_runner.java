@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -20,33 +21,78 @@ public class Advanced_furnace_reaction_runner extends BukkitRunnable {
 	public void run() {
 		ItemStack solid_reactant_slot = advanced_furnace.get_solid_reactant_slot();
 		ItemStack gas_reactant_slot = advanced_furnace.get_gas_reactant_slot();
+		Reaction_container reaction_container = this.advanced_furnace.get_reaction_container();
 		if (!Grinder.is_empty(solid_reactant_slot)) {
 			Solid solid = Solid.get_solid(solid_reactant_slot);
 			if (solid != null) {
 				solid_reactant_slot.setAmount(solid_reactant_slot.getAmount() - 1);
-				advanced_furnace.get_reaction_container().set_unit(solid,
-						advanced_furnace.get_reaction_container().get_unit(solid) + solid.get_unit());
+				reaction_container.set_unit(solid, reaction_container.get_unit(solid) + solid.get_unit());
 			}
 		}
-		
-		Reaction_container reaction_container = this.advanced_furnace.get_reaction_container();
-		
-		if (!Gas_bottle.is_gas_bottle(gas_reactant_slot)) {
+
+		if (Gas_bottle.is_gas_bottle(gas_reactant_slot)) {
+			ItemStack gas_product_slot = advanced_furnace.get_gas_product_slot();
 			if (Gas_bottle.calc_capacity(gas_reactant_slot) == 0) {// 处理空瓶
-				HashMap<Chemical, Integer> all_chemical = reaction_container.get_all_chemical();
-				for (Entry<Chemical, Integer> entry : all_chemical.entrySet()) {
-					Chemical chemical = entry.getKey();
-					if(chemical instanceof Gas) {
-						
+				if (Grinder.is_empty(gas_product_slot)) {
+					int inside_gas_capacity = 0;
+					HashMap<Chemical, Integer> all_chemical = reaction_container.get_all_chemical();
+					ArrayList<Gas> gas_list = new ArrayList<Gas>();
+					ArrayList<Integer> need_to_move = new ArrayList<Integer>();
+					for (Entry<Chemical, Integer> entry : all_chemical.entrySet()) {
+						Chemical chemical = entry.getKey();
+						if (chemical instanceof Gas) {
+							gas_list.add((Gas) chemical);
+							need_to_move.add(entry.getValue());
+							inside_gas_capacity += entry.getValue();
+						}
+					}
+					if (inside_gas_capacity > 1000) {
+						for (int i = 0; i < gas_list.size(); i++) {
+							need_to_move.set(i, need_to_move.get(i) * 1000 / inside_gas_capacity);
+						}
+					}
+					ItemStack new_bottle = Gas_bottle.item.clone();
+					for (int i = 0; i < gas_list.size(); i++) {
+						Gas gas = gas_list.get(i);
+						int move = need_to_move.get(i);
+						reaction_container.set_unit(gas, reaction_container.get_unit(gas) - move);
+						Gas_bottle.set_contents(new_bottle, gas, move);
+					}
+					advanced_furnace.set_gas_product_slot(new_bottle);
+					gas_reactant_slot.setAmount(gas_reactant_slot.getAmount() - 1);
+				}
+
+			} else { // 非空瓶
+				boolean flag = false;
+
+				if (Grinder.is_empty(gas_product_slot)) {
+					advanced_furnace.set_gas_product_slot(Gas_bottle.item.clone());
+					flag = true;
+				} else {
+					if (gas_product_slot.isSimilar(Gas_bottle.item)) {
+						int new_num = gas_product_slot.getAmount() + 1;
+						if (new_num <= Gas_bottle.item.getMaxStackSize()) {
+							gas_product_slot.setAmount(new_num);
+							flag = true;
+						}
 					}
 				}
-			} else {  //非空瓶
-				HashMap<Gas,Integer> gas_map = Gas_bottle.get_gas_map(gas_reactant_slot);
-				
+				if (flag == true) {
+					HashMap<Gas, Integer> gas_map = Gas_bottle.get_gas_map(gas_reactant_slot);
+					for (Entry<Gas, Integer> entry : gas_map.entrySet()) {
+						Chemical chemical = entry.getKey();
+						if (chemical instanceof Gas) {
+							reaction_container.set_unit(chemical,
+									reaction_container.get_unit(chemical) + entry.getValue());
+						}
+					}
+					gas_reactant_slot.setAmount(gas_reactant_slot.getAmount() - 1);
+				}
 			}
 		}
-		
+
 		reaction_container.run_all_reactions();
+		
 		ArrayList<String> lore = new ArrayList<String>();
 		HashMap<Chemical, Integer> all_chemical = reaction_container.get_all_chemical();
 		for (Entry<Chemical, Integer> entry : all_chemical.entrySet()) {
@@ -79,6 +125,28 @@ public class Advanced_furnace_reaction_runner extends BukkitRunnable {
 
 			}
 			advanced_furnace.unpress_to_product();
+		}
+		if (advanced_furnace.pressed_clean_solid() == true) {
+			Iterator<Entry<Chemical, Integer>> iterator = all_chemical.entrySet().iterator();
+			while (iterator.hasNext()) {
+				Entry<Chemical, Integer> entry = iterator.next();
+				Chemical chemical = entry.getKey();
+				if (chemical instanceof Solid) {
+					iterator.remove();
+				}
+			}
+			advanced_furnace.unpress_clean_solid();
+		}
+		if (advanced_furnace.pressed_clean_gas() == true) {
+			Iterator<Entry<Chemical, Integer>> iterator = all_chemical.entrySet().iterator();
+			while (iterator.hasNext()) {
+				Entry<Chemical, Integer> entry = iterator.next();
+				Chemical chemical = entry.getKey();
+				if (chemical instanceof Gas) {
+					iterator.remove();
+				}
+			}
+			advanced_furnace.unpress_clean_gas();
 		}
 	}
 

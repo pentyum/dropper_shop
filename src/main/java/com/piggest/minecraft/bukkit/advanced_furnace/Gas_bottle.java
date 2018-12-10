@@ -13,6 +13,7 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.grinder.Grinder;
 
 public class Gas_bottle {
 	public static String name = "§r气体瓶";
@@ -32,6 +33,7 @@ public class Gas_bottle {
 
 	public static ItemStack init_gas_bottle() {
 		item = new ItemStack(Material.GLASS_BOTTLE);
+		Grinder.set_item_name(item, name);
 		clean_contents(item);
 		return item;
 	}
@@ -78,10 +80,14 @@ public class Gas_bottle {
 				if (m.group(1).equals(gastype.name())) {
 					if (quantity != 0) {
 						lore.set(i, "§r" + gastype.name() + ": " + quantity);
+						meta.setLore(lore);
+						item.setItemMeta(meta);
 						update_capacity(item);
 						return fail;
 					} else {
 						lore.remove(i);
+						meta.setLore(lore);
+						item.setItemMeta(meta);
 						update_capacity(item);
 						return fail;
 					}
@@ -90,6 +96,8 @@ public class Gas_bottle {
 			i++;
 		}
 		lore.add("§r" + gastype.name() + ": " + quantity);
+		meta.setLore(lore);
+		item.setItemMeta(meta);
 		update_capacity(item);
 		return fail;
 	}

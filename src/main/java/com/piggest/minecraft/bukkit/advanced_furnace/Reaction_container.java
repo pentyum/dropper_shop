@@ -3,6 +3,8 @@ package com.piggest.minecraft.bukkit.advanced_furnace;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import org.bukkit.Material;
+
 public class Reaction_container {
 	public static HashMap<String, Reaction> reactions = new HashMap<String, Reaction>();
 	private HashMap<Chemical, Integer> unit_map = new HashMap<Chemical, Integer>();
@@ -32,8 +34,8 @@ public class Reaction_container {
 		reactions.put("burn_coal", burn_coal);
 
 		Reaction burn_stone = new Reaction(false, 150, 2300, 100, 800);
-		burn_stone.set_reactants(Solid.STONE);
-		burn_stone.set_products(Gas.CO2, Solid.GRAVEL);
+		burn_stone.set_reactants(Solid.GRANITE);
+		burn_stone.set_products(Gas.CO2, Solid.STONE);
 		burn_stone.set_reactants_coef(2);
 		burn_stone.set_products_coef(1, 1);
 		reactions.put("burn_stone", burn_stone);

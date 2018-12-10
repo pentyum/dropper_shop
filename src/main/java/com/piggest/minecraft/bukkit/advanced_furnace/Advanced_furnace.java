@@ -49,25 +49,33 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 	}
 
 	public Advanced_furnace() {
-		ItemStack raw_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
+		ItemStack raw_solid_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
+		ItemStack raw_gas_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
 		ItemStack fuel_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
 		ItemStack product_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
 		ItemStack temp_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
 		ItemStack info_workbench = new ItemStack(Material.CRAFTING_TABLE);
 		ItemStack auto_product = new ItemStack(Material.HOPPER_MINECART);
 		ItemStack to_product = new ItemStack(Material.CHEST_MINECART);
+		ItemStack clean_solid = new ItemStack(Material.MINECART);
+		ItemStack clean_gas = new ItemStack(Material.GLASS_BOTTLE);
+		ItemStack auto_gas_discharge = new ItemStack(Material.DISPENSER);
 
-		Grinder.set_item_name(raw_sign, "§r左边放原料");
+		Grinder.set_item_name(raw_solid_sign, "§r左边放固体原料");
+		Grinder.set_item_name(raw_gas_sign, "§r左边放气体原料");
 		Grinder.set_item_name(fuel_sign, "§r右边放燃料");
 		Grinder.set_item_name(product_sign, "§r左边为产品");
 		Grinder.set_item_name(temp_sign, "§r右边为温度");
 		Grinder.set_item_name(info_workbench, "§e内部信息");
 		Grinder.set_item_name(auto_product, "§e固体产品自动提取");
 		Grinder.set_item_name(to_product, "§r立刻取出固体");
-
-		this.gui.setItem(10, raw_sign);
-		this.gui.setItem(12, raw_sign.clone());
-		this.gui.setItem(14, raw_sign.clone());
+		Grinder.set_item_name(clean_solid, "§r清除全部固体");
+		Grinder.set_item_name(auto_gas_discharge, "§e气体自动排放");
+		Grinder.set_item_name(clean_gas, "§r清除全部气体");
+		
+		this.gui.setItem(10, raw_solid_sign);
+		this.gui.setItem(12, raw_gas_sign);
+		this.gui.setItem(14, raw_solid_sign.clone());
 		this.gui.setItem(16, fuel_sign);
 		this.gui.setItem(19, product_sign);
 		this.gui.setItem(21, product_sign.clone());
@@ -76,7 +84,10 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		this.gui.setItem(0, info_workbench);
 		this.gui.setItem(2, auto_product);
 		this.gui.setItem(3, to_product);
-
+		this.gui.setItem(4, clean_solid);
+		this.gui.setItem(5, auto_gas_discharge);
+		this.gui.setItem(6, clean_gas);
+		
 		ItemStack temp_info = new ItemStack(Material.FURNACE);
 		ItemMeta temp_info_meta = temp_info.getItemMeta();
 		temp_info_meta.setDisplayName("§e信息");
@@ -89,6 +100,7 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		temp_info.setItemMeta(temp_info_meta);
 		this.gui.setItem(26, temp_info);
 		this.set_auto_product(true);
+		this.set_gas_discharge(false);
 		// this.set_fuel(Fuel.coal);
 		// this.reaction_container.get_all_chemical().put(Solid.iron_powder, 10000);
 	}
@@ -381,7 +393,28 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 			return false;
 		}
 	}
+	
+	public void set_gas_discharge(boolean auto_product) {
+		ItemStack item = this.gui.getItem(5);
+		ItemMeta meta = item.getItemMeta();
+		ArrayList<String> lore = new ArrayList<String>();
+		lore.add(auto_product ? "§r开启" : "§r关闭");
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+	}
 
+	public boolean get_gas_discharge() {
+		ItemStack item = this.gui.getItem(5);
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = meta.getLore();
+		String info = lore.get(0);
+		if (info.equals("§r开启")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	public void unpress_to_product() {
 		ItemStack item = this.gui.getItem(3);
 		ItemMeta meta = item.getItemMeta();
@@ -394,7 +427,33 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		ItemMeta meta = item.getItemMeta();
 		return meta.hasLore();
 	}
+	
+	public void unpress_clean_solid() {
+		ItemStack item = this.gui.getItem(4);
+		ItemMeta meta = item.getItemMeta();
+		meta.setLore(null);
+		item.setItemMeta(meta);
+	}
 
+	public boolean pressed_clean_solid() {
+		ItemStack item = this.gui.getItem(4);
+		ItemMeta meta = item.getItemMeta();
+		return meta.hasLore();
+	}
+	
+	public void unpress_clean_gas() {
+		ItemStack item = this.gui.getItem(6);
+		ItemMeta meta = item.getItemMeta();
+		meta.setLore(null);
+		item.setItemMeta(meta);
+	}
+
+	public boolean pressed_clean_gas() {
+		ItemStack item = this.gui.getItem(6);
+		ItemMeta meta = item.getItemMeta();
+		return meta.hasLore();
+	}
+	
 	public boolean add_a_solid(ItemStack src_item) {
 		if (!Grinder.is_empty(src_item)) {
 			if (Grinder.is_empty(this.get_solid_reactant_slot())) {
