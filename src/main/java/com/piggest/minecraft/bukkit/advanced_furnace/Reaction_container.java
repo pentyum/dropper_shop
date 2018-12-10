@@ -12,20 +12,27 @@ public class Reaction_container {
 	private HashMap<Chemical, Integer> rate_map = new HashMap<Chemical, Integer>();
 
 	public static void init_reaction() {
-		Reaction ammonia_synthesis = new Reaction(true, 100, 1200, 100, 800);
+		Reaction ammonia_synthesis = new Reaction(true, 100, 1200, 130, 1400);
 		ammonia_synthesis.set_reactants(Gas.nitrogen, Gas.hydrogen);
-		ammonia_synthesis.set_products(Gas.hydrogen);
+		ammonia_synthesis.set_products(Gas.NH3);
 		ammonia_synthesis.set_reactants_coef(1, 3);
 		ammonia_synthesis.set_products_coef(2);
 		reactions.put("ammonia_synthesis", ammonia_synthesis);
 
 		Reaction get_hydrogen = new Reaction(false, 100, 2100, 100, 800);
-		get_hydrogen.set_reactants(Solid.CHARCOAL, Gas.water);
+		get_hydrogen.set_reactants(Solid.COAL, Gas.water);
 		get_hydrogen.set_products(Gas.hydrogen, Gas.CO);
 		get_hydrogen.set_reactants_coef(1, 1);
 		get_hydrogen.set_products_coef(1, 1);
 		reactions.put("get_hydrogen", get_hydrogen);
-
+		
+		Reaction get_water_vapor = new Reaction(true, 93973313, 6130, 100, 1000);
+		get_water_vapor.set_reactants(Solid.WATER);
+		get_water_vapor.set_products(Gas.water);
+		get_water_vapor.set_reactants_coef(1);
+		get_water_vapor.set_products_coef(1);
+		reactions.put("get_water_vapor", get_water_vapor);
+		
 		Reaction burn_coal = new Reaction(false, 500, 1600, 100, 800);
 		burn_coal.set_reactants(Solid.COAL, Gas.oxygen);
 		burn_coal.set_products(Gas.CO2);

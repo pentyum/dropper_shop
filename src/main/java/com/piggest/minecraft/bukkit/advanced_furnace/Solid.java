@@ -11,7 +11,8 @@ public enum Solid implements Chemical {
 	STONE(1000, "石头"), GLASS(1000, "玻璃"), SAND(1000, "沙子"), CLAY(1000, "粘土块"), TERRACOTTA(1000, "陶瓦"),
 	CLAY_BALL(1000, "粘土"), BRICK(1000, "红砖"), NETHERRACK(1000, "地狱岩"), NETHER_BRICK(1000, "地狱砖"),
 	copper_powder(1000, "铜粉"), sliver_powder(1000, "银粉"), GRAVEL(1000, "砂砾"), FLINT(1000, "燧石"), QUARTZ(1000, "石英"),
-	OBSIDIAN(1000, "黑曜石"), REDSTONE(1000, "红石"), aluminium_oxide(1000, "三氧化二铝"), GRANITE(1000, "花岗岩"),;
+	OBSIDIAN(1000, "黑曜石"), REDSTONE(1000, "红石"), aluminium_oxide(1000, "三氧化二铝"), GRANITE(1000, "花岗岩"),
+	WATER(1000, "水"),;
 
 	private int unit;
 	private String display_name;
@@ -25,6 +26,9 @@ public enum Solid implements Chemical {
 		String name = Material_ext.get_id_name(itemstack);
 		if (name.contains("_LOG")) {
 			return LOG;
+		}
+		if (name.contains("WATER")) {
+			return WATER;
 		}
 		return Solid.get_solid(name);
 	}

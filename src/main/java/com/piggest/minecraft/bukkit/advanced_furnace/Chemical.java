@@ -10,6 +10,9 @@ public interface Chemical {
 		if (name.contains("_LOG")) {
 			name = "LOG";
 		}
+		if (name.contains("WATER")) {
+			name = "WATER";
+		}
 		Solid solid = Solid.get_solid(name);
 		if (solid != null) {
 			return solid;
