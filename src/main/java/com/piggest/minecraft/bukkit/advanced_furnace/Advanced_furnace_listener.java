@@ -37,6 +37,21 @@ public class Advanced_furnace_listener implements Listener {
 	}
 
 	@EventHandler
+	public void on_use_gas_bottle(PlayerInteractEvent event) {
+		if (event.isCancelled() == true) {
+			return;
+		}
+		if (event.getAction() == Action.RIGHT_CLICK_AIR) {
+			ItemStack item = event.getItem();
+			if (Gas_bottle.is_gas_bottle(item)) {
+				Gas_bottle.clean_contents(item);
+				Gas_bottle.set_contents(item, Gas.oxygen, 210);
+				Gas_bottle.set_contents(item, Gas.nitrogen, 790);
+			}
+		}
+	}
+
+	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		if (event.isCancelled() == true) {
 			return;
@@ -60,11 +75,11 @@ public class Advanced_furnace_listener implements Listener {
 					}
 					meta.setLore(lore);
 					item.setItemMeta(meta);
-				}else if (slot == 3) {
+				} else if (slot == 3) {
 					ItemStack item = event.getCurrentItem();
 					ItemMeta meta = item.getItemMeta();
 					List<String> lore = new ArrayList<String>();
-					lore.add("true");
+					lore.add("wait...");
 					meta.setLore(lore);
 					item.setItemMeta(meta);
 				}

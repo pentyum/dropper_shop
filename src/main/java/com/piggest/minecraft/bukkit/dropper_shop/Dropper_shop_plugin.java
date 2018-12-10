@@ -21,6 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_command_executor;
 import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_listener;
 import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_manager;
+import com.piggest.minecraft.bukkit.advanced_furnace.Gas_bottle;
 import com.piggest.minecraft.bukkit.advanced_furnace.Reaction_container;
 import com.piggest.minecraft.bukkit.depository.Depository_command_executor;
 import com.piggest.minecraft.bukkit.depository.Depository_listener;
@@ -106,6 +107,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		Dropper_shop_plugin.instance = this;
+		
 		saveDefaultConfig();
 		saveResource("shops.yml", false);
 		this.config = getConfig();
@@ -123,6 +125,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		}
 		this.shop_file = new File(this.getDataFolder(), "shops.yml");
 		this.shop_config = YamlConfiguration.loadConfiguration(shop_file);
+		
 		this.getCommand("depository").setExecutor(new Depository_command_executor());
 		this.getCommand("dropper_shop").setExecutor(new Dropper_shop_command_executor());
 		this.getCommand("grinder").setExecutor(new Grinder_command_executor());
@@ -133,13 +136,15 @@ public class Dropper_shop_plugin extends JavaPlugin {
 			getLogger().severe("初始化Vault失败,请检测是否已经安装Vault插件和经济插件");
 			return;
 		}
-
+		
 		Powder.init_powder();
 		Reader.init_reader_item();
 		Reader.set_recipe();
 		Update_component.init_component();
 		Update_component.set_recipe();
 		Grinder.init_recipe();
+		Gas_bottle.init_gas_bottle();
+		Gas_bottle.set_recipe();
 		Reaction_container.init_reaction();
 		
 		this.shop_manager.load_structures();

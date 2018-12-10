@@ -18,16 +18,34 @@ public class Advanced_furnace_reaction_runner extends BukkitRunnable {
 	}
 
 	public void run() {
-		ItemStack reactant_slot = advanced_furnace.get_solid_reactant_slot();
-		if (!Grinder.is_empty(reactant_slot)) {
-			Solid solid = Solid.get_solid(reactant_slot);
-			if (Solid.get_solid(reactant_slot) != null) {
-				reactant_slot.setAmount(reactant_slot.getAmount() - 1);
+		ItemStack solid_reactant_slot = advanced_furnace.get_solid_reactant_slot();
+		ItemStack gas_reactant_slot = advanced_furnace.get_gas_reactant_slot();
+		if (!Grinder.is_empty(solid_reactant_slot)) {
+			Solid solid = Solid.get_solid(solid_reactant_slot);
+			if (solid != null) {
+				solid_reactant_slot.setAmount(solid_reactant_slot.getAmount() - 1);
 				advanced_furnace.get_reaction_container().set_unit(solid,
 						advanced_furnace.get_reaction_container().get_unit(solid) + solid.get_unit());
 			}
 		}
+		
 		Reaction_container reaction_container = this.advanced_furnace.get_reaction_container();
+		
+		if (!Gas_bottle.is_gas_bottle(gas_reactant_slot)) {
+			if (Gas_bottle.calc_capacity(gas_reactant_slot) == 0) {// 处理空瓶
+				HashMap<Chemical, Integer> all_chemical = reaction_container.get_all_chemical();
+				for (Entry<Chemical, Integer> entry : all_chemical.entrySet()) {
+					Chemical chemical = entry.getKey();
+					if(chemical instanceof Gas) {
+						
+					}
+				}
+			} else {  //非空瓶
+				HashMap<Gas,Integer> gas_map = Gas_bottle.get_gas_map(gas_reactant_slot);
+				
+			}
+		}
+		
 		reaction_container.run_all_reactions();
 		ArrayList<String> lore = new ArrayList<String>();
 		HashMap<Chemical, Integer> all_chemical = reaction_container.get_all_chemical();

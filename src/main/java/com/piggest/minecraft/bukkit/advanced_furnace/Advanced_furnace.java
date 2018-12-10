@@ -394,4 +394,58 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		ItemMeta meta = item.getItemMeta();
 		return meta.hasLore();
 	}
+
+	public boolean add_a_solid(ItemStack src_item) {
+		if (!Grinder.is_empty(src_item)) {
+			if (Grinder.is_empty(this.get_solid_reactant_slot())) {
+				this.set_solid_reactant_slot(src_item.clone());
+				this.get_solid_reactant_slot().setAmount(1);
+				src_item.setAmount(src_item.getAmount() - 1);
+				return true;
+			} else if (src_item.getType() == this.get_solid_reactant_slot().getType()) {
+				int new_num = 1 + this.get_solid_reactant_slot().getAmount();
+				if (new_num <= src_item.getMaxStackSize()) {
+					this.get_solid_reactant_slot().setAmount(new_num);
+					src_item.setAmount(src_item.getAmount() - 1);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean add_a_fuel(ItemStack src_item) {
+		if (!Grinder.is_empty(src_item)) {
+			if (Grinder.is_empty(this.get_fuel_slot())) {
+				this.set_fuel_slot(src_item.clone());
+				this.get_fuel_slot().setAmount(1);
+				src_item.setAmount(src_item.getAmount() - 1);
+				return true;
+			} else if (src_item.getType() == this.get_fuel_slot().getType()) {
+				int new_num = 1 + this.get_fuel_slot().getAmount();
+				if (new_num <= src_item.getMaxStackSize()) {
+					this.get_fuel_slot().setAmount(new_num);
+					src_item.setAmount(src_item.getAmount() - 1);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public ItemStack get_gas_reactant_slot() {
+		return this.gui.getItem(11);
+	}
+
+	public void set_gas_reactant_slot(ItemStack item) {
+		this.gui.setItem(11, item);
+	}
+
+	public ItemStack get_gas_product_slot() {
+		return this.gui.getItem(20);
+	}
+
+	public void set_gas_product_slot(ItemStack item) {
+		this.gui.setItem(20, item);
+	}
 }

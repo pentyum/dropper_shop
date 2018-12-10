@@ -10,14 +10,34 @@ public class Reaction_container {
 	private HashMap<Chemical, Integer> rate_map = new HashMap<Chemical, Integer>();
 
 	public static void init_reaction() {
-		/*
-		 * Reaction ammonia_synthesis = new Reaction(true, 1, 1);
-		 * ammonia_synthesis.set_reactants(Gas.nitrogen, Gas.hydrogen);
-		 * ammonia_synthesis.set_products(Gas.hydrogen);
-		 * ammonia_synthesis.set_reactants_coef(1, 3);
-		 * ammonia_synthesis.set_products_coef(2); reactions.put("ammonia_synthesis",
-		 * ammonia_synthesis);
-		 */
+		Reaction ammonia_synthesis = new Reaction(true, 100, 1200, 100, 800);
+		ammonia_synthesis.set_reactants(Gas.nitrogen, Gas.hydrogen);
+		ammonia_synthesis.set_products(Gas.hydrogen);
+		ammonia_synthesis.set_reactants_coef(1, 3);
+		ammonia_synthesis.set_products_coef(2);
+		reactions.put("ammonia_synthesis", ammonia_synthesis);
+
+		Reaction get_hydrogen = new Reaction(false, 100, 2100, 100, 800);
+		get_hydrogen.set_reactants(Solid.CHARCOAL, Gas.water);
+		get_hydrogen.set_products(Gas.hydrogen, Gas.CO);
+		get_hydrogen.set_reactants_coef(1, 1);
+		get_hydrogen.set_products_coef(1, 1);
+		reactions.put("get_hydrogen", get_hydrogen);
+
+		Reaction burn_coal = new Reaction(false, 500, 1600, 100, 800);
+		burn_coal.set_reactants(Solid.COAL, Gas.oxygen);
+		burn_coal.set_products(Gas.CO2);
+		burn_coal.set_reactants_coef(1, 1);
+		burn_coal.set_products_coef(1);
+		reactions.put("burn_coal", burn_coal);
+
+		Reaction burn_stone = new Reaction(false, 150, 2300, 100, 800);
+		burn_stone.set_reactants(Solid.STONE);
+		burn_stone.set_products(Gas.CO2, Solid.GRAVEL);
+		burn_stone.set_reactants_coef(2);
+		burn_stone.set_products_coef(1, 1);
+		reactions.put("burn_stone", burn_stone);
+
 		Reaction get_iron = new Reaction(false, 150, 1800, 1, 1000);
 		get_iron.set_reactants(Solid.iron_powder);
 		get_iron.set_products(Solid.IRON_INGOT);
@@ -191,7 +211,7 @@ public class Reaction_container {
 			}
 		}
 	}
-	
+
 	public void set_temperature(double temperature) {
 		this.temperature = temperature;
 	}
@@ -199,7 +219,7 @@ public class Reaction_container {
 	public double get_temperature() {
 		return this.temperature;
 	}
-	
+
 	public void clear_gas() {
 		for (Chemical chemical : this.unit_map.keySet()) {
 			if (chemical instanceof Gas) {
