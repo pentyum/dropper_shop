@@ -3,8 +3,6 @@ package com.piggest.minecraft.bukkit.advanced_furnace;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import org.bukkit.Material;
-
 public class Reaction_container {
 	public static HashMap<String, Reaction> reactions = new HashMap<String, Reaction>();
 	private HashMap<Chemical, Integer> unit_map = new HashMap<Chemical, Integer>();

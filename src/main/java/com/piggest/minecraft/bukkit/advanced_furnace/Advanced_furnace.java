@@ -41,6 +41,8 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		double light_temp = 0;
 		if (block.getWorld().getEnvironment() == Environment.NETHER) {
 			env_temp = 50;
+		} else if (block.getWorld().getEnvironment() == Environment.THE_END) {
+			env_temp = -10;
 		}
 		light_temp = -8 + block.getLightLevel();
 		// Dropper_shop_plugin.instance.getLogger().info("温度=" + base_temp + "+" +
@@ -60,6 +62,7 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		ItemStack clean_solid = new ItemStack(Material.MINECART);
 		ItemStack clean_gas = new ItemStack(Material.GLASS_BOTTLE);
 		ItemStack auto_gas_discharge = new ItemStack(Material.DISPENSER);
+		ItemStack make_money = new ItemStack(Material.CHEST);
 
 		Grinder.set_item_name(raw_solid_sign, "§r左边放固体原料");
 		Grinder.set_item_name(raw_gas_sign, "§r左边放气体原料");
@@ -72,7 +75,8 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		Grinder.set_item_name(clean_solid, "§r清除全部固体");
 		Grinder.set_item_name(auto_gas_discharge, "§e气体自动排放");
 		Grinder.set_item_name(clean_gas, "§r清除全部气体");
-		
+		Grinder.set_item_name(make_money, "§e金币制造");
+
 		this.gui.setItem(10, raw_solid_sign);
 		this.gui.setItem(12, raw_gas_sign);
 		this.gui.setItem(14, raw_solid_sign.clone());
@@ -87,7 +91,8 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		this.gui.setItem(4, clean_solid);
 		this.gui.setItem(5, auto_gas_discharge);
 		this.gui.setItem(6, clean_gas);
-		
+		this.gui.setItem(8, make_money);
+
 		ItemStack temp_info = new ItemStack(Material.FURNACE);
 		ItemMeta temp_info_meta = temp_info.getItemMeta();
 		temp_info_meta.setDisplayName("§e信息");
@@ -123,6 +128,10 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		return this.reaction_container.get_temperature();
 	}
 
+	public ItemStack get_gui_item(int i) {
+		return this.gui.getItem(i);
+	}
+
 	@Override
 	public void set_from_save(Map<?, ?> shop_save) {
 		super.set_from_save(shop_save);
@@ -144,7 +153,7 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		if (shop_save.get("solid-product-slot") != null) {
 			ItemStack solid_product_slot_item = Material_ext.new_item((String) shop_save.get("solid-product-slot"),
 					(Integer) shop_save.get("solid-product-slot-num"));
-			this.set_solid_product_slot(solid_product_slot_item);
+			this.gui.setItem(this.get_solid_product_slot(), solid_product_slot_item);
 		}
 		if (shop_save.get("solid-reactant-slot") != null) {
 			ItemStack solid_reactant_slot_item = Material_ext.new_item((String) shop_save.get("solid-reactant-slot"),
@@ -156,6 +165,8 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 			Integer unit = entry.getValue();
 			this.reaction_container.set_unit(Chemical.get_chemical(name), unit);
 		}
+		this.set_auto_product((boolean) shop_save.get("auto-product"));
+		this.set_gas_discharge((boolean) shop_save.get("auto-gas-discharge"));
 	}
 
 	public void set_solid_reactant_slot(ItemStack slot_item) {
@@ -177,9 +188,9 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		} else {
 			save.put("fuel-type", "null");
 		}
-		ItemStack fuel_slot = this.get_fuel_slot();
-		ItemStack solid_product_slot = this.get_solid_product_slot();
-		ItemStack solid_reactant_slot = this.get_solid_reactant_slot();
+		ItemStack fuel_slot = this.gui.getItem(get_fuel_slot());
+		ItemStack solid_product_slot = this.gui.getItem(this.get_solid_product_slot());
+		ItemStack solid_reactant_slot = this.gui.getItem(this.get_solid_reactant_slot());
 		if (!Grinder.is_empty(fuel_slot)) {
 			save.put("fuel-slot", Material_ext.get_id_name(fuel_slot));
 			save.put("fuel-slot-num", fuel_slot.getAmount());
@@ -198,6 +209,8 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 			contents.put(chemical.get_name(), unit);
 		}
 		save.put("contents", contents);
+		save.put("auto-product", this.get_auto_product());
+		save.put("auto-gas-discharge", this.get_gas_discharge());
 		return save;
 	}
 
@@ -315,16 +328,12 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		return new int[] { 10, 10, 10 };
 	}
 
-	public ItemStack get_fuel_slot() {
-		return this.gui.getItem(17);
+	public int get_fuel_slot() {
+		return 17;
 	}
 
-	public ItemStack get_solid_product_slot() {
-		return this.gui.getItem(18);
-	}
-
-	public void set_solid_product_slot(ItemStack item) {
-		this.gui.setItem(18, item);
+	public int get_solid_product_slot() {
+		return 18;
 	}
 
 	public Reaction_container get_reaction_container() {
@@ -343,14 +352,14 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		int item_unit = solid.get_unit();
 		int move_num = this.reaction_container.get_unit(solid) / item_unit;
 		int max_stack_num = item.getMaxStackSize();
-		if (Grinder.is_empty(this.get_solid_product_slot())) {
+		if (Grinder.is_empty(this.gui.getItem(this.get_solid_product_slot()))) {
 			if (move_num > max_stack_num) {
 				move_num = max_stack_num;
 			}
 			item.setAmount(move_num);
-			this.set_solid_product_slot(item);
+			this.gui.setItem(this.get_solid_product_slot(), item);
 		} else {
-			ItemStack current_item = this.get_solid_product_slot();
+			ItemStack current_item = this.gui.getItem(get_solid_product_slot());
 			if (current_item.isSimilar(item)) {
 				int current_num = current_item.getAmount();
 				if (current_num + move_num > max_stack_num) {
@@ -369,139 +378,125 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		}
 	}
 
-	public ItemStack get_solid_reactant_slot() {
-		return this.gui.getItem(9);
+	public int get_solid_reactant_slot() {
+		return 9;
+	}
+
+	private void set_switch(int i, boolean value) {
+		ItemStack item = this.gui.getItem(i);
+		ItemMeta meta = item.getItemMeta();
+		ArrayList<String> lore = new ArrayList<String>();
+		lore.add(value ? "§r开启" : "§r关闭");
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+	}
+
+	private boolean get_switch(int i) {
+		ItemStack item = this.gui.getItem(i);
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = meta.getLore();
+		String info = lore.get(0);
+		if (info.equals("§r开启")) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public void set_auto_product(boolean auto_product) {
-		ItemStack item = this.gui.getItem(2);
-		ItemMeta meta = item.getItemMeta();
-		ArrayList<String> lore = new ArrayList<String>();
-		lore.add(auto_product ? "§r开启" : "§r关闭");
-		meta.setLore(lore);
-		item.setItemMeta(meta);
+		set_switch(2, auto_product);
 	}
 
 	public boolean get_auto_product() {
-		ItemStack item = this.gui.getItem(2);
-		ItemMeta meta = item.getItemMeta();
-		List<String> lore = meta.getLore();
-		String info = lore.get(0);
-		if (info.equals("§r开启")) {
-			return true;
-		} else {
-			return false;
-		}
+		return this.get_switch(2);
 	}
-	
+
 	public void set_gas_discharge(boolean auto_product) {
-		ItemStack item = this.gui.getItem(5);
-		ItemMeta meta = item.getItemMeta();
-		ArrayList<String> lore = new ArrayList<String>();
-		lore.add(auto_product ? "§r开启" : "§r关闭");
-		meta.setLore(lore);
-		item.setItemMeta(meta);
+		set_switch(5, auto_product);
 	}
 
 	public boolean get_gas_discharge() {
-		ItemStack item = this.gui.getItem(5);
-		ItemMeta meta = item.getItemMeta();
-		List<String> lore = meta.getLore();
-		String info = lore.get(0);
-		if (info.equals("§r开启")) {
-			return true;
-		} else {
-			return false;
-		}
+		return this.get_switch(5);
 	}
-	
-	public void unpress_to_product() {
-		ItemStack item = this.gui.getItem(3);
+
+	public void set_make_money(boolean auto_product) {
+		set_switch(8, auto_product);
+	}
+
+	public boolean get_make_money() {
+		return this.get_switch(8);
+	}
+
+	private void unpress_button(int i) {
+		ItemStack item = this.gui.getItem(i);
 		ItemMeta meta = item.getItemMeta();
 		meta.setLore(null);
 		item.setItemMeta(meta);
+	}
+
+	private boolean pressed_button(int i) {
+		ItemStack item = this.gui.getItem(i);
+		ItemMeta meta = item.getItemMeta();
+		return meta.hasLore();
+	}
+
+	public void unpress_to_product() {
+		unpress_button(3);
 	}
 
 	public boolean pressed_to_product() {
-		ItemStack item = this.gui.getItem(3);
-		ItemMeta meta = item.getItemMeta();
-		return meta.hasLore();
+		return pressed_button(3);
 	}
-	
+
 	public void unpress_clean_solid() {
-		ItemStack item = this.gui.getItem(4);
-		ItemMeta meta = item.getItemMeta();
-		meta.setLore(null);
-		item.setItemMeta(meta);
+		unpress_button(4);
 	}
 
 	public boolean pressed_clean_solid() {
-		ItemStack item = this.gui.getItem(4);
-		ItemMeta meta = item.getItemMeta();
-		return meta.hasLore();
+		return pressed_button(4);
 	}
-	
+
 	public void unpress_clean_gas() {
-		ItemStack item = this.gui.getItem(6);
-		ItemMeta meta = item.getItemMeta();
-		meta.setLore(null);
-		item.setItemMeta(meta);
+		unpress_button(6);
 	}
 
 	public boolean pressed_clean_gas() {
-		ItemStack item = this.gui.getItem(6);
-		ItemMeta meta = item.getItemMeta();
-		return meta.hasLore();
+		return pressed_button(6);
 	}
-	
-	public boolean add_a_solid(ItemStack src_item) {
+
+	private boolean add_a_item_to_slot(ItemStack src_item, int i) {
 		if (!Grinder.is_empty(src_item)) {
-			if (Grinder.is_empty(this.get_solid_reactant_slot())) {
-				this.set_solid_reactant_slot(src_item.clone());
-				this.get_solid_reactant_slot().setAmount(1);
+			if (Grinder.is_empty(this.gui.getItem(i))) {
+				this.gui.setItem(i, src_item.clone());
+				this.gui.getItem(i).setAmount(1);
 				src_item.setAmount(src_item.getAmount() - 1);
 				return true;
-			} else if (src_item.getType() == this.get_solid_reactant_slot().getType()) {
-				int new_num = 1 + this.get_solid_reactant_slot().getAmount();
+			} else if (src_item.getType() == this.gui.getItem(i).getType()) {
+				int new_num = 1 + this.gui.getItem(i).getAmount();
 				if (new_num <= src_item.getMaxStackSize()) {
-					this.get_solid_reactant_slot().setAmount(new_num);
+					this.gui.getItem(i).setAmount(new_num);
 					src_item.setAmount(src_item.getAmount() - 1);
 					return true;
 				}
 			}
 		}
 		return false;
+	}
+
+	public boolean add_a_solid(ItemStack src_item) {
+		return this.add_a_item_to_slot(src_item, this.get_solid_reactant_slot());
 	}
 
 	public boolean add_a_fuel(ItemStack src_item) {
-		if (!Grinder.is_empty(src_item)) {
-			if (Grinder.is_empty(this.get_fuel_slot())) {
-				this.set_fuel_slot(src_item.clone());
-				this.get_fuel_slot().setAmount(1);
-				src_item.setAmount(src_item.getAmount() - 1);
-				return true;
-			} else if (src_item.getType() == this.get_fuel_slot().getType()) {
-				int new_num = 1 + this.get_fuel_slot().getAmount();
-				if (new_num <= src_item.getMaxStackSize()) {
-					this.get_fuel_slot().setAmount(new_num);
-					src_item.setAmount(src_item.getAmount() - 1);
-					return true;
-				}
-			}
-		}
-		return false;
+		return this.add_a_item_to_slot(src_item, this.get_fuel_slot());
 	}
 
-	public ItemStack get_gas_reactant_slot() {
-		return this.gui.getItem(11);
+	public int get_gas_reactant_slot() {
+		return 11;
 	}
 
-	public void set_gas_reactant_slot(ItemStack item) {
-		this.gui.setItem(11, item);
-	}
-
-	public ItemStack get_gas_product_slot() {
-		return this.gui.getItem(20);
+	public int get_gas_product_slot() {
+		return 20;
 	}
 
 	public void set_gas_product_slot(ItemStack item) {

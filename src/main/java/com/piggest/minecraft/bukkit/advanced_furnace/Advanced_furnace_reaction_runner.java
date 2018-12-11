@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -19,8 +18,8 @@ public class Advanced_furnace_reaction_runner extends BukkitRunnable {
 	}
 
 	public void run() {
-		ItemStack solid_reactant_slot = advanced_furnace.get_solid_reactant_slot();
-		ItemStack gas_reactant_slot = advanced_furnace.get_gas_reactant_slot();
+		ItemStack solid_reactant_slot = advanced_furnace.get_gui_item(advanced_furnace.get_solid_reactant_slot());
+		ItemStack gas_reactant_slot = advanced_furnace.get_gui_item(advanced_furnace.get_gas_reactant_slot());
 		Reaction_container reaction_container = this.advanced_furnace.get_reaction_container();
 		if (!Grinder.is_empty(solid_reactant_slot)) {
 			Solid solid = Solid.get_solid(solid_reactant_slot);
@@ -31,7 +30,7 @@ public class Advanced_furnace_reaction_runner extends BukkitRunnable {
 		}
 
 		if (Gas_bottle.is_gas_bottle(gas_reactant_slot)) {
-			ItemStack gas_product_slot = advanced_furnace.get_gas_product_slot();
+			ItemStack gas_product_slot = advanced_furnace.get_gui_item(advanced_furnace.get_gas_product_slot());
 			if (Gas_bottle.calc_capacity(gas_reactant_slot) == 0) {// 处理空瓶
 				if (Grinder.is_empty(gas_product_slot)) {
 					int inside_gas_capacity = 0;
@@ -92,7 +91,7 @@ public class Advanced_furnace_reaction_runner extends BukkitRunnable {
 		}
 
 		reaction_container.run_all_reactions();
-		
+
 		ArrayList<String> lore = new ArrayList<String>();
 		HashMap<Chemical, Integer> all_chemical = reaction_container.get_all_chemical();
 		for (Entry<Chemical, Integer> entry : all_chemical.entrySet()) {
