@@ -58,6 +58,18 @@ public class Advanced_furnace_command_executor implements CommandExecutor {
 				Dropper_shop_plugin.instance.get_adv_furnace_manager().remove(adv_furnace);
 				player.sendMessage("高级熔炉结构已经移除");
 				return true;
+			} else if (args[0].equalsIgnoreCase("getmoney")) {
+				Advanced_furnace adv_furnace = Dropper_shop_plugin.instance.get_adv_furnace_manager()
+						.find(look_block.getLocation(), false);
+				if (adv_furnace == null) {
+					player.sendMessage("没有检测到完整的高级熔炉结构");
+					return true;
+				}
+				int money = adv_furnace.get_money();
+				Dropper_shop_plugin.instance.get_economy().depositPlayer(player, money);
+				player.sendMessage("已获得" + money);
+				adv_furnace.set_money(0);
+				return true;
 			}
 		}
 		return false;

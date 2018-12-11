@@ -61,7 +61,7 @@ public class Advanced_furnace_listener implements Listener {
 			int slot = event.getSlot();
 			if (slot >= 0 && slot <= 8 || slot == 10 || slot == 12 || slot == 14 || slot == 16 || slot == 19
 					|| slot == 21 || slot == 23 || slot == 25 || slot == 26) {
-				if (slot == 2 || slot == 5) {
+				if (slot == 2 || slot == 5 || slot == 8) {
 					ItemStack item = event.getCurrentItem();
 					ItemMeta meta = item.getItemMeta();
 					List<String> lore = meta.getLore();

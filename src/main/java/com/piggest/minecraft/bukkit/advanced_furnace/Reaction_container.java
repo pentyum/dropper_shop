@@ -23,14 +23,14 @@ public class Reaction_container {
 		get_hydrogen.set_reactants_coef(1, 1);
 		get_hydrogen.set_products_coef(1, 1);
 		reactions.put("get_hydrogen", get_hydrogen);
-		
+
 		Reaction get_water_vapor = new Reaction(true, 93973313, 6130, 100, 1000);
 		get_water_vapor.set_reactants(Solid.WATER);
 		get_water_vapor.set_products(Gas.water);
 		get_water_vapor.set_reactants_coef(1);
 		get_water_vapor.set_products_coef(1);
 		reactions.put("get_water_vapor", get_water_vapor);
-		
+
 		Reaction burn_coal = new Reaction(false, 500, 1600, 100, 800);
 		burn_coal.set_reactants(Solid.COAL, Gas.oxygen);
 		burn_coal.set_products(Gas.CO2);
@@ -207,7 +207,8 @@ public class Reaction_container {
 				d_current_unit = rate * products_coef[i];
 				int new_unit = current_unit + d_current_unit;
 				if (new_unit > 0) {
-					this.rate_map.put(products[i], d_current_unit);
+					int old_rate = this.get_rate(products[i]);
+					this.rate_map.put(products[i], old_rate + d_current_unit);
 					this.unit_map.put(products[i], current_unit + d_current_unit);
 				} else {
 					if (current_unit > 0) {

@@ -12,6 +12,7 @@ import com.piggest.minecraft.bukkit.grinder.Grinder;
 
 public class Advanced_furnace_reaction_runner extends BukkitRunnable {
 	private Advanced_furnace advanced_furnace;
+	private int money_times = 0;
 
 	public Advanced_furnace_reaction_runner(Advanced_furnace advanced_furnace) {
 		this.advanced_furnace = advanced_furnace;
@@ -93,7 +94,12 @@ public class Advanced_furnace_reaction_runner extends BukkitRunnable {
 		if (advanced_furnace.get_make_money() == false) {
 			reaction_container.run_all_reactions();
 		} else {
-
+			if (this.money_times >= 120) {
+				advanced_furnace.add_money(advanced_furnace.get_make_money_rate());
+				this.money_times = 0;
+			} else {
+				this.money_times++;
+			}
 		}
 
 		ArrayList<String> lore = new ArrayList<String>();

@@ -33,6 +33,8 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 	private Advanced_furnace_io_runner io_runner = new Advanced_furnace_io_runner(this);
 	private Fuel fuel;
 	public int fuel_ticks = 0;
+	private int money = 0;
+	private int money_limit = 10000;
 
 	public static double get_block_temperature(Block block) {
 		double base_temp = block.getTemperature() * 20 + 270;
@@ -107,8 +109,7 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		this.set_auto_product(true);
 		this.set_gas_discharge(false);
 		this.set_make_money(false);
-		// this.set_fuel(Fuel.coal);
-		// this.reaction_container.get_all_chemical().put(Solid.iron_powder, 10000);
+		this.set_money(0);
 	}
 
 	public double get_base_temperature() {
@@ -169,6 +170,7 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		this.set_auto_product((boolean) shop_save.get("auto-product"));
 		this.set_gas_discharge((boolean) shop_save.get("auto-gas-discharge"));
 		this.set_make_money((boolean) shop_save.get("make-money"));
+		this.set_money((int) shop_save.get("money"));
 	}
 
 	public void set_solid_reactant_slot(ItemStack slot_item) {
@@ -214,6 +216,7 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		save.put("auto-product", this.get_auto_product());
 		save.put("auto-gas-discharge", this.get_gas_discharge());
 		save.put("make-money", this.get_make_money());
+		save.put("money", this.money);
 		return save;
 	}
 
@@ -376,8 +379,14 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 	private void set_switch(int i, boolean value) {
 		ItemStack item = this.gui.getItem(i);
 		ItemMeta meta = item.getItemMeta();
-		ArrayList<String> lore = new ArrayList<String>();
-		lore.add(value ? "§r开启" : "§r关闭");
+		List<String> lore;
+		if (meta.hasLore() == false) {
+			lore = new ArrayList<String>();
+			lore.add(value ? "§r开启" : "§r关闭");
+		} else {
+			lore = meta.getLore();
+			lore.set(0, value ? "§r开启" : "§r关闭");
+		}
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 	}
@@ -504,5 +513,51 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 
 	public void set_gas_product_slot(ItemStack item) {
 		this.gui.setItem(20, item);
+	}
+
+	public int get_make_money_rate() { // 生产金币的速率(1分钟)
+		int rate = 0;
+		if (this.get_temperature() > 1200) {
+			double d_temp = this.get_temperature() - this.get_base_temperature();
+			rate = (int) (d_temp / 100);
+		}
+		return rate;
+	}
+
+	public int add_money(int money) {
+		if (this.money + money > this.money_limit) {
+			money = this.money_limit - this.money;
+		}
+		this.set_money(this.money + money);
+		return this.money;
+	}
+
+	public int get_money() {
+		return this.money;
+	}
+
+	public void set_money(int money) {
+		this.money = money;
+		ItemStack item = this.gui.getItem(8);
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = meta.getLore();
+		String string = "§r储存: " + money + "/" + this.money_limit;
+		try {
+			lore.set(1, string);
+		} catch (IndexOutOfBoundsException e) {
+			lore.add(string);
+		}
+		String string2 = "§r产钱率: " + this.get_make_money_rate() * 2 + "/min";
+		try {
+			lore.set(2, string2);
+		} catch (IndexOutOfBoundsException e) {
+			lore.add(string2);
+		}
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+	}
+
+	public int get_money_limit() {
+		return this.money_limit;
 	}
 }
