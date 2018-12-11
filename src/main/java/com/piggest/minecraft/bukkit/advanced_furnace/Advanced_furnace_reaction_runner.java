@@ -90,7 +90,11 @@ public class Advanced_furnace_reaction_runner extends BukkitRunnable {
 			}
 		}
 
-		reaction_container.run_all_reactions();
+		if (advanced_furnace.get_make_money() == false) {
+			reaction_container.run_all_reactions();
+		} else {
+
+		}
 
 		ArrayList<String> lore = new ArrayList<String>();
 		HashMap<Chemical, Integer> all_chemical = reaction_container.get_all_chemical();

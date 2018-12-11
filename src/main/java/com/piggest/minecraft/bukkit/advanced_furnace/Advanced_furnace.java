@@ -106,6 +106,7 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		this.gui.setItem(26, temp_info);
 		this.set_auto_product(true);
 		this.set_gas_discharge(false);
+		this.set_make_money(false);
 		// this.set_fuel(Fuel.coal);
 		// this.reaction_container.get_all_chemical().put(Solid.iron_powder, 10000);
 	}
@@ -167,6 +168,7 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		}
 		this.set_auto_product((boolean) shop_save.get("auto-product"));
 		this.set_gas_discharge((boolean) shop_save.get("auto-gas-discharge"));
+		this.set_make_money((boolean) shop_save.get("make-money"));
 	}
 
 	public void set_solid_reactant_slot(ItemStack slot_item) {
@@ -211,6 +213,7 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		save.put("contents", contents);
 		save.put("auto-product", this.get_auto_product());
 		save.put("auto-gas-discharge", this.get_gas_discharge());
+		save.put("make-money", this.get_make_money());
 		return save;
 	}
 
@@ -328,14 +331,6 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		return new int[] { 10, 10, 10 };
 	}
 
-	public int get_fuel_slot() {
-		return 17;
-	}
-
-	public int get_solid_product_slot() {
-		return 18;
-	}
-
 	public Reaction_container get_reaction_container() {
 		return this.reaction_container;
 	}
@@ -376,10 +371,6 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		} else {
 			iterator.remove();
 		}
-	}
-
-	public int get_solid_reactant_slot() {
-		return 9;
 	}
 
 	private void set_switch(int i, boolean value) {
@@ -491,8 +482,20 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		return this.add_a_item_to_slot(src_item, this.get_fuel_slot());
 	}
 
+	public int get_solid_reactant_slot() {
+		return 9;
+	}
+
 	public int get_gas_reactant_slot() {
 		return 11;
+	}
+
+	public int get_fuel_slot() {
+		return 17;
+	}
+
+	public int get_solid_product_slot() {
+		return 18;
 	}
 
 	public int get_gas_product_slot() {
