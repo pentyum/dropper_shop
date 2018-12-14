@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -262,5 +263,11 @@ public class Depository extends Multi_block_structure implements Ownable, Invent
 
 	public Inventory getInventory() {
 		return this.gui;
+	}
+
+	@Override
+	public void on_right_click(Player player) {
+		player.closeInventory();
+		player.openInventory(this.getInventory());
 	}
 }

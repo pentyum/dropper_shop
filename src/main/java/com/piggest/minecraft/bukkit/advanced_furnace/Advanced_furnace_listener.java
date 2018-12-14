@@ -3,8 +3,6 @@ package com.piggest.minecraft.bukkit.advanced_furnace;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -13,29 +11,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-
 public class Advanced_furnace_listener implements Listener {
-	@EventHandler
-	public void on_look(PlayerInteractEvent event) {
-		if (event.isCancelled() == true) {
-			return;
-		}
-		Player player = event.getPlayer();
-		if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-			Block break_block = event.getClickedBlock();
-			Advanced_furnace adv_furnace = Dropper_shop_plugin.instance.get_adv_furnace_manager()
-					.find(break_block.getLocation(), false);
-			if (adv_furnace != null) {
-				if (player.isSneaking() == false) {
-					player.closeInventory();
-					player.openInventory(adv_furnace.getInventory());
-					event.setCancelled(true);
-				}
-			}
-		}
-	}
-
 	@EventHandler
 	public void on_use_gas_bottle(PlayerInteractEvent event) {
 		if (event.getAction() == Action.RIGHT_CLICK_AIR) {

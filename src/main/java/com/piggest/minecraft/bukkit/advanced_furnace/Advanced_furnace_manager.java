@@ -3,9 +3,11 @@ package com.piggest.minecraft.bukkit.advanced_furnace;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
+import com.piggest.minecraft.bukkit.structure.Multi_block_structure_manager;
 import com.piggest.minecraft.bukkit.structure.Structure_manager;
 
-public class Advanced_furnace_manager extends Structure_manager<Advanced_furnace> {
+public class Advanced_furnace_manager extends Structure_manager<Advanced_furnace>
+		implements Multi_block_structure_manager {
 	public static Advanced_furnace_manager instance = null;
 
 	public Advanced_furnace_manager() {
@@ -44,5 +46,10 @@ public class Advanced_furnace_manager extends Structure_manager<Advanced_furnace
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public Advanced_furnace find(String player_name, Location loc, boolean new_structure) {
+		return this.find(loc, new_structure);
 	}
 }

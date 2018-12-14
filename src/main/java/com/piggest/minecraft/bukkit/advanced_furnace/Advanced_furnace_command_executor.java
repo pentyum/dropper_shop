@@ -1,14 +1,28 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 
-public class Advanced_furnace_command_executor implements CommandExecutor {
+enum Advanced_furnace_sub_cmd {
+	make, remove, getmoney, temp;
+	public static ArrayList<String> get_list(CommandSender sender) {
+		ArrayList<String> list = new ArrayList<String>();
+		for (Advanced_furnace_sub_cmd cmd : Advanced_furnace_sub_cmd.values()) {
+			list.add(cmd.name());
+		}
+		return list;
+	}
+}
+
+public class Advanced_furnace_command_executor implements TabExecutor {
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
@@ -73,6 +87,14 @@ public class Advanced_furnace_command_executor implements CommandExecutor {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+		if (args.length == 1) {
+			return Advanced_furnace_sub_cmd.get_list(sender);
+		}
+		return null;
 	}
 
 }

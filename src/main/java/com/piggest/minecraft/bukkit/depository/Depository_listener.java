@@ -46,17 +46,6 @@ public class Depository_listener implements Listener {
 			if (depository != null) {
 				player.sendMessage(depository.get_info());
 			}
-		} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-			Block break_block = event.getClickedBlock();
-			Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(null,
-					break_block.getLocation(), false);
-			if (depository != null) {
-				if (player.isSneaking() == false) {
-					player.closeInventory();
-					player.openInventory(depository.getInventory());
-					event.setCancelled(true);
-				}
-			}
 		}
 	}
 

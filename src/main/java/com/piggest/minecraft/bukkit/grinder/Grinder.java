@@ -13,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Hopper;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -414,5 +415,11 @@ public class Grinder extends Multi_block_structure implements InventoryHolder, H
 			save.put("product-num", this.get_product().getAmount());
 		}
 		return save;
+	}
+
+	@Override
+	public void on_right_click(Player player) {
+		player.closeInventory();
+		player.openInventory(this.getInventory());
 	}
 }

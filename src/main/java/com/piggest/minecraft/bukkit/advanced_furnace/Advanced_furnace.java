@@ -13,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
 import org.bukkit.block.Furnace;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -559,5 +560,11 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 
 	public int get_money_limit() {
 		return this.money_limit;
+	}
+
+	@Override
+	public void on_right_click(Player player) {
+		player.closeInventory();
+		player.openInventory(this.getInventory());
 	}
 }

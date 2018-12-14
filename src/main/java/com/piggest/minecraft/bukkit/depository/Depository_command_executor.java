@@ -17,11 +17,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
-enum Sub_cmd {
+enum Depository_sub_cmd {
 	make, info, input, output, remove, connect;
 	public static ArrayList<String> get_list(CommandSender sender) {
 		ArrayList<String> list = new ArrayList<String>();
-		for (Sub_cmd cmd : Sub_cmd.values()) {
+		for (Depository_sub_cmd cmd : Depository_sub_cmd.values()) {
 			list.add(cmd.name());
 		}
 		return list;
@@ -46,7 +46,7 @@ public class Depository_command_executor implements TabExecutor {
 				player.sendMessage("请指向方块");
 				return true;
 			}
-			if (args[0].equalsIgnoreCase(Sub_cmd.make.name())) {
+			if (args[0].equalsIgnoreCase(Depository_sub_cmd.make.name())) {
 				Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(null,
 						look_block.getLocation(), false);
 				if (depository != null) {
@@ -61,7 +61,7 @@ public class Depository_command_executor implements TabExecutor {
 				}
 				Dropper_shop_plugin.instance.get_depository_manager().add(depository);
 				player.sendMessage("存储器结构建立完成");
-			} else if (args[0].equalsIgnoreCase("info")) {
+			} else if (args[0].equalsIgnoreCase(Depository_sub_cmd.info.name())) {
 				Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(player.getName(),
 						look_block.getLocation(), false);
 				if (depository == null) {
@@ -69,7 +69,7 @@ public class Depository_command_executor implements TabExecutor {
 					return true;
 				}
 				player.sendMessage(depository.get_info());
-			} else if (args[0].equalsIgnoreCase(Sub_cmd.input.name())) {
+			} else if (args[0].equalsIgnoreCase(Depository_sub_cmd.input.name())) {
 				Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(player.getName(),
 						look_block.getLocation(), false);
 				if (depository == null) {
@@ -96,7 +96,7 @@ public class Depository_command_executor implements TabExecutor {
 					player.sendMessage("已添加物品" + item.getType().name());
 					depository.add(item);
 				}
-			} else if (args[0].equalsIgnoreCase(Sub_cmd.remove.name())) {
+			} else if (args[0].equalsIgnoreCase(Depository_sub_cmd.remove.name())) {
 				Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(player.getName(),
 						look_block.getLocation(), false);
 				if (depository == null) {
@@ -105,7 +105,7 @@ public class Depository_command_executor implements TabExecutor {
 				}
 				Dropper_shop_plugin.instance.get_depository_manager().remove(depository);
 				player.sendMessage("存储器结构已经移除");
-			} else if (args[0].equalsIgnoreCase(Sub_cmd.output.name())) {
+			} else if (args[0].equalsIgnoreCase(Depository_sub_cmd.output.name())) {
 				Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(player.getName(),
 						look_block.getLocation(), false);
 				if (depository == null) {
@@ -147,7 +147,7 @@ public class Depository_command_executor implements TabExecutor {
 						player.getWorld().dropItemNaturally(player.getLocation(), unadd_item).setPickupDelay(40);
 					}
 				}
-			} else if (args[0].equalsIgnoreCase(Sub_cmd.connect.name())) {
+			} else if (args[0].equalsIgnoreCase(Depository_sub_cmd.connect.name())) {
 				Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(player.getName(),
 						look_block.getLocation(), false);
 				if (depository == null) {
@@ -184,10 +184,10 @@ public class Depository_command_executor implements TabExecutor {
 
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 		if (args.length == 1) {
-			return Sub_cmd.get_list(sender);
+			return Depository_sub_cmd.get_list(sender);
 		}
-		if (args.length == 2 && (args[0].equalsIgnoreCase(Sub_cmd.connect.name())
-				|| args[0].equalsIgnoreCase(Sub_cmd.output.name()))) {
+		if (args.length == 2 && (args[0].equalsIgnoreCase(Depository_sub_cmd.connect.name())
+				|| args[0].equalsIgnoreCase(Depository_sub_cmd.output.name()))) {
 			if (sender instanceof Player) {
 				Player player = (Player) sender;
 				Block look_block = player.getTargetBlockExact(4);

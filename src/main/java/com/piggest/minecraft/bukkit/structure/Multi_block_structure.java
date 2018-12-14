@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 public abstract class Multi_block_structure extends Abstract_structure {
 	protected String world_name = null;
@@ -55,5 +56,7 @@ public abstract class Multi_block_structure extends Abstract_structure {
 		}
 		return save;
 	}
+
+	public abstract void on_right_click(Player player);
 
 }

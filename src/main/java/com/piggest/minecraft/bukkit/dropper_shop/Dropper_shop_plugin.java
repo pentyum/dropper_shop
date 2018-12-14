@@ -34,6 +34,8 @@ import com.piggest.minecraft.bukkit.grinder.Grinder_command_executor;
 import com.piggest.minecraft.bukkit.grinder.Grinder_listener;
 import com.piggest.minecraft.bukkit.grinder.Grinder_manager;
 import com.piggest.minecraft.bukkit.grinder.Powder;
+import com.piggest.minecraft.bukkit.structure.Multi_block_structure_listener;
+import com.piggest.minecraft.bukkit.structure.Structure_manager;
 
 import net.milkbowl.vault.economy.Economy;
 
@@ -50,6 +52,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private Depository_manager depository_manager = new Depository_manager();
 	private Grinder_manager grinder_manager = new Grinder_manager();
 	private Advanced_furnace_manager adv_furnace_manager = new Advanced_furnace_manager();
+	private Structure_manager<?>[] structure_manager = { shop_manager, depository_manager, grinder_manager,
+			adv_furnace_manager };
 
 	private HashMap<String, Integer> price_map = new HashMap<String, Integer>();
 	private HashMap<String, Integer> unit_map = new HashMap<String, Integer>();
@@ -57,6 +61,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public NamespacedKey namespace = new NamespacedKey(this, "Dropper_shop");
 	private ArrayList<ShapedRecipe> sr = new ArrayList<ShapedRecipe>();
 
+	private final Multi_block_structure_listener multi_block_structure_listener = new Multi_block_structure_listener();
 	private final Depository_listener depository_listener = new Depository_listener();
 	private final Dropper_shop_listener shop_listener = new Dropper_shop_listener();
 	private final Update_component_listener update_component_listener = new Update_component_listener();
@@ -107,7 +112,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		Dropper_shop_plugin.instance = this;
-		
+
 		saveDefaultConfig();
 		saveResource("shops.yml", false);
 		this.config = getConfig();
@@ -125,7 +130,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		}
 		this.shop_file = new File(this.getDataFolder(), "shops.yml");
 		this.shop_config = YamlConfiguration.loadConfiguration(shop_file);
-		
+
 		this.getCommand("depository").setExecutor(new Depository_command_executor());
 		this.getCommand("dropper_shop").setExecutor(new Dropper_shop_command_executor());
 		this.getCommand("grinder").setExecutor(new Grinder_command_executor());
@@ -136,7 +141,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 			getLogger().severe("初始化Vault失败,请检测是否已经安装Vault插件和经济插件");
 			return;
 		}
-		
+
 		Powder.init_powder();
 		Reader.init_reader_item();
 		Reader.set_recipe();
@@ -146,7 +151,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		Gas_bottle.init_gas_bottle();
 		Gas_bottle.set_recipe();
 		Reaction_container.init_reaction();
-		
+
 		this.shop_manager.load_structures();
 		this.depository_manager.load_structures();
 		this.grinder_manager.load_structures();
@@ -154,6 +159,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 		PluginManager pm = getServer().getPluginManager();
 
+		pm.registerEvents(multi_block_structure_listener, this);
 		pm.registerEvents(shop_listener, this);
 		pm.registerEvents(depository_listener, this);
 		pm.registerEvents(update_component_listener, this);
@@ -196,6 +202,10 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	public Advanced_furnace_manager get_adv_furnace_manager() {
 		return this.adv_furnace_manager;
+	}
+
+	public Structure_manager<?>[] get_structure_manager() {
+		return this.structure_manager;
 	}
 
 	public int get_price(Material material) {
