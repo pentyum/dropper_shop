@@ -36,6 +36,7 @@ import com.piggest.minecraft.bukkit.grinder.Grinder_manager;
 import com.piggest.minecraft.bukkit.grinder.Powder;
 import com.piggest.minecraft.bukkit.structure.Multi_block_structure_listener;
 import com.piggest.minecraft.bukkit.structure.Structure_manager;
+import com.piggest.minecraft.bukkit.wrench.Wrench_command_executor;
 
 import net.milkbowl.vault.economy.Economy;
 
@@ -135,6 +136,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.getCommand("dropper_shop").setExecutor(new Dropper_shop_command_executor());
 		this.getCommand("grinder").setExecutor(new Grinder_command_executor());
 		this.getCommand("adv_furnace").setExecutor(new Advanced_furnace_command_executor());
+		Wrench_command_executor wrench = new Wrench_command_executor();
+		this.getCommand("wrench").setExecutor(wrench);
 
 		getLogger().info("使用Vault");
 		if (!initVault()) {
@@ -151,6 +154,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		Gas_bottle.init_gas_bottle();
 		Gas_bottle.set_recipe();
 		Reaction_container.init_reaction();
+		wrench.init();
 
 		this.shop_manager.load_structures();
 		this.depository_manager.load_structures();

@@ -24,6 +24,11 @@ commands:
     usage: /<command> make ,to make a advanced furnace.
     permission: adv_furnace.make
     permission-message: You don't have permission
+  wrench:
+    description: see the plugin info.
+    usage: /<command> to see the plugin info or /<command> setprice [world] to change price.
+    permission: wrench.use
+    permission-message: You don't have permission
 permissions:
   dropper_shop.*:
     description: Gives access to all dropper shop commands.
@@ -64,4 +69,13 @@ permissions:
   adv_furnace.make:
     description: Make or remove a advanced furnace.
     default: true
+  wrench.*:
+    description: Gives access to all wrench commands
+    default: op
+  wrench.use:
+    description: Gives access to use wrench
+    default: true
+  wrench.changeprice:
+    description: change wrench price
+    default: op
 softdepend: [Vault]

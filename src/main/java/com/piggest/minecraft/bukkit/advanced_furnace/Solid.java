@@ -42,6 +42,9 @@ public enum Solid implements Chemical {
 	}
 
 	public String get_displayname() {
+		if (this == WATER) {
+			return this.display_name + "(l)";
+		}
 		return this.display_name + "(s)";
 	}
 

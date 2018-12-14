@@ -1,5 +1,10 @@
 make-price: 4000
 make-grinder-price: 5000
+wrench-price: 
+  world: 200
+  world_nether: 200
+  world_the_end: 200
+  other: 200
 flint-unit:
   FLINT: 16
   OBSIDIAN: 24
