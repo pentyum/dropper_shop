@@ -17,6 +17,7 @@ import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
 
 public class Exp_saver extends Multi_block_structure implements InventoryHolder, HasRunner {
 	private int saved_exp = 0;
+	private int max_saved_exp = 10000;
 	private Exp_saver_runner exp_saver_runner = new Exp_saver_runner(this);
 	private Inventory gui = Bukkit.createInventory(this, 27, "经验存储器");
 
@@ -94,5 +95,53 @@ public class Exp_saver extends Multi_block_structure implements InventoryHolder,
 		HashMap<String, Object> save = super.get_save();
 		save.put("saved-exp", this.saved_exp);
 		return save;
+	}
+
+	public int get_saved_exp() {
+		return this.saved_exp;
+	}
+
+	public void add_exp(int exp) {
+		if (this.saved_exp + exp > this.max_saved_exp) {
+			exp = this.max_saved_exp - this.saved_exp;
+		}
+		this.saved_exp += exp;
+	}
+
+	public void output_exp(int level, Player player) {
+		for (int added_level = 0; added_level < level; added_level++) {
+			int needed_exp = player.getExpToLevel();
+			if (this.saved_exp - needed_exp < 0) {
+				needed_exp = this.saved_exp;
+			}
+			this.saved_exp -= needed_exp;
+			player.setTotalExperience(player.getTotalExperience() + needed_exp);
+		}
+	}
+
+	public void input_exp(int level, Player player) {
+		for (int removed_level = 0; removed_level < level; removed_level++) {
+
+		}
+	}
+
+	public static int get_exp_to_level(int level) {
+		if (level <= 16) {
+			return level * level + 6 * level;
+		} else if (level <= 31) {
+			return (int) (2.5 * level * level + 40.5 * level + 360);
+		} else {
+			return (int) (4.5 * level * level + 162.5 * level + 2220);
+		}
+	}
+
+	public static int get_upgrade_exp(int level) {
+		if (level <= 15) {
+			return 2 * level + 7;
+		} else if (level <= 30) {
+			return 5 * level - 38;
+		} else {
+			return 9 * level - 158;
+		}
 	}
 }
