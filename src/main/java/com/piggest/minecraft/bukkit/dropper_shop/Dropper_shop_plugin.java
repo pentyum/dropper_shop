@@ -53,7 +53,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private Depository_manager depository_manager = new Depository_manager();
 	private Grinder_manager grinder_manager = new Grinder_manager();
 	private Advanced_furnace_manager adv_furnace_manager = new Advanced_furnace_manager();
-	private Structure_manager<?>[] structure_manager = { shop_manager, depository_manager, grinder_manager,
+	private Structure_manager[] structure_manager = { shop_manager, depository_manager, grinder_manager,
 			adv_furnace_manager };
 
 	private HashMap<String, Integer> price_map = new HashMap<String, Integer>();
@@ -208,7 +208,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		return this.adv_furnace_manager;
 	}
 
-	public Structure_manager<?>[] get_structure_manager() {
+	public Structure_manager[] get_structure_manager() {
 		return this.structure_manager;
 	}
 

@@ -1,62 +1,20 @@
 package com.piggest.minecraft.bukkit.structure;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-public abstract class Multi_block_structure extends Abstract_structure {
-	protected String world_name = null;
-	protected int x;
-	protected int y;
-	protected int z;
-
-	@Override
-	public void set_from_save(Map<?, ?> save) {
-		this.x = (Integer) save.get("x");
-		this.y = (Integer) save.get("y");
-		this.z = (Integer) save.get("z");
-		this.world_name = (String) save.get("world");
-		if (this instanceof Ownable) {
-			Ownable ownable = (Ownable) this;
-			ownable.set_owner((String) save.get("owner"));
-		}
-	}
-
-	@Override
-	public void set_location(Location loc) {
-		this.set_location(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
-	}
-
-	@Override
-	public void set_location(String world_name, int x, int y, int z) {
-		this.world_name = world_name;
-		this.x = x;
-		this.y = y;
-		this.z = z;
-	}
-
-	@Override
-	public Location get_location() {
-		return new Location(Bukkit.getWorld(this.world_name), this.x, this.y, this.z);
-	}
-
-	@Override
-	public HashMap<String, Object> get_save() {
-		HashMap<String, Object> save = new HashMap<String, Object>();
-		save.put("world", this.world_name);
-		save.put("x", this.x);
-		save.put("y", this.y);
-		save.put("z", this.z);
-		if (this instanceof Ownable) {
-			Ownable ownable = (Ownable) this;
-			save.put("owner", ownable.get_owner_name());
-		}
-		return save;
-	}
+public abstract class Multi_block_structure extends Structure {
 
 	public abstract void on_right_click(Player player);
+	
+	public Block get_block(int relative_x, int relative_y, int relative_z) {
+		Location loc = this.get_location().add(relative_x, relative_y, relative_z);
+		return loc.getBlock();
+	}
+
+	public abstract int completed();
+
+	public abstract boolean in_structure(Location loc);
 
 }

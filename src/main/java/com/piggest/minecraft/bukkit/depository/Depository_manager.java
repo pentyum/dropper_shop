@@ -3,11 +3,9 @@ package com.piggest.minecraft.bukkit.depository;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
-import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
-import com.piggest.minecraft.bukkit.structure.Multi_block_structure_manager;
 import com.piggest.minecraft.bukkit.structure.Structure_manager;
 
-public class Depository_manager extends Structure_manager<Depository> implements Multi_block_structure_manager {
+public class Depository_manager extends Structure_manager {
 	public static Depository_manager instance = null;
 
 	public Depository_manager() {
@@ -53,9 +51,8 @@ public class Depository_manager extends Structure_manager<Depository> implements
 		}
 		return null;
 	}
-
-	@Override
-	public void add(Multi_block_structure structure) {
-		super.add((Depository) structure);
+	
+	public Depository get(Location location) {
+		return (Depository) super.get(location);
 	}
 }

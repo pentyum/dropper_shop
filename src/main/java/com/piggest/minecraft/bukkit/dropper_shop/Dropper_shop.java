@@ -11,12 +11,12 @@ import org.bukkit.World;
 import org.bukkit.block.Dropper;
 import org.bukkit.inventory.ItemStack;
 
-import com.piggest.minecraft.bukkit.structure.Abstract_structure;
 import com.piggest.minecraft.bukkit.structure.Ownable;
+import com.piggest.minecraft.bukkit.structure.Single_block_structure;
 
 import net.milkbowl.vault.economy.Economy;
 
-public class Dropper_shop extends Abstract_structure implements Ownable {
+public class Dropper_shop extends Single_block_structure implements Ownable {
 	private Dropper dropper_block = null;
 	private Material sell_item = null;
 	private String owner = null;
@@ -63,12 +63,7 @@ public class Dropper_shop extends Abstract_structure implements Ownable {
 	}
 
 	public HashMap<String, Object> get_save() {
-		HashMap<String, Object> save = new HashMap<String, Object>();
-		save.put("world", this.dropper_block.getWorld().getName());
-		save.put("owner", this.owner);
-		save.put("x", this.get_location().getBlockX());
-		save.put("y", this.get_location().getBlockY());
-		save.put("z", this.get_location().getBlockZ());
+		HashMap<String, Object> save = super.get_save();
 		// save.put("assoc-x", this.assoc.get_location().getBlockX());
 		// save.put("assoc-y", this.assoc.get_location().getBlockY());
 		// save.put("assoc-z", this.assoc.get_location().getBlockZ());
@@ -116,7 +111,6 @@ public class Dropper_shop extends Abstract_structure implements Ownable {
 		this.dropper_block = (Dropper) loc.getBlock().getState();
 	}
 
-	@Override
 	public boolean in_structure(Location loc) {
 		if (loc.equals(this.get_location())) {
 			return true;

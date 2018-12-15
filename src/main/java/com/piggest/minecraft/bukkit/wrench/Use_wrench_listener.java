@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
-import com.piggest.minecraft.bukkit.structure.Multi_block_structure_manager;
+import com.piggest.minecraft.bukkit.structure.Structure;
 import com.piggest.minecraft.bukkit.structure.Structure_manager;
 
 public class Use_wrench_listener implements Listener {
@@ -70,25 +70,19 @@ public class Use_wrench_listener implements Listener {
 						}
 						event.setCancelled(true);
 					} else {
-						Structure_manager<?>[] structure_manager = Dropper_shop_plugin.instance.get_structure_manager();
-						for (Structure_manager<?> manager : structure_manager) {
-							if (manager instanceof Multi_block_structure_manager) {
-								Multi_block_structure_manager multi_block_structure_manager = (Multi_block_structure_manager) manager;
-								Multi_block_structure structure = multi_block_structure_manager.find(null,
-										block.getLocation(), false);
-								if (structure != null && player.isSneaking() == false) {
-									player.sendMessage("这里已经有结构了");
-									return;
-								}
+						Structure_manager[] structure_manager = Dropper_shop_plugin.instance.get_structure_manager();
+						for (Structure_manager manager : structure_manager) {
+							Structure structure = manager.find(null, block.getLocation(), false);
+							if (structure != null && player.isSneaking() == false) {
+								player.sendMessage("这里已经有结构了");
+								return;
 							}
 						}
-						for (Structure_manager<?> manager : structure_manager) {
-							if (manager instanceof Multi_block_structure_manager) {
-								Multi_block_structure_manager multi_block_structure_manager = (Multi_block_structure_manager) manager;
-								Multi_block_structure structure = multi_block_structure_manager.find(player.getName(),
-										block.getLocation(), true);
-								if (structure != null && player.isSneaking() == false) {
-									multi_block_structure_manager.add(structure);
+						for (Structure_manager manager : structure_manager) {
+							Structure structure = manager.find(player.getName(), block.getLocation(), true);
+							if (structure != null && player.isSneaking() == false) {
+								if (structure instanceof Multi_block_structure) {
+									manager.add(structure);
 									player.sendMessage(structure.getClass().getSimpleName() + "结构建立完成");
 									event.setCancelled(true);
 									return;
