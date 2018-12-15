@@ -15,7 +15,7 @@ import org.bukkit.plugin.PluginManager;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 
 public class Wrench_command_executor implements CommandExecutor {
-	private UseItem_listener item_listener = new UseItem_listener(this);
+	private Use_wrench_listener item_listener = new Use_wrench_listener(this);
 	private ItemStack wrench_item = null;
 	private NamespacedKey namespace = new NamespacedKey(Dropper_shop_plugin.instance, "wrench");
 	private ConfigurationSection price = null;

@@ -17,4 +17,9 @@ public class Grinder_manager extends Structure_manager<Grinder> implements Multi
 		return this.get(loc);
 	}
 
+	@Override
+	public void add(Multi_block_structure structure) {
+		super.add((Grinder) structure);
+	}
+
 }

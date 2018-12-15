@@ -14,10 +14,15 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class UseItem_listener implements Listener {
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
+import com.piggest.minecraft.bukkit.structure.Multi_block_structure_manager;
+import com.piggest.minecraft.bukkit.structure.Structure_manager;
+
+public class Use_wrench_listener implements Listener {
 	private Wrench_command_executor wrench_plugin = null;
 
-	public UseItem_listener(Wrench_command_executor wrench_plugin) {
+	public Use_wrench_listener(Wrench_command_executor wrench_plugin) {
 		this.wrench_plugin = wrench_plugin;
 	}
 
@@ -45,7 +50,7 @@ public class UseItem_listener implements Listener {
 				ItemStack wrench_item = event.getItem();
 				if (wrench_item.isSimilar(wrench_plugin.get_wrench_item())) {
 					Player player = event.getPlayer();
-					if(!player.hasPermission("wrench.use")) {
+					if (!player.hasPermission("wrench.use")) {
 						player.sendMessage("你没有使用扳手的权限!");
 						return;
 					}
@@ -62,6 +67,33 @@ public class UseItem_listener implements Listener {
 						player.sendMessage("已使用扳手");
 						if (wrench_plugin.use_eco(player) == true) {
 							block.setBlockData(directional_data);
+						}
+						event.setCancelled(true);
+					} else {
+						Structure_manager<?>[] structure_manager = Dropper_shop_plugin.instance.get_structure_manager();
+						for (Structure_manager<?> manager : structure_manager) {
+							if (manager instanceof Multi_block_structure_manager) {
+								Multi_block_structure_manager multi_block_structure_manager = (Multi_block_structure_manager) manager;
+								Multi_block_structure structure = multi_block_structure_manager.find(null,
+										block.getLocation(), false);
+								if (structure != null && player.isSneaking() == false) {
+									player.sendMessage("这里已经有结构了");
+									return;
+								}
+							}
+						}
+						for (Structure_manager<?> manager : structure_manager) {
+							if (manager instanceof Multi_block_structure_manager) {
+								Multi_block_structure_manager multi_block_structure_manager = (Multi_block_structure_manager) manager;
+								Multi_block_structure structure = multi_block_structure_manager.find(player.getName(),
+										block.getLocation(), true);
+								if (structure != null && player.isSneaking() == false) {
+									multi_block_structure_manager.add(structure);
+									player.sendMessage(structure.getClass().getSimpleName() + "结构建立完成");
+									event.setCancelled(true);
+									return;
+								}
+							}
 						}
 					}
 				}

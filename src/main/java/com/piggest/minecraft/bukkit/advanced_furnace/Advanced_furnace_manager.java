@@ -3,6 +3,7 @@ package com.piggest.minecraft.bukkit.advanced_furnace;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
+import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
 import com.piggest.minecraft.bukkit.structure.Multi_block_structure_manager;
 import com.piggest.minecraft.bukkit.structure.Structure_manager;
 
@@ -51,5 +52,10 @@ public class Advanced_furnace_manager extends Structure_manager<Advanced_furnace
 	@Override
 	public Advanced_furnace find(String player_name, Location loc, boolean new_structure) {
 		return this.find(loc, new_structure);
+	}
+
+	@Override
+	public void add(Multi_block_structure structure) {
+		super.add((Advanced_furnace) structure);
 	}
 }
