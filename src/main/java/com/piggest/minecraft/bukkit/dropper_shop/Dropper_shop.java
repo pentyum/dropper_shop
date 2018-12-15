@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Dropper;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.structure.Ownable;
@@ -115,6 +116,19 @@ public class Dropper_shop extends Single_block_structure implements Ownable {
 		if (loc.equals(this.get_location())) {
 			return true;
 		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean create_condition(Player player) {
+		if (Dropper_shop_plugin.instance.get_economy().has(player,
+				Dropper_shop_plugin.instance.get_make_shop_price())) {
+			Dropper_shop_plugin.instance.get_economy().withdrawPlayer(player,
+					Dropper_shop_plugin.instance.get_make_shop_price());
+			return true;
+		} else {
+			player.sendMessage("钱不够");
 			return false;
 		}
 	}

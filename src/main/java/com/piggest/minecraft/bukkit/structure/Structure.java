@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 public abstract class Structure {
 	protected String world_name = null;
@@ -50,4 +51,6 @@ public abstract class Structure {
 		}
 		return save;
 	}
+
+	public abstract boolean create_condition(Player player);
 }

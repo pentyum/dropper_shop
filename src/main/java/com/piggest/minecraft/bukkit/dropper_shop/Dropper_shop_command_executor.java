@@ -32,14 +32,6 @@ public class Dropper_shop_command_executor implements CommandExecutor {
 					return true;
 				}
 				if (look_block.getType() == Material.DROPPER) {
-					if (Dropper_shop_plugin.instance.get_economy().has(player,
-							Dropper_shop_plugin.instance.get_make_shop_price())) {
-						Dropper_shop_plugin.instance.get_economy().withdrawPlayer(player,
-								Dropper_shop_plugin.instance.get_make_shop_price());
-					} else {
-						player.sendMessage("钱不够");
-						return true;
-					}
 					Material item = player.getInventory().getItemInMainHand().getType();
 					if (Dropper_shop_plugin.instance.get_price(item) == -1) {
 						player.sendMessage(item.name() + "不能被出售");
@@ -51,11 +43,13 @@ public class Dropper_shop_command_executor implements CommandExecutor {
 							player.sendMessage("投掷器商店已经变更为" + item.name());
 						} else {
 							shop = new Dropper_shop();
-							shop.set_location(look_block.getLocation());
-							shop.set_owner(player.getName());
-							shop.set_selling_item(item);
-							Dropper_shop_plugin.instance.get_shop_manager().add(shop);
-							player.sendMessage(item.name() + "的投掷器商店已经被设置");
+							if (shop.create_condition(player) == true) {
+								shop.set_location(look_block.getLocation());
+								shop.set_owner(player.getName());
+								shop.set_selling_item(item);
+								Dropper_shop_plugin.instance.get_shop_manager().add(shop);
+								player.sendMessage(item.name() + "的投掷器商店已经被设置");
+							}
 						}
 					}
 				} else {

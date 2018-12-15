@@ -567,4 +567,9 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		player.closeInventory();
 		player.openInventory(this.getInventory());
 	}
+
+	@Override
+	public boolean create_condition(Player player) {
+		return true;
+	}
 }

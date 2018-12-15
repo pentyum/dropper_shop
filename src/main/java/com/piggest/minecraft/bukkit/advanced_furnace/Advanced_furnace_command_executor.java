@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 
 enum Advanced_furnace_sub_cmd {
-	make, remove, getmoney, temp;
+	remove, getmoney, temp;
 	public static ArrayList<String> get_list(CommandSender sender) {
 		ArrayList<String> list = new ArrayList<String>();
 		for (Advanced_furnace_sub_cmd cmd : Advanced_furnace_sub_cmd.values()) {
@@ -46,23 +46,7 @@ public class Advanced_furnace_command_executor implements TabExecutor {
 				player.sendMessage("请指向方块");
 				return true;
 			}
-			if (args[0].equalsIgnoreCase("make")) {
-				Advanced_furnace adv_furnace = Dropper_shop_plugin.instance.get_adv_furnace_manager()
-						.find(look_block.getLocation(), false);
-				if (adv_furnace != null) {
-					player.sendMessage("这里已经有高级熔炉了");
-					return true;
-				}
-				adv_furnace = Dropper_shop_plugin.instance.get_adv_furnace_manager().find(look_block.getLocation(),
-						true);
-				if (adv_furnace == null) {
-					player.sendMessage("没有检测到完整的高级熔炉结构");
-					return true;
-				}
-				Dropper_shop_plugin.instance.get_adv_furnace_manager().add(adv_furnace);
-				player.sendMessage("高级熔炉结构建立完成");
-				return true;
-			} else if (args[0].equalsIgnoreCase("remove")) {
+			if (args[0].equalsIgnoreCase("remove")) {
 				Advanced_furnace adv_furnace = Dropper_shop_plugin.instance.get_adv_furnace_manager()
 						.find(look_block.getLocation(), false);
 				if (adv_furnace == null) {

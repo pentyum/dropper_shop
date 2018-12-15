@@ -20,6 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
@@ -421,5 +422,19 @@ public class Grinder extends Multi_block_structure implements InventoryHolder, H
 	public void on_right_click(Player player) {
 		player.closeInventory();
 		player.openInventory(this.getInventory());
+	}
+
+	@Override
+	public boolean create_condition(Player player) {
+		if (Dropper_shop_plugin.instance.get_economy().has(player,
+				Dropper_shop_plugin.instance.get_make_grinder_price())) {
+			Dropper_shop_plugin.instance.get_economy().withdrawPlayer(player,
+					Dropper_shop_plugin.instance.get_make_grinder_price());
+			player.sendMessage("已扣除" + Dropper_shop_plugin.instance.get_make_grinder_price());
+			return true;
+		} else {
+			player.sendMessage("钱不够");
+			return false;
+		}
 	}
 }

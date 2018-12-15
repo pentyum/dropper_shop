@@ -18,7 +18,7 @@ import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
 enum Depository_sub_cmd {
-	make, info, input, output, remove, connect;
+	info, input, output, remove, connect;
 	public static ArrayList<String> get_list(CommandSender sender) {
 		ArrayList<String> list = new ArrayList<String>();
 		for (Depository_sub_cmd cmd : Depository_sub_cmd.values()) {
@@ -46,22 +46,7 @@ public class Depository_command_executor implements TabExecutor {
 				player.sendMessage("请指向方块");
 				return true;
 			}
-			if (args[0].equalsIgnoreCase(Depository_sub_cmd.make.name())) {
-				Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(null,
-						look_block.getLocation(), false);
-				if (depository != null) {
-					player.sendMessage("这里已经有存储器了");
-					return true;
-				}
-				depository = Dropper_shop_plugin.instance.get_depository_manager().find(player.getName(),
-						look_block.getLocation(), true);
-				if (depository == null) {
-					player.sendMessage("没有检测到完整的存储器结构");
-					return true;
-				}
-				Dropper_shop_plugin.instance.get_depository_manager().add(depository);
-				player.sendMessage("存储器结构建立完成");
-			} else if (args[0].equalsIgnoreCase(Depository_sub_cmd.info.name())) {
+			if (args[0].equalsIgnoreCase(Depository_sub_cmd.info.name())) {
 				Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(player.getName(),
 						look_block.getLocation(), false);
 				if (depository == null) {

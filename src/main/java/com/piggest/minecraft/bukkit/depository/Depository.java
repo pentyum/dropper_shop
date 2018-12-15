@@ -270,4 +270,9 @@ public class Depository extends Multi_block_structure implements Ownable, Invent
 		player.closeInventory();
 		player.openInventory(this.getInventory());
 	}
+
+	@Override
+	public boolean create_condition(Player player) {
+		return true;
+	}
 }
