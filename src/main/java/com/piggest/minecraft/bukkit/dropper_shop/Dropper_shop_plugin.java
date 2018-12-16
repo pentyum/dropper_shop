@@ -29,6 +29,7 @@ import com.piggest.minecraft.bukkit.depository.Depository_manager;
 import com.piggest.minecraft.bukkit.depository.Reader;
 import com.piggest.minecraft.bukkit.depository.Update_component;
 import com.piggest.minecraft.bukkit.depository.Update_component_listener;
+import com.piggest.minecraft.bukkit.exp_saver.Exp_saver_listener;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.grinder.Grinder_command_executor;
 import com.piggest.minecraft.bukkit.grinder.Grinder_listener;
@@ -68,7 +69,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private final Update_component_listener update_component_listener = new Update_component_listener();
 	private final Grinder_listener grinder_listener = new Grinder_listener();
 	private final Advanced_furnace_listener adv_furnace_listener = new Advanced_furnace_listener();
-
+	private final Exp_saver_listener exp_saver_listener = new Exp_saver_listener();
+	
 	public FileConfiguration get_shop_config() {
 		return this.shop_config;
 	}
@@ -169,6 +171,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		pm.registerEvents(update_component_listener, this);
 		pm.registerEvents(grinder_listener, this);
 		pm.registerEvents(adv_furnace_listener, this);
+		pm.registerEvents(exp_saver_listener, this);
 	}
 
 	@Override

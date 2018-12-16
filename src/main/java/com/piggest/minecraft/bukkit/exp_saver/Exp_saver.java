@@ -10,16 +10,45 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
 
 public class Exp_saver extends Multi_block_structure implements InventoryHolder, HasRunner {
 	private int saved_exp = 0;
-	private int max_saved_exp = 10000;
+	private int max_saved_exp = 5000;
 	private Exp_saver_runner exp_saver_runner = new Exp_saver_runner(this);
 	private Inventory gui = Bukkit.createInventory(this, 27, "经验存储器");
+	private static int[] buttons = new int[] { 9, 10, 11, 15, 16, 17 };
+
+	public Exp_saver() {
+		ItemStack output1 = new ItemStack(Material.FIREWORK_ROCKET);
+		ItemStack output5 = new ItemStack(Material.FIREWORK_ROCKET);
+		ItemStack output10 = new ItemStack(Material.FIREWORK_ROCKET);
+		ItemStack input1 = new ItemStack(Material.HOPPER);
+		ItemStack input5 = new ItemStack(Material.HOPPER);
+		ItemStack input10 = new ItemStack(Material.HOPPER);
+		Grinder.set_item_name(output1, "§r取出1级");
+		Grinder.set_item_name(output5, "§r取出5级");
+		Grinder.set_item_name(output10, "§r取出10级");
+		Grinder.set_item_name(input1, "§r存入1级");
+		Grinder.set_item_name(input5, "§r存入5级");
+		Grinder.set_item_name(input10, "§r存入10级");
+		this.gui.setItem(buttons[0], output1);
+		this.gui.setItem(buttons[1], output5);
+		this.gui.setItem(buttons[2], output10);
+		this.gui.setItem(buttons[3], input1);
+		this.gui.setItem(buttons[4], input5);
+		this.gui.setItem(buttons[5], input10);
+	}
+
+	public static int[] get_buttons() {
+		return buttons;
+	}
 
 	@Override
 	public void on_right_click(Player player) {
@@ -55,7 +84,9 @@ public class Exp_saver extends Multi_block_structure implements InventoryHolder,
 
 	@Override
 	public boolean in_structure(Location loc) {
-		// TODO 自动生成的方法存根
+		if (loc.equals(this.get_location())) {
+			return true;
+		}
 		return false;
 	}
 
@@ -101,28 +132,38 @@ public class Exp_saver extends Multi_block_structure implements InventoryHolder,
 		return this.saved_exp;
 	}
 
-	public void add_exp(int exp) {
+	public int add_exp(int exp) {
 		if (this.saved_exp + exp > this.max_saved_exp) {
 			exp = this.max_saved_exp - this.saved_exp;
 		}
 		this.saved_exp += exp;
+		this.set_process(this.saved_exp * 100 / this.max_saved_exp);
+		return exp;
+	}
+
+	public int remove_exp(int exp) {
+		if (exp > this.saved_exp) {
+			exp = this.saved_exp;
+		}
+		this.saved_exp -= exp;
+		this.set_process(this.saved_exp * 100 / this.max_saved_exp);
+		return exp;
 	}
 
 	public void output_exp(int level, Player player) {
-		for (int added_level = 0; added_level < level; added_level++) {
-			int needed_exp = player.getExpToLevel();
-			if (this.saved_exp - needed_exp < 0) {
-				needed_exp = this.saved_exp;
-			}
-			this.saved_exp -= needed_exp;
-			player.setTotalExperience(player.getTotalExperience() + needed_exp);
-		}
+		int need_exp = get_exp_to_level(player.getLevel() + level) - player.getTotalExperience();
+		need_exp = this.remove_exp(need_exp);
+		player.setTotalExperience(player.getTotalExperience() + need_exp);
 	}
 
 	public void input_exp(int level, Player player) {
-		for (int removed_level = 0; removed_level < level; removed_level++) {
-
+		int target_level = player.getLevel() - level;
+		if (target_level < 0) {
+			target_level = 0;
 		}
+		int remove_exp = player.getTotalExperience() - get_exp_to_level(target_level);
+		remove_exp = this.add_exp(remove_exp);
+		player.setTotalExperience(player.getTotalExperience() - remove_exp);
 	}
 
 	public static int get_exp_to_level(int level) {
@@ -144,4 +185,39 @@ public class Exp_saver extends Multi_block_structure implements InventoryHolder,
 			return 9 * level - 158;
 		}
 	}
+
+	public static int get_excess_exp(Player player) {
+		return player.getTotalExperience() - get_exp_to_level(player.getLevel());
+	}
+
+	public void set_process(int process) {
+		int n = process * 9 / 100;
+		int i = 0;
+		ItemStack red = new ItemStack(Material.RED_STAINED_GLASS_PANE);
+		ItemStack white = new ItemStack(Material.WHITE_STAINED_GLASS_PANE);
+		ItemMeta meta = red.getItemMeta();
+		meta.setDisplayName("§e当前经验: " + this.saved_exp);
+		red.setItemMeta(meta);
+		white.setItemMeta(meta);
+		for (i = 0; i < n; i++) {
+			this.gui.setItem(i, red.clone());
+		}
+		for (i = n; i < 9; i++) {
+			this.gui.setItem(i, white.clone());
+		}
+	}
+
+	public void unpress_button(int i) {
+		ItemStack item = this.gui.getItem(i);
+		ItemMeta meta = item.getItemMeta();
+		meta.setLore(null);
+		item.setItemMeta(meta);
+	}
+
+	public boolean pressed_button(int i) {
+		ItemStack item = this.gui.getItem(i);
+		ItemMeta meta = item.getItemMeta();
+		return meta.hasLore();
+	}
+
 }
