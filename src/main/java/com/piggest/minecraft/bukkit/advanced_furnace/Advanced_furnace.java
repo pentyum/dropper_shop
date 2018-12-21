@@ -15,17 +15,15 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Furnace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
-import com.piggest.minecraft.bukkit.structure.HasRunner;
-import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
+import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 
-public class Advanced_furnace extends Multi_block_structure implements InventoryHolder, HasRunner {
+public class Advanced_furnace extends Multi_block_with_gui {
 	private Reaction_container reaction_container = new Reaction_container();
 	private double power = 0;
 	private Inventory gui = Bukkit.createInventory(this, 27, "高级熔炉");
@@ -54,48 +52,22 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 	}
 
 	public Advanced_furnace() {
-		ItemStack raw_solid_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
-		ItemStack raw_gas_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
-		ItemStack fuel_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
-		ItemStack product_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
-		ItemStack temp_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
-		ItemStack info_workbench = new ItemStack(Material.CRAFTING_TABLE);
-		ItemStack auto_product = new ItemStack(Material.HOPPER_MINECART);
-		ItemStack to_product = new ItemStack(Material.CHEST_MINECART);
-		ItemStack clean_solid = new ItemStack(Material.MINECART);
-		ItemStack clean_gas = new ItemStack(Material.GLASS_BOTTLE);
-		ItemStack auto_gas_discharge = new ItemStack(Material.DISPENSER);
-		ItemStack make_money = new ItemStack(Material.CHEST);
-
-		Grinder.set_item_name(raw_solid_sign, "§r左边放固体原料");
-		Grinder.set_item_name(raw_gas_sign, "§r左边放气体原料");
-		Grinder.set_item_name(fuel_sign, "§r右边放燃料");
-		Grinder.set_item_name(product_sign, "§r左边为产品");
-		Grinder.set_item_name(temp_sign, "§r右边为温度");
-		Grinder.set_item_name(info_workbench, "§e内部信息");
-		Grinder.set_item_name(auto_product, "§e固体产品自动提取");
-		Grinder.set_item_name(to_product, "§r立刻取出固体");
-		Grinder.set_item_name(clean_solid, "§r清除全部固体");
-		Grinder.set_item_name(auto_gas_discharge, "§e气体自动排放");
-		Grinder.set_item_name(clean_gas, "§r清除全部气体");
-		Grinder.set_item_name(make_money, "§e金币制造");
-
-		this.gui.setItem(10, raw_solid_sign);
-		this.gui.setItem(12, raw_gas_sign);
-		this.gui.setItem(14, raw_solid_sign.clone());
-		this.gui.setItem(16, fuel_sign);
-		this.gui.setItem(19, product_sign);
-		this.gui.setItem(21, product_sign.clone());
-		this.gui.setItem(23, product_sign.clone());
-		this.gui.setItem(25, temp_sign);
-		this.gui.setItem(0, info_workbench);
-		this.gui.setItem(2, auto_product);
-		this.gui.setItem(3, to_product);
-		this.gui.setItem(4, clean_solid);
-		this.gui.setItem(5, auto_gas_discharge);
-		this.gui.setItem(6, clean_gas);
-		this.gui.setItem(8, make_money);
-
+		this.set_gui(10, Material.BLUE_STAINED_GLASS_PANE, "§r左边放固体原料");
+		this.set_gui(12, Material.BLUE_STAINED_GLASS_PANE, "§r左边放气体原料");
+		this.set_gui(14, Material.BLUE_STAINED_GLASS_PANE, "§r左边放液体原料");
+		this.set_gui(16, Material.BLUE_STAINED_GLASS_PANE, "§r右边放燃料");
+		this.set_gui(19, Material.BLUE_STAINED_GLASS_PANE, "§r左边为固体产品");
+		this.set_gui(21, Material.BLUE_STAINED_GLASS_PANE, "§r左边为气体产品");
+		this.set_gui(23, Material.BLUE_STAINED_GLASS_PANE, "§r左边为液体产品");
+		this.set_gui(25, Material.BLUE_STAINED_GLASS_PANE, "§r右边为温度");
+		this.set_gui(0, Material.CRAFTING_TABLE, "§e内部信息");
+		this.set_gui(2, Material.HOPPER_MINECART, "§e固体产品自动提取");
+		this.set_gui(3, Material.CHEST_MINECART, "§r立刻取出固体");
+		this.set_gui(4, Material.MINECART, "§r清除全部固体");
+		this.set_gui(5, Material.GLASS_BOTTLE, "§e气体自动排放");
+		this.set_gui(6, Material.DISPENSER, "§r清除全部气体");
+		this.set_gui(8, Material.CHEST, "§e金币制造");
+		
 		ItemStack temp_info = new ItemStack(Material.FURNACE);
 		ItemMeta temp_info_meta = temp_info.getItemMeta();
 		temp_info_meta.setDisplayName("§e信息");
@@ -428,19 +400,6 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 		return this.get_switch(8);
 	}
 
-	private void unpress_button(int i) {
-		ItemStack item = this.gui.getItem(i);
-		ItemMeta meta = item.getItemMeta();
-		meta.setLore(null);
-		item.setItemMeta(meta);
-	}
-
-	private boolean pressed_button(int i) {
-		ItemStack item = this.gui.getItem(i);
-		ItemMeta meta = item.getItemMeta();
-		return meta.hasLore();
-	}
-
 	public void unpress_to_product() {
 		unpress_button(3);
 	}
@@ -561,13 +520,7 @@ public class Advanced_furnace extends Multi_block_structure implements Inventory
 	public int get_money_limit() {
 		return this.money_limit;
 	}
-
-	@Override
-	public void on_right_click(Player player) {
-		player.closeInventory();
-		player.openInventory(this.getInventory());
-	}
-
+	
 	@Override
 	public boolean create_condition(Player player) {
 		return true;

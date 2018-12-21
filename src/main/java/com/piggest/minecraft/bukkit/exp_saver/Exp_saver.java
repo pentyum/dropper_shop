@@ -9,16 +9,14 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.piggest.minecraft.bukkit.grinder.Grinder;
-import com.piggest.minecraft.bukkit.structure.HasRunner;
-import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
+import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 
-public class Exp_saver extends Multi_block_structure implements InventoryHolder, HasRunner {
+public class Exp_saver extends Multi_block_with_gui {
 	private int saved_exp = 0;
 	private int max_saved_exp = 5000;
 	private Exp_saver_runner exp_saver_runner = new Exp_saver_runner(this);
@@ -26,34 +24,16 @@ public class Exp_saver extends Multi_block_structure implements InventoryHolder,
 	private static int[] buttons = new int[] { 9, 10, 11, 15, 16, 17 };
 
 	public Exp_saver() {
-		ItemStack output1 = new ItemStack(Material.FIREWORK_ROCKET);
-		ItemStack output5 = new ItemStack(Material.FIREWORK_ROCKET);
-		ItemStack output10 = new ItemStack(Material.FIREWORK_ROCKET);
-		ItemStack input1 = new ItemStack(Material.HOPPER);
-		ItemStack input5 = new ItemStack(Material.HOPPER);
-		ItemStack input10 = new ItemStack(Material.HOPPER);
-		Grinder.set_item_name(output1, "§r取出1级");
-		Grinder.set_item_name(output5, "§r取出5级");
-		Grinder.set_item_name(output10, "§r取出10级");
-		Grinder.set_item_name(input1, "§r存入1级");
-		Grinder.set_item_name(input5, "§r存入5级");
-		Grinder.set_item_name(input10, "§r存入10级");
-		this.gui.setItem(buttons[0], output1);
-		this.gui.setItem(buttons[1], output5);
-		this.gui.setItem(buttons[2], output10);
-		this.gui.setItem(buttons[3], input1);
-		this.gui.setItem(buttons[4], input5);
-		this.gui.setItem(buttons[5], input10);
+		this.set_gui(buttons[0], Material.FIREWORK_ROCKET, "§r取出1级");
+		this.set_gui(buttons[1], Material.FIREWORK_ROCKET, "§r取出5级");
+		this.set_gui(buttons[2], Material.FIREWORK_ROCKET, "§r取出10级");
+		this.set_gui(buttons[3], Material.HOPPER, "§r存入1级");
+		this.set_gui(buttons[4], Material.HOPPER, "§r存入5级");
+		this.set_gui(buttons[5], Material.HOPPER, "§r存入10级");
 	}
 
 	public static int[] get_buttons() {
 		return buttons;
-	}
-
-	@Override
-	public void on_right_click(Player player) {
-		player.closeInventory();
-		player.openInventory(this.getInventory());
 	}
 
 	@Override
@@ -205,19 +185,6 @@ public class Exp_saver extends Multi_block_structure implements InventoryHolder,
 		for (i = n; i < 9; i++) {
 			this.gui.setItem(i, white.clone());
 		}
-	}
-
-	public void unpress_button(int i) {
-		ItemStack item = this.gui.getItem(i);
-		ItemMeta meta = item.getItemMeta();
-		meta.setLore(null);
-		item.setItemMeta(meta);
-	}
-
-	public boolean pressed_button(int i) {
-		ItemStack item = this.gui.getItem(i);
-		ItemMeta meta = item.getItemMeta();
-		return meta.hasLore();
 	}
 
 }

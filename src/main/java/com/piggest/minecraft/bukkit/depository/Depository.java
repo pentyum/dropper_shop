@@ -13,16 +13,14 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
-import com.piggest.minecraft.bukkit.structure.HasRunner;
-import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
+import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Ownable;
 
-public class Depository extends Multi_block_structure implements Ownable, InventoryHolder, HasRunner {
+public class Depository extends Multi_block_with_gui implements Ownable {
 	public static int[] price_level = { 5, 10, 20, 30, 40 };
 	public static int[] capacity_level = { 5000, 10000, 20000, 30000, 50000 };
 	private Depository_runner runner = new Depository_runner(this);
@@ -263,12 +261,6 @@ public class Depository extends Multi_block_structure implements Ownable, Invent
 
 	public Inventory getInventory() {
 		return this.gui;
-	}
-
-	@Override
-	public void on_right_click(Player player) {
-		player.closeInventory();
-		player.openInventory(this.getInventory());
 	}
 
 	@Override

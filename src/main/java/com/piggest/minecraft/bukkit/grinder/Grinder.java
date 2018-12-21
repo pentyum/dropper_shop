@@ -15,36 +15,27 @@ import org.bukkit.block.Chest;
 import org.bukkit.block.Hopper;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
-import com.piggest.minecraft.bukkit.structure.HasRunner;
-import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
+import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 
-public class Grinder extends Multi_block_structure implements InventoryHolder, HasRunner {
+public class Grinder extends Multi_block_with_gui {
 	public static HashMap<Material, ItemStack> recipe = new HashMap<Material, ItemStack>();
 	public static HashMap<Material, Integer> recipe_time = new HashMap<Material, Integer>();
 	private Inventory gui = Bukkit.createInventory(this, 18, "磨粉机");
 	private Grinder_runner runner = new Grinder_runner(this);
 	private Grinder_io_runner io_runner = new Grinder_io_runner(this);
-
+	
 	public Grinder() {
-		ItemStack raw_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
-		ItemStack flint_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
-		ItemStack product_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
-		ItemStack product2_sign = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
-		set_item_name(raw_sign, "§r左边放原料");
-		set_item_name(flint_sign, "§r左边放燧石或者黑曜石");
-		set_item_name(product_sign, "§r左边为产品");
-		set_item_name(product2_sign, "§r右边为燧石单元储量");
-		this.gui.setItem(10, raw_sign);
-		this.gui.setItem(12, flint_sign);
-		this.gui.setItem(14, product_sign);
-		this.gui.setItem(16, product2_sign);
+		this.set_gui(10, Material.BLUE_STAINED_GLASS_PANE, "§r左边放原料");
+		this.set_gui(12, Material.BLUE_STAINED_GLASS_PANE, "§r左边放燧石或者黑曜石");
+		this.set_gui(14, Material.BLUE_STAINED_GLASS_PANE, "§r左边为产品");
+		this.set_gui(16, Material.BLUE_STAINED_GLASS_PANE, "§r右边为燧石单元储量");
+		
 		ItemStack flint_info = new ItemStack(Material.FLINT);
 		ItemMeta flint_info_meta = flint_info.getItemMeta();
 		flint_info_meta.setDisplayName("§e燧石储量");
@@ -416,12 +407,6 @@ public class Grinder extends Multi_block_structure implements InventoryHolder, H
 			save.put("product-num", this.get_product().getAmount());
 		}
 		return save;
-	}
-
-	@Override
-	public void on_right_click(Player player) {
-		player.closeInventory();
-		player.openInventory(this.getInventory());
 	}
 
 	@Override
