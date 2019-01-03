@@ -29,6 +29,11 @@ commands:
     usage: /<command> to see the plugin info or /<command> setprice [world] to change price.
     permission: wrench.use
     permission-message: You don't have permission
+  exp_saver:
+    description: see the plugin info.
+    usage: /<command> remove to remove a exp saver.
+    permission: exp_saver.use
+    permission-message: You don't have permission
 permissions:
   dropper_shop.*:
     description: Gives access to all dropper shop commands.
@@ -78,4 +83,10 @@ permissions:
   wrench.changeprice:
     description: change wrench price
     default: op
+  exp_saver.*:
+    description: Gives access to all wrench commands
+    default: op
+  exp_saver.use:
+    description: Gives access to use exp_saver
+    default: true
 softdepend: [Vault]

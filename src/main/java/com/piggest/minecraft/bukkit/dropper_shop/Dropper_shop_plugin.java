@@ -29,6 +29,7 @@ import com.piggest.minecraft.bukkit.depository.Depository_manager;
 import com.piggest.minecraft.bukkit.depository.Reader;
 import com.piggest.minecraft.bukkit.depository.Update_component;
 import com.piggest.minecraft.bukkit.depository.Update_component_listener;
+import com.piggest.minecraft.bukkit.exp_saver.Exp_saver_command_executor;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver_listener;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver_manager;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
@@ -140,6 +141,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.getCommand("dropper_shop").setExecutor(new Dropper_shop_command_executor());
 		this.getCommand("grinder").setExecutor(new Grinder_command_executor());
 		this.getCommand("adv_furnace").setExecutor(new Advanced_furnace_command_executor());
+		this.getCommand("exp_saver").setExecutor(new Exp_saver_command_executor());
 		Wrench_command_executor wrench = new Wrench_command_executor();
 		this.getCommand("wrench").setExecutor(wrench);
 
