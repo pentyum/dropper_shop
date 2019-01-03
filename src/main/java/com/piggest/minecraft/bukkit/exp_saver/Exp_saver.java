@@ -29,6 +29,7 @@ public class Exp_saver extends Multi_block_with_gui {
 		this.set_gui(buttons[3], Material.HOPPER, "§r存入1级");
 		this.set_gui(buttons[4], Material.HOPPER, "§r存入5级");
 		this.set_gui(buttons[5], Material.HOPPER, "§r存入10级");
+		this.set_process(0);
 	}
 
 	public static int[] get_buttons() {
@@ -97,7 +98,7 @@ public class Exp_saver extends Multi_block_with_gui {
 	@Override
 	public void set_from_save(Map<?, ?> shop_save) {
 		super.set_from_save(shop_save);
-		this.saved_exp = (Integer) shop_save.get("saved-exp");
+		this.add_exp((Integer) shop_save.get("saved-exp"));
 	}
 
 	@Override
