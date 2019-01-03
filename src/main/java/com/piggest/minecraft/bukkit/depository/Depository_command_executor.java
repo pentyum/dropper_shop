@@ -38,7 +38,7 @@ public class Depository_command_executor implements TabExecutor {
 		Player player = (Player) sender;
 		if (cmd.getName().equalsIgnoreCase("depository")) {
 			if (args.length == 0) {
-				player.sendMessage("请使用/depository make|info|remove|input|output|connect");
+				player.sendMessage("请使用/depository info|remove|input|output|connect");
 				return true;
 			}
 			Block look_block = player.getTargetBlockExact(4);

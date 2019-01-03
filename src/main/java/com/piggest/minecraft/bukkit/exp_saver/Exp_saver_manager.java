@@ -3,7 +3,6 @@ package com.piggest.minecraft.bukkit.exp_saver;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
-import com.piggest.minecraft.bukkit.structure.Structure;
 import com.piggest.minecraft.bukkit.structure.Structure_manager;
 
 public class Exp_saver_manager extends Structure_manager {
@@ -15,7 +14,7 @@ public class Exp_saver_manager extends Structure_manager {
 	}
 
 	@Override
-	public Structure find(String player_name, Location loc, boolean new_structure) {
+	public Exp_saver find(String player_name, Location loc, boolean new_structure) {
 		int x;
 		int y;
 		int z;
@@ -43,6 +42,10 @@ public class Exp_saver_manager extends Structure_manager {
 			}
 		}
 		return null;
+	}
+
+	public Exp_saver find(Location location, boolean new_structure) {
+		return this.find(location, new_structure);
 	}
 
 }

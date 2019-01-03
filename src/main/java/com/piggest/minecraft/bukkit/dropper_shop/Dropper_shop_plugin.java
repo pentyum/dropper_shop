@@ -237,4 +237,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		return this.sr;
 	}
 
+	public Exp_saver_manager get_exp_saver_manager() {
+		return this.exp_saver_manager;
+	}
+
 }

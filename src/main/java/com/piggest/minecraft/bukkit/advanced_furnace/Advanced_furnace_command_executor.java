@@ -32,7 +32,7 @@ public class Advanced_furnace_command_executor implements TabExecutor {
 		Player player = (Player) sender;
 		if (cmd.getName().equalsIgnoreCase("adv_furnace")) {
 			if (args.length == 0) {
-				player.sendMessage("请使用/adv_furnace make|remove|temp");
+				player.sendMessage("请使用/adv_furnace remove|temp|getmoney");
 				return true;
 			}
 			if (args[0].equalsIgnoreCase("temp")) {
