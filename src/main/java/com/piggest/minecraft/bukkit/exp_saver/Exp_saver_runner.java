@@ -34,19 +34,17 @@ public class Exp_saver_runner extends BukkitRunnable {
 		for (int i = 0; i < buttons.length; i++) {
 			if (exp_saver.pressed_button(buttons[i])) {
 				ItemStack item = exp_saver.getInventory().getItem(buttons[i]);
-				if (item.hasItemMeta()) {
-					ItemMeta meta = item.getItemMeta();
-					if (meta.hasLore()) {
-						List<String> lore = meta.getLore();
-						Player player = Bukkit.getPlayer(lore.get(0));
-						if (i < 3) {
-							exp_saver.output_exp(levels[i], player);
-							break;
-						} else {
-							exp_saver.input_exp(levels[i], player);
-							break;
-						}
-					}
+				ItemMeta meta = item.getItemMeta();
+				List<String> lore = meta.getLore();
+				Player player = Bukkit.getPlayer(lore.get(0));
+				if (i < 3) {
+					exp_saver.output_exp(levels[i], player);
+					exp_saver.unpress_button(buttons[i]);
+					break;
+				} else {
+					exp_saver.input_exp(levels[i], player);
+					exp_saver.unpress_button(buttons[i]);
+					break;
 				}
 			}
 			exp_saver.unpress_button(buttons[i]);

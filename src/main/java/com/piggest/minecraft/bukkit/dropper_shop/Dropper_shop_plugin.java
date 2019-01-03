@@ -30,6 +30,7 @@ import com.piggest.minecraft.bukkit.depository.Reader;
 import com.piggest.minecraft.bukkit.depository.Update_component;
 import com.piggest.minecraft.bukkit.depository.Update_component_listener;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver_listener;
+import com.piggest.minecraft.bukkit.exp_saver.Exp_saver_manager;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.grinder.Grinder_command_executor;
 import com.piggest.minecraft.bukkit.grinder.Grinder_listener;
@@ -54,8 +55,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private Depository_manager depository_manager = new Depository_manager();
 	private Grinder_manager grinder_manager = new Grinder_manager();
 	private Advanced_furnace_manager adv_furnace_manager = new Advanced_furnace_manager();
+	private Exp_saver_manager exp_saver_manager = new Exp_saver_manager();
 	private Structure_manager[] structure_manager = { shop_manager, depository_manager, grinder_manager,
-			adv_furnace_manager };
+			adv_furnace_manager, exp_saver_manager };
 
 	private HashMap<String, Integer> price_map = new HashMap<String, Integer>();
 	private HashMap<String, Integer> unit_map = new HashMap<String, Integer>();
@@ -70,7 +72,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private final Grinder_listener grinder_listener = new Grinder_listener();
 	private final Advanced_furnace_listener adv_furnace_listener = new Advanced_furnace_listener();
 	private final Exp_saver_listener exp_saver_listener = new Exp_saver_listener();
-	
+
 	public FileConfiguration get_shop_config() {
 		return this.shop_config;
 	}
@@ -158,10 +160,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		Reaction_container.init_reaction();
 		wrench.init();
 
-		this.shop_manager.load_structures();
-		this.depository_manager.load_structures();
-		this.grinder_manager.load_structures();
-		this.adv_furnace_manager.load_structures();
+		for (Structure_manager manager : this.structure_manager) {
+			manager.load_structures();
+		}
 
 		PluginManager pm = getServer().getPluginManager();
 
@@ -176,10 +177,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		this.shop_manager.save_structures();
-		this.depository_manager.save_structures();
-		this.grinder_manager.save_structures();
-		this.adv_furnace_manager.save_structures();
+		for (Structure_manager manager : this.structure_manager) {
+			manager.save_structures();
+		}
 		try {
 			shop_config.save(this.shop_file);
 		} catch (IOException e) {

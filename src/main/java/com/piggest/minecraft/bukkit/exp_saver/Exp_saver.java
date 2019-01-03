@@ -13,7 +13,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 
 public class Exp_saver extends Multi_block_with_gui {
@@ -38,7 +37,7 @@ public class Exp_saver extends Multi_block_with_gui {
 
 	@Override
 	public int completed() {
-		if (this.get_block(0, 0, 0).getType() != Material.GOLD_BLOCK) {
+		if (this.get_block(0, 0, 0).getType() != Material.DIAMOND_BLOCK) {
 			return 0;
 		}
 		HashSet<Material> block_set = new HashSet<Material>();
@@ -56,7 +55,7 @@ public class Exp_saver extends Multi_block_with_gui {
 		if (!block_set.contains(Material.SKELETON_SKULL)) {
 			return 0;
 		}
-		if (!block_set.contains(Material.PLAYER_HEAD)) {
+		if (!block_set.contains(Material.WITHER_SKELETON_SKULL)) {
 			return 0;
 		}
 		return 1;
@@ -131,9 +130,12 @@ public class Exp_saver extends Multi_block_with_gui {
 	}
 
 	public void output_exp(int level, Player player) {
-		int need_exp = get_exp_to_level(player.getLevel() + level) - player.getTotalExperience();
+		int need_exp = get_exp_to_level(player.getLevel() + level) - get_all_exp(player);
+		// player.sendMessage("当前经验"+get_all_exp(player)+"目标经验"+get_exp_to_level(player.getLevel()
+		// + level)+"升级经验"+player.getExpToLevel());
 		need_exp = this.remove_exp(need_exp);
-		player.setTotalExperience(player.getTotalExperience() + need_exp);
+		player.sendMessage("取出了" + need_exp + "点经验");
+		player.giveExp(need_exp);
 	}
 
 	public void input_exp(int level, Player player) {
@@ -141,9 +143,10 @@ public class Exp_saver extends Multi_block_with_gui {
 		if (target_level < 0) {
 			target_level = 0;
 		}
-		int remove_exp = player.getTotalExperience() - get_exp_to_level(target_level);
+		int remove_exp = get_all_exp(player) - get_exp_to_level(target_level);
 		remove_exp = this.add_exp(remove_exp);
-		player.setTotalExperience(player.getTotalExperience() - remove_exp);
+		player.sendMessage("存入了" + remove_exp + "点经验");
+		player.giveExp(-remove_exp);
 	}
 
 	public static int get_exp_to_level(int level) {
@@ -170,13 +173,17 @@ public class Exp_saver extends Multi_block_with_gui {
 		return player.getTotalExperience() - get_exp_to_level(player.getLevel());
 	}
 
+	public static int get_all_exp(Player player) {
+		return Math.round(get_exp_to_level(player.getLevel()) + player.getExp() * player.getExpToLevel());
+	}
+
 	public void set_process(int process) {
 		int n = process * 9 / 100;
 		int i = 0;
 		ItemStack red = new ItemStack(Material.RED_STAINED_GLASS_PANE);
 		ItemStack white = new ItemStack(Material.WHITE_STAINED_GLASS_PANE);
 		ItemMeta meta = red.getItemMeta();
-		meta.setDisplayName("§e当前经验: " + this.saved_exp);
+		meta.setDisplayName("§e当前经验: " + this.saved_exp + "/" + this.max_saved_exp);
 		red.setItemMeta(meta);
 		white.setItemMeta(meta);
 		for (i = 0; i < n; i++) {
@@ -186,5 +193,5 @@ public class Exp_saver extends Multi_block_with_gui {
 			this.gui.setItem(i, white.clone());
 		}
 	}
-
+	
 }
