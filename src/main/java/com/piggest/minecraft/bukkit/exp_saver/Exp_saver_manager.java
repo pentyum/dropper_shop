@@ -21,7 +21,7 @@ public class Exp_saver_manager extends Structure_manager {
 		int z;
 		Exp_saver exp_saver;
 		for (x = -1; x <= 1; x++) {
-			for (y = 0; y <= 2; y++) {
+			for (y = -2; y <= 0; y++) {
 				for (z = -1; z <= 1; z++) {
 					Location check_loc = loc.clone().add(x, y, z);
 					Material material = check_loc.getBlock().getType();
