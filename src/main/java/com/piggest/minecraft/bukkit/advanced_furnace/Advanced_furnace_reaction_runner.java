@@ -6,11 +6,10 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.piggest.minecraft.bukkit.grinder.Grinder;
+import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
-public class Advanced_furnace_reaction_runner extends BukkitRunnable {
+public class Advanced_furnace_reaction_runner extends Structure_runner {
 	private Advanced_furnace advanced_furnace;
 	private int money_times = 0;
 
@@ -161,6 +160,11 @@ public class Advanced_furnace_reaction_runner extends BukkitRunnable {
 
 	public int get_cycle() {
 		return 5;
+	}
+
+	@Override
+	public int get_delay() {
+		return 10;
 	}
 
 }

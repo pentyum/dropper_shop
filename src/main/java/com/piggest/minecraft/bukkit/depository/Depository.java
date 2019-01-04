@@ -14,11 +14,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Ownable;
+import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
 public class Depository extends Multi_block_with_gui implements Ownable {
 	public static int[] price_level = { 5, 10, 20, 30, 40 };
@@ -142,16 +141,8 @@ public class Depository extends Multi_block_with_gui implements Ownable {
 		}
 	}
 
-	public BukkitRunnable[] get_runner() {
-		return new BukkitRunnable[] { this.runner, this.importer };
-	}
-
-	public int[] get_runner_cycle() {
-		return new int[] { 20 * 3600, 10 };
-	}
-
-	public int[] get_runner_delay() {
-		return new int[] { 20, 10 };
+	public Structure_runner[] get_runner() {
+		return new Structure_runner[] { this.runner, this.importer };
 	}
 
 	public Depository_item_importer get_importer() {

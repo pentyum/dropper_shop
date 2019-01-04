@@ -1,11 +1,10 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.piggest.minecraft.bukkit.grinder.Grinder;
+import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
-public class Advanced_furnace_temp_runner extends BukkitRunnable {
+public class Advanced_furnace_temp_runner extends Structure_runner {
 	private Advanced_furnace adv_furnace;
 	private int cycle = 2;
 
@@ -55,5 +54,10 @@ public class Advanced_furnace_temp_runner extends BukkitRunnable {
 				adv_furnace.set_fuel(fuel);
 			}
 		}
+	}
+
+	@Override
+	public int get_delay() {
+		return 10;
 	}
 }

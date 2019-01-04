@@ -8,10 +8,10 @@ import java.util.Iterator;
 import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.PluginManager;
@@ -63,16 +63,12 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private HashMap<String, Integer> price_map = new HashMap<String, Integer>();
 	private HashMap<String, Integer> unit_map = new HashMap<String, Integer>();
 
-	public NamespacedKey namespace = new NamespacedKey(this, "Dropper_shop");
 	private ArrayList<ShapedRecipe> sr = new ArrayList<ShapedRecipe>();
 
 	private final Multi_block_structure_listener multi_block_structure_listener = new Multi_block_structure_listener();
-	private final Depository_listener depository_listener = new Depository_listener();
-	private final Dropper_shop_listener shop_listener = new Dropper_shop_listener();
-	private final Update_component_listener update_component_listener = new Update_component_listener();
-	private final Grinder_listener grinder_listener = new Grinder_listener();
-	private final Advanced_furnace_listener adv_furnace_listener = new Advanced_furnace_listener();
-	private final Exp_saver_listener exp_saver_listener = new Exp_saver_listener();
+	private Listener[] structure_listeners = { new Depository_listener(), new Dropper_shop_listener(),
+			new Update_component_listener(), new Grinder_listener(), new Advanced_furnace_listener(),
+			new Exp_saver_listener() };
 
 	public FileConfiguration get_shop_config() {
 		return this.shop_config;
@@ -169,12 +165,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		PluginManager pm = getServer().getPluginManager();
 
 		pm.registerEvents(multi_block_structure_listener, this);
-		pm.registerEvents(shop_listener, this);
-		pm.registerEvents(depository_listener, this);
-		pm.registerEvents(update_component_listener, this);
-		pm.registerEvents(grinder_listener, this);
-		pm.registerEvents(adv_furnace_listener, this);
-		pm.registerEvents(exp_saver_listener, this);
+		for(Listener listener : this.structure_listeners) {
+			pm.registerEvents(listener, this);
+		}
 	}
 
 	@Override

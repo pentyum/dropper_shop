@@ -1,11 +1,10 @@
 package com.piggest.minecraft.bukkit.grinder;
 
 import org.bukkit.Material;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
-public class Grinder_runner extends BukkitRunnable {
+public class Grinder_runner extends Structure_runner {
 	private Grinder grinder;
 	public int working_ticks;
 
@@ -49,5 +48,15 @@ public class Grinder_runner extends BukkitRunnable {
 				}
 			}
 		}
+	}
+
+	@Override
+	public int get_cycle() {
+		return 1;
+	}
+
+	@Override
+	public int get_delay() {
+		return 10;
 	}
 }

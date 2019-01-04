@@ -4,10 +4,11 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Hopper;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-public class Depository_item_importer extends BukkitRunnable {
+import com.piggest.minecraft.bukkit.structure.Structure_runner;
+
+public class Depository_item_importer extends Structure_runner {
 	private Depository depository = null;
 	private int times = 0;
 
@@ -52,6 +53,16 @@ public class Depository_item_importer extends BukkitRunnable {
 			this.times = 0;
 		}
 		this.times++;
+	}
+
+	@Override
+	public int get_cycle() {
+		return 10;
+	}
+
+	@Override
+	public int get_delay() {
+		return 10;
 	}
 
 }

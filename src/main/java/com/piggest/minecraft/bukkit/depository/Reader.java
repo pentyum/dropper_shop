@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -17,6 +18,7 @@ import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 public class Reader {
 	public static String name = "§r存储读取器";
 	public static ItemStack reader_item = null;
+	private static NamespacedKey namespace = new NamespacedKey(Dropper_shop_plugin.instance, "Reader");
 
 	public static Location lore_parse_loction(List<String> lore) {
 		String world_name = null;
@@ -161,7 +163,7 @@ public class Reader {
 	}
 
 	public static void set_recipe() {
-		ShapedRecipe sr1 = new ShapedRecipe(Dropper_shop_plugin.instance.namespace, Reader.reader_item);
+		ShapedRecipe sr1 = new ShapedRecipe(Reader.namespace , Reader.reader_item);
 		sr1.shape("rsr", "scs", "rsr");
 		sr1.setIngredient('s', Material.NETHER_STAR);
 		sr1.setIngredient('c', Material.ENDER_CHEST);

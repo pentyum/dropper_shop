@@ -31,7 +31,7 @@ public abstract class Structure_manager {
 			for (i = 0; i < runnable_list.length; i++) {
 				Dropper_shop_plugin.instance.getLogger().info("已启动" + runnable_list[i].getClass().getName());
 				runnable_list[i].runTaskTimerAsynchronously(Dropper_shop_plugin.instance,
-						new_HasRunner.get_runner_delay()[i], new_HasRunner.get_runner_cycle()[i]);
+						new_HasRunner.get_runner()[i].get_delay(), new_HasRunner.get_runner()[i].get_delay());
 			}
 		}
 		this.structure_map.put(new_structure.get_location(), new_structure);

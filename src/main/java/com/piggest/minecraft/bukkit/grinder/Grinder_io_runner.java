@@ -7,11 +7,10 @@ import org.bukkit.block.Chest;
 import org.bukkit.block.Hopper;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
-public class Grinder_io_runner extends BukkitRunnable {
+public class Grinder_io_runner extends Structure_runner {
 	private Grinder grinder;
 
 	public Grinder_io_runner(Grinder grinder) {
@@ -55,6 +54,16 @@ public class Grinder_io_runner extends BukkitRunnable {
 				}
 			}
 		}
+	}
+
+	@Override
+	public int get_cycle() {
+		return 10;
+	}
+
+	@Override
+	public int get_delay() {
+		return 10;
 	}
 
 }

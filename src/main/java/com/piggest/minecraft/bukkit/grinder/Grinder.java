@@ -22,6 +22,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
+import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
 public class Grinder extends Multi_block_with_gui {
 	public static HashMap<Material, ItemStack> recipe = new HashMap<Material, ItemStack>();
@@ -275,8 +276,8 @@ public class Grinder extends Multi_block_with_gui {
 		return null;
 	}
 
-	public BukkitRunnable[] get_runner() {
-		return new BukkitRunnable[] { this.runner, this.io_runner };
+	public Structure_runner[] get_runner() {
+		return new Structure_runner[] { this.runner, this.io_runner };
 	}
 
 	public int[] get_runner_cycle() {

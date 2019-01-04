@@ -11,9 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
+import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
 public class Exp_saver extends Multi_block_with_gui {
 	private int saved_exp = 0;
@@ -76,18 +75,8 @@ public class Exp_saver extends Multi_block_with_gui {
 	}
 
 	@Override
-	public BukkitRunnable[] get_runner() {
-		return new BukkitRunnable[] { this.exp_saver_runner };
-	}
-
-	@Override
-	public int[] get_runner_cycle() {
-		return new int[] { 10 };
-	}
-
-	@Override
-	public int[] get_runner_delay() {
-		return new int[] { 10 };
+	public Structure_runner[] get_runner() {
+		return new Structure_runner[] { this.exp_saver_runner };
 	}
 
 	@Override

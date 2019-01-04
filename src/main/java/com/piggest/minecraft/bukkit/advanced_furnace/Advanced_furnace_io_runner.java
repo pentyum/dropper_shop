@@ -4,10 +4,11 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Hopper;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-public class Advanced_furnace_io_runner extends BukkitRunnable {
+import com.piggest.minecraft.bukkit.structure.Structure_runner;
+
+public class Advanced_furnace_io_runner extends Structure_runner {
 	private Advanced_furnace adv_furnace;
 
 	public Advanced_furnace_io_runner(Advanced_furnace advanced_furnace) {
@@ -57,6 +58,16 @@ public class Advanced_furnace_io_runner extends BukkitRunnable {
 				}
 			}
 		}
+	}
+
+	@Override
+	public int get_cycle() {
+		return 2;
+	}
+
+	@Override
+	public int get_delay() {
+		return 10;
 	}
 
 }

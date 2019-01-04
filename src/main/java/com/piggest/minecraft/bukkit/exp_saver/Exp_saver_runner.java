@@ -9,9 +9,9 @@ import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
-public class Exp_saver_runner extends BukkitRunnable {
+public class Exp_saver_runner extends Structure_runner {
 	Exp_saver exp_saver = null;
 
 	public Exp_saver_runner(Exp_saver exp_saver) {
@@ -49,6 +49,16 @@ public class Exp_saver_runner extends BukkitRunnable {
 			}
 			exp_saver.unpress_button(buttons[i]);
 		}
+	}
+
+	@Override
+	public int get_cycle() {
+		return 10;
+	}
+
+	@Override
+	public int get_delay() {
+		return 10;
 	}
 
 }

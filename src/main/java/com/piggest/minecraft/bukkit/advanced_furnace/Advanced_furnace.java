@@ -17,11 +17,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
+import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
 public class Advanced_furnace extends Multi_block_with_gui {
 	private Reaction_container reaction_container = new Reaction_container();
@@ -67,7 +66,7 @@ public class Advanced_furnace extends Multi_block_with_gui {
 		this.set_gui(5, Material.GLASS_BOTTLE, "§e气体自动排放");
 		this.set_gui(6, Material.DISPENSER, "§r清除全部气体");
 		this.set_gui(8, Material.CHEST, "§e金币制造");
-		
+
 		ItemStack temp_info = new ItemStack(Material.FURNACE);
 		ItemMeta temp_info_meta = temp_info.getItemMeta();
 		temp_info_meta.setDisplayName("§e信息");
@@ -295,16 +294,8 @@ public class Advanced_furnace extends Multi_block_with_gui {
 		return this.get_k() * (this.reaction_container.get_temperature() - this.get_base_temperature());
 	}
 
-	public BukkitRunnable[] get_runner() {
-		return new BukkitRunnable[] { this.temp_runner, this.reaction_runner, this.io_runner };
-	}
-
-	public int[] get_runner_cycle() {
-		return new int[] { this.temp_runner.get_cycle(), this.reaction_runner.get_cycle(), 2 };
-	}
-
-	public int[] get_runner_delay() {
-		return new int[] { 10, 10, 10 };
+	public Structure_runner[] get_runner() {
+		return new Structure_runner[] { this.temp_runner, this.reaction_runner, this.io_runner };
 	}
 
 	public Reaction_container get_reaction_container() {
@@ -520,7 +511,7 @@ public class Advanced_furnace extends Multi_block_with_gui {
 	public int get_money_limit() {
 		return this.money_limit;
 	}
-	
+
 	@Override
 	public boolean create_condition(Player player) {
 		return true;

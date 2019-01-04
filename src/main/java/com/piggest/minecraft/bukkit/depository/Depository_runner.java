@@ -1,12 +1,12 @@
 package com.piggest.minecraft.bukkit.depository;
 
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.structure.Structure_runner;
+
 import net.milkbowl.vault.economy.Economy;
 
-public class Depository_runner extends BukkitRunnable {
+public class Depository_runner extends Structure_runner {
 	private Depository depository = null;
 
 	public Depository_runner(Depository depository) {
@@ -25,5 +25,15 @@ public class Depository_runner extends BukkitRunnable {
 		} else {
 			depository.set_accessible(false);
 		}
+	}
+
+	@Override
+	public int get_cycle() {
+		return 20 * 3600;
+	}
+
+	@Override
+	public int get_delay() {
+		return 20;
 	}
 }
