@@ -18,6 +18,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
+import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
@@ -25,7 +26,7 @@ import com.piggest.minecraft.bukkit.structure.Structure_runner;
 public class Advanced_furnace extends Multi_block_with_gui {
 	private Reaction_container reaction_container = new Reaction_container();
 	private double power = 0;
-	private Inventory gui = Bukkit.createInventory(this, 27, "高级熔炉");
+	private Inventory gui = Bukkit.createInventory(this, 27, this.get_gui_name());
 	private Advanced_furnace_temp_runner temp_runner = new Advanced_furnace_temp_runner(this);
 	private Advanced_furnace_reaction_runner reaction_runner = new Advanced_furnace_reaction_runner(this);
 	private Advanced_furnace_io_runner io_runner = new Advanced_furnace_io_runner(this);
@@ -51,21 +52,21 @@ public class Advanced_furnace extends Multi_block_with_gui {
 	}
 
 	public Advanced_furnace() {
-		this.set_gui(10, Material.BLUE_STAINED_GLASS_PANE, "§r左边放固体原料");
-		this.set_gui(12, Material.BLUE_STAINED_GLASS_PANE, "§r左边放气体原料");
-		this.set_gui(14, Material.BLUE_STAINED_GLASS_PANE, "§r左边放液体原料");
-		this.set_gui(16, Material.BLUE_STAINED_GLASS_PANE, "§r右边放燃料");
-		this.set_gui(19, Material.BLUE_STAINED_GLASS_PANE, "§r左边为固体产品");
-		this.set_gui(21, Material.BLUE_STAINED_GLASS_PANE, "§r左边为气体产品");
-		this.set_gui(23, Material.BLUE_STAINED_GLASS_PANE, "§r左边为液体产品");
-		this.set_gui(25, Material.BLUE_STAINED_GLASS_PANE, "§r右边为温度");
-		this.set_gui(0, Material.CRAFTING_TABLE, "§e内部信息");
-		this.set_gui(2, Material.HOPPER_MINECART, "§e固体产品自动提取");
-		this.set_gui(3, Material.CHEST_MINECART, "§r立刻取出固体");
-		this.set_gui(4, Material.MINECART, "§r清除全部固体");
-		this.set_gui(5, Material.GLASS_BOTTLE, "§e气体自动排放");
-		this.set_gui(6, Material.DISPENSER, "§r清除全部气体");
-		this.set_gui(8, Material.CHEST, "§e金币制造");
+		this.set_gui(10, Material.BLUE_STAINED_GLASS_PANE, "§r左边放固体原料", Gui_slot_type.Indicator);
+		this.set_gui(12, Material.BLUE_STAINED_GLASS_PANE, "§r左边放气体原料", Gui_slot_type.Indicator);
+		this.set_gui(14, Material.BLUE_STAINED_GLASS_PANE, "§r左边放液体原料", Gui_slot_type.Indicator);
+		this.set_gui(16, Material.BLUE_STAINED_GLASS_PANE, "§r右边放燃料", Gui_slot_type.Indicator);
+		this.set_gui(19, Material.BLUE_STAINED_GLASS_PANE, "§r左边为固体产品", Gui_slot_type.Indicator);
+		this.set_gui(21, Material.BLUE_STAINED_GLASS_PANE, "§r左边为气体产品", Gui_slot_type.Indicator);
+		this.set_gui(23, Material.BLUE_STAINED_GLASS_PANE, "§r左边为液体产品", Gui_slot_type.Indicator);
+		this.set_gui(25, Material.BLUE_STAINED_GLASS_PANE, "§r右边为温度", Gui_slot_type.Indicator);
+		this.set_gui(0, Material.CRAFTING_TABLE, "§e内部信息", Gui_slot_type.Indicator);
+		this.set_gui(2, Material.HOPPER_MINECART, "§e固体产品自动提取", Gui_slot_type.Switch);
+		this.set_gui(3, Material.CHEST_MINECART, "§r立刻取出固体", Gui_slot_type.Button);
+		this.set_gui(4, Material.MINECART, "§r清除全部固体", Gui_slot_type.Button);
+		this.set_gui(5, Material.GLASS_BOTTLE, "§e气体自动排放", Gui_slot_type.Switch);
+		this.set_gui(6, Material.DISPENSER, "§r清除全部气体", Gui_slot_type.Button);
+		this.set_gui(8, Material.CHEST, "§e金币制造", Gui_slot_type.Switch);
 
 		ItemStack temp_info = new ItemStack(Material.FURNACE);
 		ItemMeta temp_info_meta = temp_info.getItemMeta();
@@ -295,7 +296,7 @@ public class Advanced_furnace extends Multi_block_with_gui {
 	}
 
 	public Structure_runner[] get_runner() {
-		return new Structure_runner[] { this.temp_runner, this.reaction_runner, this.io_runner };
+		return new Structure_runner[] { this.gui_runner, this.temp_runner, this.reaction_runner, this.io_runner };
 	}
 
 	public Reaction_container get_reaction_container() {
@@ -515,5 +516,10 @@ public class Advanced_furnace extends Multi_block_with_gui {
 	@Override
 	public boolean create_condition(Player player) {
 		return true;
+	}
+
+	@Override
+	public String get_gui_name() {
+		return "高级熔炉";
 	}
 }

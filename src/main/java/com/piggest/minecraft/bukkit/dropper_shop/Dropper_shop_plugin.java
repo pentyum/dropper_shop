@@ -69,6 +69,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private Listener[] structure_listeners = { new Depository_listener(), new Dropper_shop_listener(),
 			new Update_component_listener(), new Grinder_listener(), new Advanced_furnace_listener(),
 			new Exp_saver_listener() };
+	private HashMap<String, String> gui_class_name_map = new HashMap<String, String>();
 
 	public FileConfiguration get_shop_config() {
 		return this.shop_config;
@@ -165,7 +166,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		PluginManager pm = getServer().getPluginManager();
 
 		pm.registerEvents(multi_block_structure_listener, this);
-		for(Listener listener : this.structure_listeners) {
+		for (Listener listener : this.structure_listeners) {
 			pm.registerEvents(listener, this);
 		}
 	}
@@ -234,6 +235,10 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	public Exp_saver_manager get_exp_saver_manager() {
 		return this.exp_saver_manager;
+	}
+
+	public String get_gui_class_name(String gui_name) {
+		return this.gui_class_name_map.get(gui_name);
 	}
 
 }

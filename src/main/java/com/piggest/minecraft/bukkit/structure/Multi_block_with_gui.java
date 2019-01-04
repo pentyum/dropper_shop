@@ -1,17 +1,31 @@
 package com.piggest.minecraft.bukkit.structure;
 
-import java.util.HashSet;
+import java.util.Map.Entry;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.grinder.Grinder;
+import com.piggest.minecraft.bukkit.gui.Gui_config;
+import com.piggest.minecraft.bukkit.gui.Gui_runner;
+import com.piggest.minecraft.bukkit.gui.Slot_config;
 
 public abstract class Multi_block_with_gui extends Multi_block_structure implements InventoryHolder, HasRunner {
-	HashSet<Integer> locked_items = new HashSet<Integer>();
+	protected Gui_runner gui_runner = new Gui_runner(this);
+
+	public Multi_block_with_gui() {
+		for (Entry<Integer, Slot_config> entry : this.get_gui_config().get_locked_slots().entrySet()) {
+			int slot = entry.getKey();
+			Slot_config slot_config = entry.getValue();
+			ItemStack item = new ItemStack(slot_config.material);
+			Grinder.set_item_name(item, slot_config.name);
+			this.getInventory().setItem(slot, item);
+		}
+	}
+
+	public abstract Gui_config get_gui_config();
 
 	@Override
 	public void on_right_click(Player player) {
@@ -31,12 +45,4 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 		ItemMeta meta = item.getItemMeta();
 		return meta.hasLore();
 	}
-
-	public void set_gui(int i, Material material, String name) {
-		ItemStack item = new ItemStack(material);
-		Grinder.set_item_name(item, name);
-		this.getInventory().setItem(i, item);
-		this.locked_items.add(i);
-	}
-
 }

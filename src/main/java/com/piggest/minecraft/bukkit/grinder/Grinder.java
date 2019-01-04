@@ -20,6 +20,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.gui.Gui_config;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
@@ -27,16 +28,13 @@ import com.piggest.minecraft.bukkit.structure.Structure_runner;
 public class Grinder extends Multi_block_with_gui {
 	public static HashMap<Material, ItemStack> recipe = new HashMap<Material, ItemStack>();
 	public static HashMap<Material, Integer> recipe_time = new HashMap<Material, Integer>();
-	private Inventory gui = Bukkit.createInventory(this, 18, "磨粉机");
+	public static Grinder_config config = new Grinder_config();
+	private Inventory gui = Bukkit.createInventory(this, 18, config.get_gui_name());
 	private Grinder_runner runner = new Grinder_runner(this);
 	private Grinder_io_runner io_runner = new Grinder_io_runner(this);
-	
+
 	public Grinder() {
-		this.set_gui(10, Material.BLUE_STAINED_GLASS_PANE, "§r左边放原料");
-		this.set_gui(12, Material.BLUE_STAINED_GLASS_PANE, "§r左边放燧石或者黑曜石");
-		this.set_gui(14, Material.BLUE_STAINED_GLASS_PANE, "§r左边为产品");
-		this.set_gui(16, Material.BLUE_STAINED_GLASS_PANE, "§r右边为燧石单元储量");
-		
+		super();
 		ItemStack flint_info = new ItemStack(Material.FLINT);
 		ItemMeta flint_info_meta = flint_info.getItemMeta();
 		flint_info_meta.setDisplayName("§e燧石储量");
@@ -277,7 +275,7 @@ public class Grinder extends Multi_block_with_gui {
 	}
 
 	public Structure_runner[] get_runner() {
-		return new Structure_runner[] { this.runner, this.io_runner };
+		return new Structure_runner[] { this.gui_runner, this.runner, this.io_runner };
 	}
 
 	public int[] get_runner_cycle() {
@@ -422,5 +420,10 @@ public class Grinder extends Multi_block_with_gui {
 			player.sendMessage("钱不够");
 			return false;
 		}
+	}
+
+	@Override
+	public Gui_config get_gui_config() {
+		return config;
 	}
 }

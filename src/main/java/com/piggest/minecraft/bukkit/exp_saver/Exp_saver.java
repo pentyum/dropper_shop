@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
@@ -18,16 +20,16 @@ public class Exp_saver extends Multi_block_with_gui {
 	private int saved_exp = 0;
 	private int max_saved_exp = 5000;
 	private Exp_saver_runner exp_saver_runner = new Exp_saver_runner(this);
-	private Inventory gui = Bukkit.createInventory(this, 27, "经验存储器");
+	private Inventory gui = Bukkit.createInventory(this, 27, this.get_gui_name());
 	private static int[] buttons = new int[] { 9, 10, 11, 15, 16, 17 };
 
 	public Exp_saver() {
-		this.set_gui(buttons[0], Material.FIREWORK_ROCKET, "§r取出1级");
-		this.set_gui(buttons[1], Material.FIREWORK_ROCKET, "§r取出5级");
-		this.set_gui(buttons[2], Material.FIREWORK_ROCKET, "§r取出10级");
-		this.set_gui(buttons[3], Material.HOPPER, "§r存入1级");
-		this.set_gui(buttons[4], Material.HOPPER, "§r存入5级");
-		this.set_gui(buttons[5], Material.HOPPER, "§r存入10级");
+		this.set_gui(buttons[0], Material.FIREWORK_ROCKET, "§r取出1级", Gui_slot_type.Button);
+		this.set_gui(buttons[1], Material.FIREWORK_ROCKET, "§r取出5级", Gui_slot_type.Button);
+		this.set_gui(buttons[2], Material.FIREWORK_ROCKET, "§r取出10级", Gui_slot_type.Button);
+		this.set_gui(buttons[3], Material.HOPPER, "§r存入1级", Gui_slot_type.Button);
+		this.set_gui(buttons[4], Material.HOPPER, "§r存入5级", Gui_slot_type.Button);
+		this.set_gui(buttons[5], Material.HOPPER, "§r存入10级", Gui_slot_type.Button);
 		this.set_process(0);
 	}
 
@@ -76,7 +78,7 @@ public class Exp_saver extends Multi_block_with_gui {
 
 	@Override
 	public Structure_runner[] get_runner() {
-		return new Structure_runner[] { this.exp_saver_runner };
+		return new Structure_runner[] { this.gui_runner, this.exp_saver_runner };
 	}
 
 	@Override
@@ -183,5 +185,10 @@ public class Exp_saver extends Multi_block_with_gui {
 			this.gui.setItem(i, white.clone());
 		}
 	}
-	
+
+	@Override
+	public String get_gui_name() {
+		return "经验存储器";
+	}
+
 }
