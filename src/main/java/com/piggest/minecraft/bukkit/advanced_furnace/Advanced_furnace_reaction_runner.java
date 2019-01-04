@@ -167,4 +167,9 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 		return 10;
 	}
 
+	@Override
+	public boolean is_asynchronously() {
+		return true;
+	}
+
 }

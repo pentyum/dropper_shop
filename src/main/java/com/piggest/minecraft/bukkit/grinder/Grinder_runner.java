@@ -59,4 +59,9 @@ public class Grinder_runner extends Structure_runner {
 	public int get_delay() {
 		return 10;
 	}
+
+	@Override
+	public boolean is_asynchronously() {
+		return true;
+	}
 }

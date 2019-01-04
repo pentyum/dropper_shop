@@ -36,4 +36,9 @@ public class Depository_runner extends Structure_runner {
 	public int get_delay() {
 		return 20;
 	}
+
+	@Override
+	public boolean is_asynchronously() {
+		return true;
+	}
 }

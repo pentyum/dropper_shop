@@ -26,12 +26,15 @@ public abstract class Structure_manager {
 	public void add(Structure new_structure) {
 		if (new_structure instanceof HasRunner) {
 			HasRunner new_HasRunner = (HasRunner) new_structure;
-			BukkitRunnable[] runnable_list = new_HasRunner.get_runner();
-			int i = 0;
-			for (i = 0; i < runnable_list.length; i++) {
-				Dropper_shop_plugin.instance.getLogger().info("已启动" + runnable_list[i].getClass().getName());
-				runnable_list[i].runTaskTimerAsynchronously(Dropper_shop_plugin.instance,
-						new_HasRunner.get_runner()[i].get_delay(), new_HasRunner.get_runner()[i].get_delay());
+			Structure_runner[] runnable_list = new_HasRunner.get_runner();
+			for (Structure_runner runner : runnable_list) {
+				Dropper_shop_plugin.instance.getLogger().info("已启动" + runner.getClass().getName());
+				if (runner.is_asynchronously() == true) {
+					runner.runTaskTimerAsynchronously(Dropper_shop_plugin.instance, runner.get_delay(),
+							runner.get_delay());
+				} else {
+					runner.runTaskTimer(Dropper_shop_plugin.instance, runner.get_delay(), runner.get_delay());
+				}
 			}
 		}
 		this.structure_map.put(new_structure.get_location(), new_structure);

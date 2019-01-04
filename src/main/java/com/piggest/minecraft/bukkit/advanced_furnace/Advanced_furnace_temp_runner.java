@@ -60,4 +60,9 @@ public class Advanced_furnace_temp_runner extends Structure_runner {
 	public int get_delay() {
 		return 10;
 	}
+
+	@Override
+	public boolean is_asynchronously() {
+		return true;
+	}
 }

@@ -6,4 +6,6 @@ public abstract class Structure_runner extends BukkitRunnable {
 	public abstract int get_cycle();
 
 	public abstract int get_delay();
+	
+	public abstract boolean is_asynchronously();
 }

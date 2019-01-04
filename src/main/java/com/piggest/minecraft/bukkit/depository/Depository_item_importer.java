@@ -65,4 +65,9 @@ public class Depository_item_importer extends Structure_runner {
 		return 10;
 	}
 
+	@Override
+	public boolean is_asynchronously() {
+		return true;
+	}
+
 }
