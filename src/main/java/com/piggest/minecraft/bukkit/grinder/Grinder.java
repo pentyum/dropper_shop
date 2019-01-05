@@ -26,7 +26,6 @@ import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
 public class Grinder extends Multi_block_with_gui {
 	public static Grinder_config config = new Grinder_config();
-	//private Inventory gui = Bukkit.createInventory(this, 18, config.get_gui_name());
 	private Grinder_runner runner = new Grinder_runner(this);
 	private Grinder_io_runner io_runner = new Grinder_io_runner(this);
 

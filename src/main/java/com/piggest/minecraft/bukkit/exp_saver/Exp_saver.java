@@ -19,7 +19,6 @@ public class Exp_saver extends Multi_block_with_gui {
 	private int saved_exp = 0;
 	private int max_saved_exp = 5000;
 	private Exp_saver_runner exp_saver_runner = new Exp_saver_runner(this);
-	//private Inventory gui = Bukkit.createInventory(this, 27, config.get_gui_name());
 
 	public Exp_saver() {
 		this.set_process(0);

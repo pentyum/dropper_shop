@@ -26,7 +26,6 @@ public class Advanced_furnace extends Multi_block_with_gui {
 	public static Advanced_furnace_config config = new Advanced_furnace_config();
 	private Reaction_container reaction_container = new Reaction_container();
 	private double power = 0;
-	//private Inventory gui = Bukkit.createInventory(this, 27, config.get_gui_name());
 	private Advanced_furnace_temp_runner temp_runner = new Advanced_furnace_temp_runner(this);
 	private Advanced_furnace_reaction_runner reaction_runner = new Advanced_furnace_reaction_runner(this);
 	private Advanced_furnace_io_runner io_runner = new Advanced_furnace_io_runner(this);
@@ -476,7 +475,7 @@ public class Advanced_furnace extends Multi_block_with_gui {
 
 	@Override
 	public Gui_config get_gui_config() {
-		return this.get_gui_config();
+		return config;
 	}
 
 	@Override

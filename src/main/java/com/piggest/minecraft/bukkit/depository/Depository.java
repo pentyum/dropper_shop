@@ -28,7 +28,6 @@ public class Depository extends Multi_block_with_gui implements Ownable {
 	private boolean accessible = true;
 	private HashMap<String, Integer> contents = new HashMap<String, Integer>();
 	private String owner = null;
-	//private Inventory gui = Bukkit.createInventory(this, InventoryType.HOPPER, config.get_gui_name());
 
 	public String get_info() {
 		String msg = "存储器结构信息";
