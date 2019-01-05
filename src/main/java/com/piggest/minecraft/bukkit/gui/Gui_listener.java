@@ -10,7 +10,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.google.common.util.concurrent.Service.Listener;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 
 public class Gui_listener extends Listener {
 	@EventHandler
@@ -22,11 +21,9 @@ public class Gui_listener extends Listener {
 			return;
 		}
 		String gui_name = event.getClickedInventory().getName();
-		String class_name = Dropper_shop_plugin.instance.get_gui_class_name(gui_name);
-		Class<?> structure_class = Class.forName(gui_name);
-		structure_class
+		Gui_config gui_config = Dropper_shop_plugin.instance.get_gui_config(gui_name);
 		int slot = event.getSlot();
-		Gui_slot_type slot_type = structure.get_locked_slots().get(slot);
+		Gui_slot_type slot_type = gui_config.get_locked_slots().get(slot).type;
 		if (slot_type != null) {
 			if (slot_type == Gui_slot_type.Indicator) {
 

@@ -12,29 +12,19 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
+import com.piggest.minecraft.bukkit.gui.Gui_config;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
 public class Exp_saver extends Multi_block_with_gui {
+	public static Exp_saver_config config = new Exp_saver_config();
 	private int saved_exp = 0;
 	private int max_saved_exp = 5000;
 	private Exp_saver_runner exp_saver_runner = new Exp_saver_runner(this);
-	private Inventory gui = Bukkit.createInventory(this, 27, this.get_gui_name());
-	private static int[] buttons = new int[] { 9, 10, 11, 15, 16, 17 };
+	private Inventory gui = Bukkit.createInventory(this, 27, config.get_gui_name());
 
 	public Exp_saver() {
-		this.set_gui(buttons[0], Material.FIREWORK_ROCKET, "§r取出1级", Gui_slot_type.Button);
-		this.set_gui(buttons[1], Material.FIREWORK_ROCKET, "§r取出5级", Gui_slot_type.Button);
-		this.set_gui(buttons[2], Material.FIREWORK_ROCKET, "§r取出10级", Gui_slot_type.Button);
-		this.set_gui(buttons[3], Material.HOPPER, "§r存入1级", Gui_slot_type.Button);
-		this.set_gui(buttons[4], Material.HOPPER, "§r存入5级", Gui_slot_type.Button);
-		this.set_gui(buttons[5], Material.HOPPER, "§r存入10级", Gui_slot_type.Button);
 		this.set_process(0);
-	}
-
-	public static int[] get_buttons() {
-		return buttons;
 	}
 
 	@Override
@@ -187,8 +177,26 @@ public class Exp_saver extends Multi_block_with_gui {
 	}
 
 	@Override
-	public String get_gui_name() {
-		return "经验存储器";
+	public Gui_config get_gui_config() {
+		// TODO Auto-generated method stub
+		return config;
+	}
+
+	@Override
+	public void on_button_pressed(Player player, int slot) {
+		if (slot == 9) {
+			this.output_exp(1, player);
+		} else if (slot == 10) {
+			this.output_exp(5, player);
+		} else if (slot == 11) {
+			this.output_exp(10, player);
+		} else if (slot == 15) {
+			this.input_exp(1, player);
+		} else if (slot == 16) {
+			this.input_exp(5, player);
+		} else if (slot == 17) {
+			this.input_exp(10, player);
+		}
 	}
 
 }

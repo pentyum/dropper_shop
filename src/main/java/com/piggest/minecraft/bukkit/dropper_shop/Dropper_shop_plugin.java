@@ -19,24 +19,29 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_command_executor;
+import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_config;
 import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_listener;
 import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_manager;
 import com.piggest.minecraft.bukkit.advanced_furnace.Gas_bottle;
 import com.piggest.minecraft.bukkit.advanced_furnace.Reaction_container;
 import com.piggest.minecraft.bukkit.depository.Depository_command_executor;
+import com.piggest.minecraft.bukkit.depository.Depository_config;
 import com.piggest.minecraft.bukkit.depository.Depository_listener;
 import com.piggest.minecraft.bukkit.depository.Depository_manager;
 import com.piggest.minecraft.bukkit.depository.Reader;
 import com.piggest.minecraft.bukkit.depository.Update_component;
 import com.piggest.minecraft.bukkit.depository.Update_component_listener;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver_command_executor;
+import com.piggest.minecraft.bukkit.exp_saver.Exp_saver_config;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver_listener;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver_manager;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.grinder.Grinder_command_executor;
+import com.piggest.minecraft.bukkit.grinder.Grinder_config;
 import com.piggest.minecraft.bukkit.grinder.Grinder_listener;
 import com.piggest.minecraft.bukkit.grinder.Grinder_manager;
 import com.piggest.minecraft.bukkit.grinder.Powder;
+import com.piggest.minecraft.bukkit.gui.Gui_config;
 import com.piggest.minecraft.bukkit.structure.Multi_block_structure_listener;
 import com.piggest.minecraft.bukkit.structure.Structure_manager;
 import com.piggest.minecraft.bukkit.wrench.Wrench_command_executor;
@@ -69,7 +74,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private Listener[] structure_listeners = { new Depository_listener(), new Dropper_shop_listener(),
 			new Update_component_listener(), new Grinder_listener(), new Advanced_furnace_listener(),
 			new Exp_saver_listener() };
-	private HashMap<String, String> gui_class_name_map = new HashMap<String, String>();
+	private HashMap<String, Gui_config> gui_config = new HashMap<String, Gui_config>();
 
 	public FileConfiguration get_shop_config() {
 		return this.shop_config;
@@ -153,12 +158,24 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		Reader.set_recipe();
 		Update_component.init_component();
 		Update_component.set_recipe();
-		Grinder.init_recipe();
+		Grinder.config.init_recipe();
 		Gas_bottle.init_gas_bottle();
 		Gas_bottle.set_recipe();
 		Reaction_container.init_reaction();
 		wrench.init();
-
+		
+		Grinder_config grinder_config = new Grinder_config();
+		this.gui_config.put(grinder_config.get_gui_name(), grinder_config);
+		
+		Advanced_furnace_config advanced_furnace_config = new Advanced_furnace_config();
+		this.gui_config.put(advanced_furnace_config.get_gui_name(), advanced_furnace_config);
+		
+		Exp_saver_config exp_saver_config = new Exp_saver_config();
+		this.gui_config.put(exp_saver_config.get_gui_name(), exp_saver_config);
+		
+		Depository_config depository_config = new Depository_config();
+		this.gui_config.put(depository_config.get_gui_name(), depository_config);
+		
 		for (Structure_manager manager : this.structure_manager) {
 			manager.load_structures();
 		}
@@ -237,8 +254,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		return this.exp_saver_manager;
 	}
 
-	public String get_gui_class_name(String gui_name) {
-		return this.gui_class_name_map.get(gui_name);
+	public Gui_config get_gui_config(String gui_name) {
+		return this.gui_config.get(gui_name);
 	}
 
 }

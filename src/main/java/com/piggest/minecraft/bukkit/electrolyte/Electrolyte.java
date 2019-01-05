@@ -3,6 +3,8 @@ package com.piggest.minecraft.bukkit.electrolyte;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+
+import com.piggest.minecraft.bukkit.gui.Gui_config;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
@@ -36,6 +38,18 @@ public class Electrolyte extends Multi_block_with_gui {
 	public boolean create_condition(Player player) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public Gui_config get_gui_config() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void on_button_pressed(Player player, int slot) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -121,6 +121,7 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 				}
 			}
 		}
+		/*
 		if (advanced_furnace.pressed_to_product() == true) {
 			Iterator<Entry<Chemical, Integer>> iterator = all_chemical.entrySet().iterator();
 			while (iterator.hasNext()) {
@@ -156,6 +157,7 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 			}
 			advanced_furnace.unpress_clean_gas();
 		}
+		*/
 	}
 
 	public int get_cycle() {

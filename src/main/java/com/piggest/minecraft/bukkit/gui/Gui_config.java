@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import org.bukkit.Material;
 
-public class Gui_config {
+public abstract class Gui_config {
 	private HashMap<Integer, Slot_config> locked_slots = new HashMap<Integer, Slot_config>();
 
 	public void set_gui(int slot, Material material, String name, Gui_slot_type type) {
@@ -23,4 +23,8 @@ public class Gui_config {
 	public HashMap<Integer, Slot_config> get_locked_slots() {
 		return this.locked_slots;
 	}
+	
+	public abstract String get_gui_name();
+	//public abstract InventoryType get_inventory_type();
+	//public abstract 
 }

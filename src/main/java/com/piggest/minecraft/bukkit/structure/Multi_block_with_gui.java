@@ -45,4 +45,6 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 		ItemMeta meta = item.getItemMeta();
 		return meta.hasLore();
 	}
+
+	public abstract void on_button_pressed(Player player, int slot);
 }
