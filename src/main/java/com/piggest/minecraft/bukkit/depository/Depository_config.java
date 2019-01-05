@@ -20,5 +20,10 @@ public class Depository_config extends Gui_config {
 	public InventoryType get_inventory_type() {
 		return InventoryType.HOPPER;
 	}
+
+	@Override
+	public int[] get_process_bar() {
+		return null;
+	}
 	
 }

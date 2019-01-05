@@ -3,6 +3,7 @@ package com.piggest.minecraft.bukkit.structure;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
@@ -21,9 +22,11 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 
 	public Multi_block_with_gui() {
 		if (this.get_gui_config().get_inventory_type() == InventoryType.CHEST) {
-			this.gui = Bukkit.createInventory(this, this.get_gui_config().get_slot_num(), this.get_gui_config().get_gui_name());
+			this.gui = Bukkit.createInventory(this, this.get_gui_config().get_slot_num(),
+					this.get_gui_config().get_gui_name());
 		} else {
-			this.gui = Bukkit.createInventory(this, this.get_gui_config().get_inventory_type(), this.get_gui_config().get_gui_name());
+			this.gui = Bukkit.createInventory(this, this.get_gui_config().get_inventory_type(),
+					this.get_gui_config().get_gui_name());
 		}
 		for (Entry<Integer, Slot_config> entry : this.get_gui_config().get_locked_slots().entrySet()) {
 			int slot = entry.getKey();
@@ -61,4 +64,28 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 	}
 
 	public abstract void on_button_pressed(Player player, int slot);
+
+	public void set_process(int bar, int process, String info, Object... args) {
+		int start_slot = -1;
+		try {
+			start_slot = this.get_gui_config().get_process_bar()[bar];
+		} catch (Exception e) {
+			return;
+		}
+		int i = 0;
+		int n = process * 9 / 100;
+		ItemStack red = new ItemStack(Material.RED_STAINED_GLASS_PANE);
+		ItemStack white = new ItemStack(Material.WHITE_STAINED_GLASS_PANE);
+		ItemMeta meta = red.getItemMeta();
+		meta.setDisplayName(String.format(info, args));
+		red.setItemMeta(meta);
+		white.setItemMeta(meta);
+		for (i = start_slot; i < n; i++) {
+			this.gui.setItem(i, red.clone());
+		}
+		for (i = start_slot; i < 9; i++) {
+			this.gui.setItem(i, white.clone());
+		}
+	}
+
 }

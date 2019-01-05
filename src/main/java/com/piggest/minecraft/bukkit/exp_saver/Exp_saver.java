@@ -8,10 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.gui.Gui_config;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
@@ -19,6 +16,7 @@ public class Exp_saver extends Multi_block_with_gui {
 	private int saved_exp = 0;
 	private int max_saved_exp = 2000;
 	private Exp_saver_runner exp_saver_runner = new Exp_saver_runner(this);
+	private Exp_saver_config config = (Exp_saver_config) Dropper_shop_plugin.instance.get_gui_config("经验存储器");
 
 	public Exp_saver() {
 		this.set_process(0);
@@ -105,8 +103,6 @@ public class Exp_saver extends Multi_block_with_gui {
 
 	public void output_exp(int level, Player player) {
 		int need_exp = get_exp_to_level(player.getLevel() + level) - get_all_exp(player);
-		// player.sendMessage("当前经验"+get_all_exp(player)+"目标经验"+get_exp_to_level(player.getLevel()
-		// + level)+"升级经验"+player.getExpToLevel());
 		need_exp = this.remove_exp(need_exp);
 		player.sendMessage("取出了" + need_exp + "点经验");
 		player.giveExp(need_exp);
@@ -152,25 +148,12 @@ public class Exp_saver extends Multi_block_with_gui {
 	}
 
 	public void set_process(int process) {
-		int n = process * 9 / 100;
-		int i = 0;
-		ItemStack red = new ItemStack(Material.RED_STAINED_GLASS_PANE);
-		ItemStack white = new ItemStack(Material.WHITE_STAINED_GLASS_PANE);
-		ItemMeta meta = red.getItemMeta();
-		meta.setDisplayName("§e当前经验: " + this.saved_exp + "/" + this.max_saved_exp);
-		red.setItemMeta(meta);
-		white.setItemMeta(meta);
-		for (i = 0; i < n; i++) {
-			this.gui.setItem(i, red.clone());
-		}
-		for (i = n; i < 9; i++) {
-			this.gui.setItem(i, white.clone());
-		}
+		this.set_process(0, process, "§e当前经验: %d/%d", this.saved_exp, this.max_saved_exp);
 	}
 
 	@Override
-	public Gui_config get_gui_config() {
-		return Dropper_shop_plugin.instance.get_gui_config("经验存储器");
+	public Exp_saver_config get_gui_config() {
+		return this.config;
 	}
 
 	@Override
@@ -189,7 +172,7 @@ public class Exp_saver extends Multi_block_with_gui {
 			this.input_exp(10, player);
 		}
 	}
-	
+
 	public ItemStack get_mending() {
 		return this.gui.getItem(13);
 	}

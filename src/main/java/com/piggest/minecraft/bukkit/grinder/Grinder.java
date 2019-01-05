@@ -26,7 +26,8 @@ import com.piggest.minecraft.bukkit.structure.Structure_runner;
 public class Grinder extends Multi_block_with_gui {
 	private Grinder_runner runner = new Grinder_runner(this);
 	private Grinder_io_runner io_runner = new Grinder_io_runner(this);
-
+	private Grinder_config config = (Grinder_config) Dropper_shop_plugin.instance.get_gui_config("磨粉机");
+	
 	public Grinder() {
 		ItemStack flint_info = this.gui.getItem(17);
 		ItemMeta flint_info_meta = flint_info.getItemMeta();
@@ -247,24 +248,12 @@ public class Grinder extends Multi_block_with_gui {
 		}
 		return false;
 	}
-
+	
 	public void set_process(int process) {
-		int n = process * 9 / 100;
-		int i = 0;
-		ItemStack red = new ItemStack(Material.RED_STAINED_GLASS_PANE);
-		ItemStack white = new ItemStack(Material.WHITE_STAINED_GLASS_PANE);
-		ItemMeta meta = red.getItemMeta();
-		meta.setDisplayName("§e磨粉机工作进度: " + process + "%");
-		red.setItemMeta(meta);
-		white.setItemMeta(meta);
-		for (i = 0; i < n; i++) {
-			this.gui.setItem(i, red.clone());
-		}
-		for (i = n; i < 9; i++) {
-			this.gui.setItem(i, white.clone());
-		}
+		this.set_process(0, process, "§e磨粉机工作进度: %d %%", process);
 	}
-
+	
+	
 	@Override
 	public void set_from_save(Map<?, ?> shop_save) {
 		super.set_from_save(shop_save);
@@ -323,7 +312,7 @@ public class Grinder extends Multi_block_with_gui {
 
 	@Override
 	public Grinder_config get_gui_config() {
-		return (Grinder_config) Dropper_shop_plugin.instance.get_gui_config("磨粉机");
+		return this.config;
 	}
 
 	@Override

@@ -124,4 +124,9 @@ public class Grinder_config extends Gui_config {
 	public InventoryType get_inventory_type() {
 		return InventoryType.CHEST;
 	}
+
+	@Override
+	public int[] get_process_bar() {
+		return new int[]{0};
+	}
 }

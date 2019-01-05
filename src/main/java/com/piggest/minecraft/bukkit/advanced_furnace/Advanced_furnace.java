@@ -19,7 +19,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
-import com.piggest.minecraft.bukkit.gui.Gui_config;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
@@ -34,6 +33,7 @@ public class Advanced_furnace extends Multi_block_with_gui {
 	public int fuel_ticks = 0;
 	private int money = 0;
 	private int money_limit = 10000;
+	private Advanced_furnace_config config = (Advanced_furnace_config) Dropper_shop_plugin.instance.get_gui_config("高级熔炉");
 
 	public static double get_block_temperature(Block block) {
 		double base_temp = block.getTemperature() * 20 + 270;
@@ -474,8 +474,8 @@ public class Advanced_furnace extends Multi_block_with_gui {
 	}
 
 	@Override
-	public Gui_config get_gui_config() {
-		return Dropper_shop_plugin.instance.get_gui_config("高级熔炉");
+	public Advanced_furnace_config get_gui_config() {
+		return this.config ;
 	}
 
 	@Override

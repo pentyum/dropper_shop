@@ -69,7 +69,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private HashMap<String, Integer> unit_map = new HashMap<String, Integer>();
 
 	private ArrayList<ShapedRecipe> sr = new ArrayList<ShapedRecipe>();
-	
+
 	private final Gui_listener gui_listener = new Gui_listener();
 	private final Multi_block_structure_listener multi_block_structure_listener = new Multi_block_structure_listener();
 	private Listener[] structure_listeners = { new Depository_listener(), new Dropper_shop_listener(),
@@ -153,19 +153,19 @@ public class Dropper_shop_plugin extends JavaPlugin {
 			getLogger().severe("初始化Vault失败,请检测是否已经安装Vault插件和经济插件");
 			return;
 		}
-		
+
 		Grinder_config grinder_config = new Grinder_config();
 		this.gui_config.put(grinder_config.get_gui_name(), grinder_config);
-		
+
 		Advanced_furnace_config advanced_furnace_config = new Advanced_furnace_config();
 		this.gui_config.put(advanced_furnace_config.get_gui_name(), advanced_furnace_config);
-		
+
 		Exp_saver_config exp_saver_config = new Exp_saver_config();
 		this.gui_config.put(exp_saver_config.get_gui_name(), exp_saver_config);
-		
+
 		Depository_config depository_config = new Depository_config();
 		this.gui_config.put(depository_config.get_gui_name(), depository_config);
-		
+
 		Powder.init_powder();
 		Reader.init_reader_item();
 		Reader.set_recipe();
@@ -176,7 +176,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		Gas_bottle.set_recipe();
 		Reaction_container.init_reaction();
 		wrench.init();
-		
+
 		for (Structure_manager manager : this.structure_manager) {
 			manager.load_structures();
 		}
@@ -185,7 +185,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 		pm.registerEvents(this.multi_block_structure_listener, this);
 		pm.registerEvents(this.gui_listener, this);
-		
+
 		for (Listener listener : this.structure_listeners) {
 			pm.registerEvents(listener, this);
 		}
