@@ -16,6 +16,8 @@ public class Exp_saver_config extends Gui_config {
 		this.set_gui(buttons[3], Material.HOPPER, "§r存入1级", Gui_slot_type.Button);
 		this.set_gui(buttons[4], Material.HOPPER, "§r存入5级", Gui_slot_type.Button);
 		this.set_gui(buttons[5], Material.HOPPER, "§r存入10级", Gui_slot_type.Button);
+		this.set_gui(12, Material.BLUE_STAINED_GLASS_PANE, "§r右边进行经验修补", Gui_slot_type.Indicator);
+		this.set_gui(14, Material.BLUE_STAINED_GLASS_PANE, "§r左边进行经验修补", Gui_slot_type.Indicator);
 	}
 	
 	@Override

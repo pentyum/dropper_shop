@@ -16,6 +16,8 @@ import org.bukkit.block.Furnace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.gui.Gui_config;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
@@ -23,7 +25,6 @@ import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
 public class Advanced_furnace extends Multi_block_with_gui {
-	public static Advanced_furnace_config config = new Advanced_furnace_config();
 	private Reaction_container reaction_container = new Reaction_container();
 	private double power = 0;
 	private Advanced_furnace_temp_runner temp_runner = new Advanced_furnace_temp_runner(this);
@@ -51,9 +52,8 @@ public class Advanced_furnace extends Multi_block_with_gui {
 	}
 
 	public Advanced_furnace() {
-		ItemStack temp_info = new ItemStack(Material.FURNACE);
+		ItemStack temp_info = this.gui.getItem(26);
 		ItemMeta temp_info_meta = temp_info.getItemMeta();
-		temp_info_meta.setDisplayName("§e信息");
 		ArrayList<String> lore = new ArrayList<String>();
 		lore.add("§r温度: 0 K");
 		lore.add("§r燃料: null");
@@ -475,7 +475,7 @@ public class Advanced_furnace extends Multi_block_with_gui {
 
 	@Override
 	public Gui_config get_gui_config() {
-		return config;
+		return Dropper_shop_plugin.instance.get_gui_config("高级熔炉");
 	}
 
 	@Override

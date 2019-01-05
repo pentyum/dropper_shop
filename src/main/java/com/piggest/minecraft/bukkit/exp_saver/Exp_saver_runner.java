@@ -3,6 +3,9 @@ package com.piggest.minecraft.bukkit.exp_saver;
 import java.util.Collection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.inventory.ItemStack;
+
+import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
 public class Exp_saver_runner extends Structure_runner {
@@ -12,6 +15,7 @@ public class Exp_saver_runner extends Structure_runner {
 		this.exp_saver = exp_saver;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void run() {
 		Collection<Entity> near_entities = exp_saver.get_location().getWorld()
@@ -21,6 +25,12 @@ public class Exp_saver_runner extends Structure_runner {
 				ExperienceOrb exp_orb = (ExperienceOrb) entity;
 				exp_saver.add_exp(exp_orb.getExperience());
 				exp_orb.remove();
+			}
+		}
+		ItemStack mending = exp_saver.get_mending();
+		if (!Grinder.is_empty(mending)) {
+			if (mending.getDurability() > 0) {
+				mending.setDurability((short) (mending.getDurability() - exp_saver.remove_exp(1)));
 			}
 		}
 	}

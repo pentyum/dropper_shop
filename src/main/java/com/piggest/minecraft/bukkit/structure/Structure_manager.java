@@ -31,9 +31,9 @@ public abstract class Structure_manager {
 				Dropper_shop_plugin.instance.getLogger().info("已启动" + runner.getClass().getName());
 				if (runner.is_asynchronously() == true) {
 					runner.runTaskTimerAsynchronously(Dropper_shop_plugin.instance, runner.get_delay(),
-							runner.get_delay());
+							runner.get_cycle());
 				} else {
-					runner.runTaskTimer(Dropper_shop_plugin.instance, runner.get_delay(), runner.get_delay());
+					runner.runTaskTimer(Dropper_shop_plugin.instance, runner.get_delay(), runner.get_cycle());
 				}
 			}
 		}

@@ -20,13 +20,12 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 	protected Inventory gui;
 
 	public Multi_block_with_gui() {
-		Gui_config config = this.get_gui_config();
-		if (config.get_inventory_type() == InventoryType.CHEST) {
-			this.gui = Bukkit.createInventory(this, config.get_slot_num(), config.get_gui_name());
+		if (this.get_gui_config().get_inventory_type() == InventoryType.CHEST) {
+			this.gui = Bukkit.createInventory(this, this.get_gui_config().get_slot_num(), this.get_gui_config().get_gui_name());
 		} else {
-			this.gui = Bukkit.createInventory(this, config.get_inventory_type(), config.get_gui_name());
+			this.gui = Bukkit.createInventory(this, this.get_gui_config().get_inventory_type(), this.get_gui_config().get_gui_name());
 		}
-		for (Entry<Integer, Slot_config> entry : config.get_locked_slots().entrySet()) {
+		for (Entry<Integer, Slot_config> entry : this.get_gui_config().get_locked_slots().entrySet()) {
 			int slot = entry.getKey();
 			Slot_config slot_config = entry.getValue();
 			ItemStack item = new ItemStack(slot_config.material);

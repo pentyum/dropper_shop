@@ -35,7 +35,6 @@ import com.piggest.minecraft.bukkit.exp_saver.Exp_saver_command_executor;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver_config;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver_listener;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver_manager;
-import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.grinder.Grinder_command_executor;
 import com.piggest.minecraft.bukkit.grinder.Grinder_config;
 import com.piggest.minecraft.bukkit.grinder.Grinder_listener;
@@ -154,17 +153,6 @@ public class Dropper_shop_plugin extends JavaPlugin {
 			getLogger().severe("初始化Vault失败,请检测是否已经安装Vault插件和经济插件");
 			return;
 		}
-
-		Powder.init_powder();
-		Reader.init_reader_item();
-		Reader.set_recipe();
-		Update_component.init_component();
-		Update_component.set_recipe();
-		Grinder.config.init_recipe();
-		Gas_bottle.init_gas_bottle();
-		Gas_bottle.set_recipe();
-		Reaction_container.init_reaction();
-		wrench.init();
 		
 		Grinder_config grinder_config = new Grinder_config();
 		this.gui_config.put(grinder_config.get_gui_name(), grinder_config);
@@ -177,6 +165,17 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		
 		Depository_config depository_config = new Depository_config();
 		this.gui_config.put(depository_config.get_gui_name(), depository_config);
+		
+		Powder.init_powder();
+		Reader.init_reader_item();
+		Reader.set_recipe();
+		Update_component.init_component();
+		Update_component.set_recipe();
+		grinder_config.init_recipe();
+		Gas_bottle.init_gas_bottle();
+		Gas_bottle.set_recipe();
+		Reaction_container.init_reaction();
+		wrench.init();
 		
 		for (Structure_manager manager : this.structure_manager) {
 			manager.load_structures();

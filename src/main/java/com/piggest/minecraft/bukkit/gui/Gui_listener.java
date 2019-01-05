@@ -22,12 +22,16 @@ public class Gui_listener implements Listener {
 		}
 		String gui_name = event.getClickedInventory().getName();
 		Gui_config gui_config = Dropper_shop_plugin.instance.get_gui_config(gui_name);
+		if (gui_config == null) {
+			return;
+		}
 		int slot = event.getSlot();
-		Gui_slot_type slot_type = gui_config.get_locked_slots().get(slot).type;
-		if (slot_type != null) {
-			if (slot_type == Gui_slot_type.Indicator) {
+		Slot_config slot_config = gui_config.get_locked_slots().get(slot);
 
-			} else if (slot_type == Gui_slot_type.Switch) {
+		if (slot_config != null) {
+			if (slot_config.type == Gui_slot_type.Indicator) {
+
+			} else if (slot_config.type == Gui_slot_type.Switch) {
 				ItemStack item = event.getCurrentItem();
 				ItemMeta meta = item.getItemMeta();
 				List<String> lore = meta.getLore();
@@ -39,7 +43,7 @@ public class Gui_listener implements Listener {
 				}
 				meta.setLore(lore);
 				item.setItemMeta(meta);
-			} else if (slot_type == Gui_slot_type.Button) {
+			} else if (slot_config.type == Gui_slot_type.Button) {
 				ItemStack item = event.getCurrentItem();
 				ItemMeta meta = item.getItemMeta();
 				List<String> lore = new ArrayList<String>();

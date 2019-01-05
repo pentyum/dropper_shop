@@ -10,14 +10,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.gui.Gui_config;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
 public class Exp_saver extends Multi_block_with_gui {
-	public static Exp_saver_config config = new Exp_saver_config();
 	private int saved_exp = 0;
-	private int max_saved_exp = 5000;
+	private int max_saved_exp = 2000;
 	private Exp_saver_runner exp_saver_runner = new Exp_saver_runner(this);
 
 	public Exp_saver() {
@@ -170,7 +170,7 @@ public class Exp_saver extends Multi_block_with_gui {
 
 	@Override
 	public Gui_config get_gui_config() {
-		return config;
+		return Dropper_shop_plugin.instance.get_gui_config("经验存储器");
 	}
 
 	@Override
@@ -189,5 +189,8 @@ public class Exp_saver extends Multi_block_with_gui {
 			this.input_exp(10, player);
 		}
 	}
-
+	
+	public ItemStack get_mending() {
+		return this.gui.getItem(13);
+	}
 }

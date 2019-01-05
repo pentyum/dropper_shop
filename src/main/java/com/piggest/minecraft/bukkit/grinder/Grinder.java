@@ -19,20 +19,17 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.gui.Gui_config;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
 public class Grinder extends Multi_block_with_gui {
-	public static Grinder_config config = new Grinder_config();
 	private Grinder_runner runner = new Grinder_runner(this);
 	private Grinder_io_runner io_runner = new Grinder_io_runner(this);
 
 	public Grinder() {
-		ItemStack flint_info = new ItemStack(Material.FLINT);
+		ItemStack flint_info = this.gui.getItem(17);
 		ItemMeta flint_info_meta = flint_info.getItemMeta();
-		flint_info_meta.setDisplayName("§e燧石储量");
 		ArrayList<String> lore = new ArrayList<String>();
 		lore.add("§r0 单位");
 		flint_info_meta.setLore(lore);
@@ -194,7 +191,7 @@ public class Grinder extends Multi_block_with_gui {
 
 	public boolean to_product() {
 		if (!Grinder.is_empty(this.get_raw())) {
-			ItemStack product_item = Grinder.config.recipe.get(this.get_raw().getType());
+			ItemStack product_item = this.get_gui_config().recipe.get(this.get_raw().getType());
 			if (product_item != null) {
 				if (Grinder.is_empty(this.get_product())) {
 					this.set_product(product_item.clone());
@@ -325,8 +322,8 @@ public class Grinder extends Multi_block_with_gui {
 	}
 
 	@Override
-	public Gui_config get_gui_config() {
-		return config;
+	public Grinder_config get_gui_config() {
+		return (Grinder_config) Dropper_shop_plugin.instance.get_gui_config("磨粉机");
 	}
 
 	@Override

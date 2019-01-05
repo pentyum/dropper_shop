@@ -23,6 +23,7 @@ public class Advanced_furnace_config extends Gui_config {
 		this.set_gui(5, Material.GLASS_BOTTLE, "§e气体自动排放", Gui_slot_type.Switch);
 		this.set_gui(6, Material.DISPENSER, "§r清除全部气体", Gui_slot_type.Button);
 		this.set_gui(8, Material.CHEST, "§e金币制造", Gui_slot_type.Switch);
+		this.set_gui(26, Material.FURNACE, "§e信息", Gui_slot_type.Indicator);
 	}
 
 	@Override
