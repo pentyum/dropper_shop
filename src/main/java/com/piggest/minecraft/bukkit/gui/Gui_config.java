@@ -1,7 +1,6 @@
 package com.piggest.minecraft.bukkit.gui;
 
 import java.util.HashMap;
-
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 
@@ -9,7 +8,8 @@ import com.piggest.minecraft.bukkit.structure.Structure_config;
 
 public abstract class Gui_config extends Structure_config {
 	private HashMap<Integer, Slot_config> locked_slots = new HashMap<Integer, Slot_config>();
-
+	public static final int[] NO_BAR = new int[0];
+	
 	public void set_gui(int slot, Material material, String name, Gui_slot_type type) {
 		/*
 		 * ItemStack item = new ItemStack(material); Grinder.set_item_name(item, name);

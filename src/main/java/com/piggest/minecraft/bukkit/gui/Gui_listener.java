@@ -25,10 +25,17 @@ public class Gui_listener implements Listener {
 		if (gui_config == null) {
 			return;
 		}
+
 		int slot = event.getSlot();
 		Slot_config slot_config = gui_config.get_locked_slots().get(slot);
 
 		if (slot_config != null) {
+			for (int bar : gui_config.get_process_bar()) {
+				if (slot >= bar * 9 && slot <= bar * 9 + 8) {
+					event.setCancelled(true);
+					return;
+				}
+			}
 			if (slot_config.type == Gui_slot_type.Indicator) {
 
 			} else if (slot_config.type == Gui_slot_type.Switch) {

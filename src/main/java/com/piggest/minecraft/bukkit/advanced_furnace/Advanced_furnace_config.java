@@ -43,6 +43,6 @@ public class Advanced_furnace_config extends Gui_config {
 
 	@Override
 	public int[] get_process_bar() {
-		return null;
+		return NO_BAR;
 	}
 }

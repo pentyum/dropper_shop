@@ -8,7 +8,7 @@ import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
 
 public class Exp_saver_config extends Gui_config {
 	private int[] buttons = new int[] { 9, 10, 11, 15, 16, 17 };
-	
+
 	public Exp_saver_config() {
 		this.set_gui(buttons[0], Material.FIREWORK_ROCKET, "§r取出1级", Gui_slot_type.Button);
 		this.set_gui(buttons[1], Material.FIREWORK_ROCKET, "§r取出5级", Gui_slot_type.Button);
@@ -19,12 +19,12 @@ public class Exp_saver_config extends Gui_config {
 		this.set_gui(12, Material.BLUE_STAINED_GLASS_PANE, "§r右边进行经验修补", Gui_slot_type.Indicator);
 		this.set_gui(14, Material.BLUE_STAINED_GLASS_PANE, "§r左边进行经验修补", Gui_slot_type.Indicator);
 	}
-	
+
 	@Override
 	public String get_gui_name() {
 		return "经验存储器";
 	}
-	
+
 	public int[] get_buttons() {
 		return buttons;
 	}
@@ -41,6 +41,6 @@ public class Exp_saver_config extends Gui_config {
 
 	@Override
 	public int[] get_process_bar() {
-		return new int[]{0};
+		return new int[] { 0 };
 	}
 }

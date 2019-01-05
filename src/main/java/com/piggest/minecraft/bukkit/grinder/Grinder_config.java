@@ -1,6 +1,8 @@
 package com.piggest.minecraft.bukkit.grinder;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
@@ -13,7 +15,7 @@ import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 public class Grinder_config extends Gui_config {
 	public HashMap<Material, ItemStack> recipe = new HashMap<Material, ItemStack>();
 	public HashMap<Material, Integer> recipe_time = new HashMap<Material, Integer>();
-	
+
 	public Grinder_config() {
 		this.set_gui(10, Material.BLUE_STAINED_GLASS_PANE, "§r左边放原料", Gui_slot_type.Indicator);
 		this.set_gui(12, Material.BLUE_STAINED_GLASS_PANE, "§r左边放燧石或者黑曜石", Gui_slot_type.Indicator);
@@ -25,7 +27,7 @@ public class Grinder_config extends Gui_config {
 	public String get_gui_name() {
 		return "磨粉机";
 	}
-	
+
 	private void add_recipe(Material material, Material out, int num, int time) {
 		this.recipe.put(material, new ItemStack(out, num));
 		this.recipe_time.put(material, time);
@@ -35,7 +37,7 @@ public class Grinder_config extends Gui_config {
 		this.recipe.put(material, item);
 		this.recipe_time.put(material, time);
 	}
-	
+
 	public void init_recipe() {
 		this.add_recipe(Material.COBBLESTONE, Material.GRAVEL, 2, 600); // 圆石
 		this.add_recipe(Material.GRAVEL, Material.SAND, 2, 200); // 砂砾
@@ -127,6 +129,6 @@ public class Grinder_config extends Gui_config {
 
 	@Override
 	public int[] get_process_bar() {
-		return new int[]{0};
+		return new int[] { 0 };
 	}
 }
