@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.google.common.util.concurrent.Service.Listener;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 
-public class Gui_listener extends Listener {
+public class Gui_listener implements Listener {
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		if (event.isCancelled() == true) {
