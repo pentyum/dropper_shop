@@ -2,19 +2,12 @@ package com.piggest.minecraft.bukkit.electrolyte;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 
 import com.piggest.minecraft.bukkit.gui.Gui_config;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
 public class Electrolyte extends Multi_block_with_gui {
-
-	@Override
-	public Inventory getInventory() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public Structure_runner[] get_runner() {

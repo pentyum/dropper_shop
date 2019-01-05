@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
@@ -27,7 +26,7 @@ import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
 public class Grinder extends Multi_block_with_gui {
 	public static Grinder_config config = new Grinder_config();
-	private Inventory gui = Bukkit.createInventory(this, 18, config.get_gui_name());
+	//private Inventory gui = Bukkit.createInventory(this, 18, config.get_gui_name());
 	private Grinder_runner runner = new Grinder_runner(this);
 	private Grinder_io_runner io_runner = new Grinder_io_runner(this);
 
@@ -147,10 +146,6 @@ public class Grinder extends Multi_block_with_gui {
 			return true;
 		}
 		return false;
-	}
-
-	public Inventory getInventory() {
-		return this.gui;
 	}
 
 	public Hopper get_hopper() {

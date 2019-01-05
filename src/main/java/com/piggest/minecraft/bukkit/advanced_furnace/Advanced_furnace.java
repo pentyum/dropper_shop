@@ -14,7 +14,6 @@ import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
 import org.bukkit.block.Furnace;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
@@ -27,7 +26,7 @@ public class Advanced_furnace extends Multi_block_with_gui {
 	public static Advanced_furnace_config config = new Advanced_furnace_config();
 	private Reaction_container reaction_container = new Reaction_container();
 	private double power = 0;
-	private Inventory gui = Bukkit.createInventory(this, 27, config.get_gui_name());
+	//private Inventory gui = Bukkit.createInventory(this, 27, config.get_gui_name());
 	private Advanced_furnace_temp_runner temp_runner = new Advanced_furnace_temp_runner(this);
 	private Advanced_furnace_reaction_runner reaction_runner = new Advanced_furnace_reaction_runner(this);
 	private Advanced_furnace_io_runner io_runner = new Advanced_furnace_io_runner(this);
@@ -218,10 +217,6 @@ public class Advanced_furnace extends Multi_block_with_gui {
 			return true;
 		}
 		return false;
-	}
-
-	public Inventory getInventory() {
-		return this.gui;
 	}
 
 	public Furnace get_center_furnace() {

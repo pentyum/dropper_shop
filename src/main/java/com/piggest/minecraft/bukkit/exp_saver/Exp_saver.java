@@ -4,11 +4,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -21,7 +19,7 @@ public class Exp_saver extends Multi_block_with_gui {
 	private int saved_exp = 0;
 	private int max_saved_exp = 5000;
 	private Exp_saver_runner exp_saver_runner = new Exp_saver_runner(this);
-	private Inventory gui = Bukkit.createInventory(this, 27, config.get_gui_name());
+	//private Inventory gui = Bukkit.createInventory(this, 27, config.get_gui_name());
 
 	public Exp_saver() {
 		this.set_process(0);
@@ -69,11 +67,6 @@ public class Exp_saver extends Multi_block_with_gui {
 	@Override
 	public Structure_runner[] get_runner() {
 		return new Structure_runner[] { this.gui_runner, this.exp_saver_runner };
-	}
-
-	@Override
-	public Inventory getInventory() {
-		return this.gui;
 	}
 
 	@Override
@@ -178,7 +171,6 @@ public class Exp_saver extends Multi_block_with_gui {
 
 	@Override
 	public Gui_config get_gui_config() {
-		// TODO Auto-generated method stub
 		return config;
 	}
 

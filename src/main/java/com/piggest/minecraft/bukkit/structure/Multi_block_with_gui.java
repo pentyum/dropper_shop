@@ -2,7 +2,10 @@ package com.piggest.minecraft.bukkit.structure;
 
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -14,9 +17,16 @@ import com.piggest.minecraft.bukkit.gui.Slot_config;
 
 public abstract class Multi_block_with_gui extends Multi_block_structure implements InventoryHolder, HasRunner {
 	protected Gui_runner gui_runner = new Gui_runner(this);
+	protected Inventory gui;
 
 	public Multi_block_with_gui() {
-		for (Entry<Integer, Slot_config> entry : this.get_gui_config().get_locked_slots().entrySet()) {
+		Gui_config config = this.get_gui_config();
+		if (config.get_inventory_type() == InventoryType.CHEST) {
+			this.gui = Bukkit.createInventory(this, config.get_slot_num(), config.get_gui_name());
+		} else {
+			this.gui = Bukkit.createInventory(this, config.get_inventory_type(), config.get_gui_name());
+		}
+		for (Entry<Integer, Slot_config> entry : config.get_locked_slots().entrySet()) {
 			int slot = entry.getKey();
 			Slot_config slot_config = entry.getValue();
 			ItemStack item = new ItemStack(slot_config.material);
@@ -44,6 +54,11 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 		ItemStack item = this.getInventory().getItem(i);
 		ItemMeta meta = item.getItemMeta();
 		return meta.hasLore();
+	}
+
+	@Override
+	public Inventory getInventory() {
+		return this.gui;
 	}
 
 	public abstract void on_button_pressed(Player player, int slot);

@@ -3,6 +3,7 @@ package com.piggest.minecraft.bukkit.gui;
 import java.util.HashMap;
 
 import org.bukkit.Material;
+import org.bukkit.event.inventory.InventoryType;
 
 public abstract class Gui_config {
 	private HashMap<Integer, Slot_config> locked_slots = new HashMap<Integer, Slot_config>();
@@ -25,6 +26,6 @@ public abstract class Gui_config {
 	}
 	
 	public abstract String get_gui_name();
-	//public abstract InventoryType get_inventory_type();
-	//public abstract 
+	public abstract InventoryType get_inventory_type();
+	public abstract int get_slot_num(); 
 }

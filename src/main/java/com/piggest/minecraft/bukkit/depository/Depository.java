@@ -11,8 +11,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.gui.Gui_config;
@@ -30,7 +28,7 @@ public class Depository extends Multi_block_with_gui implements Ownable {
 	private boolean accessible = true;
 	private HashMap<String, Integer> contents = new HashMap<String, Integer>();
 	private String owner = null;
-	private Inventory gui = Bukkit.createInventory(this, InventoryType.HOPPER, config.get_gui_name());
+	//private Inventory gui = Bukkit.createInventory(this, InventoryType.HOPPER, config.get_gui_name());
 
 	public String get_info() {
 		String msg = "存储器结构信息";
@@ -251,10 +249,6 @@ public class Depository extends Multi_block_with_gui implements Ownable {
 		} else {
 			return num;
 		}
-	}
-
-	public Inventory getInventory() {
-		return this.gui;
 	}
 
 	@Override

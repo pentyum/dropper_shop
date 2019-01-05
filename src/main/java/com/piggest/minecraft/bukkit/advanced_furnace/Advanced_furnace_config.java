@@ -1,6 +1,7 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
 import org.bukkit.Material;
+import org.bukkit.event.inventory.InventoryType;
 
 import com.piggest.minecraft.bukkit.gui.Gui_config;
 import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
@@ -27,5 +28,15 @@ public class Advanced_furnace_config extends Gui_config {
 	@Override
 	public String get_gui_name() {
 		return "高级熔炉";
+	}
+
+	@Override
+	public int get_slot_num() {
+		return 27;
+	}
+
+	@Override
+	public InventoryType get_inventory_type() {
+		return InventoryType.CHEST;
 	}
 }

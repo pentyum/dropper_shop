@@ -3,6 +3,7 @@ package com.piggest.minecraft.bukkit.grinder;
 import java.util.HashMap;
 
 import org.bukkit.Material;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.gui.Gui_config;
@@ -111,5 +112,15 @@ public class Grinder_config extends Gui_config {
 
 		this.add_recipe(Material.LAPIS_ORE, Material_ext.new_item("lapis_powder", 12), 400); // 青金石粉
 		this.add_recipe(Material.LAPIS_LAZULI, Material_ext.new_item("lapis_powder", 1), 100); // 青金石粉
+	}
+
+	@Override
+	public int get_slot_num() {
+		return 18;
+	}
+
+	@Override
+	public InventoryType get_inventory_type() {
+		return InventoryType.CHEST;
 	}
 }
