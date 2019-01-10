@@ -1,9 +1,6 @@
 package com.piggest.minecraft.bukkit.grinder;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;

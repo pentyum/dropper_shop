@@ -33,7 +33,6 @@ public class Advanced_furnace extends Multi_block_with_gui {
 	public int fuel_ticks = 0;
 	private int money = 0;
 	private int money_limit = 10000;
-	private Advanced_furnace_config config = (Advanced_furnace_config) Dropper_shop_plugin.instance.get_gui_config("高级熔炉");
 
 	public static double get_block_temperature(Block block) {
 		double base_temp = block.getTemperature() * 20 + 270;
@@ -475,13 +474,13 @@ public class Advanced_furnace extends Multi_block_with_gui {
 
 	@Override
 	public Advanced_furnace_config get_gui_config() {
-		return this.config ;
+		return (Advanced_furnace_config) Dropper_shop_plugin.instance.get_gui_config("高级熔炉");
 	}
 
 	@Override
 	public void on_button_pressed(Player player, int slot) {
 		HashMap<Chemical, Integer> all_chemical = this.reaction_container.get_all_chemical();
-		if (slot == 3) {  //取出固体
+		if (slot == 3) { // 取出固体
 			Iterator<Entry<Chemical, Integer>> iterator = all_chemical.entrySet().iterator();
 			while (iterator.hasNext()) {
 				Entry<Chemical, Integer> entry = iterator.next();
@@ -492,7 +491,7 @@ public class Advanced_furnace extends Multi_block_with_gui {
 				}
 
 			}
-		} else if (slot == 4) {  //清除固体
+		} else if (slot == 4) { // 清除固体
 			Iterator<Entry<Chemical, Integer>> iterator = all_chemical.entrySet().iterator();
 			while (iterator.hasNext()) {
 				Entry<Chemical, Integer> entry = iterator.next();
@@ -501,7 +500,7 @@ public class Advanced_furnace extends Multi_block_with_gui {
 					iterator.remove();
 				}
 			}
-		} else if (slot == 6) {  //清除气体
+		} else if (slot == 6) { // 清除气体
 			Iterator<Entry<Chemical, Integer>> iterator = all_chemical.entrySet().iterator();
 			while (iterator.hasNext()) {
 				Entry<Chemical, Integer> entry = iterator.next();

@@ -27,7 +27,6 @@ public class Depository extends Multi_block_with_gui implements Ownable {
 	private boolean accessible = true;
 	private HashMap<String, Integer> contents = new HashMap<String, Integer>();
 	private String owner = null;
-	private Depository_config config = (Depository_config) Dropper_shop_plugin.instance.get_gui_config("存储器");
 	
 	public String get_info() {
 		String msg = "存储器结构信息";
@@ -257,7 +256,7 @@ public class Depository extends Multi_block_with_gui implements Ownable {
 
 	@Override
 	public Depository_config get_gui_config() {
-		return this.config;
+		return (Depository_config) Dropper_shop_plugin.instance.get_gui_config("存储器");
 	}
 
 	@Override

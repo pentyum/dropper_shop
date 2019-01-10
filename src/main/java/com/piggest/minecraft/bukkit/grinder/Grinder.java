@@ -26,7 +26,6 @@ import com.piggest.minecraft.bukkit.structure.Structure_runner;
 public class Grinder extends Multi_block_with_gui {
 	private Grinder_runner runner = new Grinder_runner(this);
 	private Grinder_io_runner io_runner = new Grinder_io_runner(this);
-	private Grinder_config config = (Grinder_config) Dropper_shop_plugin.instance.get_gui_config("磨粉机");
 	
 	public Grinder() {
 		ItemStack flint_info = this.gui.getItem(17);
@@ -312,7 +311,7 @@ public class Grinder extends Multi_block_with_gui {
 
 	@Override
 	public Grinder_config get_gui_config() {
-		return this.config;
+		 return (Grinder_config) Dropper_shop_plugin.instance.get_gui_config("磨粉机");
 	}
 
 	@Override

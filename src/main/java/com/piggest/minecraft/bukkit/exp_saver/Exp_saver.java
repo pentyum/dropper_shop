@@ -16,7 +16,6 @@ public class Exp_saver extends Multi_block_with_gui {
 	private int saved_exp = 0;
 	private int max_saved_exp = 2000;
 	private Exp_saver_runner exp_saver_runner = new Exp_saver_runner(this);
-	private Exp_saver_config config = (Exp_saver_config) Dropper_shop_plugin.instance.get_gui_config("经验存储器");
 
 	public Exp_saver() {
 		this.set_process(0);
@@ -153,7 +152,7 @@ public class Exp_saver extends Multi_block_with_gui {
 
 	@Override
 	public Exp_saver_config get_gui_config() {
-		return this.config;
+		return (Exp_saver_config) Dropper_shop_plugin.instance.get_gui_config("经验存储器");
 	}
 
 	@Override
