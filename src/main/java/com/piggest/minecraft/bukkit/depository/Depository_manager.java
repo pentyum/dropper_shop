@@ -2,10 +2,11 @@ package com.piggest.minecraft.bukkit.depository;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.event.inventory.InventoryType;
 
-import com.piggest.minecraft.bukkit.structure.Structure_manager;
+import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 
-public class Depository_manager extends Structure_manager {
+public class Depository_manager extends Gui_structure_manager {
 	public static Depository_manager instance = null;
 
 	public Depository_manager() {
@@ -54,5 +55,25 @@ public class Depository_manager extends Structure_manager {
 	
 	public Depository get(Location location) {
 		return (Depository) super.get(location);
+	}
+	
+	@Override
+	public String get_gui_name() {
+		return "存储器";
+	}
+
+	@Override
+	public int get_slot_num() {
+		return 0;
+	}
+
+	@Override
+	public InventoryType get_inventory_type() {
+		return InventoryType.HOPPER;
+	}
+
+	@Override
+	public int[] get_process_bar() {
+		return NO_BAR;
 	}
 }

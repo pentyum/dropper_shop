@@ -17,7 +17,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
@@ -470,11 +469,6 @@ public class Advanced_furnace extends Multi_block_with_gui {
 	@Override
 	public boolean create_condition(Player player) {
 		return true;
-	}
-
-	@Override
-	public Advanced_furnace_config get_gui_config() {
-		return (Advanced_furnace_config) Dropper_shop_plugin.instance.get_gui_config("高级熔炉");
 	}
 
 	@Override

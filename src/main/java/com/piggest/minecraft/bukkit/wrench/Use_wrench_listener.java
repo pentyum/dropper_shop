@@ -1,5 +1,7 @@
 package com.piggest.minecraft.bukkit.wrench;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.bukkit.block.Block;
@@ -70,15 +72,20 @@ public class Use_wrench_listener implements Listener {
 						}
 						event.setCancelled(true);
 					} else {
-						Structure_manager[] structure_manager = Dropper_shop_plugin.instance.get_structure_manager();
-						for (Structure_manager manager : structure_manager) {
+						HashMap<Class<? extends Structure>, Structure_manager> structure_manager = Dropper_shop_plugin.instance
+								.get_structure_manager();
+						for (Entry<Class<? extends Structure>, Structure_manager> entry : structure_manager
+								.entrySet()) {
+							Structure_manager manager = entry.getValue();
 							Structure structure = manager.find(null, block.getLocation(), false);
 							if (structure != null && player.isSneaking() == false) {
 								player.sendMessage("这里已经有结构了");
 								return;
 							}
 						}
-						for (Structure_manager manager : structure_manager) {
+						for (Entry<Class<? extends Structure>, Structure_manager> entry : structure_manager
+								.entrySet()) {
+							Structure_manager manager = entry.getValue();
 							Structure structure = manager.find(player.getName(), block.getLocation(), true);
 							if (structure != null && player.isSneaking() == false) {
 								if (structure instanceof Multi_block_structure && structure.create_condition(player)) {

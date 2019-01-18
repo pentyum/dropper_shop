@@ -8,7 +8,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
@@ -148,11 +147,6 @@ public class Exp_saver extends Multi_block_with_gui {
 
 	public void set_process(int process) {
 		this.set_process(0, process, "§e当前经验: %d/%d", this.saved_exp, this.max_saved_exp);
-	}
-
-	@Override
-	public Exp_saver_config get_gui_config() {
-		return (Exp_saver_config) Dropper_shop_plugin.instance.get_gui_config("经验存储器");
 	}
 
 	@Override

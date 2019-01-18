@@ -12,8 +12,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.grinder.Grinder;
-import com.piggest.minecraft.bukkit.gui.Gui_config;
 import com.piggest.minecraft.bukkit.gui.Gui_runner;
+import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 import com.piggest.minecraft.bukkit.gui.Slot_config;
 
 public abstract class Multi_block_with_gui extends Multi_block_structure implements InventoryHolder, HasRunner {
@@ -21,14 +21,14 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 	protected Inventory gui;
 
 	public Multi_block_with_gui() {
-		if (this.get_gui_config().get_inventory_type() == InventoryType.CHEST) {
-			this.gui = Bukkit.createInventory(this, this.get_gui_config().get_slot_num(),
-					this.get_gui_config().get_gui_name());
+		if (this.get_manager().get_inventory_type() == InventoryType.CHEST) {
+			this.gui = Bukkit.createInventory(this, this.get_manager().get_slot_num(),
+					this.get_manager().get_gui_name());
 		} else {
-			this.gui = Bukkit.createInventory(this, this.get_gui_config().get_inventory_type(),
-					this.get_gui_config().get_gui_name());
+			this.gui = Bukkit.createInventory(this, this.get_manager().get_inventory_type(),
+					this.get_manager().get_gui_name());
 		}
-		for (Entry<Integer, Slot_config> entry : this.get_gui_config().get_locked_slots().entrySet()) {
+		for (Entry<Integer, Slot_config> entry : this.get_manager().get_locked_slots().entrySet()) {
 			int slot = entry.getKey();
 			Slot_config slot_config = entry.getValue();
 			ItemStack item = new ItemStack(slot_config.material);
@@ -36,8 +36,6 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 			this.getInventory().setItem(slot, item);
 		}
 	}
-
-	public abstract Gui_config get_gui_config();
 
 	@Override
 	public void on_right_click(Player player) {
@@ -68,7 +66,7 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 	public void set_process(int bar, int process, String info, Object... args) {
 		int start_slot = -1;
 		try {
-			start_slot = this.get_gui_config().get_process_bar()[bar];
+			start_slot = this.get_manager().get_process_bar()[bar];
 		} catch (Exception e) {
 			return;
 		}
@@ -87,5 +85,9 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 			this.gui.setItem(i, white.clone());
 		}
 	}
-
+	
+	@Override
+	public Gui_structure_manager get_manager() {
+		return (Gui_structure_manager) super.get_manager();
+	}
 }

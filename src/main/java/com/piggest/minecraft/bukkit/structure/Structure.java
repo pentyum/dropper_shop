@@ -7,12 +7,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+
 public abstract class Structure {
 	protected String world_name = null;
 	protected int x;
 	protected int y;
 	protected int z;
-	
+
 	public void set_from_save(Map<?, ?> save) {
 		this.x = (Integer) save.get("x");
 		this.y = (Integer) save.get("y");
@@ -50,6 +52,10 @@ public abstract class Structure {
 			save.put("owner", ownable.get_owner_name());
 		}
 		return save;
+	}
+
+	public Structure_manager get_manager() {
+		return Dropper_shop_plugin.instance.get_structure_manager().get(this.getClass());
 	}
 
 	public abstract boolean create_condition(Player player);

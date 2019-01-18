@@ -20,7 +20,7 @@ public class Gui_runner extends Structure_runner {
 
 	@Override
 	public void run() {
-		for (Entry<Integer, Slot_config> entry : this.multi_block_with_gui.get_gui_config().get_locked_slots()
+		for (Entry<Integer, Slot_config> entry : this.multi_block_with_gui.get_manager().get_locked_slots()
 				.entrySet()) {
 			int slot = entry.getKey();
 			Slot_config config = entry.getValue();

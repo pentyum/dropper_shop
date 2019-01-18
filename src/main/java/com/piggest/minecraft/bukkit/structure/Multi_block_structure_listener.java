@@ -1,5 +1,8 @@
 package com.piggest.minecraft.bukkit.structure;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,8 +21,10 @@ public class Multi_block_structure_listener implements Listener {
 		Player player = event.getPlayer();
 		if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			Block block = event.getClickedBlock();
-			Structure_manager[] structure_manager = Dropper_shop_plugin.instance.get_structure_manager();
-			for (Structure_manager manager : structure_manager) {
+			HashMap<Class<? extends Structure>, Structure_manager> structure_manager = Dropper_shop_plugin.instance
+					.get_structure_manager();
+			for (Entry<Class<? extends Structure>, Structure_manager> entry : structure_manager.entrySet()) {
+				Structure_manager manager = entry.getValue();
 				Structure structure = manager.find(player.getName(), block.getLocation(), false);
 				if (structure != null && player.isSneaking() == false) {
 					if (structure instanceof Multi_block_structure) {

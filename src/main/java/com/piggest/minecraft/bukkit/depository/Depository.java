@@ -13,7 +13,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Ownable;
@@ -27,7 +26,7 @@ public class Depository extends Multi_block_with_gui implements Ownable {
 	private boolean accessible = true;
 	private HashMap<String, Integer> contents = new HashMap<String, Integer>();
 	private String owner = null;
-	
+
 	public String get_info() {
 		String msg = "存储器结构信息";
 		msg += "\n拥有者: " + this.get_owner_name();
@@ -255,13 +254,8 @@ public class Depository extends Multi_block_with_gui implements Ownable {
 	}
 
 	@Override
-	public Depository_config get_gui_config() {
-		return (Depository_config) Dropper_shop_plugin.instance.get_gui_config("存储器");
-	}
-
-	@Override
 	public void on_button_pressed(Player player, int slot) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

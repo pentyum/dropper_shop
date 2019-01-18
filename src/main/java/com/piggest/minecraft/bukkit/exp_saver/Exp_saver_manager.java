@@ -2,15 +2,25 @@ package com.piggest.minecraft.bukkit.exp_saver;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.event.inventory.InventoryType;
 
-import com.piggest.minecraft.bukkit.structure.Structure_manager;
+import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
+import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 
-public class Exp_saver_manager extends Structure_manager {
+public class Exp_saver_manager extends Gui_structure_manager {
 	public static Exp_saver_manager instance = null;
 
 	public Exp_saver_manager() {
 		super(Exp_saver.class);
 		Exp_saver_manager.instance = this;
+		this.set_gui(buttons[0], Material.FIREWORK_ROCKET, "§r取出1级", Gui_slot_type.Button);
+		this.set_gui(buttons[1], Material.FIREWORK_ROCKET, "§r取出5级", Gui_slot_type.Button);
+		this.set_gui(buttons[2], Material.FIREWORK_ROCKET, "§r取出10级", Gui_slot_type.Button);
+		this.set_gui(buttons[3], Material.HOPPER, "§r存入1级", Gui_slot_type.Button);
+		this.set_gui(buttons[4], Material.HOPPER, "§r存入5级", Gui_slot_type.Button);
+		this.set_gui(buttons[5], Material.HOPPER, "§r存入10级", Gui_slot_type.Button);
+		this.set_gui(12, Material.BLUE_STAINED_GLASS_PANE, "§r右边进行经验修补", Gui_slot_type.Indicator);
+		this.set_gui(14, Material.BLUE_STAINED_GLASS_PANE, "§r左边进行经验修补", Gui_slot_type.Indicator);
 	}
 
 	@Override
@@ -46,6 +56,32 @@ public class Exp_saver_manager extends Structure_manager {
 
 	public Exp_saver find(Location location, boolean new_structure) {
 		return this.find(location, new_structure);
+	}
+	
+	private int[] buttons = new int[] { 9, 10, 11, 15, 16, 17 };
+
+	@Override
+	public String get_gui_name() {
+		return "经验存储器";
+	}
+
+	public int[] get_buttons() {
+		return buttons;
+	}
+
+	@Override
+	public int get_slot_num() {
+		return 27;
+	}
+
+	@Override
+	public InventoryType get_inventory_type() {
+		return InventoryType.CHEST;
+	}
+
+	@Override
+	public int[] get_process_bar() {
+		return new int[] { 0 };
 	}
 
 }

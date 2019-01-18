@@ -21,14 +21,14 @@ public class Gui_listener implements Listener {
 			return;
 		}
 		String gui_name = event.getClickedInventory().getName();
-		Gui_config gui_config = Dropper_shop_plugin.instance.get_gui_config(gui_name);
-		if (gui_config == null) {
+		Gui_structure_manager gui_structure_manager = Dropper_shop_plugin.instance.get_gui_structure_manager(gui_name);
+		if (gui_structure_manager == null) {
 			return;
 		}
 
 		int slot = event.getSlot();
-		Slot_config slot_config = gui_config.get_locked_slots().get(slot);
-		for (int bar : gui_config.get_process_bar()) {
+		Slot_config slot_config = gui_structure_manager.get_locked_slots().get(slot);
+		for (int bar : gui_structure_manager.get_process_bar()) {
 			if (slot >= bar * 9 && slot <= bar * 9 + 8) {
 				event.setCancelled(true);
 				return;

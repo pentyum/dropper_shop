@@ -191,7 +191,7 @@ public class Grinder extends Multi_block_with_gui {
 
 	public boolean to_product() {
 		if (!Grinder.is_empty(this.get_raw())) {
-			ItemStack product_item = this.get_gui_config().recipe.get(this.get_raw().getType());
+			ItemStack product_item = this.get_manager().recipe.get(this.get_raw().getType());
 			if (product_item != null) {
 				if (Grinder.is_empty(this.get_product())) {
 					this.set_product(product_item.clone());
@@ -310,13 +310,12 @@ public class Grinder extends Multi_block_with_gui {
 	}
 
 	@Override
-	public Grinder_config get_gui_config() {
-		 return (Grinder_config) Dropper_shop_plugin.instance.get_gui_config("磨粉机");
-	}
-
-	@Override
 	public void on_button_pressed(Player player, int slot) {
-		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public Grinder_manager get_manager() {
+		return (Grinder_manager) super.get_manager();
 	}
 }
