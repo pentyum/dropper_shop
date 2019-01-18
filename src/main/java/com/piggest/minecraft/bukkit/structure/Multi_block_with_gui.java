@@ -12,12 +12,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.grinder.Grinder;
-import com.piggest.minecraft.bukkit.gui.Gui_runner;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 import com.piggest.minecraft.bukkit.gui.Slot_config;
 
-public abstract class Multi_block_with_gui extends Multi_block_structure implements InventoryHolder, HasRunner {
-	protected Gui_runner gui_runner = new Gui_runner(this);
+public abstract class Multi_block_with_gui extends Multi_block_structure implements InventoryHolder {
 	protected Inventory gui;
 
 	public Multi_block_with_gui() {
@@ -90,4 +88,5 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 	public Gui_structure_manager get_manager() {
 		return (Gui_structure_manager) super.get_manager();
 	}
+
 }

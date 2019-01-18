@@ -8,10 +8,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
-public class Exp_saver extends Multi_block_with_gui {
+public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 	private int saved_exp = 0;
 	private int max_saved_exp = 2000;
 	private Exp_saver_runner exp_saver_runner = new Exp_saver_runner(this);
@@ -61,7 +63,7 @@ public class Exp_saver extends Multi_block_with_gui {
 
 	@Override
 	public Structure_runner[] get_runner() {
-		return new Structure_runner[] { this.gui_runner, this.exp_saver_runner };
+		return new Structure_runner[] { this.exp_saver_runner };
 	}
 
 	@Override

@@ -125,7 +125,7 @@ public class Depository_listener implements Listener {
 		if (event.getClickedInventory() == null) {
 			return;
 		}
-		if (event.getClickedInventory().getName().equals("存储器")) {
+		if (event.getClickedInventory() instanceof Depository) {
 			ItemStack item = event.getCurrentItem();
 			if (item != null && item.getType() != Material.AIR) {
 				// event.getWhoClicked().sendMessage("你点击了" + item.getType().name());

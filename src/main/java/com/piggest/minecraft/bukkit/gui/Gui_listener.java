@@ -1,15 +1,18 @@
 package com.piggest.minecraft.bukkit.gui;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
+import com.piggest.minecraft.bukkit.structure.Structure_manager;
 
 public class Gui_listener implements Listener {
 	@EventHandler
@@ -20,12 +23,18 @@ public class Gui_listener implements Listener {
 		if (event.getClickedInventory() == null) {
 			return;
 		}
-		String gui_name = event.getClickedInventory().getName();
-		Gui_structure_manager gui_structure_manager = Dropper_shop_plugin.instance.get_gui_structure_manager(gui_name);
-		if (gui_structure_manager == null) {
+		//String gui_name = event.getClickedInventory().getName();
+		//Bukkit.getLogger().info(event.getClickedInventory().getLocation().toString());
+		InventoryHolder holder = event.getClickedInventory().getHolder();
+		Structure_manager structure_manager = Dropper_shop_plugin.instance.get_structure_manager().get(holder.getClass());
+		if (structure_manager == null) {
 			return;
 		}
-
+		if(!(structure_manager instanceof Gui_structure_manager)) {
+			return;
+		}
+		Gui_structure_manager gui_structure_manager = (Gui_structure_manager)structure_manager;
+		Multi_block_with_gui structure = (Multi_block_with_gui)holder;
 		int slot = event.getSlot();
 		Slot_config slot_config = gui_structure_manager.get_locked_slots().get(slot);
 		for (int bar : gui_structure_manager.get_process_bar()) {
@@ -50,12 +59,7 @@ public class Gui_listener implements Listener {
 				meta.setLore(lore);
 				item.setItemMeta(meta);
 			} else if (slot_config.type == Gui_slot_type.Button) {
-				ItemStack item = event.getCurrentItem();
-				ItemMeta meta = item.getItemMeta();
-				List<String> lore = new ArrayList<String>();
-				lore.add(event.getWhoClicked().getName());
-				meta.setLore(lore);
-				item.setItemMeta(meta);
+				structure.on_button_pressed((Player) event.getWhoClicked(), slot);
 			}
 			event.setCancelled(true);
 			return;

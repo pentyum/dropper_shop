@@ -19,10 +19,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
-public class Advanced_furnace extends Multi_block_with_gui {
+public class Advanced_furnace extends Multi_block_with_gui implements HasRunner {
 	private Reaction_container reaction_container = new Reaction_container();
 	private double power = 0;
 	private Advanced_furnace_temp_runner temp_runner = new Advanced_furnace_temp_runner(this);
@@ -273,7 +274,7 @@ public class Advanced_furnace extends Multi_block_with_gui {
 	}
 
 	public Structure_runner[] get_runner() {
-		return new Structure_runner[] { this.gui_runner, this.temp_runner, this.reaction_runner, this.io_runner };
+		return new Structure_runner[] { this.temp_runner, this.reaction_runner, this.io_runner };
 	}
 
 	public Reaction_container get_reaction_container() {

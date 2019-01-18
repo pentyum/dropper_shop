@@ -20,10 +20,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
-public class Grinder extends Multi_block_with_gui {
+public class Grinder extends Multi_block_with_gui implements HasRunner {
 	private Grinder_runner runner = new Grinder_runner(this);
 	private Grinder_io_runner io_runner = new Grinder_io_runner(this);
 	
@@ -174,7 +175,7 @@ public class Grinder extends Multi_block_with_gui {
 	}
 
 	public Structure_runner[] get_runner() {
-		return new Structure_runner[] { this.gui_runner, this.runner, this.io_runner };
+		return new Structure_runner[] { this.runner, this.io_runner };
 	}
 
 	public int[] get_runner_cycle() {
