@@ -36,4 +36,5 @@ public abstract class Gui_structure_manager extends Structure_manager {
 	public abstract int get_slot_num();
 
 	public abstract int[] get_process_bar();
+
 }

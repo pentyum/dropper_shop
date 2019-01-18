@@ -171,4 +171,9 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 	public ItemStack get_mending() {
 		return this.gui.getItem(13);
 	}
+
+	@Override
+	protected boolean on_break(Player player) {
+		return true;
+	}
 }

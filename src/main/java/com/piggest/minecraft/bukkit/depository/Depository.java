@@ -259,4 +259,14 @@ public class Depository extends Multi_block_with_gui implements Ownable, HasRunn
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	protected boolean on_break(Player player) {
+		if (player.getName().equalsIgnoreCase(this.owner)) {
+			player.sendMessage("使用/depository remove移除存储器后才能破坏存储器方块(所有物品都会消失!)");
+		} else {
+			player.sendMessage("你不能破坏别人的存储器");
+		}
+		return false;
+	}
 }

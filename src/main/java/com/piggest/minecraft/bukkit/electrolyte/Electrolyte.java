@@ -39,4 +39,10 @@ public class Electrolyte extends Multi_block_with_gui implements HasRunner {
 		
 	}
 
+	@Override
+	protected boolean on_break(Player player) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

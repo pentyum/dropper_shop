@@ -319,4 +319,9 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 	public Grinder_manager get_manager() {
 		return (Grinder_manager) super.get_manager();
 	}
+
+	@Override
+	protected boolean on_break(Player player) {
+		return true;
+	}
 }

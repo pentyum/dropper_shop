@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.InventoryHolder;
@@ -19,20 +18,6 @@ import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
 public class Depository_listener implements Listener {
-	@EventHandler
-	public void on_break_depository(BlockBreakEvent event) {
-		if (event.isCancelled() == true) {
-			return;
-		}
-		Block break_block = event.getBlock();
-		Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(null,
-				break_block.getLocation(), false);
-		if (depository != null) {
-			event.getPlayer().sendMessage("使用/depository remove移除存储器后才能破坏存储器方块(所有物品都会消失!)");
-			event.setCancelled(true);
-		}
-	}
-
 	@EventHandler
 	public void on_look(PlayerInteractEvent event) {
 		if (event.isCancelled() == true) {
@@ -125,7 +110,7 @@ public class Depository_listener implements Listener {
 		if (event.getClickedInventory() == null) {
 			return;
 		}
-		if (event.getClickedInventory() instanceof Depository) {
+		if (event.getClickedInventory().getHolder() instanceof Depository) {
 			ItemStack item = event.getCurrentItem();
 			if (item != null && item.getType() != Material.AIR) {
 				// event.getWhoClicked().sendMessage("你点击了" + item.getType().name());

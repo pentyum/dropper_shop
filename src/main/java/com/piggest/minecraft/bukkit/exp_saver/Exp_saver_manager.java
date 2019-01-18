@@ -10,6 +10,8 @@ import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 public class Exp_saver_manager extends Gui_structure_manager {
 	public static Exp_saver_manager instance = null;
 
+	private int[] buttons = new int[] { 9, 10, 11, 15, 16, 17 };
+
 	public Exp_saver_manager() {
 		super(Exp_saver.class);
 		Exp_saver_manager.instance = this;
@@ -57,8 +59,6 @@ public class Exp_saver_manager extends Gui_structure_manager {
 	public Exp_saver find(Location location, boolean new_structure) {
 		return this.find(location, new_structure);
 	}
-	
-	private int[] buttons = new int[] { 9, 10, 11, 15, 16, 17 };
 
 	@Override
 	public String get_gui_name() {

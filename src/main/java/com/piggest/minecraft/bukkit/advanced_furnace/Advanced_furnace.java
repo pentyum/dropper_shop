@@ -506,4 +506,9 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 			}
 		}
 	}
+
+	@Override
+	protected boolean on_break(Player player) {
+		return true;
+	}
 }
