@@ -139,6 +139,9 @@ public class Reader {
 		if (item == null) {
 			return false;
 		}
+		if (item.hasItemMeta() == false) {
+			return false;
+		}
 		if (item.getItemMeta().hasDisplayName() == false) {
 			return false;
 		}
