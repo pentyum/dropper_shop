@@ -1,5 +1,7 @@
 make-price: 4000
 make-grinder-price: 5000
+make-lottery-pool-price: 10000
+lottery-price: 500
 wrench-price: 
   world: 200
   world_nether: 200

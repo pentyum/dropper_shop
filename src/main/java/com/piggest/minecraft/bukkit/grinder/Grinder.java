@@ -27,7 +27,7 @@ import com.piggest.minecraft.bukkit.structure.Structure_runner;
 public class Grinder extends Multi_block_with_gui implements HasRunner {
 	private Grinder_runner runner = new Grinder_runner(this);
 	private Grinder_io_runner io_runner = new Grinder_io_runner(this);
-	
+
 	public Grinder() {
 		ItemStack flint_info = this.gui.getItem(17);
 		ItemMeta flint_info_meta = flint_info.getItemMeta();
@@ -248,12 +248,11 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 		}
 		return false;
 	}
-	
+
 	public void set_process(int process) {
 		this.set_process(0, process, "§e磨粉机工作进度: %d %%", process);
 	}
-	
-	
+
 	@Override
 	public void set_from_save(Map<?, ?> shop_save) {
 		super.set_from_save(shop_save);
@@ -298,23 +297,22 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 
 	@Override
 	public boolean create_condition(Player player) {
-		if (Dropper_shop_plugin.instance.get_economy().has(player,
-				Dropper_shop_plugin.instance.get_make_grinder_price())) {
-			Dropper_shop_plugin.instance.get_economy().withdrawPlayer(player,
-					Dropper_shop_plugin.instance.get_make_grinder_price());
-			player.sendMessage("已扣除" + Dropper_shop_plugin.instance.get_make_grinder_price());
+		int price = Dropper_shop_plugin.instance.get_make_grinder_price();
+		if (Dropper_shop_plugin.instance.get_economy().has(player, price)) {
+			Dropper_shop_plugin.instance.get_economy().withdrawPlayer(player, price);
+			player.sendMessage("已扣除" + price);
 			return true;
 		} else {
-			player.sendMessage("钱不够");
+			player.sendMessage("建立磨粉机所需的钱不够，需要" + price);
 			return false;
 		}
 	}
 
 	@Override
 	public void on_button_pressed(Player player, int slot) {
-		
+
 	}
-	
+
 	@Override
 	public Grinder_manager get_manager() {
 		return (Grinder_manager) super.get_manager();

@@ -58,13 +58,15 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private File shop_file = null;
 	private int make_price = 0;
 	private int make_grinder_price = 0;
+	private int make_lottery_pool_price = 0;
+	private int lottery_price = 0;
 
 	private Dropper_shop_manager shop_manager = new Dropper_shop_manager();
 	private Depository_manager depository_manager = new Depository_manager();
 	private Grinder_manager grinder_manager = new Grinder_manager();
 	private Advanced_furnace_manager adv_furnace_manager = new Advanced_furnace_manager();
 	private Exp_saver_manager exp_saver_manager = new Exp_saver_manager();
-	private HashMap<Class<? extends Structure>,Structure_manager> structure_manager_map = new HashMap<Class<? extends Structure>,Structure_manager>();
+	private HashMap<Class<? extends Structure>, Structure_manager> structure_manager_map = new HashMap<Class<? extends Structure>, Structure_manager>();
 
 	private HashMap<String, Integer> price_map = new HashMap<String, Integer>();
 	private HashMap<String, Integer> unit_map = new HashMap<String, Integer>();
@@ -76,7 +78,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private Listener[] structure_listeners = { new Depository_listener(), new Dropper_shop_listener(),
 			new Update_component_listener(), new Grinder_listener(), new Advanced_furnace_listener(),
 			new Exp_saver_listener() };
-	//private HashMap<String, Gui_config> gui_config = new HashMap<String, Gui_config>();
+	// private HashMap<String, Gui_config> gui_config = new HashMap<String,
+	// Gui_config>();
 
 	public FileConfiguration get_shop_config() {
 		return this.shop_config;
@@ -122,18 +125,20 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		Dropper_shop_plugin.instance = this;
-		
+
 		this.structure_manager_map.put(Dropper_shop.class, shop_manager);
 		this.structure_manager_map.put(Depository.class, depository_manager);
 		this.structure_manager_map.put(Grinder.class, grinder_manager);
 		this.structure_manager_map.put(Advanced_furnace.class, adv_furnace_manager);
 		this.structure_manager_map.put(Exp_saver.class, exp_saver_manager);
-		
+
 		saveDefaultConfig();
 		saveResource("shops.yml", false);
 		this.config = getConfig();
 		this.make_price = this.config.getInt("make-price");
 		this.make_grinder_price = this.config.getInt("make-grinder-price");
+		this.make_lottery_pool_price = this.config.getInt("make-lottery-pool-price");
+		this.lottery_price = this.config.getInt("lottery-price");
 		ConfigurationSection price_section = this.config.getConfigurationSection("material");
 		Set<String> price_keys = price_section.getKeys(false);
 		for (String material_name : price_keys) {
@@ -239,7 +244,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		return this.adv_furnace_manager;
 	}
 
-	public HashMap<Class<? extends Structure>,Structure_manager> get_structure_manager() {
+	public HashMap<Class<? extends Structure>, Structure_manager> get_structure_manager() {
 		return this.structure_manager_map;
 	}
 
@@ -282,4 +287,11 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		return null;
 	}
 
+	public int get_make_lottery_pool_price() {
+		return this.make_lottery_pool_price;
+	}
+
+	public int get_lottery_price() {
+		return this.lottery_price;
+	}
 }

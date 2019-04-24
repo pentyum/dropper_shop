@@ -1,6 +1,8 @@
 package com.piggest.minecraft.bukkit.exp_saver;
 
 import java.util.Collection;
+
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.inventory.ItemStack;
@@ -18,8 +20,11 @@ public class Exp_saver_runner extends Structure_runner {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void run() {
-		Collection<Entity> near_entities = exp_saver.get_location().getWorld()
-				.getNearbyEntities(exp_saver.get_location(), 3, 3, 3);
+		Location loc = this.exp_saver.get_location();
+		if (loc.getChunk().isLoaded() == false) {
+			return;
+		}
+		Collection<Entity> near_entities = loc.getWorld().getNearbyEntities(loc, 3, 3, 3);
 		for (Entity entity : near_entities) {
 			if (entity instanceof ExperienceOrb) {
 				ExperienceOrb exp_orb = (ExperienceOrb) entity;
