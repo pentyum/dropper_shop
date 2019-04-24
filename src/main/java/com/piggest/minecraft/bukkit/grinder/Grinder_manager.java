@@ -101,10 +101,10 @@ public class Grinder_manager extends Gui_structure_manager {
 		this.add_recipe(Material.PUMPKIN, Material.PUMPKIN_SEEDS, 4, 200); // 南瓜
 		this.add_recipe(Material.CARVED_PUMPKIN, Material.PUMPKIN_SEEDS, 4, 200); // 被雕刻的南瓜
 
-		this.add_recipe(Material.ROSE_BUSH, Material.ROSE_RED, 3, 200); // 玫瑰红染料
-		this.add_recipe(Material.POPPY, Material.ROSE_RED, 2, 200); // 玫瑰红染料
-		this.add_recipe(Material.RED_TULIP, Material.ROSE_RED, 2, 200); // 玫瑰红染料
-		this.add_recipe(Material.BEETROOT, Material.ROSE_RED, 2, 200); // 玫瑰红染料
+		this.add_recipe(Material.ROSE_BUSH, Material.RED_DYE, 3, 200); // 玫瑰红染料
+		this.add_recipe(Material.POPPY, Material.RED_DYE, 2, 200); // 玫瑰红染料
+		this.add_recipe(Material.RED_TULIP, Material.RED_DYE, 2, 200); // 玫瑰红染料
+		this.add_recipe(Material.BEETROOT, Material.RED_DYE, 2, 200); // 玫瑰红染料
 
 		this.add_recipe(Material.AZURE_BLUET, Material.LIGHT_GRAY_DYE, 2, 200); // 淡灰色染料
 		this.add_recipe(Material.OXEYE_DAISY, Material.LIGHT_GRAY_DYE, 2, 200); // 淡灰色染料
@@ -118,8 +118,8 @@ public class Grinder_manager extends Gui_structure_manager {
 		this.add_recipe(Material.ALLIUM, Material.MAGENTA_DYE, 2, 200); // 品红色染料
 		this.add_recipe(Material.LILAC, Material.MAGENTA_DYE, 3, 200); // 品红色染料
 
-		this.add_recipe(Material.DANDELION, Material.DANDELION_YELLOW, 2, 200); // 蒲公英黄染料
-		this.add_recipe(Material.SUNFLOWER, Material.DANDELION_YELLOW, 3, 200); // 蒲公英黄染料
+		this.add_recipe(Material.DANDELION, Material.YELLOW_DYE, 2, 200); // 蒲公英黄染料
+		this.add_recipe(Material.SUNFLOWER, Material.YELLOW_DYE, 3, 200); // 蒲公英黄染料
 
 		this.add_recipe(Material.ORANGE_TULIP, Material.ORANGE_DYE, 2, 200); // 橙色染料
 
