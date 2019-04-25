@@ -7,6 +7,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.inventory.ItemStack;
 
+import com.piggest.minecraft.bukkit.depository.Update_component;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
@@ -34,8 +35,10 @@ public class Exp_saver_runner extends Structure_runner {
 		}
 		ItemStack mending = exp_saver.get_mending();
 		if (!Grinder.is_empty(mending)) {
-			if (mending.getDurability() > 0) {
-				mending.setDurability((short) (mending.getDurability() - exp_saver.remove_exp(1)));
+			if (!Update_component.is_component(mending)) {
+				if (mending.getDurability() > 0) {
+					mending.setDurability((short) (mending.getDurability() - exp_saver.remove_exp(1)));
+				}
 			}
 		}
 	}

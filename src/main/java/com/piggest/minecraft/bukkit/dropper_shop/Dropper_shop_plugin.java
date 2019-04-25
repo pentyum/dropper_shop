@@ -43,6 +43,7 @@ import com.piggest.minecraft.bukkit.grinder.Grinder_manager;
 import com.piggest.minecraft.bukkit.grinder.Powder;
 import com.piggest.minecraft.bukkit.gui.Gui_listener;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
+import com.piggest.minecraft.bukkit.music_stick.Note_stick_listener;
 import com.piggest.minecraft.bukkit.structure.Multi_block_structure_listener;
 import com.piggest.minecraft.bukkit.structure.Structure;
 import com.piggest.minecraft.bukkit.structure.Structure_manager;
@@ -72,7 +73,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private HashMap<String, Integer> unit_map = new HashMap<String, Integer>();
 
 	private ArrayList<ShapedRecipe> sr = new ArrayList<ShapedRecipe>();
-
+	
+	private final Note_stick_listener note_listener = new Note_stick_listener();
 	private final Gui_listener gui_listener = new Gui_listener();
 	private final Multi_block_structure_listener multi_block_structure_listener = new Multi_block_structure_listener();
 	private Listener[] structure_listeners = { new Depository_listener(), new Dropper_shop_listener(),
@@ -201,10 +203,12 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 		pm.registerEvents(this.multi_block_structure_listener, this);
 		pm.registerEvents(this.gui_listener, this);
+		pm.registerEvents(this.note_listener, this);
 
 		for (Listener listener : this.structure_listeners) {
 			pm.registerEvents(listener, this);
 		}
+		note_listener.runner.runTaskTimer(this, 10, 5);
 	}
 
 	@Override

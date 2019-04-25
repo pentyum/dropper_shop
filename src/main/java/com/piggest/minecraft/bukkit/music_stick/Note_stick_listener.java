@@ -12,12 +12,13 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.block.data.type.NoteBlock;
 
-public class Music_stick_listener implements Listener {
+public class Note_stick_listener implements Listener {
 	public static String[] note_id1 = new String[] { ".F#", ".G", ".G#", ".A", ".A#", ".B", "C", "C#", "D", "D#", "E",
 			"F", "F#", "G", "G#", "A", "A#", "B", "C.", "C#.", "D.", "D#.", "E.", "F.", "F#." };
 	public static String[] note_id2 = new String[] { ".4#", ".5", ".5#", ".6", ".6#", ".7", "1", "1#", "2", "2#", "3",
 			"4", "4#", "5", "5#", "6", "6#", "7", "1.", "1#.", "2.", "2#.", "3.", "4.", "4#." };
-
+	public Note_stick_runner runner = new Note_stick_runner();
+	
 	public static int get_id(String str) {
 		int i;
 		for (i = 0; i < 25; i++) {
@@ -54,12 +55,15 @@ public class Music_stick_listener implements Listener {
 		ItemStack item = player.getInventory().getItemInMainHand();
 		Block block = player.getTargetBlockExact(5);
 		if (item.getType() == Material.STICK && block.getType() == Material.NOTE_BLOCK) {
-			NoteBlock note_block = (NoteBlock) block.getState();
+			NoteBlock note_block = (NoteBlock) block.getBlockData();
 			int id = get_id(event.getMessage());
 			if (id == -1) {
 				player.sendMessage("你输入的音调不正确");
 			} else {
 				note_block.setNote(new Note(id));
+				Note_setting setting = new Note_setting(block,note_block);
+				runner.queue.add(setting);
+				player.sendMessage("已设置音调为" + event.getMessage());
 			}
 			event.setCancelled(true);
 		}
