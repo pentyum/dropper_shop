@@ -56,7 +56,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private Economy economy = null;
 	private FileConfiguration config = null;
 	private FileConfiguration shop_config = null;
+	private FileConfiguration lottery_config = null;
 	private File shop_file = null;
+	private File lottery_file = null;
 	private int make_price = 0;
 	private int make_grinder_price = 0;
 	private int make_lottery_pool_price = 0;
@@ -86,7 +88,11 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public FileConfiguration get_shop_config() {
 		return this.shop_config;
 	}
-
+	
+	public FileConfiguration get_lottery_config() {
+		return this.lottery_config;
+	}
+	
 	public int get_make_shop_price() {
 		return this.make_price;
 	}
@@ -153,7 +159,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		}
 		this.shop_file = new File(this.getDataFolder(), "shops.yml");
 		this.shop_config = YamlConfiguration.loadConfiguration(shop_file);
-
+		this.lottery_file = new File(this.getDataFolder(), "lottery_pool.yml");
+		this.lottery_config = YamlConfiguration.loadConfiguration(lottery_file);
+		
 		this.getCommand("depository").setExecutor(new Depository_command_executor());
 		this.getCommand("dropper_shop").setExecutor(new Dropper_shop_command_executor());
 		this.getCommand("grinder").setExecutor(new Grinder_command_executor());

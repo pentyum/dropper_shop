@@ -41,14 +41,14 @@ public enum Solid implements Chemical {
 		return Material_ext.new_item(this.name(), 1);
 	}
 
-	public String get_displayname() {
+	public String get_displayname() {  //获取显示名称
 		if (this == WATER) {
 			return this.display_name + "(l)";
 		}
 		return this.display_name + "(s)";
 	}
 
-	public String get_name() {
+	public String get_name() {  //获取内部ID名称
 		return this.name();
 	}
 

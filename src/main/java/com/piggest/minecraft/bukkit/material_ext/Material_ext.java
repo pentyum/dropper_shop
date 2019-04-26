@@ -10,11 +10,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class Material_ext {
 	private static HashMap<String, ItemStack> ext_material_map = new HashMap<String, ItemStack>();
 
-	public static String get_name(Material material) {
+	public static String get_name(Material material) {  //获得材质名称
 		return material.name();
 	}
 
-	public static String get_display_name(ItemStack itemstack) {
+	public static String get_display_name(ItemStack itemstack) {  //获得显示名称
 		if (itemstack.hasItemMeta() == true) {
 			ItemMeta meta = itemstack.getItemMeta();
 			if (meta.hasDisplayName() == true) {
@@ -24,7 +24,7 @@ public class Material_ext {
 		return itemstack.getType().name();
 	}
 
-	public static String get_id_name(ItemStack itemstack) {
+	public static String get_id_name(ItemStack itemstack) {  //获得内部ID名称
 		if (itemstack.hasItemMeta() == true) {
 			ItemMeta meta = itemstack.getItemMeta();
 			if (meta.hasDisplayName() == true) {
@@ -38,7 +38,7 @@ public class Material_ext {
 		return itemstack.getType().name();
 	}
 
-	public static ItemStack new_item(String id_name, int num) {
+	public static ItemStack new_item(String id_name, int num) {  //根据内部ID生成ItemStack，等效于new ItemStack(Material)
 		Material material = Material.getMaterial(id_name);
 		if (material != null) {
 			return new ItemStack(material, num);
@@ -54,7 +54,7 @@ public class Material_ext {
 		return Material_ext.ext_material_map.put(id_name, itemstack.clone());
 	}
 
-	public static Material get_material(String id_name) {
+	public static Material get_material(String id_name) {  //根据内部ID获得材质
 		ItemStack item = Material_ext.ext_material_map.get(id_name);
 		if (item != null) {
 			return item.getType();
