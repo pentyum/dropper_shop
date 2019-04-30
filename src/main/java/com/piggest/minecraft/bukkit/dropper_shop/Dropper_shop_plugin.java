@@ -44,6 +44,7 @@ import com.piggest.minecraft.bukkit.grinder.Powder;
 import com.piggest.minecraft.bukkit.gui.Gui_listener;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool;
+import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_command_executor;
 import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_manager;
 import com.piggest.minecraft.bukkit.music_stick.Note_stick_listener;
 import com.piggest.minecraft.bukkit.structure.Multi_block_structure_listener;
@@ -174,7 +175,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.getCommand("exp_saver").setExecutor(new Exp_saver_command_executor());
 		Wrench_command_executor wrench = new Wrench_command_executor();
 		this.getCommand("wrench").setExecutor(wrench);
-
+		this.getCommand("lottery").setExecutor(new Lottery_pool_command_executor());
+		
 		getLogger().info("使用Vault");
 		if (!initVault()) {
 			getLogger().severe("初始化Vault失败,请检测是否已经安装Vault插件和经济插件");

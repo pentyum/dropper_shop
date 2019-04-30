@@ -34,6 +34,11 @@ commands:
     usage: /<command> remove to remove a exp saver.
     permission: exp_saver.use
     permission-message: You don't have permission
+  lottery:
+    description: set the possibility of the item in your hand.
+    usage: /<command> possibility to set the possibility of the item in your hand.
+    permission: lottery.set
+    permission-message: You don't have permission
 permissions:
   dropper_shop.*:
     description: Gives access to all dropper shop commands.
@@ -89,4 +94,10 @@ permissions:
   exp_saver.use:
     description: Gives access to use exp_saver
     default: true
+  lottery.use:
+    description: Use lottery pool.
+    default: true
+  lottery.set:
+    description: Set lottery pool.
+    default: op
 softdepend: [Vault]

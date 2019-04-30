@@ -1,16 +1,19 @@
 package com.piggest.minecraft.bukkit.lottery_pool;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Predicate;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -33,6 +36,10 @@ public class Lottery_pool extends Multi_block_structure {
 			return;
 		}
 		if (this.running == false) {
+			if(!player.hasPermission("lottery.use")) {
+				player.sendMessage("你没有进行抽奖的权限");
+				return;
+			}
 			this.start_lottery(player);
 		}
 		return;
@@ -160,9 +167,19 @@ public class Lottery_pool extends Multi_block_structure {
 		Set<String> item_types = config.getKeys(false);
 		int i = 0, j = 0;
 		for (String item_name : item_types) {
-			List<Integer> item_info = config.getIntegerList(item_name);
-			for (j = 0; j < item_info.get(1) && i < 100; j++) {
-				pool[i] = Material_ext.new_item(item_name, item_info.get(0));
+			ConfigurationSection item_config = config.getConfigurationSection(item_name);
+			int amount = item_config.getInt("amount");
+			int possibility = item_config.getInt("possibility");
+			ConfigurationSection enchantments_config = item_config.getConfigurationSection("enchantments");
+			Set<String> enchantments_set = enchantments_config.getKeys(false);
+			HashMap<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>();
+			for (String enchantment : enchantments_set) {
+				int level = enchantments_config.getInt(enchantment);
+				NamespacedKey key = NamespacedKey.minecraft(enchantments_config.getString(enchantment));
+				enchantments.put(Enchantment.getByKey(key), level);
+			}
+			for (j = 0; j < possibility && i < 100; j++) {
+				pool[i] = Material_ext.new_item(item_name, amount);
 				i++;
 			}
 		}
