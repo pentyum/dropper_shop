@@ -16,8 +16,17 @@ public class Lottery_pool_manager extends Structure_manager {
 	
 	@Override
 	public Structure find(String player_name, Location loc, boolean new_structure) {
-		// TODO 自动生成的方法存根
-		return null;
+		if (new_structure == false) {
+			return this.get(loc);
+		} else {
+			Lottery_pool lottery_pool = new Lottery_pool();
+			lottery_pool.set_location(loc);
+			if (lottery_pool.completed() == 0) {
+				return null;
+			} else {
+				return lottery_pool;
+			}
+		}
 	}
 
 }

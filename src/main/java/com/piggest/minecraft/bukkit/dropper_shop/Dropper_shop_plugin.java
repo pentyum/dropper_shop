@@ -43,6 +43,8 @@ import com.piggest.minecraft.bukkit.grinder.Grinder_manager;
 import com.piggest.minecraft.bukkit.grinder.Powder;
 import com.piggest.minecraft.bukkit.gui.Gui_listener;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
+import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool;
+import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_manager;
 import com.piggest.minecraft.bukkit.music_stick.Note_stick_listener;
 import com.piggest.minecraft.bukkit.structure.Multi_block_structure_listener;
 import com.piggest.minecraft.bukkit.structure.Structure;
@@ -69,6 +71,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private Grinder_manager grinder_manager = new Grinder_manager();
 	private Advanced_furnace_manager adv_furnace_manager = new Advanced_furnace_manager();
 	private Exp_saver_manager exp_saver_manager = new Exp_saver_manager();
+	private Lottery_pool_manager lottery_pool_manager = new Lottery_pool_manager();
 	private HashMap<Class<? extends Structure>, Structure_manager> structure_manager_map = new HashMap<Class<? extends Structure>, Structure_manager>();
 
 	private HashMap<String, Integer> price_map = new HashMap<String, Integer>();
@@ -139,9 +142,11 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.structure_manager_map.put(Grinder.class, grinder_manager);
 		this.structure_manager_map.put(Advanced_furnace.class, adv_furnace_manager);
 		this.structure_manager_map.put(Exp_saver.class, exp_saver_manager);
+		this.structure_manager_map.put(Lottery_pool.class, lottery_pool_manager);
 
 		saveDefaultConfig();
 		saveResource("shops.yml", false);
+		saveResource("lottery_pool.yml", false);
 		this.config = getConfig();
 		this.make_price = this.config.getInt("make-price");
 		this.make_grinder_price = this.config.getInt("make-grinder-price");

@@ -64,14 +64,19 @@ public class Depository_manager extends Gui_structure_manager {
 
 	@Override
 	public int get_slot_num() {
-		return 0;
+		return 9;
 	}
 
+	//@Override
+	//public InventoryType get_inventory_type() {
+	//	return InventoryType.HOPPER;
+	//}
+	
 	@Override
 	public InventoryType get_inventory_type() {
-		return InventoryType.HOPPER;
+		return InventoryType.CHEST;
 	}
-
+	
 	@Override
 	public int[] get_process_bar() {
 		return NO_BAR;

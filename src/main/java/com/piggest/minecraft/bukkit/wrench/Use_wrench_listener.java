@@ -80,6 +80,7 @@ public class Use_wrench_listener implements Listener {
 							Structure structure = manager.find(null, block.getLocation(), false);
 							if (structure != null && player.isSneaking() == false) {
 								player.sendMessage("这里已经有结构了");
+								event.setCancelled(true);
 								return;
 							}
 						}
