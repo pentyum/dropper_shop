@@ -50,7 +50,7 @@ public class Lottery_pool_command_executor implements TabExecutor {
 				List<Boolean> broadcast_list = config.getBooleanList("broadcast");
 				if (args[0].equalsIgnoreCase("list")) {
 					int i = 0;
-					String msg = "-----抽奖概率公示-----\n";
+					String msg = "----------抽奖概率公示----------\n";
 					int total = 0;
 					for (i = 0; i < item_list.size(); i++) {
 						ItemStack item = item_list.get(i);
@@ -69,7 +69,7 @@ public class Lottery_pool_command_executor implements TabExecutor {
 								+ enchantment_str + " 概率:" + possibility + "% 播报:" + broadcast_list.get(i) + "\n";
 						total += possibility;
 					}
-					msg += "----总中奖概率" + String.format("%3d", total) + "%----";
+					msg += "---------总中奖概率" + String.format("%3d", total) + "%---------";
 					player.sendMessage(msg);
 				} else if (args[0].equalsIgnoreCase("del") && args.length == 2) {
 					if (!player.hasPermission("lottery.set")) {
