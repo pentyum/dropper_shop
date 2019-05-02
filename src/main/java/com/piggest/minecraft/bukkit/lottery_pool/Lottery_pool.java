@@ -2,6 +2,7 @@ package com.piggest.minecraft.bukkit.lottery_pool;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -36,7 +37,7 @@ public class Lottery_pool extends Multi_block_structure {
 			return;
 		}
 		if (this.running == false) {
-			if(!player.hasPermission("lottery.use")) {
+			if (!player.hasPermission("lottery.use")) {
 				player.sendMessage("你没有进行抽奖的权限");
 				return;
 			}
@@ -158,40 +159,40 @@ public class Lottery_pool extends Multi_block_structure {
 
 	public void end_lottery(Player player) {
 		FileConfiguration config = Dropper_shop_plugin.instance.get_lottery_config();
-		ItemStack[] pool = new ItemStack[100];
 		World world = this.get_location().getWorld();
 		for (EnderCrystal ender_crystal : ender_crystal_list) { // 设置特效光柱
 			ender_crystal.setBeamTarget(null);
 		}
 		world.spawnParticle(Particle.EXPLOSION_HUGE, this.get_location(), 1);
-		Set<String> item_types = config.getKeys(false);
-		int i = 0, j = 0;
-		for (String item_name : item_types) {
-			ConfigurationSection item_config = config.getConfigurationSection(item_name);
-			int amount = item_config.getInt("amount");
-			int possibility = item_config.getInt("possibility");
-			ConfigurationSection enchantments_config = item_config.getConfigurationSection("enchantments");
-			Set<String> enchantments_set = enchantments_config.getKeys(false);
-			HashMap<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>();
-			for (String enchantment : enchantments_set) {
-				int level = enchantments_config.getInt(enchantment);
-				NamespacedKey key = NamespacedKey.minecraft(enchantments_config.getString(enchantment));
-				enchantments.put(Enchantment.getByKey(key), level);
-			}
-			for (j = 0; j < possibility && i < 100; j++) {
-				pool[i] = Material_ext.new_item(item_name, amount);
+		@SuppressWarnings("unchecked")
+		List<ItemStack> item_list = (List<ItemStack>) config.getList("pool");
+		List<Integer> possibility_list = config.getIntegerList("possibility");
+		List<Boolean> broadcast_list = config.getBooleanList("broadcast");
+		int i = 0, j = 0, k = 0;
+		int[] pool = new int[100];
+		for (k = 0; k < possibility_list.size(); k++) {
+			for (j = 0; j < possibility_list.get(k) && i < 100; j++) {
+				pool[i] = k;
 				i++;
 			}
 		}
 		Random rand = new Random();
 		int num = rand.nextInt(100);
-		ItemStack item = pool[num];
-		if (item != null) {
+		if (num < i) {
+			ItemStack item = item_list.get(pool[num]);
 			world.spawnParticle(Particle.VILLAGER_HAPPY, this.get_location(), 50, 1, 1, 1);
-			player.sendMessage("恭喜你抽到了" + item.getAmount() + "个" + Material_ext.get_display_name(item));
+			if (player != null) {
+				player.sendMessage("恭喜你抽到了" + item.getAmount() + "个" + Material_ext.get_display_name(item));
+			}
 			world.dropItem(this.get_location().add(0, 1, 0), item);
+			if (broadcast_list.get(pool[num]) == true) {
+				Dropper_shop_plugin.instance.getServer().broadcastMessage(
+						"恭喜" + player.getName() + "抽到了" + item.getAmount() + "个" + Material_ext.get_display_name(item));
+			}
 		} else {
-			player.sendMessage("很遗憾你没有抽到任何物品");
+			if (player != null) {
+				player.sendMessage("很遗憾你没有抽到任何物品");
+			}
 		}
 		this.running = false;
 	}

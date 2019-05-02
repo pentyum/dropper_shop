@@ -237,6 +237,11 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		} catch (IOException e) {
 			this.getLogger().severe("结构文件保存错误!");
 		}
+		try {
+			lottery_config.save(this.lottery_file);
+		} catch (IOException e) {
+			this.getLogger().severe("抽奖配置文件保存错误!");
+		}
 		for (ShapedRecipe sr : this.sr) {
 			Iterator<Recipe> i = Bukkit.recipeIterator();
 			while (i.hasNext()) {
