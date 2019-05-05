@@ -11,5 +11,22 @@ wrench-price:
 flint-unit:
   FLINT: 16
   OBSIDIAN: 24
+air:
+  world:
+    oxygen: 210
+    nitrogen: 780
+    Ar: 10
+  world_nether:
+    oxygen: 100
+    nitrogen: 500
+    Ar: 10
+    CO: 5
+    CO2: 500
+    SO2: 40
+  world_the_end:
+    oxygen: 10
+    nitrogen: 10
+    hydrogen: 100
+    CH4: 20
 material:
   GRASS_BLOCK: 7

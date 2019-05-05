@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import org.bukkit.inventory.ItemStack;
+
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
@@ -24,7 +26,7 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 		if (this.advanced_furnace.get_location().getChunk().isLoaded() == false) {
 			return;
 		}
-		if (!Grinder.is_empty(solid_reactant_slot)) {
+		if (!Grinder.is_empty(solid_reactant_slot)) { // 固体进入反应器
 			Solid solid = Solid.get_solid(solid_reactant_slot);
 			if (solid != null) {
 				solid_reactant_slot.setAmount(solid_reactant_slot.getAmount() - 1);
@@ -32,9 +34,9 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 			}
 		}
 
-		if (Gas_bottle.is_gas_bottle(gas_reactant_slot)) {
+		if (Gas_bottle.is_gas_bottle(gas_reactant_slot)) { // 气体相关
 			ItemStack gas_product_slot = advanced_furnace.get_gui_item(advanced_furnace.get_gas_product_slot());
-			if (Gas_bottle.calc_capacity(gas_reactant_slot) == 0) {// 处理空瓶
+			if (Gas_bottle.calc_capacity(gas_reactant_slot) == 0) {// 处理空瓶，取出气体
 				if (Grinder.is_empty(gas_product_slot)) {
 					int inside_gas_capacity = 0;
 					HashMap<Chemical, Integer> all_chemical = reaction_container.get_all_chemical();
@@ -64,7 +66,7 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 					gas_reactant_slot.setAmount(gas_reactant_slot.getAmount() - 1);
 				}
 
-			} else { // 非空瓶
+			} else { // 非空瓶，气体进入
 				boolean flag = false;
 
 				if (Grinder.is_empty(gas_product_slot)) {
@@ -92,11 +94,17 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 				}
 			}
 		}
-
-		if (advanced_furnace.get_make_money() == false) {
+		if (advanced_furnace.is_open()) { // 敞口容器，气体全部替换成空气
+			advanced_furnace.on_button_pressed(null, 6);
+			for (Entry<Gas, Integer> entry : Dropper_shop_plugin.instance
+					.get_air(advanced_furnace.get_location().getWorld().getName()).entrySet()) {
+				reaction_container.set_unit(entry.getKey(), entry.getValue());
+			}
+		}
+		if (advanced_furnace.get_make_money() == false) { // 不产钱
 			reaction_container.run_all_reactions();
 		} else {
-			if (this.money_times >= 120) {
+			if (this.money_times >= 120) { // 产线
 				advanced_furnace.add_money(advanced_furnace.get_make_money_rate());
 				this.money_times = 0;
 			} else {
@@ -106,12 +114,12 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 
 		ArrayList<String> lore = new ArrayList<String>();
 		HashMap<Chemical, Integer> all_chemical = reaction_container.get_all_chemical();
-		for (Entry<Chemical, Integer> entry : all_chemical.entrySet()) {
+		for (Entry<Chemical, Integer> entry : all_chemical.entrySet()) { // 计算反应速率
 			lore.add("§r" + entry.getKey().get_displayname() + ": " + entry.getValue() + " ("
 					+ reaction_container.get_rate(entry.getKey()) * (20 / this.get_cycle()) + "/s)");
 		}
 		advanced_furnace.set_reactor_info(lore);
-		if (advanced_furnace.get_auto_product() == true) {
+		if (advanced_furnace.get_auto_product() == true) { // 自动弹出产品
 			Iterator<Entry<Chemical, Integer>> iterator = all_chemical.entrySet().iterator();
 			while (iterator.hasNext()) {
 				Entry<Chemical, Integer> entry = iterator.next();
@@ -124,43 +132,6 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 				}
 			}
 		}
-		/*
-		if (advanced_furnace.pressed_to_product() == true) {
-			Iterator<Entry<Chemical, Integer>> iterator = all_chemical.entrySet().iterator();
-			while (iterator.hasNext()) {
-				Entry<Chemical, Integer> entry = iterator.next();
-				Chemical chemical = entry.getKey();
-				if (chemical instanceof Solid) {
-					Solid solid = (Solid) chemical;
-					advanced_furnace.solid_to_product(solid, iterator);
-				}
-
-			}
-			advanced_furnace.unpress_to_product();
-		}
-		if (advanced_furnace.pressed_clean_solid() == true) {
-			Iterator<Entry<Chemical, Integer>> iterator = all_chemical.entrySet().iterator();
-			while (iterator.hasNext()) {
-				Entry<Chemical, Integer> entry = iterator.next();
-				Chemical chemical = entry.getKey();
-				if (chemical instanceof Solid) {
-					iterator.remove();
-				}
-			}
-			advanced_furnace.unpress_clean_solid();
-		}
-		if (advanced_furnace.pressed_clean_gas() == true) {
-			Iterator<Entry<Chemical, Integer>> iterator = all_chemical.entrySet().iterator();
-			while (iterator.hasNext()) {
-				Entry<Chemical, Integer> entry = iterator.next();
-				Chemical chemical = entry.getKey();
-				if (chemical instanceof Gas) {
-					iterator.remove();
-				}
-			}
-			advanced_furnace.unpress_clean_gas();
-		}
-		*/
 	}
 
 	public int get_cycle() {

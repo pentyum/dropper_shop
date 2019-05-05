@@ -23,6 +23,7 @@ import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace;
 import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_command_executor;
 import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_listener;
 import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_manager;
+import com.piggest.minecraft.bukkit.advanced_furnace.Gas;
 import com.piggest.minecraft.bukkit.advanced_furnace.Gas_bottle;
 import com.piggest.minecraft.bukkit.advanced_furnace.Reaction_container;
 import com.piggest.minecraft.bukkit.depository.Depository;
@@ -66,7 +67,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private int make_grinder_price = 0;
 	private int make_lottery_pool_price = 0;
 	private int lottery_price = 0;
-
+	
 	private Dropper_shop_manager shop_manager = new Dropper_shop_manager();
 	private Depository_manager depository_manager = new Depository_manager();
 	private Grinder_manager grinder_manager = new Grinder_manager();
@@ -77,7 +78,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	private HashMap<String, Integer> price_map = new HashMap<String, Integer>();
 	private HashMap<String, Integer> unit_map = new HashMap<String, Integer>();
-
+	private HashMap<String,HashMap<Gas,Integer>> air_map = new HashMap<String,HashMap<Gas,Integer>>();
 	private ArrayList<ShapedRecipe> sr = new ArrayList<ShapedRecipe>();
 
 	private final Note_stick_listener note_listener = new Note_stick_listener();
@@ -167,7 +168,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.shop_config = YamlConfiguration.loadConfiguration(shop_file);
 		this.lottery_file = new File(this.getDataFolder(), "lottery_pool.yml");
 		this.lottery_config = YamlConfiguration.loadConfiguration(lottery_file);
-
+		this.gen_air();
+		
 		this.getCommand("depository").setExecutor(new Depository_command_executor());
 		this.getCommand("dropper_shop").setExecutor(new Dropper_shop_command_executor());
 		this.getCommand("grinder").setExecutor(new Grinder_command_executor());
@@ -324,4 +326,29 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.get_config().set("lottery-price", newprice);
 		this.saveConfig();
 	}
+	
+	private void gen_air(){
+		ConfigurationSection air_config = this.config.getConfigurationSection("air");
+		Set<String> worlds = air_config.getKeys(false);
+		for(String world_name:worlds) {
+			ConfigurationSection world_air_config = air_config.getConfigurationSection(world_name);
+			Set<String> air_types = world_air_config.getKeys(false);
+			HashMap<Gas,Integer> air = new HashMap<Gas,Integer>();
+			for(String air_name : air_types) {
+				int value = world_air_config.getInt(air_name);
+				Gas gas = Gas.get_gas(air_name);
+				air.put(gas, value);
+			}
+			this.air_map.put(world_name, air);
+		}
+	}
+	
+	public HashMap<Gas,Integer> get_air(String world_name){
+		HashMap<Gas,Integer> air = this.air_map.get(world_name);
+		if(air == null) {
+			air = this.air_map.get("world");
+		}
+		return air;
+	}
+	
 }

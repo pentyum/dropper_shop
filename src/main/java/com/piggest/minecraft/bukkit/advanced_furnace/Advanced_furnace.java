@@ -62,7 +62,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 		temp_info.setItemMeta(temp_info_meta);
 		this.gui.setItem(26, temp_info);
 		this.set_auto_product(true);
-		this.set_gas_discharge(false);
+		this.set_open(false);
 		this.set_make_money(false);
 		this.set_money(0);
 	}
@@ -122,8 +122,8 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 			Integer unit = entry.getValue();
 			this.reaction_container.set_unit(Chemical.get_chemical(name), unit);
 		}
+		this.set_open((boolean) shop_save.get("open"));
 		this.set_auto_product((boolean) shop_save.get("auto-product"));
-		this.set_gas_discharge((boolean) shop_save.get("auto-gas-discharge"));
 		this.set_make_money((boolean) shop_save.get("make-money"));
 		this.set_money((int) shop_save.get("money"));
 	}
@@ -169,7 +169,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 		}
 		save.put("contents", contents);
 		save.put("auto-product", this.get_auto_product());
-		save.put("auto-gas-discharge", this.get_gas_discharge());
+		save.put("open", this.is_open());
 		save.put("make-money", this.get_make_money());
 		save.put("money", this.money);
 		return save;
@@ -354,20 +354,20 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 		return this.get_switch(2);
 	}
 
-	public void set_gas_discharge(boolean auto_product) {
-		set_switch(5, auto_product);
-	}
-
-	public boolean get_gas_discharge() {
-		return this.get_switch(5);
-	}
-
 	public void set_make_money(boolean auto_product) {
 		set_switch(8, auto_product);
 	}
 
 	public boolean get_make_money() {
 		return this.get_switch(8);
+	}
+
+	public boolean is_open() {
+		return this.get_switch(5);
+	}
+
+	public void set_open(boolean open) {
+		set_switch(5, open);
 	}
 
 	private boolean add_a_item_to_slot(ItemStack src_item, int i) {

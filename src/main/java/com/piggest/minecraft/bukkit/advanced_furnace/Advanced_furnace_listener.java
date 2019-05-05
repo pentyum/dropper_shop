@@ -1,10 +1,14 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
+import java.util.Map.Entry;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 
 public class Advanced_furnace_listener implements Listener {
 	@EventHandler
@@ -14,47 +18,11 @@ public class Advanced_furnace_listener implements Listener {
 			if (Gas_bottle.is_gas_bottle(item)) {
 				event.getPlayer().sendMessage("使用了气体瓶");
 				Gas_bottle.clean_contents(item);
-				Gas_bottle.set_contents(item, Gas.oxygen, 210);
-				Gas_bottle.set_contents(item, Gas.nitrogen, 790);
-			}
-		}
-	}
-	/*
-	@EventHandler
-	public void onInventoryClick(InventoryClickEvent event) {
-		if (event.isCancelled() == true) {
-			return;
-		}
-		if (event.getClickedInventory() == null) {
-			return;
-		}
-		if (event.getClickedInventory().getName().equals("高级熔炉")) {
-			int slot = event.getSlot();
-			if (slot >= 0 && slot <= 8 || slot == 10 || slot == 12 || slot == 14 || slot == 16 || slot == 19
-					|| slot == 21 || slot == 23 || slot == 25 || slot == 26) {
-				if (slot == 2 || slot == 5 || slot == 8) {
-					ItemStack item = event.getCurrentItem();
-					ItemMeta meta = item.getItemMeta();
-					List<String> lore = meta.getLore();
-					String info = lore.get(0);
-					if (info.equals("§r开启")) {
-						lore.set(0, "§r关闭");
-					} else {
-						lore.set(0, "§r开启");
-					}
-					meta.setLore(lore);
-					item.setItemMeta(meta);
-				} else if (slot == 3 || slot == 4 || slot == 6) {
-					ItemStack item = event.getCurrentItem();
-					ItemMeta meta = item.getItemMeta();
-					List<String> lore = new ArrayList<String>();
-					lore.add("wait...");
-					meta.setLore(lore);
-					item.setItemMeta(meta);
+				for (Entry<Gas, Integer> entry : Dropper_shop_plugin.instance
+						.get_air(event.getPlayer().getWorld().getName()).entrySet()) {
+					Gas_bottle.set_contents(item, entry.getKey(), entry.getValue());
 				}
-				event.setCancelled(true);
 			}
 		}
 	}
-	*/
 }

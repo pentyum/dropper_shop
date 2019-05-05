@@ -25,7 +25,7 @@ public class Advanced_furnace_manager extends Gui_structure_manager {
 		this.set_gui(2, Material.HOPPER_MINECART, "§e固体产品自动提取", Gui_slot_type.Switch);
 		this.set_gui(3, Material.CHEST_MINECART, "§r立刻取出固体", Gui_slot_type.Button);
 		this.set_gui(4, Material.MINECART, "§r清除全部固体", Gui_slot_type.Button);
-		this.set_gui(5, Material.GLASS_BOTTLE, "§e气体自动排放", Gui_slot_type.Switch);
+		this.set_gui(5, Material.GLASS_BOTTLE, "§e敞口反应", Gui_slot_type.Switch);
 		this.set_gui(6, Material.DISPENSER, "§r清除全部气体", Gui_slot_type.Button);
 		this.set_gui(8, Material.CHEST, "§e金币制造", Gui_slot_type.Switch);
 		this.set_gui(26, Material.FURNACE, "§e信息", Gui_slot_type.Indicator);
