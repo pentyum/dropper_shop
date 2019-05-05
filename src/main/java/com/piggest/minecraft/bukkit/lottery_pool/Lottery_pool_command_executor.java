@@ -12,6 +12,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
@@ -56,13 +57,25 @@ public class Lottery_pool_command_executor implements TabExecutor {
 						ItemStack item = item_list.get(i);
 						String enchantment_str = "";
 						Map<Enchantment, Integer> enchantments = item.getEnchantments();
-						if (enchantments.size() != 0) {
+						if (enchantments!=null && !enchantments.isEmpty()) {
 							enchantment_str += " 附魔:";
 							for (Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
 								String enchantment_name = entry.getKey().getKey().toString();
 								enchantment_str += enchantment_name + "-" + entry.getValue() + ",";
 							}
 							enchantment_str = enchantment_str.substring(0, enchantment_str.length() - 1);
+						}
+						if(item.getItemMeta() instanceof EnchantmentStorageMeta ) {
+							EnchantmentStorageMeta stor = (EnchantmentStorageMeta) item.getItemMeta();
+							enchantments = stor.getStoredEnchants();
+							if(enchantments != null && !enchantments.isEmpty()) {
+								enchantment_str += " 存储附魔:";
+								for (Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+									String enchantment_name = entry.getKey().getKey().toString();
+									enchantment_str += enchantment_name + "-" + entry.getValue() + ",";
+								}
+								enchantment_str = enchantment_str.substring(0, enchantment_str.length() - 1);
+							}
 						}
 						int possibility = possibility_list.get(i);
 						msg += "[" + i + "]: " + Material_ext.get_display_name(item) + " 数量:" + item.getAmount()
