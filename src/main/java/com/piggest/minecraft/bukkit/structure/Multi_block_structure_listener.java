@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -41,7 +42,7 @@ public class Multi_block_structure_listener implements Listener {
 
 	@EventHandler
 	public void on_right_click(PlayerInteractEvent event) {
-		if (event.isCancelled() == true) {
+		if (event.useItemInHand() == Result.DENY || event.useInteractedBlock() == Result.DENY) {
 			return;
 		}
 		Player player = event.getPlayer();

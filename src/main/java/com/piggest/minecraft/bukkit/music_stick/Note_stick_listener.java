@@ -6,6 +6,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.Event.Result;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -36,7 +37,7 @@ public class Note_stick_listener implements Listener {
 
 	@EventHandler
 	public void on_look(PlayerInteractEvent event) {
-		if (event.isCancelled() == true) {
+		if (event.useItemInHand() == Result.DENY || event.useInteractedBlock() == Result.DENY) {
 			return;
 		}
 		Player player = event.getPlayer();

@@ -12,6 +12,7 @@ import org.bukkit.block.data.type.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.Event.Result;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -47,7 +48,7 @@ public class Use_wrench_listener implements Listener {
 
 	@EventHandler
 	public void on_use_wrench(PlayerInteractEvent event) {
-		if (event.isCancelled() == false && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+		if (event.useItemInHand() == Result.ALLOW && event.useInteractedBlock() == Result.ALLOW && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			if (event.hasItem() == true && event.getBlockFace() != null) {
 				ItemStack wrench_item = event.getItem();
 				if (wrench_item.isSimilar(wrench_plugin.get_wrench_item())) {

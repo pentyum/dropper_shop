@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.Event.Result;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDispenseEvent;
@@ -26,7 +27,7 @@ public class Dropper_shop_listener implements Listener {
 
 	@EventHandler
 	public void on_look(PlayerInteractEvent event) {
-		if (event.isCancelled() == false && (event.getAction() == Action.LEFT_CLICK_BLOCK) && event.getItem() == null) {
+		if (event.useItemInHand() == Result.ALLOW && event.useInteractedBlock() == Result.ALLOW && (event.getAction() == Action.LEFT_CLICK_BLOCK) && event.getItem() == null) {
 			Dropper_shop shop = Dropper_shop_manager.instance.get(event.getClickedBlock().getLocation());
 			if (shop != null) {
 				event.getPlayer()
