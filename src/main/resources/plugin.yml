@@ -10,34 +10,34 @@ commands:
     permission: dropper_shop.make
     permission-message: You don't have permission
   depository:
-    description: Make a depository.
+    description: commands relate to depository.
     usage: /<command> make ,to make a depository.
     permission: depository.make
     permission-message: You don't have permission
   grinder:
-    description: Make a grinder.
+    description: commands relate to grinder.
     usage: /<command> make ,to make a grinder.
     permission: grinder.make
     permission-message: You don't have permission
   adv_furnace:
-    description: Make a advanced furnace.
+    description: commands relate to advanced furnace.
     usage: /<command> make ,to make a advanced furnace.
     permission: adv_furnace.make
     permission-message: You don't have permission
   wrench:
-    description: see the plugin info.
+    description: commands relate to wrench.
     usage: /<command> to see the plugin info or /<command> setprice [world] to change price.
     permission: wrench.use
     permission-message: You don't have permission
   exp_saver:
-    description: see the plugin info.
+    description: commands relate to exp_saver.
     usage: /<command> remove to remove a exp saver.
     permission: exp_saver.use
     permission-message: You don't have permission
   lottery:
-    description: set the possibility of the item in your hand.
+    description: commands relate to lottery pool.
     usage: /<command> possibility to set the possibility of the item in your hand.
-    permission: lottery.set
+    permission: lottery.use
     permission-message: You don't have permission
 permissions:
   dropper_shop.*:
@@ -94,6 +94,9 @@ permissions:
   exp_saver.use:
     description: Gives access to use exp_saver
     default: true
+  lottery.*:
+    description: Gives access to all lottery pool commands.
+    default: op
   lottery.use:
     description: Use lottery pool.
     default: true

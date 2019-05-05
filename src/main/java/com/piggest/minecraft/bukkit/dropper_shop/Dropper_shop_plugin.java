@@ -79,7 +79,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private HashMap<String, Integer> unit_map = new HashMap<String, Integer>();
 
 	private ArrayList<ShapedRecipe> sr = new ArrayList<ShapedRecipe>();
-	
+
 	private final Note_stick_listener note_listener = new Note_stick_listener();
 	private final Gui_listener gui_listener = new Gui_listener();
 	private final Multi_block_structure_listener multi_block_structure_listener = new Multi_block_structure_listener();
@@ -92,11 +92,11 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public FileConfiguration get_shop_config() {
 		return this.shop_config;
 	}
-	
+
 	public FileConfiguration get_lottery_config() {
 		return this.lottery_config;
 	}
-	
+
 	public int get_make_shop_price() {
 		return this.make_price;
 	}
@@ -167,7 +167,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.shop_config = YamlConfiguration.loadConfiguration(shop_file);
 		this.lottery_file = new File(this.getDataFolder(), "lottery_pool.yml");
 		this.lottery_config = YamlConfiguration.loadConfiguration(lottery_file);
-		
+
 		this.getCommand("depository").setExecutor(new Depository_command_executor());
 		this.getCommand("dropper_shop").setExecutor(new Dropper_shop_command_executor());
 		this.getCommand("grinder").setExecutor(new Grinder_command_executor());
@@ -176,7 +176,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		Wrench_command_executor wrench = new Wrench_command_executor();
 		this.getCommand("wrench").setExecutor(wrench);
 		this.getCommand("lottery").setExecutor(new Lottery_pool_command_executor());
-		
+
 		getLogger().info("使用Vault");
 		if (!initVault()) {
 			getLogger().severe("初始化Vault失败,请检测是否已经安装Vault插件和经济插件");
@@ -317,5 +317,11 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	public int get_lottery_price() {
 		return this.lottery_price;
+	}
+
+	public void set_lottery_price(int newprice) {
+		this.lottery_price = newprice;
+		this.get_config().set("lottery-price", newprice);
+		this.saveConfig();
 	}
 }

@@ -38,7 +38,8 @@ public class Depository_command_executor implements TabExecutor {
 		Player player = (Player) sender;
 		if (cmd.getName().equalsIgnoreCase("depository")) {
 			if (args.length == 0) {
-				player.sendMessage("请使用/depository info|remove|input|output|connect");
+				player.sendMessage(
+						"/depository info 查看存储器信息\n/depository remove 移除该存储器\n/depository input 把手上的物品存入存储器\n/depository input all 把背包中和手上的物品相同的全部存入存储器\n/depository output <物品名称> <数量> 取出物品\n/depository connect <物品名称> 连接读取器和存储器");
 				return true;
 			}
 			Block look_block = player.getTargetBlockExact(4);
@@ -98,7 +99,7 @@ public class Depository_command_executor implements TabExecutor {
 					return true;
 				}
 				if (args.length < 2) {
-					player.sendMessage("/depository export <物品名称> <数量>");
+					player.sendMessage("/depository output <物品名称> <数量>");
 					return true;
 				}
 				int current_num = depository.get_material_num(args[1]);

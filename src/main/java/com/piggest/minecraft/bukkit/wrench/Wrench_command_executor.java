@@ -79,7 +79,7 @@ public class Wrench_command_executor implements CommandExecutor {
 				if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
 					sender.sendMessage("这个指令只能让玩家使用。");
 				} else {
-					sender.sendMessage("合成扳手后右键使用(潜行状态相反)");
+					sender.sendMessage("合成扳手后右键使用(潜行状态相反)\n/wrench setprice <世界名称> <价格>\n/wrench get 获得一个扳手");
 				}
 				return true;
 			} else if (args[0].equalsIgnoreCase("setprice")) { // 设置价格
@@ -111,6 +111,17 @@ public class Wrench_command_executor implements CommandExecutor {
 					sender.sendMessage("你没有权限设置价格");
 				}
 				return true;
+			} else if (args[0].equalsIgnoreCase("get")) {  //获得一个扳手
+				if (sender.hasPermission("wrench.changeprice")) {
+					if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
+						sender.sendMessage("只有玩家才能获得扳手");
+					} else {
+						Player player = (Player) sender;
+						player.getInventory().addItem(this.wrench_item.clone());
+					}
+				}else {
+					sender.sendMessage("你没有权限直接获得扳手");
+				}
 			}
 		}
 		return false;

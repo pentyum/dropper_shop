@@ -32,7 +32,7 @@ public class Exp_saver_command_executor implements TabExecutor {
 		Player player = (Player) sender;
 		if (cmd.getName().equalsIgnoreCase("exp_saver")) {
 			if (args.length == 0) {
-				player.sendMessage("请使用/exp_saver remove");
+				player.sendMessage("/exp_saver remove 移除该经验存储器");
 				return true;
 			}
 			Block look_block = player.getTargetBlockExact(4);
