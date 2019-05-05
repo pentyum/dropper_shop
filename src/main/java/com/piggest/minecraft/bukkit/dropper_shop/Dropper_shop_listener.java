@@ -27,7 +27,7 @@ public class Dropper_shop_listener implements Listener {
 
 	@EventHandler
 	public void on_look(PlayerInteractEvent event) {
-		if (event.useItemInHand() == Result.ALLOW && event.useInteractedBlock() == Result.ALLOW && (event.getAction() == Action.LEFT_CLICK_BLOCK) && event.getItem() == null) {
+		if (event.useItemInHand() != Result.DENY && event.useInteractedBlock() != Result.DENY && (event.getAction() == Action.LEFT_CLICK_BLOCK) && event.getItem() == null) {
 			Dropper_shop shop = Dropper_shop_manager.instance.get(event.getClickedBlock().getLocation());
 			if (shop != null) {
 				event.getPlayer()

@@ -19,7 +19,7 @@ public class Wrench_command_executor implements CommandExecutor {
 	private ItemStack wrench_item = null;
 	private NamespacedKey namespace = new NamespacedKey(Dropper_shop_plugin.instance, "wrench");
 	private ConfigurationSection price = null;
-	
+
 	public ItemStack get_wrench_item() {
 		return this.wrench_item;
 	}
@@ -111,7 +111,7 @@ public class Wrench_command_executor implements CommandExecutor {
 					sender.sendMessage("你没有权限设置价格");
 				}
 				return true;
-			} else if (args[0].equalsIgnoreCase("get")) {  //获得一个扳手
+			} else if (args[0].equalsIgnoreCase("get")) { // 获得一个扳手
 				if (sender.hasPermission("wrench.changeprice")) {
 					if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
 						sender.sendMessage("只有玩家才能获得扳手");
@@ -119,7 +119,7 @@ public class Wrench_command_executor implements CommandExecutor {
 						Player player = (Player) sender;
 						player.getInventory().addItem(this.wrench_item.clone());
 					}
-				}else {
+				} else {
 					sender.sendMessage("你没有权限直接获得扳手");
 				}
 			}
