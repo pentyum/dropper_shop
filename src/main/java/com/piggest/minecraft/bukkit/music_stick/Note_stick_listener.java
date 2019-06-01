@@ -19,7 +19,7 @@ public class Note_stick_listener implements Listener {
 	public static String[] note_id2 = new String[] { ".4#", ".5", ".5#", ".6", ".6#", ".7", "1", "1#", "2", "2#", "3",
 			"4", "4#", "5", "5#", "6", "6#", "7", "1.", "1#.", "2.", "2#.", "3.", "4.", "4#." };
 	public Note_stick_runner runner = new Note_stick_runner();
-	
+
 	public static int get_id(String str) {
 		int i;
 		for (i = 0; i < 25; i++) {
@@ -42,10 +42,12 @@ public class Note_stick_listener implements Listener {
 		}
 		Player player = event.getPlayer();
 		if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-			if (event.getItem().getType() == Material.STICK
-					&& event.getClickedBlock().getType() == Material.NOTE_BLOCK) {
-				player.sendMessage(
-						"请输入音调，从低到高依次为.4# .5 .5# .6 .6# .7 1 1# 2 2# 3 4 4# 5 5# 6 6# 7 1. 1#. 2. 2#. 3. 4. 4#.");
+			if (event.getItem() != null && event.getClickedBlock() != null) {
+				if (event.getItem().getType() == Material.STICK
+						&& event.getClickedBlock().getType() == Material.NOTE_BLOCK) {
+					player.sendMessage(
+							"请输入音调，从低到高依次为.4# .5 .5# .6 .6# .7 1 1# 2 2# 3 4 4# 5 5# 6 6# 7 1. 1#. 2. 2#. 3. 4. 4#.");
+				}
 			}
 		}
 	}
@@ -62,7 +64,7 @@ public class Note_stick_listener implements Listener {
 				player.sendMessage("你输入的音调不正确");
 			} else {
 				note_block.setNote(new Note(id));
-				Note_setting setting = new Note_setting(block,note_block);
+				Note_setting setting = new Note_setting(block, note_block);
 				runner.queue.add(setting);
 				player.sendMessage("已设置音调为" + event.getMessage());
 			}
