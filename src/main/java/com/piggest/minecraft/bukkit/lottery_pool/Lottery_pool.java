@@ -111,6 +111,10 @@ public class Lottery_pool extends Multi_block_structure {
 
 	@Override
 	public boolean create_condition(Player player) {
+		if (!player.hasPermission("lottery.make")) {
+			player.sendMessage("你没有建立抽奖机的权限");
+			return false;
+		}
 		int price = Dropper_shop_plugin.instance.get_make_lottery_pool_price();
 		if (Dropper_shop_plugin.instance.get_economy().has(player, price)) {
 			Dropper_shop_plugin.instance.get_economy().withdrawPlayer(player, price);

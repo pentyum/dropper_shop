@@ -56,6 +56,10 @@ public class Depository_command_executor implements TabExecutor {
 				}
 				player.sendMessage(depository.get_info());
 			} else if (args[0].equalsIgnoreCase(Depository_sub_cmd.input.name())) {
+				if (!player.hasPermission("depository.input")) {
+					player.sendMessage("你没有添加物品的权限");
+					return true;
+				}
 				Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(player.getName(),
 						look_block.getLocation(), false);
 				if (depository == null) {
@@ -92,6 +96,10 @@ public class Depository_command_executor implements TabExecutor {
 				Dropper_shop_plugin.instance.get_depository_manager().remove(depository);
 				player.sendMessage("存储器结构已经移除");
 			} else if (args[0].equalsIgnoreCase(Depository_sub_cmd.output.name())) {
+				if (!player.hasPermission("depository.output")) {
+					player.sendMessage("你没有取出物品的权限");
+					return true;
+				}
 				Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(player.getName(),
 						look_block.getLocation(), false);
 				if (depository == null) {
@@ -134,6 +142,10 @@ public class Depository_command_executor implements TabExecutor {
 					}
 				}
 			} else if (args[0].equalsIgnoreCase(Depository_sub_cmd.connect.name())) {
+				if (!player.hasPermission("depository.connect")) {
+					player.sendMessage("你没有连接存储器的权限");
+					return true;
+				}
 				Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(player.getName(),
 						look_block.getLocation(), false);
 				if (depository == null) {

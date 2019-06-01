@@ -58,7 +58,12 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 
 	@Override
 	public boolean create_condition(Player player) {
-		return true;
+		if (!player.hasPermission("exp_saver.make")) {
+			player.sendMessage("你没有建立经验存储器的权限");
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	@Override

@@ -91,12 +91,18 @@ permissions:
   exp_saver.*:
     description: Gives access to all wrench commands
     default: op
+  exp_saver.make:
+    description: Gives access to make exp_saver
+    default: true
   exp_saver.use:
     description: Gives access to use exp_saver
     default: true
   lottery.*:
     description: Gives access to all lottery pool commands.
     default: op
+  lottery.make:
+    description: Make lottery pool.
+    default: true
   lottery.use:
     description: Use lottery pool.
     default: true

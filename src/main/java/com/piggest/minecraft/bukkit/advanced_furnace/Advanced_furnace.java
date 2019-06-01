@@ -469,7 +469,12 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 
 	@Override
 	public boolean create_condition(Player player) {
-		return true;
+		if (!player.hasPermission("adv_furnace.make")) {
+			player.sendMessage("你没有建立高级熔炉的权限");
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	@Override

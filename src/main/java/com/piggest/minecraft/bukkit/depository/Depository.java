@@ -251,7 +251,12 @@ public class Depository extends Multi_block_with_gui implements Ownable, HasRunn
 
 	@Override
 	public boolean create_condition(Player player) {
-		return true;
+		if (!player.hasPermission("depository.make")) {
+			player.sendMessage("你没有建立存储器的权限");
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	@Override
