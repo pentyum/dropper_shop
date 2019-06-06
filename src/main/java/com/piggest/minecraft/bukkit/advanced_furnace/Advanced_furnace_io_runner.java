@@ -62,7 +62,7 @@ public class Advanced_furnace_io_runner extends Structure_runner {
 
 	@Override
 	public int get_cycle() {
-		return 2;
+		return 5;
 	}
 
 	@Override
