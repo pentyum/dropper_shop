@@ -224,10 +224,12 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 	public void set_last_sec(int last_sec) {
 		ItemStack temp_info = this.gui.getItem(26);
 		ItemMeta temp_info_meta = temp_info.getItemMeta();
-		List<String> lore = temp_info_meta.getLore();
-		lore.set(3, "§r剩余燃烧时间: " + last_sec + " s");
-		temp_info_meta.setLore(lore);
-		temp_info.setItemMeta(temp_info_meta);
+		if (temp_info_meta.hasLore()) {
+			List<String> lore = temp_info_meta.getLore();
+			lore.set(3, "§r剩余燃烧时间: " + last_sec + " s");
+			temp_info_meta.setLore(lore);
+			temp_info.setItemMeta(temp_info_meta);
+		}
 	}
 
 	public void set_power(double power) {
