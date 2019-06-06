@@ -68,7 +68,7 @@ public class Grinder_io_runner extends Structure_runner {
 
 	@Override
 	public boolean is_asynchronously() {
-		return true;
+		return false;
 	}
 
 }
