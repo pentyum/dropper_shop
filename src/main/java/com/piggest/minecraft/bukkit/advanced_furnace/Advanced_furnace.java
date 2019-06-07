@@ -75,10 +75,12 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 		this.reaction_container.set_temperature(temperature);
 		ItemStack temp_info = this.gui.getItem(26);
 		ItemMeta temp_info_meta = temp_info.getItemMeta();
-		List<String> lore = temp_info_meta.getLore();
-		lore.set(0, "§r温度: " + String.format("%.1f", temperature) + " K");
-		temp_info_meta.setLore(lore);
-		temp_info.setItemMeta(temp_info_meta);
+		if (temp_info_meta.hasLore()) {
+			List<String> lore = temp_info_meta.getLore();
+			lore.set(0, "§r温度: " + String.format("%.1f", temperature) + " K");
+			temp_info_meta.setLore(lore);
+			temp_info.setItemMeta(temp_info_meta);
+		}
 	}
 
 	public double get_temperature() {
