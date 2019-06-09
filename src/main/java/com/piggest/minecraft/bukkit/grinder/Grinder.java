@@ -29,6 +29,15 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 	private Grinder_io_runner io_runner = new Grinder_io_runner(this);
 
 	public Grinder() {
+		/*
+		ItemStack white = new ItemStack(Material.WHITE_STAINED_GLASS_PANE);
+		ItemMeta meta = white.getItemMeta();
+		meta.setDisplayName("§e磨粉机工作进度: 0 %");
+		white.setItemMeta(meta);
+		for (int i = 0; i < 9; i++) {
+			this.gui.setItem(i, white.clone());
+		}
+		*/
 		ItemStack flint_info = this.gui.getItem(17);
 		ItemMeta flint_info_meta = flint_info.getItemMeta();
 		ArrayList<String> lore = new ArrayList<String>();
@@ -44,7 +53,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 		item.setItemMeta(meta);
 	}
 
-	public int get_flint_storage() {
+	public synchronized int get_flint_storage() {
 		int storage = 0;
 		ItemStack flint_info = this.gui.getContents()[17];
 		ItemMeta flint_info_meta = flint_info.getItemMeta();
@@ -60,7 +69,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 		return 0;
 	}
 
-	public void set_flint_storge(int storage) {
+	public synchronized void set_flint_storge(int storage) {
 		ItemStack flint_info = this.gui.getContents()[17];
 		ItemMeta flint_info_meta = flint_info.getItemMeta();
 		ArrayList<String> lore = new ArrayList<String>();
@@ -145,7 +154,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 		return false;
 	}
 
-	public Hopper get_hopper() {
+	public synchronized Hopper get_hopper() {
 		BlockState up_block = this.get_block(0, 1, 0).getState();
 		if (up_block instanceof Hopper) {
 			Hopper up_hopper = (Hopper) up_block;
@@ -154,7 +163,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 		return null;
 	}
 
-	public Chest get_chest() {
+	public synchronized Chest get_chest() {
 		BlockState chest = this.get_block(1, -2, 0).getState();
 		if (chest instanceof Chest) {
 			return (Chest) chest;
@@ -190,7 +199,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 		return this.io_runner;
 	}
 
-	public boolean to_product() {
+	public synchronized boolean to_product() {
 		if (!Grinder.is_empty(this.get_raw())) {
 			ItemStack product_item = this.get_manager().recipe.get(this.get_raw().getType());
 			if (product_item != null) {
@@ -249,7 +258,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 		return false;
 	}
 
-	public void set_process(int process) {
+	public synchronized void set_process(int process) {
 		this.set_process(0, process, "§e磨粉机工作进度: %d %%", process);
 	}
 
@@ -259,18 +268,17 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 		this.set_flint_storge((Integer) shop_save.get("flint-storge"));
 		this.runner.working_ticks = (Integer) shop_save.get("working-ticks");
 		if (shop_save.get("raw") != null) {
-			ItemStack raw_item = new ItemStack(Material.getMaterial((String) shop_save.get("raw")),
-					(Integer) shop_save.get("raw-num"));
+			ItemStack raw_item = Material_ext.new_item((String) shop_save.get("raw"), (int) shop_save.get("raw-num"));
 			this.set_raw(raw_item);
 		}
 		if (shop_save.get("flint") != null) {
-			ItemStack flint_item = new ItemStack(Material.getMaterial((String) shop_save.get("flint")),
-					(Integer) shop_save.get("flint-num"));
+			ItemStack flint_item = Material_ext.new_item((String) shop_save.get("flint"),
+					(int) shop_save.get("flint-num"));
 			this.set_flint(flint_item);
 		}
 		if (shop_save.get("product") != null) {
 			ItemStack product_item = Material_ext.new_item((String) shop_save.get("product"),
-					(Integer) shop_save.get("product-num"));
+					(int) shop_save.get("product-num"));
 			this.set_product(product_item);
 		}
 	}
@@ -281,7 +289,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 		save.put("flint-storge", this.get_flint_storage());
 		save.put("working-ticks", this.runner.working_ticks);
 		if (!Grinder.is_empty(this.get_raw())) {
-			save.put("raw", this.get_raw().getType().name());
+			save.put("raw", Material_ext.get_id_name(this.get_raw()));
 			save.put("raw-num", this.get_raw().getAmount());
 		}
 		if (!Grinder.is_empty(this.get_flint())) {
@@ -289,7 +297,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 			save.put("flint-num", this.get_flint().getAmount());
 		}
 		if (!Grinder.is_empty(this.get_product())) {
-			save.put("product", this.get_product().getType().name());
+			save.put("product", Material_ext.get_id_name(this.get_product()));
 			save.put("product-num", this.get_product().getAmount());
 		}
 		return save;

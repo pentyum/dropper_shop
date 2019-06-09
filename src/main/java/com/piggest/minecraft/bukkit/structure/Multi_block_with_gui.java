@@ -61,29 +61,28 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 
 	public abstract void on_button_pressed(Player player, int slot);
 
-	public void set_process(int bar, int process, String info, Object... args) {
+	public synchronized void set_process(int bar, int process, String info, Object... args) {
 		int start_slot = -1;
-		try {
-			start_slot = this.get_manager().get_process_bar()[bar];
-		} catch (Exception e) {
-			return;
-		}
+		start_slot = this.get_manager().get_process_bar()[bar];
 		int i = 0;
 		int n = process * 9 / 100;
-		ItemStack red = new ItemStack(Material.RED_STAINED_GLASS_PANE);
-		ItemStack white = new ItemStack(Material.WHITE_STAINED_GLASS_PANE);
-		ItemMeta meta = red.getItemMeta();
-		meta.setDisplayName(String.format(info, args));
-		red.setItemMeta(meta);
-		white.setItemMeta(meta);
-		for (i = start_slot; i < n; i++) {
-			this.gui.setItem(i, red.clone());
-		}
 		for (i = start_slot; i < 9; i++) {
-			this.gui.setItem(i, white.clone());
+			ItemStack item = this.gui.getItem(i);
+			if (Grinder.is_empty(item)) {
+				item = new ItemStack(Material.WHITE_STAINED_GLASS_PANE);
+				this.gui.setItem(i, item);
+			}
+			if (i < n) {
+				item.setType(Material.RED_STAINED_GLASS_PANE);
+			} else {
+				item.setType(Material.WHITE_STAINED_GLASS_PANE);
+			}
+			ItemMeta meta = item.getItemMeta();
+			meta.setDisplayName(String.format(info, args));
+			item.setItemMeta(meta);
 		}
 	}
-	
+
 	@Override
 	public Gui_structure_manager get_manager() {
 		return (Gui_structure_manager) super.get_manager();

@@ -50,10 +50,14 @@ public enum Fuel {
 		} else if (item.getType() == Material.STICK) {
 			return stick;
 		} else if (item.getType() == Material.SUGAR) {
-			if (Powder.is_powder(item, "coal_powder")) {
-				return coal_powder;
-			} else if (Powder.is_powder(item, "wheat_powder")) {
-				return wheat_powder;
+			if (item.hasItemMeta()) {
+				if (Powder.is_powder(item, "coal_powder")) {
+					return coal_powder;
+				} else if (Powder.is_powder(item, "wheat_powder")) {
+					return wheat_powder;
+				} else {
+					return null;
+				}
 			} else {
 				return suger;
 			}
