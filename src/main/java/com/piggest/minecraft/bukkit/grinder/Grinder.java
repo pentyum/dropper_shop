@@ -198,7 +198,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 					this.set_product(product_item.clone());
 					this.get_raw().setAmount(this.get_raw().getAmount() - 1);
 					return true;
-				} else if (this.get_product().getType() == product_item.getType()) {
+				} else if (this.get_product().isSimilar(product_item)) {
 					int new_num = this.get_product().getAmount() + product_item.getAmount();
 					if (new_num <= product_item.getMaxStackSize()) {
 						this.get_product().setAmount(new_num);
@@ -218,7 +218,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 				this.get_raw().setAmount(1);
 				src_item.setAmount(src_item.getAmount() - 1);
 				return true;
-			} else if (src_item.getType() == this.get_raw().getType()) {
+			} else if (src_item.isSimilar(this.get_raw())) {
 				int new_num = 1 + this.get_raw().getAmount();
 				if (new_num <= src_item.getMaxStackSize()) {
 					this.get_raw().setAmount(new_num);
@@ -237,7 +237,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 				this.get_flint().setAmount(1);
 				src_item.setAmount(src_item.getAmount() - 1);
 				return true;
-			} else if (src_item.getType() == this.get_flint().getType()) {
+			} else if (src_item.isSimilar(this.get_flint())) {
 				int new_num = 1 + this.get_flint().getAmount();
 				if (new_num <= src_item.getMaxStackSize()) {
 					this.get_flint().setAmount(new_num);

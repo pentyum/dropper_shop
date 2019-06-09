@@ -33,10 +33,6 @@ public class Powder {
 		if (item.getType() != Material.SUGAR) {
 			return false;
 		}
-		if (Material_ext.get_material(id_name) == null) {
-			return false;
-		} else {
-			return id_name.contains("powder");
-		}
+		return Material_ext.get_id_name(item).equalsIgnoreCase(id_name);
 	}
 }

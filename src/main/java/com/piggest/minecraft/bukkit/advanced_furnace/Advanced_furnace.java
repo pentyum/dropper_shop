@@ -381,7 +381,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 				this.gui.getItem(i).setAmount(1);
 				src_item.setAmount(src_item.getAmount() - 1);
 				return true;
-			} else if (src_item.getType() == this.gui.getItem(i).getType()) {
+			} else if (src_item.isSimilar(this.gui.getItem(i))) {
 				int new_num = 1 + this.gui.getItem(i).getAmount();
 				if (new_num <= src_item.getMaxStackSize()) {
 					this.gui.getItem(i).setAmount(new_num);
