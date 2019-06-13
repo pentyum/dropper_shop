@@ -1,11 +1,6 @@
 package com.piggest.minecraft.bukkit.grinder;
 
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 
 public class Grinder_listener implements Listener {
 	/*
@@ -25,7 +20,7 @@ public class Grinder_listener implements Listener {
 		}
 	}
 	*/
-
+	/*
 	@EventHandler
 	public void on_break_grinder(BlockBreakEvent event) {
 		if (event.isCancelled() == true) {
@@ -42,4 +37,5 @@ public class Grinder_listener implements Listener {
 		event.getPlayer().sendMessage("磨粉机已被破坏");
 		Dropper_shop_plugin.instance.get_grinder_manager().remove(grinder);
 	}
+	*/
 }

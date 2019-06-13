@@ -93,7 +93,7 @@ public class Depository_command_executor implements TabExecutor {
 					player.sendMessage("没有检测到完整的存储器结构");
 					return true;
 				}
-				Dropper_shop_plugin.instance.get_depository_manager().remove(depository);
+				depository.remove();
 				player.sendMessage("存储器结构已经移除");
 			} else if (args[0].equalsIgnoreCase(Depository_sub_cmd.output.name())) {
 				if (!player.hasPermission("depository.output")) {

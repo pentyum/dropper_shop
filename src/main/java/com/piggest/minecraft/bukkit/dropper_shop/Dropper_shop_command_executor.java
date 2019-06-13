@@ -64,7 +64,7 @@ public class Dropper_shop_command_executor implements CommandExecutor {
 							|| player.hasPermission("dropper_shop.remove.others")) {
 						player.sendMessage(
 								"已移除" + shop.get_owner_name() + "的" + shop.get_selling_item().name() + "投掷器商店");
-						Dropper_shop_plugin.instance.get_shop_manager().remove(shop);
+						shop.remove();
 					} else {
 						player.sendMessage("这不是你自己的投掷器商店，而是" + shop.get_owner_name() + "的");
 						return true;

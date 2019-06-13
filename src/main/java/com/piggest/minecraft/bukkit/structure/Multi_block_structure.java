@@ -16,7 +16,5 @@ public abstract class Multi_block_structure extends Structure {
 	public abstract int completed();
 
 	public abstract boolean in_structure(Location loc);
-
-	protected abstract boolean on_break(Player player);
 	
 }

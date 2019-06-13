@@ -53,7 +53,7 @@ public class Advanced_furnace_command_executor implements TabExecutor {
 					player.sendMessage("没有检测到完整的高级熔炉结构");
 					return true;
 				}
-				Dropper_shop_plugin.instance.get_adv_furnace_manager().remove(adv_furnace);
+				adv_furnace.remove();
 				player.sendMessage("高级熔炉结构已经移除");
 				return true;
 			} else if (args[0].equalsIgnoreCase("getmoney")) {

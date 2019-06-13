@@ -48,8 +48,8 @@ import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool;
 import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_command_executor;
 import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_manager;
 import com.piggest.minecraft.bukkit.music_stick.Note_stick_listener;
-import com.piggest.minecraft.bukkit.structure.Multi_block_structure_listener;
 import com.piggest.minecraft.bukkit.structure.Structure;
+import com.piggest.minecraft.bukkit.structure.Structure_listener;
 import com.piggest.minecraft.bukkit.structure.Structure_manager;
 import com.piggest.minecraft.bukkit.wrench.Wrench_command_executor;
 
@@ -83,7 +83,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	private final Note_stick_listener note_listener = new Note_stick_listener();
 	private final Gui_listener gui_listener = new Gui_listener();
-	private final Multi_block_structure_listener multi_block_structure_listener = new Multi_block_structure_listener();
+	private final Structure_listener Structure_listener = new Structure_listener();
+
 	private Listener[] structure_listeners = { new Depository_listener(), new Dropper_shop_listener(),
 			new Update_component_listener(), new Grinder_listener(), new Advanced_furnace_listener(),
 			new Exp_saver_listener() };
@@ -218,7 +219,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 		PluginManager pm = getServer().getPluginManager();
 
-		pm.registerEvents(this.multi_block_structure_listener, this);
+		pm.registerEvents(this.Structure_listener, this);
+
 		pm.registerEvents(this.gui_listener, this);
 		pm.registerEvents(this.note_listener, this);
 

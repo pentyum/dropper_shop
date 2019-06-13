@@ -133,4 +133,17 @@ public class Dropper_shop extends Single_block_structure implements Ownable {
 		}
 	}
 
+	@Override
+	protected boolean on_break(Player player) {
+		if (this.get_owner_name().equalsIgnoreCase(player.getName())) {
+			return true;
+		} else {
+			if (player.hasPermission("dropper_shop.remove.others")) {
+				return true;
+			} else {
+				player.sendMessage("你没有破坏其他人的投掷器商店的权限");
+				return false;
+			}
+		}
+	}
 }

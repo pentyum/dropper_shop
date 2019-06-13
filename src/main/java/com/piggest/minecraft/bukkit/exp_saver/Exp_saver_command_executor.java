@@ -47,7 +47,7 @@ public class Exp_saver_command_executor implements TabExecutor {
 					player.sendMessage("没有检测到完整的经验存储器结构");
 					return true;
 				}
-				Dropper_shop_plugin.instance.get_exp_saver_manager().remove(exp_saver);
+				exp_saver.remove();
 				player.sendMessage("经验存储器结构已经移除");
 				return true;
 			}

@@ -59,4 +59,10 @@ public abstract class Structure {
 	}
 
 	public abstract boolean create_condition(Player player);
+	
+	public void remove() {
+		this.get_manager().remove(this);
+	}
+	
+	protected abstract boolean on_break(Player player);
 }

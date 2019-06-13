@@ -28,7 +28,7 @@ public class Lottery_pool extends Multi_block_structure {
 	@Override
 	public void on_right_click(Player player) {
 		if (this.completed() == 0) {
-			this.get_manager().remove(this);
+			this.remove();
 			return;
 		}
 		if (this.running == false) {

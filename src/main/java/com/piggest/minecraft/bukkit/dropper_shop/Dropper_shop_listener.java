@@ -1,12 +1,9 @@
 package com.piggest.minecraft.bukkit.dropper_shop;
 
-import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -36,7 +33,7 @@ public class Dropper_shop_listener implements Listener {
 			}
 		}
 	}
-
+	/*
 	@EventHandler
 	public void on_break_shop(BlockBreakEvent event) {
 		if (event.isCancelled() == true) {
@@ -53,4 +50,5 @@ public class Dropper_shop_listener implements Listener {
 		event.getPlayer().sendMessage("已破坏" + shop.get_owner_name() + "的" + shop.get_selling_item().name() + "投掷器商店");
 		Dropper_shop_manager.instance.remove(shop);
 	}
+	*/
 }

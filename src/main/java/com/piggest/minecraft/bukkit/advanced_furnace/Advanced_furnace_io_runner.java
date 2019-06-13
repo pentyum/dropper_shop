@@ -1,5 +1,6 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Hopper;
@@ -57,6 +58,11 @@ public class Advanced_furnace_io_runner extends Structure_runner {
 					}
 				}
 			}
+		}
+		if(this.adv_furnace.get_temperature()>4000) {
+			Location loc = this.adv_furnace.get_location();
+			loc.getWorld().createExplosion(loc, 8);
+			this.adv_furnace.remove();
 		}
 	}
 

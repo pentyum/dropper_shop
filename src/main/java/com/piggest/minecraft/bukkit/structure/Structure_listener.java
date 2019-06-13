@@ -14,7 +14,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 
-public class Multi_block_structure_listener implements Listener {
+public class Structure_listener implements Listener {
 	@EventHandler
 	public void on_break(BlockBreakEvent event) {
 		if (event.isCancelled() == true) {
@@ -28,13 +28,11 @@ public class Multi_block_structure_listener implements Listener {
 			Structure_manager manager = entry.getValue();
 			Structure structure = manager.find(null, block.getLocation(), false);
 			if (structure != null) {
-				if (structure instanceof Multi_block_structure) {
-					if (((Multi_block_structure) structure).on_break(player) == false) {
-						event.setCancelled(true);
-					} else {
-						player.sendMessage(structure.getClass().getSimpleName() + "结构已被移除");
-						structure.get_manager().remove(structure);
-					}
+				if (structure.on_break(player) == false) {
+					event.setCancelled(true);
+				} else {
+					player.sendMessage(structure.getClass().getSimpleName() + "结构已被移除");
+					structure.remove();
 				}
 			}
 		}
