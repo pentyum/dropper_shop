@@ -15,7 +15,8 @@ import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
 public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 	private int saved_exp = 0;
-	private int max_saved_exp = 2000;
+	private int max_saved_exp = 6000;
+	private int structure_level = 0;
 	private Exp_saver_runner exp_saver_runner = new Exp_saver_runner(this);
 
 	public Exp_saver() {
@@ -89,11 +90,11 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 	}
 
 	public int add_exp(int exp) {
-		if (this.saved_exp + exp > this.max_saved_exp) {
-			exp = this.max_saved_exp - this.saved_exp;
+		if (this.saved_exp + exp > this.get_max_saved_exp()) {
+			exp = this.get_max_saved_exp() - this.saved_exp;
 		}
 		this.saved_exp += exp;
-		this.set_process(this.saved_exp * 100 / this.max_saved_exp);
+		this.set_process(this.saved_exp * 100 / this.get_max_saved_exp());
 		return exp;
 	}
 
@@ -102,7 +103,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 			exp = this.saved_exp;
 		}
 		this.saved_exp -= exp;
-		this.set_process(this.saved_exp * 100 / this.max_saved_exp);
+		this.set_process(this.saved_exp * 100 / this.get_max_saved_exp());
 		return exp;
 	}
 
@@ -153,7 +154,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 	}
 
 	public void set_process(int process) {
-		this.set_process(0, process, "§e当前经验: %d/%d", this.saved_exp, this.max_saved_exp);
+		this.set_process(0, process, "§e当前经验: %d/%d", this.saved_exp, this.get_max_saved_exp());
 	}
 
 	@Override
@@ -175,6 +176,18 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 
 	public ItemStack get_mending() {
 		return this.gui.getItem(13);
+	}
+
+	public int get_max_saved_exp() {
+		return this.max_saved_exp + 2000 * this.structure_level;
+	}
+
+	public int get_structure_level() {
+		return this.structure_level;
+	}
+
+	public void set_structure_level(int structure_level) {
+		this.structure_level = structure_level;
 	}
 
 	@Override
