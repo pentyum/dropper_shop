@@ -40,15 +40,30 @@ public class Exp_saver_command_executor implements TabExecutor {
 				player.sendMessage("请指向方块");
 				return true;
 			}
+			Exp_saver exp_saver = Dropper_shop_plugin.instance.get_exp_saver_manager().find(look_block.getLocation(),
+					false);
 			if (args[0].equalsIgnoreCase("remove")) {
-				Exp_saver exp_saver = Dropper_shop_plugin.instance.get_exp_saver_manager()
-						.find(look_block.getLocation(), false);
 				if (exp_saver == null) {
 					player.sendMessage("没有检测到完整的经验存储器结构");
 					return true;
 				}
 				exp_saver.remove();
 				player.sendMessage("经验存储器结构已经移除");
+				return true;
+			} else if (args[0].equalsIgnoreCase("upgrade")) {
+				int current_level = exp_saver.get_structure_level();
+				if (current_level >= 10) {
+					player.sendMessage("已经升级至满级");
+					return true;
+				}
+				int need_price = Exp_saver.get_upgrade_price(current_level);
+				if (Dropper_shop_plugin.instance.cost_player_money(need_price, player)) {
+					exp_saver.set_structure_level(current_level + 1);
+					player.sendMessage("消耗了" + need_price + "金币把经验存储器升级至" + (current_level + 1) + "级");
+				} else {
+					player.sendMessage(
+							"你的钱不够，经验存储器由" + current_level + "升级至" + (current_level + 1) + "级需要" + need_price + "金币");
+				}
 				return true;
 			}
 		}

@@ -3,6 +3,7 @@ make-grinder-price: 5000
 make-lottery-pool-price: 10000
 lottery-price: 500
 music-stick-price: 10
+exp-saver-upgrade-base-price: 10000
 wrench-price: 
   world: 200
   world_nether: 200

@@ -15,14 +15,14 @@ public class Exp_saver_manager extends Gui_structure_manager {
 	public Exp_saver_manager() {
 		super(Exp_saver.class);
 		Exp_saver_manager.instance = this;
-		this.set_gui(buttons[0], Material.FIREWORK_ROCKET, "§r取出1级", Gui_slot_type.Button);
-		this.set_gui(buttons[1], Material.FIREWORK_ROCKET, "§r取出5级", Gui_slot_type.Button);
-		this.set_gui(buttons[2], Material.FIREWORK_ROCKET, "§r取出10级", Gui_slot_type.Button);
-		this.set_gui(buttons[3], Material.HOPPER, "§r存入1级", Gui_slot_type.Button);
-		this.set_gui(buttons[4], Material.HOPPER, "§r存入5级", Gui_slot_type.Button);
-		this.set_gui(buttons[5], Material.HOPPER, "§r存入10级", Gui_slot_type.Button);
+		this.set_gui(buttons[0], Material.FIREWORK_ROCKET, "§r取出10点经验", Gui_slot_type.Button);
+		this.set_gui(buttons[1], Material.FIREWORK_ROCKET, "§r取出100点经验", Gui_slot_type.Button);
+		this.set_gui(buttons[2], Material.FIREWORK_ROCKET, "§r取出1000点经验", Gui_slot_type.Button);
+		this.set_gui(buttons[3], Material.HOPPER, "§r存入10点经验", Gui_slot_type.Button);
+		this.set_gui(buttons[4], Material.HOPPER, "§r存入100点经验", Gui_slot_type.Button);
+		this.set_gui(buttons[5], Material.HOPPER, "§r存入1000点经验", Gui_slot_type.Button);
 		this.set_gui(12, Material.BLUE_STAINED_GLASS_PANE, "§r右边进行经验修补", Gui_slot_type.Indicator);
-		this.set_gui(14, Material.BLUE_STAINED_GLASS_PANE, "§r左边进行经验修补", Gui_slot_type.Indicator);
+		this.set_gui(14, Material.BLUE_STAINED_GLASS_PANE, "§r每点经验修复一点耐久值", Gui_slot_type.Indicator);
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -67,7 +68,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private int make_grinder_price = 0;
 	private int make_lottery_pool_price = 0;
 	private int lottery_price = 0;
-	
+	private int exp_saver_upgrade_base_price = 0;
+
 	private Dropper_shop_manager shop_manager = new Dropper_shop_manager();
 	private Depository_manager depository_manager = new Depository_manager();
 	private Grinder_manager grinder_manager = new Grinder_manager();
@@ -78,7 +80,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	private HashMap<String, Integer> price_map = new HashMap<String, Integer>();
 	private HashMap<String, Integer> unit_map = new HashMap<String, Integer>();
-	private HashMap<String,HashMap<Gas,Integer>> air_map = new HashMap<String,HashMap<Gas,Integer>>();
+	private HashMap<String, HashMap<Gas, Integer>> air_map = new HashMap<String, HashMap<Gas, Integer>>();
 	private ArrayList<ShapedRecipe> sr = new ArrayList<ShapedRecipe>();
 
 	private final Note_stick_listener note_listener = new Note_stick_listener();
@@ -154,6 +156,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.make_price = this.config.getInt("make-price");
 		this.make_grinder_price = this.config.getInt("make-grinder-price");
 		this.make_lottery_pool_price = this.config.getInt("make-lottery-pool-price");
+		this.exp_saver_upgrade_base_price = this.config.getInt("exp-saver-upgrade-base-price");
 		this.lottery_price = this.config.getInt("lottery-price");
 		ConfigurationSection price_section = this.config.getConfigurationSection("material");
 		Set<String> price_keys = price_section.getKeys(false);
@@ -170,7 +173,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.lottery_file = new File(this.getDataFolder(), "lottery_pool.yml");
 		this.lottery_config = YamlConfiguration.loadConfiguration(lottery_file);
 		this.gen_air();
-		
+
 		this.getCommand("depository").setExecutor(new Depository_command_executor());
 		this.getCommand("dropper_shop").setExecutor(new Dropper_shop_command_executor());
 		this.getCommand("grinder").setExecutor(new Grinder_command_executor());
@@ -323,20 +326,24 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		return this.lottery_price;
 	}
 
+	public int get_exp_saver_upgrade_base_price() {
+		return this.exp_saver_upgrade_base_price;
+	}
+
 	public void set_lottery_price(int newprice) {
 		this.lottery_price = newprice;
 		this.get_config().set("lottery-price", newprice);
 		this.saveConfig();
 	}
-	
-	private void gen_air(){
+
+	private void gen_air() {
 		ConfigurationSection air_config = this.config.getConfigurationSection("air");
 		Set<String> worlds = air_config.getKeys(false);
-		for(String world_name:worlds) {
+		for (String world_name : worlds) {
 			ConfigurationSection world_air_config = air_config.getConfigurationSection(world_name);
 			Set<String> air_types = world_air_config.getKeys(false);
-			HashMap<Gas,Integer> air = new HashMap<Gas,Integer>();
-			for(String air_name : air_types) {
+			HashMap<Gas, Integer> air = new HashMap<Gas, Integer>();
+			for (String air_name : air_types) {
 				int value = world_air_config.getInt(air_name);
 				Gas gas = Gas.get_gas(air_name);
 				air.put(gas, value);
@@ -344,13 +351,21 @@ public class Dropper_shop_plugin extends JavaPlugin {
 			this.air_map.put(world_name, air);
 		}
 	}
-	
-	public HashMap<Gas,Integer> get_air(String world_name){
-		HashMap<Gas,Integer> air = this.air_map.get(world_name);
-		if(air == null) {
+
+	public HashMap<Gas, Integer> get_air(String world_name) {
+		HashMap<Gas, Integer> air = this.air_map.get(world_name);
+		if (air == null) {
 			air = this.air_map.get("world");
 		}
 		return air;
 	}
-	
+
+	public synchronized boolean cost_player_money(int money, OfflinePlayer player) {
+		if (this.economy.has(player, money)) {
+			this.economy.withdrawPlayer(player, money);
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
