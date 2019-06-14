@@ -27,6 +27,10 @@ public class Exp_saver_manager extends Gui_structure_manager {
 
 	@Override
 	public Exp_saver find(String player_name, Location loc, boolean new_structure) {
+		return this.find(loc, new_structure);
+	}
+
+	public Exp_saver find(Location loc, boolean new_structure) {
 		int x;
 		int y;
 		int z;
@@ -54,10 +58,6 @@ public class Exp_saver_manager extends Gui_structure_manager {
 			}
 		}
 		return null;
-	}
-
-	public Exp_saver find(Location location, boolean new_structure) {
-		return this.find(location, new_structure);
 	}
 
 	@Override
