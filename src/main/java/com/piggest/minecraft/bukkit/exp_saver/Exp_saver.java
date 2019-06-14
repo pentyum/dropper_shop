@@ -119,6 +119,10 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 
 	public void input_exp(int exp, Player player) {
 		int remove_exp = exp;
+		int rest_exp = SetExpFix.getTotalExperience(player);
+		if (rest_exp < remove_exp) {
+			remove_exp = rest_exp;
+		}
 		remove_exp = this.add_exp(remove_exp);
 		player.sendMessage("存入了" + remove_exp + "点经验");
 		player.giveExp(-remove_exp);

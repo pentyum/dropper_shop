@@ -60,6 +60,7 @@ public class Exp_saver_command_executor implements TabExecutor {
 				if (Dropper_shop_plugin.instance.cost_player_money(need_price, player)) {
 					exp_saver.set_structure_level(current_level + 1);
 					player.sendMessage("消耗了" + need_price + "金币把经验存储器升级至" + (current_level + 1) + "级");
+					exp_saver.add_exp(0);
 				} else {
 					player.sendMessage(
 							"你的钱不够，经验存储器由" + current_level + "升级至" + (current_level + 1) + "级需要" + need_price + "金币");
