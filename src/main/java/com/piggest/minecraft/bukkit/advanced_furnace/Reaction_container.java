@@ -122,6 +122,19 @@ public class Reaction_container {
 		get_obsidian.set_products_coef(1);
 		reactions.put("get_obsidian", get_obsidian);
 
+		Reaction get_smooth_quartz = new Reaction(false, 200, 1900, 1, 1000);
+		get_smooth_quartz.set_reactants(Solid.QUARTZ_BLOCK);
+		get_smooth_quartz.set_reactants(Solid.SMOOTH_QUARTZ);
+		get_smooth_quartz.set_reactants_coef(1);
+		get_smooth_quartz.set_products_coef(1);
+		reactions.put("get_smooth_quartz", get_smooth_quartz);
+
+		Reaction get_smooth_stone = new Reaction(false, 120, 1400, 1, 1000);
+		get_smooth_stone.set_reactants(Solid.STONE);
+		get_smooth_stone.set_products(Solid.SMOOTH_STONE);
+		get_smooth_stone.set_reactants_coef(1);
+		get_smooth_stone.set_products_coef(1);
+		reactions.put("get_smooth_stone", get_smooth_stone);
 	}
 
 	public int get_unit(Chemical chemical) {

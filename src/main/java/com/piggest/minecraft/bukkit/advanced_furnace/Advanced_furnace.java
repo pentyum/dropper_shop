@@ -198,7 +198,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 						Bukkit.getLogger().info("铁块不对");
 						return 0;
 					}
-					if (Math.abs(x) + Math.abs(z) == 1 & Math.abs(y) == 0 && material != Material.IRON_BARS) {
+					if (Math.abs(x) + Math.abs(z) == 1 && Math.abs(y) == 0 && material != Material.IRON_BARS) {
 						Bukkit.getLogger().info("铁栏杆不对");
 						return 0;
 					}

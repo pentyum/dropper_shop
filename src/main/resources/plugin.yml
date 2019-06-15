@@ -1,7 +1,7 @@
 name: dropper_shop
 main: com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin
 api-version: 1.14
-version: 0.0.7
+version: 0.0.8
 author: Pentyum
 commands:
   dropper_shop:
@@ -109,4 +109,7 @@ permissions:
   lottery.set:
     description: Set lottery pool.
     default: op
+  trees_felling_machine.make:
+    description: Make trees felling machine.
+    default: true
 softdepend: [Vault]
