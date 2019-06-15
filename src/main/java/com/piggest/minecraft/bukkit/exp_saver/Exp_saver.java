@@ -1,5 +1,6 @@
 package com.piggest.minecraft.bukkit.exp_saver;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -7,7 +8,9 @@ import java.util.Map;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
@@ -22,6 +25,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 
 	public Exp_saver() {
 		this.set_process(0);
+		this.set_structure_level(1);
 	}
 
 	@Override
@@ -164,6 +168,8 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 			this.input_exp(100, player);
 		} else if (slot == 17) {
 			this.input_exp(1000, player);
+		} else if (slot == 18) {
+			this.upgrade_by(player);
 		}
 	}
 
@@ -181,6 +187,15 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 
 	public void set_structure_level(int structure_level) {
 		this.structure_level = structure_level;
+		ItemStack upgrade_button = this.gui.getItem(18);
+		ItemMeta meta = upgrade_button.getItemMeta();
+		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+		ArrayList<String> lore = new ArrayList<String>();
+		lore.add("§r当前等级: "+structure_level);
+		lore.add("§r升级所需金币: "+Exp_saver.get_upgrade_price(structure_level));
+		meta.setLore(lore);
+		upgrade_button.setItemMeta(meta);
+		this.add_exp(0);
 	}
 
 	@Override
@@ -190,5 +205,23 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 
 	public static int get_upgrade_price(int level) {
 		return Dropper_shop_plugin.instance.get_exp_saver_upgrade_base_price() * level;
+	}
+
+	public boolean upgrade_by(Player player) {
+		int current_level = this.get_structure_level();
+		if (current_level >= 10) {
+			player.sendMessage("已经升级至满级");
+			return false;
+		}
+		int need_price = Exp_saver.get_upgrade_price(current_level);
+		if (Dropper_shop_plugin.instance.cost_player_money(need_price, player)) {
+			this.set_structure_level(current_level + 1);
+			player.sendMessage("消耗了" + need_price + "金币把经验存储器升级至" + (current_level + 1) + "级");
+			return true;
+		} else {
+			player.sendMessage(
+					"你的钱不够，经验存储器由" + current_level + "升级至" + (current_level + 1) + "级需要" + need_price + "金币");
+			return false;
+		}
 	}
 }

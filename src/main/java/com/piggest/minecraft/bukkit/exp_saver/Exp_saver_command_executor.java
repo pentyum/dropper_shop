@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 
 enum Exp_saver_sub_cmd {
-	remove,;
+	remove, upgrade;
 	public static ArrayList<String> get_list(CommandSender sender) {
 		ArrayList<String> list = new ArrayList<String>();
 		for (Exp_saver_sub_cmd cmd : Exp_saver_sub_cmd.values()) {
@@ -51,20 +51,7 @@ public class Exp_saver_command_executor implements TabExecutor {
 				player.sendMessage("经验存储器结构已经移除");
 				return true;
 			} else if (args[0].equalsIgnoreCase("upgrade")) {
-				int current_level = exp_saver.get_structure_level();
-				if (current_level >= 10) {
-					player.sendMessage("已经升级至满级");
-					return true;
-				}
-				int need_price = Exp_saver.get_upgrade_price(current_level);
-				if (Dropper_shop_plugin.instance.cost_player_money(need_price, player)) {
-					exp_saver.set_structure_level(current_level + 1);
-					player.sendMessage("消耗了" + need_price + "金币把经验存储器升级至" + (current_level + 1) + "级");
-					exp_saver.add_exp(0);
-				} else {
-					player.sendMessage(
-							"你的钱不够，经验存储器由" + current_level + "升级至" + (current_level + 1) + "级需要" + need_price + "金币");
-				}
+				exp_saver.upgrade_by(player);
 				return true;
 			}
 		}

@@ -23,6 +23,7 @@ public class Exp_saver_manager extends Gui_structure_manager {
 		this.set_gui(buttons[5], Material.HOPPER, "§r存入1000点经验", Gui_slot_type.Button);
 		this.set_gui(12, Material.BLUE_STAINED_GLASS_PANE, "§r右边进行经验修补", Gui_slot_type.Indicator);
 		this.set_gui(14, Material.BLUE_STAINED_GLASS_PANE, "§r每点经验修复一点耐久值", Gui_slot_type.Indicator);
+		this.set_gui(18, Material.IRON_PICKAXE, "§e等级升级", Gui_slot_type.Button);
 	}
 
 	@Override
