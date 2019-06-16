@@ -124,7 +124,7 @@ public class Reaction_container {
 
 		Reaction get_smooth_quartz = new Reaction(false, 200, 1900, 1, 1000);
 		get_smooth_quartz.set_reactants(Solid.QUARTZ_BLOCK);
-		get_smooth_quartz.set_reactants(Solid.SMOOTH_QUARTZ);
+		get_smooth_quartz.set_products(Solid.SMOOTH_QUARTZ);
 		get_smooth_quartz.set_reactants_coef(1);
 		get_smooth_quartz.set_products_coef(1);
 		reactions.put("get_smooth_quartz", get_smooth_quartz);
