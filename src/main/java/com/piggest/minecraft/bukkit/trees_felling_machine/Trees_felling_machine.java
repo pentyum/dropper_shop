@@ -1,14 +1,25 @@
 package com.piggest.minecraft.bukkit.trees_felling_machine;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
+import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
-public class Trees_felling_machine extends Multi_block_with_gui {
+public class Trees_felling_machine extends Multi_block_with_gui implements HasRunner {
+	private int current_x;
+	private int current_y;
+	private int current_z;
+	private int r = 48;
+	private Trees_felling_machine_runner runner = new Trees_felling_machine_runner(this);
 
 	@Override
 	public void on_button_pressed(Player player, int slot) {
@@ -29,7 +40,8 @@ public class Trees_felling_machine extends Multi_block_with_gui {
 						Bukkit.getLogger().info("切石机不对");
 						return 0;
 					}
-					if (Math.abs(x) == 1 && Math.abs(y) == 1 && Math.abs(z) == 1 && material != Material.CHISELED_QUARTZ_BLOCK) {
+					if (Math.abs(x) == 1 && Math.abs(y) == 1 && Math.abs(z) == 1
+							&& material != Material.CHISELED_QUARTZ_BLOCK) {
 						Bukkit.getLogger().info("堑制石英不对");
 						return 0;
 					}
@@ -80,4 +92,64 @@ public class Trees_felling_machine extends Multi_block_with_gui {
 		return true;
 	}
 
+	@Override
+	public Structure_runner[] get_runner() {
+		return new Structure_runner[] { this.runner };
+	}
+
+	public Location get_current_pointer_location() {
+		return new Location(this.get_location().getWorld(), this.current_x, this.current_y, this.current_z);
+	}
+
+	private Location pointer_move_to_next() {
+		// to do
+		return this.get_current_pointer_location();
+	}
+
+	public void do_next() {
+		Material current_material = Trees_felling_machine.in_tree(this.get_current_pointer_location());
+		if (current_material != null) {
+			this.get_current_pointer_location().getBlock().setType(Material.AIR);
+			// to do
+		}
+		this.pointer_move_to_next();
+	}
+
+	public static Material in_tree(Location location) {
+		Block block = location.getBlock();
+		Material material = block.getType();
+		if (material != Material.OAK_LOG && material != Material.SPRUCE_LOG && material != Material.BIRCH_LOG
+				&& material != Material.JUNGLE_LOG && material != Material.ACACIA_LOG
+				&& material != Material.DARK_OAK_LOG) {
+			return null;
+		} else {
+			for (int y = location.getBlockY(); y < 256 && y < location.getBlockY() + 40; y++) {
+				Block find_block = location.getWorld().getBlockAt(location.getBlockX(), y, location.getBlockZ());
+				Material find_material = find_block.getType();
+				if (find_material == Material.OAK_LEAVES || find_material == Material.SPRUCE_LEAVES
+						|| find_material == Material.BIRCH_LEAVES || find_material == Material.JUNGLE_LEAVES
+						|| find_material == Material.ACACIA_LEAVES || find_material == Material.DARK_OAK_LEAVES) {
+					return material;
+				}
+			}
+			return null;
+		}
+	}
+	
+	@Override
+	public void set_from_save(Map<?, ?> shop_save) {
+		super.set_from_save(shop_save);
+		this.current_x = ((int) shop_save.get("current-x"));
+		this.current_y = ((int) shop_save.get("current-y"));
+		this.current_z = ((int) shop_save.get("current-z"));
+	}
+
+	@Override
+	public HashMap<String, Object> get_save() {
+		HashMap<String, Object> save = super.get_save();
+		save.put("current-x", this.current_x);
+		save.put("current-y", this.current_y);
+		save.put("current-z", this.current_z);
+		return save;
+	}
 }

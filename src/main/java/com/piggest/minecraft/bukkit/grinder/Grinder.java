@@ -187,14 +187,6 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 		return new Structure_runner[] { this.runner, this.io_runner };
 	}
 
-	public int[] get_runner_cycle() {
-		return new int[] { 1, 10 };
-	}
-
-	public int[] get_runner_delay() {
-		return new int[] { 10, 10 };
-	}
-
 	public BukkitRunnable get_io_runner() {
 		return this.io_runner;
 	}

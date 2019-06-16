@@ -2,13 +2,15 @@ package com.piggest.minecraft.bukkit.trees_felling_machine;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.event.inventory.InventoryType;
 
-import com.piggest.minecraft.bukkit.structure.Structure_manager;
+import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 
-public class Trees_felling_machine_manager extends Structure_manager {
+public class Trees_felling_machine_manager extends Gui_structure_manager {
 
 	public Trees_felling_machine_manager() {
 		super(Trees_felling_machine.class);
+		
 	}
 
 	@Override
@@ -48,5 +50,25 @@ public class Trees_felling_machine_manager extends Structure_manager {
 
 	public Trees_felling_machine get(Location loc) {
 		return (Trees_felling_machine) super.get(loc);
+	}
+
+	@Override
+	public String get_gui_name() {
+		return "砍树机";
+	}
+
+	@Override
+	public InventoryType get_inventory_type() {
+		return InventoryType.CHEST;
+	}
+
+	@Override
+	public int get_slot_num() {
+		return 36;
+	}
+
+	@Override
+	public int[] get_process_bar() {
+		return new int[] {0};
 	}
 }
