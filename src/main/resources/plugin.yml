@@ -16,12 +16,12 @@ commands:
     permission-message: You don't have permission
   grinder:
     description: commands relate to grinder.
-    usage: /<command> make ,to make a grinder.
+    usage: /<command> to see grinder info.
     permission: grinder.make
     permission-message: You don't have permission
   adv_furnace:
     description: commands relate to advanced furnace.
-    usage: /<command> make ,to make a advanced furnace.
+    usage: /<command> remove|temp|getmoney.
     permission: adv_furnace.make
     permission-message: You don't have permission
   wrench:

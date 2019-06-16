@@ -80,8 +80,13 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 	@Override
 	public void set_from_save(Map<?, ?> shop_save) {
 		super.set_from_save(shop_save);
-		this.add_exp((Integer) shop_save.get("saved-exp"));
 		this.set_structure_level((int) shop_save.get("structure-level"));
+		this.add_exp((Integer) shop_save.get("saved-exp"));
+		this.set_mending((ItemStack) shop_save.get("mending-item"));
+	}
+
+	private void set_mending(ItemStack item) {
+		this.gui.setItem(13, item);
 	}
 
 	@Override
@@ -89,6 +94,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 		HashMap<String, Object> save = super.get_save();
 		save.put("saved-exp", this.saved_exp);
 		save.put("structure-level", this.structure_level);
+		save.put("mending-item", this.get_mending());
 		return save;
 	}
 
@@ -191,8 +197,8 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 		ItemMeta meta = upgrade_button.getItemMeta();
 		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 		ArrayList<String> lore = new ArrayList<String>();
-		lore.add("§r当前等级: "+structure_level);
-		lore.add("§r升级所需金币: "+Exp_saver.get_upgrade_price(structure_level));
+		lore.add("§r当前等级: " + structure_level);
+		lore.add("§r升级所需金币: " + Exp_saver.get_upgrade_price(structure_level));
 		meta.setLore(lore);
 		upgrade_button.setItemMeta(meta);
 		this.add_exp(0);
