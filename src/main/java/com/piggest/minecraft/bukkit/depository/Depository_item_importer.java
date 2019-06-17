@@ -32,6 +32,9 @@ public class Depository_item_importer extends Structure_runner {
 							.add(new Vector(relative_coord[0], relative_coord[1], relative_coord[2]));
 					if (vec.getBlockX() == 0 && vec.getBlockZ() == 0) {
 						Hopper hopper = (Hopper) block;
+						if (hopper.getBlock().isBlockPowered()) {
+							continue;
+						}
 						for (ItemStack item : hopper.getInventory().getContents()) {
 							if (item != null && item.getType() != Material.AIR) {
 								this.depository.add(item);
@@ -57,7 +60,7 @@ public class Depository_item_importer extends Structure_runner {
 
 	@Override
 	public int get_cycle() {
-		return 10;
+		return 8;
 	}
 
 	@Override

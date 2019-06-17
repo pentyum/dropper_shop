@@ -21,7 +21,7 @@ public class Advanced_furnace_io_runner extends Structure_runner {
 		if (this.adv_furnace.get_location().getChunk().isLoaded() == false) {
 			return;
 		}
-		int solid_check_list[][] = { { 0, 1, 2 }, { 2, 1, 0 }, { 0, 1, -2 }, { -2, 1, 0 } };  //注入固体
+		int solid_check_list[][] = { { 0, 1, 2 }, { 2, 1, 0 }, { 0, 1, -2 }, { -2, 1, 0 } }; // 注入固体
 		for (int[] relative_coord : solid_check_list) {
 			BlockState block = this.adv_furnace.get_block(relative_coord[0], relative_coord[1], relative_coord[2])
 					.getState();
@@ -32,6 +32,9 @@ public class Advanced_furnace_io_runner extends Structure_runner {
 						.add(new Vector(relative_coord[0], relative_coord[1], relative_coord[2]));
 				if (vec.getBlockX() == 0 && vec.getBlockZ() == 0) {
 					Hopper hopper = (Hopper) block;
+					if (hopper.getBlock().isBlockPowered()) {
+						continue;
+					}
 					for (ItemStack item : hopper.getInventory().getContents()) {
 						if (item != null && item.getType() != Material.AIR) {
 							this.adv_furnace.add_a_solid(item);
@@ -40,7 +43,7 @@ public class Advanced_furnace_io_runner extends Structure_runner {
 				}
 			}
 		}
-		int[][] fuel_check_list = { { 0, -1, 2 }, { 2, -1, 0 }, { 0, -1, -2 }, { -2, -1, 0 } };  //注入燃料
+		int[][] fuel_check_list = { { 0, -1, 2 }, { 2, -1, 0 }, { 0, -1, -2 }, { -2, -1, 0 } }; // 注入燃料
 		for (int[] relative_coord : fuel_check_list) {
 			BlockState block = this.adv_furnace.get_block(relative_coord[0], relative_coord[1], relative_coord[2])
 					.getState();
@@ -51,6 +54,9 @@ public class Advanced_furnace_io_runner extends Structure_runner {
 						.add(new Vector(relative_coord[0], relative_coord[1], relative_coord[2]));
 				if (vec.getBlockX() == 0 && vec.getBlockZ() == 0) {
 					Hopper hopper = (Hopper) block;
+					if (hopper.getBlock().isBlockPowered()) {
+						continue;
+					}
 					for (ItemStack item : hopper.getInventory().getContents()) {
 						if (item != null && item.getType() != Material.AIR) {
 							this.adv_furnace.add_a_fuel(item);
@@ -59,7 +65,7 @@ public class Advanced_furnace_io_runner extends Structure_runner {
 				}
 			}
 		}
-		if(this.adv_furnace.get_temperature()>4000) {
+		if (this.adv_furnace.get_temperature() > 4000) {
 			Location loc = this.adv_furnace.get_location();
 			loc.getWorld().createExplosion(loc, 8);
 			this.adv_furnace.remove();
@@ -68,7 +74,7 @@ public class Advanced_furnace_io_runner extends Structure_runner {
 
 	@Override
 	public int get_cycle() {
-		return 5;
+		return 8;
 	}
 
 	@Override

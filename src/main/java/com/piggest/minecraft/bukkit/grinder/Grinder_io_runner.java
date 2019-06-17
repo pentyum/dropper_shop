@@ -26,6 +26,9 @@ public class Grinder_io_runner extends Structure_runner {
 		if (hopper != null) {
 			org.bukkit.block.data.type.Hopper hopper_data = (org.bukkit.block.data.type.Hopper) hopper.getBlockData();
 			if (hopper_data.getFacing() == BlockFace.DOWN) {
+				if (hopper.getBlock().isBlockPowered()) {
+					return;
+				}
 				Inventory hopper_inv = hopper.getInventory();
 				for (ItemStack item : hopper_inv.getContents()) {
 					if (Grinder.is_empty(item)) {
@@ -58,7 +61,7 @@ public class Grinder_io_runner extends Structure_runner {
 
 	@Override
 	public int get_cycle() {
-		return 10;
+		return 8;
 	}
 
 	@Override
