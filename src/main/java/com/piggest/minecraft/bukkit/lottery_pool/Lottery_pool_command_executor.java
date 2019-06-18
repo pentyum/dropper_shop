@@ -42,7 +42,7 @@ public class Lottery_pool_command_executor implements TabExecutor {
 			if (args.length == 0) {
 				String msg = "/lottery list 显示当前各物品概率\n";
 				if (player.hasPermission("lottery.set")) {
-					msg += "/lottery <概率> 设置抽到手上物品的概率，单位是百分比，数量以手上的为准\n/lottery del [编号] 删除该项\n/lottery set [编号] <新的概率>\n/lottery setprice <价格> 设置抽取一次的价格";
+					msg += "/lottery <概率> 设置抽到手上物品的概率，单位是千分比，数量以手上的为准\n/lottery del [编号] 删除该项\n/lottery set [编号] <新的概率>\n/lottery setprice <价格> 设置抽取一次的价格";
 				}
 				player.sendMessage(msg);
 				return true;
@@ -83,10 +83,10 @@ public class Lottery_pool_command_executor implements TabExecutor {
 						}
 						int possibility = possibility_list.get(i);
 						msg += "[" + i + "]: " + Material_ext.get_display_name(item) + " 数量:" + item.getAmount()
-								+ enchantment_str + " 概率:" + possibility + "% 播报:" + broadcast_list.get(i) + "\n";
+								+ enchantment_str + " 概率:" + String.format("%3.1f", (float)possibility/10) + "% 播报:" + broadcast_list.get(i) + "\n";
 						total += possibility;
 					}
-					msg += "----------总中奖概率" + String.format("%3d", total) + "%----------";
+					msg += "----------总中奖概率" + String.format("%3.1f", (float)total/10) + "%----------";
 					player.sendMessage(msg);
 				} else if (args[0].equalsIgnoreCase("del") && args.length == 2) {
 					if (!player.hasPermission("lottery.set")) {

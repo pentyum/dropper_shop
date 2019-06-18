@@ -145,7 +145,11 @@ public class Lottery_pool extends Multi_block_structure {
 				return;
 			}
 		}
+		if (this.running == true) {
+			return;
+		}
 		if (!this.use_condition(player)) {
+			player.sendMessage("抽奖机已经在运行了");
 			return;
 		}
 		for (EnderCrystal ender_crystal : ender_crystal_list) { // 设置特效光柱
@@ -168,15 +172,15 @@ public class Lottery_pool extends Multi_block_structure {
 		List<Integer> possibility_list = config.getIntegerList("possibility");
 		List<Boolean> broadcast_list = config.getBooleanList("broadcast");
 		int i = 0, j = 0, k = 0;
-		int[] pool = new int[100];
+		int[] pool = new int[1000];
 		for (k = 0; k < possibility_list.size(); k++) {
-			for (j = 0; j < possibility_list.get(k) && i < 100; j++) {
+			for (j = 0; j < possibility_list.get(k) && i < 1000; j++) {
 				pool[i] = k;
 				i++;
 			}
 		}
 		Random rand = new Random();
-		int num = rand.nextInt(100);
+		int num = rand.nextInt(1000);
 		if (num < i) {
 			ItemStack item = item_list.get(pool[num]);
 			world.spawnParticle(Particle.VILLAGER_HAPPY, this.get_location(), 50, 1, 1, 1);
