@@ -42,7 +42,7 @@ public class Lottery_pool_command_executor implements TabExecutor {
 			if (args.length == 0) {
 				String msg = "/lottery list 显示当前各物品概率\n";
 				if (player.hasPermission("lottery.set")) {
-					msg += "/lottery <概率> 设置抽到手上物品的概率，单位是千分比，数量以手上的为准\n/lottery del [编号] 删除该项\n/lottery set [编号] <新的概率>\n/lottery setprice <价格> 设置抽取一次的价格";
+					msg += "/lottery add <概率> [播报:true|false] 设置抽到手上物品的概率，单位是千分比，数量以手上的为准\n/lottery del [编号] 删除该项\n/lottery set [编号] <新的概率> [播报:true|false]\n/lottery setprice <价格> 设置抽取一次的价格";
 				}
 				player.sendMessage(msg);
 				return true;
@@ -54,8 +54,8 @@ public class Lottery_pool_command_executor implements TabExecutor {
 				List<Boolean> broadcast_list = config.getBooleanList("broadcast");
 				if (args[0].equalsIgnoreCase("list")) {
 					int i = 0;
-					String msg = "当前抽奖费用: "+Dropper_shop_plugin.instance.get_lottery_price();
-					msg += "\n-----------抽奖概率公示-----------\n";
+					String msg = "当前抽奖费用: " + Dropper_shop_plugin.instance.get_lottery_price();
+					msg += "\n------------抽奖概率公示------------\n";
 					int total = 0;
 					for (i = 0; i < item_list.size(); i++) {
 						ItemStack item = item_list.get(i);
@@ -83,10 +83,11 @@ public class Lottery_pool_command_executor implements TabExecutor {
 						}
 						int possibility = possibility_list.get(i);
 						msg += "[" + i + "]: " + Material_ext.get_display_name(item) + " 数量:" + item.getAmount()
-								+ enchantment_str + " 概率:" + String.format("%3.1f", (float)possibility/10) + "% 播报:" + broadcast_list.get(i) + "\n";
+								+ enchantment_str + " 概率:" + String.format("%4.1f", (float) possibility / 10) + "% 播报:"
+								+ broadcast_list.get(i) + "\n";
 						total += possibility;
 					}
-					msg += "----------总中奖概率" + String.format("%3.1f", (float)total/10) + "%----------";
+					msg += "----------总中奖概率" + String.format("%5.1f", (float) total / 10) + "%----------";
 					player.sendMessage(msg);
 				} else if (args[0].equalsIgnoreCase("del") && args.length == 2) {
 					if (!player.hasPermission("lottery.set")) {
@@ -112,7 +113,7 @@ public class Lottery_pool_command_executor implements TabExecutor {
 					config.set("possibility", possibility_list);
 					config.set("broadcast", broadcast_list);
 					player.sendMessage("删除成功");
-				} else if (args[0].equalsIgnoreCase("add") && args.length == 2) {
+				} else if (args[0].equalsIgnoreCase("add") && args.length >= 2) {
 					if (!player.hasPermission("lottery.set")) {
 						player.sendMessage("你没有权限修改抽奖池");
 						return true;
@@ -128,9 +129,13 @@ public class Lottery_pool_command_executor implements TabExecutor {
 						player.sendMessage("物品概率不是整数");
 						return true;
 					}
+					boolean broadcast = false;
+					if (args.length == 3) {
+						broadcast = Boolean.parseBoolean(args[3]);
+					}
 					item_list.add(item);
 					possibility_list.add(possibility);
-					broadcast_list.add(false);
+					broadcast_list.add(broadcast);
 					config.set("pool", item_list);
 					config.set("possibility", possibility_list);
 					config.set("broadcast", broadcast_list);
@@ -167,7 +172,7 @@ public class Lottery_pool_command_executor implements TabExecutor {
 						config.set("broadcast", broadcast_list);
 					}
 					player.sendMessage("修改成功");
-				} else if (args[0].equalsIgnoreCase("setprice") ) {
+				} else if (args[0].equalsIgnoreCase("setprice")) {
 					if (!player.hasPermission("lottery.set")) {
 						player.sendMessage("你没有权限修改抽奖池");
 						return true;
@@ -192,6 +197,9 @@ public class Lottery_pool_command_executor implements TabExecutor {
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+		ArrayList<String> tf_list = new ArrayList<String>();
+		tf_list.add("false");
+		tf_list.add("true");
 		if (args.length == 1) {
 			return Lottery_sub_cmd.get_list(sender);
 		} else if (args.length == 2) {
@@ -206,11 +214,12 @@ public class Lottery_pool_command_executor implements TabExecutor {
 				return list;
 			}
 		} else if (args.length == 4) {
-			ArrayList<String> list = new ArrayList<String>();
-			list.add("false");
-			list.add("true");
 			if (args[0].equalsIgnoreCase("set")) {
-				return list;
+				return tf_list;
+			}
+		} else if (args.length == 3) {
+			if (args[0].equalsIgnoreCase("add")) {
+				return tf_list;
 			}
 		}
 		return new ArrayList<String>();
