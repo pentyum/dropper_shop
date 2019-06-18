@@ -2,14 +2,18 @@ package com.piggest.minecraft.bukkit.trees_felling_machine;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
@@ -107,12 +111,41 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	}
 
 	public void do_next() {
+		ItemStack axe = this.get_axe();
+		if (axe == null) {
+			return;
+		}
 		Material current_material = Trees_felling_machine.in_tree(this.get_current_pointer_location());
 		if (current_material != null) {
 			this.get_current_pointer_location().getBlock().setType(Material.AIR);
+			this.use_axe();
 			// to do
 		}
 		this.pointer_move_to_next();
+	}
+
+	public ItemStack get_axe() {
+		ItemStack item = this.gui.getItem(13);
+		if (item == null) {
+			return null;
+		}
+		Material type = item.getType();
+		if (type == Material.DIAMOND_AXE || type == Material.GOLDEN_AXE || type == Material.IRON_AXE
+				|| type == Material.STONE_AXE || type == Material.WOODEN_AXE) {
+			return item;
+		}
+		return null;
+	}
+
+	@SuppressWarnings("deprecation")
+	public void use_axe() {
+		ItemStack axe = this.get_axe();
+		int durability_level = axe.getEnchantmentLevel(Enchantment.DURABILITY);
+		Random rand = new Random();
+		int num = rand.nextInt(durability_level + 1);
+		if (num == 0) {
+			axe.setDurability((short) (axe.getDurability() + 1));
+		}
 	}
 
 	public static Material in_tree(Location location) {
@@ -135,7 +168,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 			return null;
 		}
 	}
-	
+
 	@Override
 	public void set_from_save(Map<?, ?> shop_save) {
 		super.set_from_save(shop_save);
