@@ -19,4 +19,10 @@ public class Electrolyte_manager extends Structure_manager {
 		return null;
 	}
 
+	@Override
+	public String get_permission_head() {
+		// TODO 自动生成的方法存根
+		return null;
+	}
+
 }

@@ -42,4 +42,9 @@ public class Dropper_shop_manager extends Structure_manager {
 	public Dropper_shop get(Location loc) {
 		return (Dropper_shop) super.get(loc);
 	}
+
+	@Override
+	public String get_permission_head() {
+		return "dropper_shop";
+	}
 }

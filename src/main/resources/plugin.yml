@@ -61,6 +61,9 @@ permissions:
   depository.make:
     description: Make or remove a depository.
     default: true
+  depository.use:
+    description: Open upgrade gui of a depository.
+    default: true
   depository.connect:
     description: Make a reader connect to a depository.
     default: true
@@ -76,8 +79,14 @@ permissions:
   grinder.make:
     description: Make or remove a grinder.
     default: true
+  grinder.use:
+    description: Use grinder.
+    default: true
   adv_furnace.make:
     description: Make or remove a advanced furnace.
+    default: true
+  adv_furnace.use:
+    description: Use advanced furnace.
     default: true
   wrench.*:
     description: Gives access to all wrench commands
@@ -110,6 +119,9 @@ permissions:
     description: Set lottery pool.
     default: op
   trees_felling_machine.make:
-    description: Make trees felling machine.
+    description: Make a trees felling machine.
+    default: true
+  trees_felling_machine.use:
+    description: Use trees felling machine.
     default: true
 softdepend: [Vault]

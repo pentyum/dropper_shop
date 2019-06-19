@@ -37,8 +37,12 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 
 	@Override
 	public void on_right_click(Player player) {
-		player.closeInventory();
-		player.openInventory(this.getInventory());
+		if (player.hasPermission(this.get_manager().get_permission_head() + ".use")) {
+			player.closeInventory();
+			player.openInventory(this.getInventory());
+		} else {
+			player.sendMessage("你没有权限使用" + this.get_manager().get_gui_name());
+		}
 	}
 
 	public void unpress_button(int i) {

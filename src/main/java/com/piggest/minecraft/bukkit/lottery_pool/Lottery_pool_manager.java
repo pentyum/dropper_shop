@@ -29,4 +29,9 @@ public class Lottery_pool_manager extends Structure_manager {
 		}
 	}
 
+	@Override
+	public String get_permission_head() {
+		return "lottery";
+	}
+
 }

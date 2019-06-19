@@ -85,4 +85,9 @@ public class Exp_saver_manager extends Gui_structure_manager {
 		return new int[] { 0 };
 	}
 
+	@Override
+	public String get_permission_head() {
+		return "exp_saver";
+	}
+
 }

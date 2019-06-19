@@ -81,4 +81,9 @@ public class Depository_manager extends Gui_structure_manager {
 	public int[] get_process_bar() {
 		return NO_BAR;
 	}
+
+	@Override
+	public String get_permission_head() {
+		return "depository";
+	}
 }

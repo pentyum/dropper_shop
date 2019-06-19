@@ -215,7 +215,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 
 	public boolean upgrade_by(Player player) {
 		int current_level = this.get_structure_level();
-		if (current_level >= 10) {
+		if (current_level >= Dropper_shop_plugin.instance.get_exp_saver_max_structure_level()) {
 			player.sendMessage("已经升级至满级");
 			return false;
 		}

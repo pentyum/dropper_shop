@@ -83,4 +83,6 @@ public abstract class Structure_manager {
 	}
 
 	public abstract Structure find(String player_name, Location loc, boolean new_structure);
+	
+	public abstract String get_permission_head();
 }

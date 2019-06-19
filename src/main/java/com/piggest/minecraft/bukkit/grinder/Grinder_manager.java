@@ -154,4 +154,9 @@ public class Grinder_manager extends Gui_structure_manager {
 	public int[] get_process_bar() {
 		return new int[] { 0 };
 	}
+
+	@Override
+	public String get_permission_head() {
+		return "grinder";
+	}
 }

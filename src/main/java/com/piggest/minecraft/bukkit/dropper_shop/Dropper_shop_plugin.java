@@ -69,7 +69,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private int make_lottery_pool_price = 0;
 	private int lottery_price = 0;
 	private int exp_saver_upgrade_base_price = 0;
-
+	private int exp_saver_max_structure_level = 0;
+	
 	private Dropper_shop_manager shop_manager = new Dropper_shop_manager();
 	private Depository_manager depository_manager = new Depository_manager();
 	private Grinder_manager grinder_manager = new Grinder_manager();
@@ -158,6 +159,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.make_lottery_pool_price = this.config.getInt("make-lottery-pool-price");
 		this.exp_saver_upgrade_base_price = this.config.getInt("exp-saver-upgrade-base-price");
 		this.lottery_price = this.config.getInt("lottery-price");
+		this.exp_saver_max_structure_level = this.config.getInt("exp-saver-max-structure-level");
+		
 		ConfigurationSection price_section = this.config.getConfigurationSection("material");
 		Set<String> price_keys = price_section.getKeys(false);
 		for (String material_name : price_keys) {
@@ -329,7 +332,11 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public int get_exp_saver_upgrade_base_price() {
 		return this.exp_saver_upgrade_base_price;
 	}
-
+	
+	public int get_exp_saver_max_structure_level() {
+		return this.exp_saver_max_structure_level;
+	}
+	
 	public void set_lottery_price(int newprice) {
 		this.lottery_price = newprice;
 		this.get_config().set("lottery-price", newprice);
