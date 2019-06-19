@@ -33,18 +33,13 @@ public class Lottery_pool_command_executor implements TabExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
-			sender.sendMessage("必须由玩家执行该命令");
-			return true;
-		}
-		Player player = (Player) sender;
 		if (cmd.getName().equalsIgnoreCase("lottery")) {
 			if (args.length == 0) {
 				String msg = "/lottery list 显示当前各物品概率\n";
-				if (player.hasPermission("lottery.set")) {
+				if (sender.hasPermission("lottery.set")) {
 					msg += "/lottery add <概率> [播报:true|false] 设置抽到手上物品的概率，单位是千分比，数量以手上的为准\n/lottery del [编号] 删除该项\n/lottery set [编号] <新的概率> [播报:true|false]\n/lottery setprice <价格> 设置抽取一次的价格";
 				}
-				player.sendMessage(msg);
+				sender.sendMessage(msg);
 				return true;
 			} else {
 				FileConfiguration config = Dropper_shop_plugin.instance.get_lottery_config();
@@ -54,8 +49,17 @@ public class Lottery_pool_command_executor implements TabExecutor {
 				List<Boolean> broadcast_list = config.getBooleanList("broadcast");
 				if (args[0].equalsIgnoreCase("list")) {
 					int i = 0;
+					int page = 1;
+					if (args.length > 1) {
+						try {
+							page = Integer.parseInt(args[1]);
+						} catch (NumberFormatException e) {
+							page = 1;
+						}
+					}
+					int total_pages = (item_list.size() - 1) / 10 + 1;
 					String msg = "当前抽奖费用: " + Dropper_shop_plugin.instance.get_lottery_price();
-					msg += "\n------------抽奖概率公示------------\n";
+					msg += "\n------------抽奖概率公示 第" + String.format("%2d /%2d", page, total_pages) + " 页------------\n";
 					int total = 0;
 					for (i = 0; i < item_list.size(); i++) {
 						ItemStack item = item_list.get(i);
@@ -82,23 +86,25 @@ public class Lottery_pool_command_executor implements TabExecutor {
 							}
 						}
 						int possibility = possibility_list.get(i);
-						msg += "[" + i + "]: " + Material_ext.get_display_name(item) + " 数量:" + item.getAmount()
-								+ enchantment_str + " 概率:" + String.format("%4.1f", (float) possibility / 10) + "% 播报:"
-								+ broadcast_list.get(i) + "\n";
+						if (i >= 10 * (page - 1) && i < 10 * page) {
+							msg += "[" + i + "]: " + Material_ext.get_display_name(item) + " 数量:" + item.getAmount()
+									+ enchantment_str + " 概率:" + String.format("%4.1f", (float) possibility / 10)
+									+ "% 播报:" + broadcast_list.get(i) + "\n";
+						}
 						total += possibility;
 					}
-					msg += "----------总中奖概率" + String.format("%5.1f", (float) total / 10) + "%----------";
-					player.sendMessage(msg);
+					msg += "----------------总中奖概率" + String.format("%5.1f", (float) total / 10) + "%----------------";
+					sender.sendMessage(msg);
 				} else if (args[0].equalsIgnoreCase("del") && args.length == 2) {
-					if (!player.hasPermission("lottery.set")) {
-						player.sendMessage("你没有权限修改抽奖池");
+					if (!sender.hasPermission("lottery.set")) {
+						sender.sendMessage("你没有权限修改抽奖池");
 						return true;
 					}
 					int del_id = 0;
 					try {
 						del_id = Integer.parseInt(args[1]);
 					} catch (NumberFormatException e) {
-						player.sendMessage("编号不是整数");
+						sender.sendMessage("编号不是整数");
 						return true;
 					}
 					try {
@@ -106,14 +112,19 @@ public class Lottery_pool_command_executor implements TabExecutor {
 						possibility_list.remove(del_id);
 						broadcast_list.remove(del_id);
 					} catch (IndexOutOfBoundsException e) {
-						player.sendMessage("编号越界");
+						sender.sendMessage("编号越界");
 						return true;
 					}
 					config.set("pool", item_list);
 					config.set("possibility", possibility_list);
 					config.set("broadcast", broadcast_list);
-					player.sendMessage("删除成功");
+					sender.sendMessage("删除成功");
 				} else if (args[0].equalsIgnoreCase("add") && args.length >= 2) {
+					if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
+						sender.sendMessage("必须由玩家执行该命令");
+						return true;
+					}
+					Player player = (Player) sender;
 					if (!player.hasPermission("lottery.set")) {
 						player.sendMessage("你没有权限修改抽奖池");
 						return true;
@@ -141,8 +152,8 @@ public class Lottery_pool_command_executor implements TabExecutor {
 					config.set("broadcast", broadcast_list);
 					player.sendMessage("添加成功");
 				} else if (args[0].equalsIgnoreCase("set") && args.length >= 3) {
-					if (!player.hasPermission("lottery.set")) {
-						player.sendMessage("你没有权限修改抽奖池");
+					if (!sender.hasPermission("lottery.set")) {
+						sender.sendMessage("你没有权限修改抽奖池");
 						return true;
 					}
 					int possibility = 0;
@@ -151,7 +162,7 @@ public class Lottery_pool_command_executor implements TabExecutor {
 						set_id = Integer.parseInt(args[1]);
 						possibility = Integer.parseInt(args[2]);
 					} catch (NumberFormatException e) {
-						player.sendMessage("编号和物品概率必须都是整数");
+						sender.sendMessage("编号和物品概率必须都是整数");
 						return true;
 					}
 					boolean broadcast = false;
@@ -164,17 +175,17 @@ public class Lottery_pool_command_executor implements TabExecutor {
 							broadcast_list.set(set_id, broadcast);
 						}
 					} catch (IndexOutOfBoundsException e) {
-						player.sendMessage("编号越界");
+						sender.sendMessage("编号越界");
 						return true;
 					}
 					config.set("possibility", possibility_list);
 					if (args.length == 4) {
 						config.set("broadcast", broadcast_list);
 					}
-					player.sendMessage("修改成功");
+					sender.sendMessage("修改成功");
 				} else if (args[0].equalsIgnoreCase("setprice")) {
-					if (!player.hasPermission("lottery.set")) {
-						player.sendMessage("你没有权限修改抽奖池");
+					if (!sender.hasPermission("lottery.set")) {
+						sender.sendMessage("你没有权限修改抽奖池");
 						return true;
 					}
 					int newprice = 0;
@@ -185,9 +196,9 @@ public class Lottery_pool_command_executor implements TabExecutor {
 						return true;
 					}
 					Dropper_shop_plugin.instance.set_lottery_price(newprice);
-					player.sendMessage("价格修改成功");
+					sender.sendMessage("价格修改成功");
 				} else {
-					player.sendMessage("命令格式错误");
+					sender.sendMessage("命令格式错误");
 				}
 			}
 			return true;
