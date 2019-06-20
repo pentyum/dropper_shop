@@ -15,29 +15,30 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
 public class Trees_felling_machine extends Multi_block_with_gui implements HasRunner {
 	private int current_x;
-	private int current_y;
 	private int current_z;
 	private int start_x;
-	private int start_y;
 	private int start_z;
 	private int end_x;
-	private int end_y;
 	private int end_z;
 	private int total_blocks;
-	private int scanned_blocks = 0; 
-	
-	private int r = 36;
+	private int scanned_blocks = 0;
+
+	private int r = 32;
 	private Trees_felling_machine_runner runner = new Trees_felling_machine_runner(this);
 
 	@Override
 	public void on_button_pressed(Player player, int slot) {
-
+		if (slot == 10) {
+			this.scanned_blocks = 0;
+			this.init();
+		}
 	}
 
 	@Override
@@ -85,7 +86,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 
 	@Override
 	public boolean create_condition(Player player) {
-		int price = Dropper_shop_plugin.instance.get_make_grinder_price();
+		int price = Dropper_shop_plugin.instance.get_make_trees_felling_machine_price();
 		if (!player.hasPermission("trees_felling_machine.make")) {
 			player.sendMessage("你没有建立伐木机的权限");
 			return false;
@@ -110,43 +111,67 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 		return new Structure_runner[] { this.runner };
 	}
 
-	public Location get_current_pointer_location() {
-		return new Location(this.get_location().getWorld(), this.current_x, this.current_y, this.current_z);
+	public int[] get_current_pointer_location() {
+		return new int[] { this.current_x, this.current_z };
 	}
 
-	private Location pointer_move_to_next() {
-		this.current_y++;
-		if (this.current_y > this.end_y) {
-			this.current_y = this.start_y;
-			this.current_x++;
-			if (this.current_x > this.end_x) {
+	private int[] pointer_move_to_next() {
+		this.current_x++;
+		// Bukkit.getServer().getLogger().info("开始检测" + this.current_x + "," +
+		// this.current_z);
+		if (this.current_x >= this.end_x) {
+			this.current_x = this.start_x;
+			this.current_z++;
+			if (this.current_z >= this.end_z) {
+				this.current_z = this.start_z;
 				this.current_x = this.start_x;
-				this.current_z++;
-				if (this.current_z > this.end_z) {
-					this.current_z = this.start_z;
-					this.current_y = this.start_y;
-					this.current_x = this.start_x;
-					this.set_process(0, 0, "进度");
-				}
+				this.scanned_blocks = 0;
+				this.set_working(false);
+				return this.get_current_pointer_location();
 			}
 		}
+		this.scanned_blocks++;
+		this.update_process();
 		return this.get_current_pointer_location();
 	}
 
 	public void do_next() {
 		ItemStack axe = this.get_axe();
+		Block check_block = null;
+		int y;
 		if (axe == null) {
 			return;
 		}
-		Material current_material = Trees_felling_machine.in_tree(this.get_current_pointer_location());
-		if (current_material != null) {
-			this.get_current_pointer_location().getBlock().setType(Material.AIR);
-			this.use_axe();
-			ItemStack item = new ItemStack(current_material);
+		for (y = 250; y >= 63; y--) { // 从高空开始往下检测
+			Block block = this.get_location().getWorld().getBlockAt(this.current_x, y, this.current_z);
+			if (block.getType() != Material.AIR) { // 获得第一个非空气方块的类型
+				check_block = block;
+				break;
+			}
+		}
+		if (check_block.getType().name().contains("_LEAVES")) { // 第一个非空气方块是树叶，则判定为树
+			for (; y >= 40; y--) { // 继续往下检测，找到原木方块
+				Block block = this.get_location().getWorld().getBlockAt(this.current_x, y, this.current_z);
+				if (block.getType().name().contains("_LOG")) { // 如果是原木方块则进入砍伐程序
+					if (this.get_chest() == null) { // 没箱子可以输出，则直接返回，指针不动
+						return;
+					}
+					ItemStack item = new ItemStack(block.getType());
+					HashMap<Integer, ItemStack> cannot_added = this.get_chest().getInventory().addItem(item);
+					if (!cannot_added.isEmpty()) { // 箱子满了，也直接返回，指针不动
+						return;
+					}
+					if (this.get_axe() == null) {
+						return;
+					}
+					block.setType(Material.AIR);
+					this.use_axe();
+				}
+			}
 		}
 		this.pointer_move_to_next();
 	}
-	
+
 	public synchronized Chest get_chest() {
 		BlockState chest = this.get_block(2, -1, 0).getState();
 		if (chest instanceof Chest) {
@@ -166,7 +191,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 		}
 		return null;
 	}
-	
+
 	public ItemStack get_axe() {
 		ItemStack item = this.gui.getItem(13);
 		if (item == null) {
@@ -193,44 +218,48 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 		if (num == 0) {
 			axe.setDurability((short) (axe.getDurability() + 1));
 		}
-	}
-
-	public static Material in_tree(Location location) {
-		Block block = location.getBlock();
-		Material material = block.getType();
-		if (material != Material.OAK_LOG && material != Material.SPRUCE_LOG && material != Material.BIRCH_LOG
-				&& material != Material.JUNGLE_LOG && material != Material.ACACIA_LOG
-				&& material != Material.DARK_OAK_LOG) {
-			return null;
-		} else {
-			for (int y = location.getBlockY(); y < 256 && y < location.getBlockY() + 40; y++) {
-				Block find_block = location.getWorld().getBlockAt(location.getBlockX(), y, location.getBlockZ());
-				Material find_material = find_block.getType();
-				if (find_material == Material.OAK_LEAVES || find_material == Material.SPRUCE_LEAVES
-						|| find_material == Material.BIRCH_LEAVES || find_material == Material.JUNGLE_LEAVES
-						|| find_material == Material.ACACIA_LEAVES || find_material == Material.DARK_OAK_LEAVES) {
-					return material;
-				}
+		if (axe.getType() == Material.DIAMOND_AXE) {
+			if (axe.getDurability() >= 1562) {
+				axe.setAmount(0);
 			}
-			return null;
+		} else if (axe.getType() == Material.STONE_AXE) {
+			if (axe.getDurability() >= 132) {
+				axe.setAmount(0);
+			}
+		} else if (axe.getType() == Material.GOLDEN_AXE) {
+			if (axe.getDurability() >= 33) {
+				axe.setAmount(0);
+			}
+		} else if (axe.getType() == Material.IRON_AXE) {
+			if (axe.getDurability() >= 251) {
+				axe.setAmount(0);
+			}
+		} else if (axe.getType() == Material.WOODEN_AXE) {
+			if (axe.getDurability() >= 60) {
+				axe.setAmount(0);
+			}
 		}
 	}
 
 	@Override
 	public void set_from_save(Map<?, ?> shop_save) {
 		super.set_from_save(shop_save);
+		this.init();
 		this.current_x = ((int) shop_save.get("current-x"));
-		this.current_y = ((int) shop_save.get("current-y"));
 		this.current_z = ((int) shop_save.get("current-z"));
+		this.scanned_blocks = ((int) shop_save.get("scanned-blocks"));
 		this.set_axe((ItemStack) shop_save.get("axe"));
+		this.set_working((boolean) shop_save.get("working"));
+		this.update_process();
 	}
 
 	@Override
 	public HashMap<String, Object> get_save() {
 		HashMap<String, Object> save = super.get_save();
+		save.put("working", this.is_working());
 		save.put("current-x", this.current_x);
-		save.put("current-y", this.current_y);
 		save.put("current-z", this.current_z);
+		save.put("scanned-blocks", this.scanned_blocks);
 		save.put("axe", this.get_axe());
 		return save;
 	}
@@ -239,25 +268,39 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 		return this.get_switch(9);
 	}
 
+	public void set_working(boolean working) {
+		this.set_switch(9, working);
+	}
+
 	public void init() {
 		this.start_x = this.get_location().getBlockX() - this.r;
-		if (this.get_location().getBlockY() >= 10) {
-			this.start_y = this.get_location().getBlockY() - 10;
-		} else {
-			this.start_y = 0;
-		}
 		this.start_z = this.get_location().getBlockZ() - this.r;
 
 		this.end_x = this.get_location().getBlockX() + this.r;
-		if (this.get_location().getBlockY() <= 225) {
-			this.end_y = this.get_location().getBlockY() + 30;
-		} else {
-			this.end_y = 255;
-		}
 		this.end_z = this.get_location().getBlockZ() + this.r;
 
 		this.current_x = this.start_x;
-		this.current_y = this.start_y;
 		this.current_z = this.start_z;
+		this.total_blocks = (this.end_x - this.start_x) * (this.end_z - this.start_z);
+		this.set_working(false);
+		this.update_process();
+	}
+
+	public void update_process() {
+		int process = 100 * this.scanned_blocks / this.total_blocks;
+		this.set_process(0, process, "§e当前进度:%d/%d (%d%%)", this.scanned_blocks, this.total_blocks, process);
+	}
+
+	public boolean add_a_axe(ItemStack src_item) {
+		if (src_item != null) {
+			if (src_item.getType().name().contains("_AXE")) {
+				if (Grinder.is_empty(this.gui.getItem(13))) {
+					this.gui.setItem(13, src_item.clone());
+					src_item.setAmount(0);
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

@@ -12,6 +12,7 @@ public class Trees_felling_machine_manager extends Gui_structure_manager {
 	public Trees_felling_machine_manager() {
 		super(Trees_felling_machine.class);
 		this.set_gui(9, Material.LEVER, "§r伐木机开关", Gui_slot_type.Switch);
+		this.set_gui(10, Material.PAPER, "§r重置", Gui_slot_type.Button);
 		this.set_gui(12, Material.BLUE_STAINED_GLASS_PANE, "§r右边放入伐木斧头", Gui_slot_type.Indicator);
 		this.set_gui(14, Material.BLUE_STAINED_GLASS_PANE, "§r耐久附魔能减少耐久损耗", Gui_slot_type.Indicator);
 	}
@@ -68,12 +69,12 @@ public class Trees_felling_machine_manager extends Gui_structure_manager {
 
 	@Override
 	public int get_slot_num() {
-		return 36;
+		return 27;
 	}
 
 	@Override
 	public int[] get_process_bar() {
-		return new int[] {0};
+		return new int[] { 0 };
 	}
 
 	@Override

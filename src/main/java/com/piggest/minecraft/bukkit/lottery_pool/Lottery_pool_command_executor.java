@@ -19,7 +19,7 @@ import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
 enum Lottery_sub_cmd {
-	add, set, del, list, setprice;
+	add, set, del, list, setprice,reload;
 	public static ArrayList<String> get_list(CommandSender sender) {
 		ArrayList<String> list = new ArrayList<String>();
 		for (Lottery_sub_cmd cmd : Lottery_sub_cmd.values()) {
@@ -196,6 +196,13 @@ public class Lottery_pool_command_executor implements TabExecutor {
 					}
 					Dropper_shop_plugin.instance.set_lottery_price(newprice);
 					sender.sendMessage("价格修改成功");
+				} else if (args[0].equalsIgnoreCase("reload")) {
+					if (!sender.hasPermission("lottery.set")) {
+						sender.sendMessage("你没有权限重载抽奖池");
+						return true;
+					}
+					Dropper_shop_plugin.instance.lottery_config_load();
+					sender.sendMessage("奖池配置已重载");
 				} else {
 					sender.sendMessage("命令格式错误");
 				}

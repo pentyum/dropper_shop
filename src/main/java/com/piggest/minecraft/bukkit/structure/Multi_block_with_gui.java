@@ -112,7 +112,9 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 			} else {
 				item.setType(Material.WHITE_STAINED_GLASS_PANE);
 			}
+			item = this.gui.getItem(i);
 			ItemMeta meta = item.getItemMeta();
+			//Bukkit.getServer().getLogger().info(info);
 			meta.setDisplayName(String.format(info, args));
 			item.setItemMeta(meta);
 		}

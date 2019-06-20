@@ -73,6 +73,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private int lottery_price = 0;
 	private int exp_saver_upgrade_base_price = 0;
 	private int exp_saver_max_structure_level = 0;
+	private int make_trees_felling_machine_price = 0;
 
 	private Dropper_shop_manager shop_manager = new Dropper_shop_manager();
 	private Depository_manager depository_manager = new Depository_manager();
@@ -156,7 +157,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.enchantment_name.put("minecraft:fire_aspect", "火焰附加");
 		this.enchantment_name.put("minecraft:looting", "抢夺");
 		this.enchantment_name.put("minecraft:channeling", "引雷");
-		this.enchantment_name.put("minecraft:luck_of_the_Sea", "海之眷顾");
+		this.enchantment_name.put("minecraft:luck_of_the_sea", "海之眷顾");
 		this.enchantment_name.put("minecraft:smite", "亡灵杀手");
 		this.enchantment_name.put("minecraft:feather_falling", "摔落保护");
 		this.enchantment_name.put("minecraft:efficiency", "效率");
@@ -195,9 +196,12 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		saveResource("shops.yml", false);
 		saveResource("lottery_pool.yml", false);
 		this.config = getConfig();
+		
 		this.make_price = this.config.getInt("make-price");
 		this.make_grinder_price = this.config.getInt("make-grinder-price");
 		this.make_lottery_pool_price = this.config.getInt("make-lottery-pool-price");
+		this.make_trees_felling_machine_price = this.config.getInt("make-trees-felling-machine-price");
+		
 		this.exp_saver_upgrade_base_price = this.config.getInt("exp-saver-upgrade-base-price");
 		this.lottery_price = this.config.getInt("lottery-price");
 		this.exp_saver_max_structure_level = this.config.getInt("exp-saver-max-structure-level");
@@ -215,7 +219,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.shop_file = new File(this.getDataFolder(), "shops.yml");
 		this.shop_config = YamlConfiguration.loadConfiguration(shop_file);
 		this.lottery_file = new File(this.getDataFolder(), "lottery_pool.yml");
-		this.lottery_config = YamlConfiguration.loadConfiguration(lottery_file);
+		this.lottery_config_load();
+		
 		this.gen_air();
 
 		this.getCommand("depository").setExecutor(new Depository_command_executor());
@@ -373,7 +378,11 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public int get_lottery_price() {
 		return this.lottery_price;
 	}
-
+	
+	public int get_make_trees_felling_machine_price() {
+		return this.make_trees_felling_machine_price;
+	}
+	
 	public int get_exp_saver_upgrade_base_price() {
 		return this.exp_saver_upgrade_base_price;
 	}
@@ -433,4 +442,13 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public String get_enchantment_name(Enchantment ench) {
 		return this.get_enchantment_name(ench.getKey().toString());
 	}
+	
+	public void lottery_config_load(File lottery_file) {
+		this.lottery_config = YamlConfiguration.loadConfiguration(lottery_file);
+	}
+	
+	public void lottery_config_load() {
+		this.lottery_config_load(this.lottery_file);
+	}
+
 }
