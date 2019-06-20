@@ -8,12 +8,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Chest;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
@@ -22,12 +23,20 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	private int current_x;
 	private int current_y;
 	private int current_z;
-	private int r = 48;
+	private int start_x;
+	private int start_y;
+	private int start_z;
+	private int end_x;
+	private int end_y;
+	private int end_z;
+	private int total_blocks;
+	private int scanned_blocks = 0; 
+	
+	private int r = 36;
 	private Trees_felling_machine_runner runner = new Trees_felling_machine_runner(this);
 
 	@Override
 	public void on_button_pressed(Player player, int slot) {
-		// TODO 自动生成的方法存根
 
 	}
 
@@ -106,7 +115,21 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	}
 
 	private Location pointer_move_to_next() {
-		// to do
+		this.current_y++;
+		if (this.current_y > this.end_y) {
+			this.current_y = this.start_y;
+			this.current_x++;
+			if (this.current_x > this.end_x) {
+				this.current_x = this.start_x;
+				this.current_z++;
+				if (this.current_z > this.end_z) {
+					this.current_z = this.start_z;
+					this.current_y = this.start_y;
+					this.current_x = this.start_x;
+					this.set_process(0, 0, "进度");
+				}
+			}
+		}
 		return this.get_current_pointer_location();
 	}
 
@@ -119,11 +142,31 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 		if (current_material != null) {
 			this.get_current_pointer_location().getBlock().setType(Material.AIR);
 			this.use_axe();
-			// to do
+			ItemStack item = new ItemStack(current_material);
 		}
 		this.pointer_move_to_next();
 	}
-
+	
+	public synchronized Chest get_chest() {
+		BlockState chest = this.get_block(2, -1, 0).getState();
+		if (chest instanceof Chest) {
+			return (Chest) chest;
+		}
+		chest = this.get_block(-2, -1, 0).getState();
+		if (chest instanceof Chest) {
+			return (Chest) chest;
+		}
+		chest = this.get_block(0, -1, 2).getState();
+		if (chest instanceof Chest) {
+			return (Chest) chest;
+		}
+		chest = this.get_block(0, -1, -2).getState();
+		if (chest instanceof Chest) {
+			return (Chest) chest;
+		}
+		return null;
+	}
+	
 	public ItemStack get_axe() {
 		ItemStack item = this.gui.getItem(13);
 		if (item == null) {
@@ -135,6 +178,10 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 			return item;
 		}
 		return null;
+	}
+
+	private void set_axe(ItemStack item) {
+		this.gui.setItem(13, item);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -175,6 +222,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 		this.current_x = ((int) shop_save.get("current-x"));
 		this.current_y = ((int) shop_save.get("current-y"));
 		this.current_z = ((int) shop_save.get("current-z"));
+		this.set_axe((ItemStack) shop_save.get("axe"));
 	}
 
 	@Override
@@ -183,6 +231,33 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 		save.put("current-x", this.current_x);
 		save.put("current-y", this.current_y);
 		save.put("current-z", this.current_z);
+		save.put("axe", this.get_axe());
 		return save;
+	}
+
+	public boolean is_working() {
+		return this.get_switch(9);
+	}
+
+	public void init() {
+		this.start_x = this.get_location().getBlockX() - this.r;
+		if (this.get_location().getBlockY() >= 10) {
+			this.start_y = this.get_location().getBlockY() - 10;
+		} else {
+			this.start_y = 0;
+		}
+		this.start_z = this.get_location().getBlockZ() - this.r;
+
+		this.end_x = this.get_location().getBlockX() + this.r;
+		if (this.get_location().getBlockY() <= 225) {
+			this.end_y = this.get_location().getBlockY() + 30;
+		} else {
+			this.end_y = 255;
+		}
+		this.end_z = this.get_location().getBlockZ() + this.r;
+
+		this.current_x = this.start_x;
+		this.current_y = this.start_y;
+		this.current_z = this.start_z;
 	}
 }

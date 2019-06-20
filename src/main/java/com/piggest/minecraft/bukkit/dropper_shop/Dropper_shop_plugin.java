@@ -13,6 +13,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
@@ -52,6 +53,8 @@ import com.piggest.minecraft.bukkit.music_stick.Note_stick_listener;
 import com.piggest.minecraft.bukkit.structure.Structure;
 import com.piggest.minecraft.bukkit.structure.Structure_listener;
 import com.piggest.minecraft.bukkit.structure.Structure_manager;
+import com.piggest.minecraft.bukkit.trees_felling_machine.Trees_felling_machine;
+import com.piggest.minecraft.bukkit.trees_felling_machine.Trees_felling_machine_manager;
 import com.piggest.minecraft.bukkit.wrench.Wrench_command_executor;
 
 import net.milkbowl.vault.economy.Economy;
@@ -70,13 +73,14 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private int lottery_price = 0;
 	private int exp_saver_upgrade_base_price = 0;
 	private int exp_saver_max_structure_level = 0;
-	
+
 	private Dropper_shop_manager shop_manager = new Dropper_shop_manager();
 	private Depository_manager depository_manager = new Depository_manager();
 	private Grinder_manager grinder_manager = new Grinder_manager();
 	private Advanced_furnace_manager adv_furnace_manager = new Advanced_furnace_manager();
 	private Exp_saver_manager exp_saver_manager = new Exp_saver_manager();
 	private Lottery_pool_manager lottery_pool_manager = new Lottery_pool_manager();
+	private Trees_felling_machine_manager trees_felling_machine_manager = new Trees_felling_machine_manager();
 	private HashMap<Class<? extends Structure>, Structure_manager> structure_manager_map = new HashMap<Class<? extends Structure>, Structure_manager>();
 
 	private HashMap<String, Integer> price_map = new HashMap<String, Integer>();
@@ -93,6 +97,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 			new Exp_saver_listener() };
 	// private HashMap<String, Gui_config> gui_config = new HashMap<String,
 	// Gui_config>();
+	private HashMap<String, String> enchantment_name = new HashMap<String, String>();
 
 	public FileConfiguration get_shop_config() {
 		return this.shop_config;
@@ -143,12 +148,48 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public void onEnable() {
 		Dropper_shop_plugin.instance = this;
 
+		this.enchantment_name.put("minecraft:sweeping", "横扫之刃");
+		this.enchantment_name.put("minecraft:aqua_affinity", "水下速掘");
+		this.enchantment_name.put("minecraft:depth_strider", "深海探索者");
+		this.enchantment_name.put("minecraft:respiration", "水下呼吸");
+		this.enchantment_name.put("minecraft:lure", "饵钓");
+		this.enchantment_name.put("minecraft:fire_aspect", "火焰附加");
+		this.enchantment_name.put("minecraft:looting", "抢夺");
+		this.enchantment_name.put("minecraft:channeling", "引雷");
+		this.enchantment_name.put("minecraft:luck_of_the_Sea", "海之眷顾");
+		this.enchantment_name.put("minecraft:smite", "亡灵杀手");
+		this.enchantment_name.put("minecraft:feather_falling", "摔落保护");
+		this.enchantment_name.put("minecraft:efficiency", "效率");
+		this.enchantment_name.put("minecraft:impaling", "穿刺");
+		this.enchantment_name.put("minecraft:thorns", "荆棘");
+		this.enchantment_name.put("minecraft:flame", "火矢");
+		this.enchantment_name.put("minecraft:bane_of_arthropods", "节肢杀手");
+		this.enchantment_name.put("minecraft:fortune", "时运");
+		this.enchantment_name.put("minecraft:punch", "冲击");
+		this.enchantment_name.put("minecraft:riptide", "激流");
+		this.enchantment_name.put("minecraft:infinity", "无限");
+		this.enchantment_name.put("minecraft:loyalty", "忠诚");
+		this.enchantment_name.put("minecraft:binding_curse", "绑定诅咒");
+		this.enchantment_name.put("minecraft:vanishing_curse", "消失诅咒");
+		this.enchantment_name.put("minecraft:protection", "保护");
+		this.enchantment_name.put("minecraft:blast_protection", "爆炸保护");
+		this.enchantment_name.put("minecraft:fire_protection", "火焰保护");
+		this.enchantment_name.put("minecraft:projectile_protection", "弹射物保护");
+		this.enchantment_name.put("minecraft:power", "力量");
+		this.enchantment_name.put("minecraft:mending", "经验修补");
+		this.enchantment_name.put("minecraft:knockback", "击退");
+		this.enchantment_name.put("minecraft:frost_walker", "冰霜行者");
+		this.enchantment_name.put("minecraft:unbreaking", "耐久");
+		this.enchantment_name.put("minecraft:silk_touch", "精准采集");
+		this.enchantment_name.put("minecraft:sharpness", "锋利");
+		
 		this.structure_manager_map.put(Dropper_shop.class, shop_manager);
 		this.structure_manager_map.put(Depository.class, depository_manager);
 		this.structure_manager_map.put(Grinder.class, grinder_manager);
 		this.structure_manager_map.put(Advanced_furnace.class, adv_furnace_manager);
 		this.structure_manager_map.put(Exp_saver.class, exp_saver_manager);
 		this.structure_manager_map.put(Lottery_pool.class, lottery_pool_manager);
+		this.structure_manager_map.put(Trees_felling_machine.class, trees_felling_machine_manager);
 
 		saveDefaultConfig();
 		saveResource("shops.yml", false);
@@ -160,7 +201,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.exp_saver_upgrade_base_price = this.config.getInt("exp-saver-upgrade-base-price");
 		this.lottery_price = this.config.getInt("lottery-price");
 		this.exp_saver_max_structure_level = this.config.getInt("exp-saver-max-structure-level");
-		
+
 		ConfigurationSection price_section = this.config.getConfigurationSection("material");
 		Set<String> price_keys = price_section.getKeys(false);
 		for (String material_name : price_keys) {
@@ -278,6 +319,10 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		return this.adv_furnace_manager;
 	}
 
+	public Trees_felling_machine_manager get_trees_felling_machine_manager() {
+		return this.trees_felling_machine_manager;
+	}
+
 	public HashMap<Class<? extends Structure>, Structure_manager> get_structure_manager() {
 		return this.structure_manager_map;
 	}
@@ -332,11 +377,11 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public int get_exp_saver_upgrade_base_price() {
 		return this.exp_saver_upgrade_base_price;
 	}
-	
+
 	public int get_exp_saver_max_structure_level() {
 		return this.exp_saver_max_structure_level;
 	}
-	
+
 	public void set_lottery_price(int newprice) {
 		this.lottery_price = newprice;
 		this.get_config().set("lottery-price", newprice);
@@ -374,5 +419,18 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		} else {
 			return false;
 		}
+	}
+
+	public String get_enchantment_name(String key) {
+		String name = this.enchantment_name.get(key);
+		if (name != null) {
+			return name;
+		} else {
+			return key;
+		}
+	}
+
+	public String get_enchantment_name(Enchantment ench) {
+		return this.get_enchantment_name(ench.getKey().toString());
 	}
 }

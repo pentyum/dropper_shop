@@ -36,6 +36,7 @@ public class Trees_felling_machine_manager extends Gui_structure_manager {
 							machine = new Trees_felling_machine();
 							machine.set_location(check_loc);
 							if (machine.completed() > 0) {
+								machine.init();
 								return machine;
 							}
 						} else {

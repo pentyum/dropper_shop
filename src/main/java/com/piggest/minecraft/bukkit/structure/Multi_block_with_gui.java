@@ -1,5 +1,7 @@
 package com.piggest.minecraft.bukkit.structure;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
@@ -45,25 +47,54 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 		}
 	}
 
-	public void unpress_button(int i) {
-		ItemStack item = this.getInventory().getItem(i);
-		ItemMeta meta = item.getItemMeta();
-		meta.setLore(null);
-		item.setItemMeta(meta);
-	}
-
-	public boolean pressed_button(int i) {
-		ItemStack item = this.getInventory().getItem(i);
-		ItemMeta meta = item.getItemMeta();
-		return meta.hasLore();
-	}
-
+	/*
+	 * public void unpress_button(int i) { ItemStack item =
+	 * this.getInventory().getItem(i); ItemMeta meta = item.getItemMeta();
+	 * meta.setLore(null); item.setItemMeta(meta); }
+	 * 
+	 * public boolean pressed_button(int i) { ItemStack item =
+	 * this.getInventory().getItem(i); ItemMeta meta = item.getItemMeta(); return
+	 * meta.hasLore(); }
+	 */
 	@Override
 	public Inventory getInventory() {
 		return this.gui;
 	}
 
 	public abstract void on_button_pressed(Player player, int slot);
+
+	public void set_switch(int i, boolean value) {
+		ItemStack item = this.gui.getItem(i);
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore;
+		if (meta.hasLore() == false) {
+			lore = new ArrayList<String>();
+			lore.add(value ? "§r开启" : "§r关闭");
+		} else {
+			lore = meta.getLore();
+			lore.set(0, value ? "§r开启" : "§r关闭");
+		}
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+	}
+
+	public boolean get_switch(int i) {
+		ItemStack item = this.gui.getItem(i);
+		ItemMeta meta = item.getItemMeta();
+		if (meta == null) {
+			return false;
+		}
+		List<String> lore = meta.getLore();
+		if (lore == null) {
+			return false;
+		}
+		String info = lore.get(0);
+		if (info.equals("§r开启")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	public synchronized void set_process(int bar, int process, String info, Object... args) {
 		int start_slot = -1;

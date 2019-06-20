@@ -30,7 +30,6 @@ enum Lottery_sub_cmd {
 }
 
 public class Lottery_pool_command_executor implements TabExecutor {
-
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (cmd.getName().equalsIgnoreCase("lottery")) {
@@ -68,8 +67,8 @@ public class Lottery_pool_command_executor implements TabExecutor {
 						if (enchantments != null && !enchantments.isEmpty()) {
 							enchantment_str += " 附魔:";
 							for (Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-								String enchantment_name = entry.getKey().getKey().toString();
-								enchantment_str += enchantment_name + "-" + entry.getValue() + ",";
+								String enchantment_name = Dropper_shop_plugin.instance.get_enchantment_name(entry.getKey());
+								enchantment_str += enchantment_name + entry.getValue() + ",";
 							}
 							enchantment_str = enchantment_str.substring(0, enchantment_str.length() - 1);
 						}
@@ -79,8 +78,8 @@ public class Lottery_pool_command_executor implements TabExecutor {
 							if (enchantments != null && !enchantments.isEmpty()) {
 								enchantment_str += " 存储附魔:";
 								for (Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-									String enchantment_name = entry.getKey().getKey().toString();
-									enchantment_str += enchantment_name + "-" + entry.getValue() + ",";
+									String enchantment_name = Dropper_shop_plugin.instance.get_enchantment_name(entry.getKey());
+									enchantment_str += enchantment_name + entry.getValue() + ",";
 								}
 								enchantment_str = enchantment_str.substring(0, enchantment_str.length() - 1);
 							}
@@ -129,7 +128,7 @@ public class Lottery_pool_command_executor implements TabExecutor {
 						player.sendMessage("你没有权限修改抽奖池");
 						return true;
 					}
-					ItemStack item = player.getInventory().getItemInMainHand();
+					ItemStack item = player.getInventory().getItemInMainHand().clone();
 					if (Grinder.is_empty(item)) {
 						player.sendMessage("你的手上没有物品");
 					}

@@ -11,7 +11,9 @@ public class Trees_felling_machine_runner extends Structure_runner {
 
 	@Override
 	public void run() {
-		this.machine.do_next();
+		if (this.machine.is_working()) {
+			this.machine.do_next();
+		}
 	}
 
 	@Override

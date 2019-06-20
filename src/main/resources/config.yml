@@ -3,7 +3,7 @@ make-grinder-price: 5000
 make-lottery-pool-price: 10000
 lottery-price: 500
 music-stick-price: 10
-exp-saver-upgrade-base-price: 10000
+exp-saver-upgrade-base-price: 6000
 exp-saver-max-structure-level: 50
 wrench-price: 
   world: 200

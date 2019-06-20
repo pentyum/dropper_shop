@@ -323,33 +323,6 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 		}
 	}
 
-	private void set_switch(int i, boolean value) {
-		ItemStack item = this.gui.getItem(i);
-		ItemMeta meta = item.getItemMeta();
-		List<String> lore;
-		if (meta.hasLore() == false) {
-			lore = new ArrayList<String>();
-			lore.add(value ? "§r开启" : "§r关闭");
-		} else {
-			lore = meta.getLore();
-			lore.set(0, value ? "§r开启" : "§r关闭");
-		}
-		meta.setLore(lore);
-		item.setItemMeta(meta);
-	}
-
-	private boolean get_switch(int i) {
-		ItemStack item = this.gui.getItem(i);
-		ItemMeta meta = item.getItemMeta();
-		List<String> lore = meta.getLore();
-		String info = lore.get(0);
-		if (info.equals("§r开启")) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 	public void set_auto_product(boolean auto_product) {
 		set_switch(2, auto_product);
 	}

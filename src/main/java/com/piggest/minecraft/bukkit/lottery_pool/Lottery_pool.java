@@ -182,7 +182,7 @@ public class Lottery_pool extends Multi_block_structure {
 		Random rand = new Random();
 		int num = rand.nextInt(1000);
 		if (num < i) {
-			ItemStack item = item_list.get(pool[num]);
+			ItemStack item = item_list.get(pool[num]).clone();
 			world.spawnParticle(Particle.VILLAGER_HAPPY, this.get_location(), 50, 1, 1, 1);
 			if (player != null) {
 				player.sendMessage("恭喜你抽到了" + item.getAmount() + "个" + Material_ext.get_display_name(item));
