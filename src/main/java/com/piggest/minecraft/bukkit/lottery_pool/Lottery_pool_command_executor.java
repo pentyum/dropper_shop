@@ -141,7 +141,7 @@ public class Lottery_pool_command_executor implements TabExecutor {
 					}
 					boolean broadcast = false;
 					if (args.length == 3) {
-						broadcast = Boolean.parseBoolean(args[3]);
+						broadcast = Boolean.parseBoolean(args[2]);
 					}
 					item_list.add(item);
 					possibility_list.add(possibility);
