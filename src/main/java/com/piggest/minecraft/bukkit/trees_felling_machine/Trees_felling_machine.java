@@ -150,23 +150,25 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 				break;
 			}
 		}
-		if (check_block.getType().name().contains("_LEAVES")) { // 第一个非空气方块是树叶，则判定为树
-			for (; y >= 40; y--) { // 继续往下检测，找到原木方块
-				Block block = this.get_location().getWorld().getBlockAt(this.current_x, y, this.current_z);
-				if (block.getType().name().contains("_LOG")) { // 如果是原木方块则进入砍伐程序
-					if (this.get_chest() == null) { // 没箱子可以输出，则直接返回，指针不动
-						return;
+		if (check_block != null) {
+			if (check_block.getType().name().contains("_LEAVES")) { // 第一个非空气方块是树叶，则判定为树
+				for (; y >= 40; y--) { // 继续往下检测，找到原木方块
+					Block block = this.get_location().getWorld().getBlockAt(this.current_x, y, this.current_z);
+					if (block.getType().name().contains("_LOG")) { // 如果是原木方块则进入砍伐程序
+						if (this.get_chest() == null) { // 没箱子可以输出，则直接返回，指针不动
+							return;
+						}
+						ItemStack item = new ItemStack(block.getType());
+						HashMap<Integer, ItemStack> cannot_added = this.get_chest().getInventory().addItem(item);
+						if (!cannot_added.isEmpty()) { // 箱子满了，也直接返回，指针不动
+							return;
+						}
+						if (this.get_axe() == null) {
+							return;
+						}
+						block.setType(Material.AIR);
+						this.use_axe();
 					}
-					ItemStack item = new ItemStack(block.getType());
-					HashMap<Integer, ItemStack> cannot_added = this.get_chest().getInventory().addItem(item);
-					if (!cannot_added.isEmpty()) { // 箱子满了，也直接返回，指针不动
-						return;
-					}
-					if (this.get_axe() == null) {
-						return;
-					}
-					block.setType(Material.AIR);
-					this.use_axe();
 				}
 			}
 		}
