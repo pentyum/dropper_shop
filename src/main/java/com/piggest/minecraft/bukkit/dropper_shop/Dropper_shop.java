@@ -123,9 +123,9 @@ public class Dropper_shop extends Single_block_structure implements Ownable {
 	@Override
 	public boolean create_condition(Player player) {
 		if (Dropper_shop_plugin.instance.get_economy().has(player,
-				Dropper_shop_plugin.instance.get_make_shop_price())) {
+				Dropper_shop_plugin.instance.get_price_config().get_make_shop_price())) {
 			Dropper_shop_plugin.instance.get_economy().withdrawPlayer(player,
-					Dropper_shop_plugin.instance.get_make_shop_price());
+					Dropper_shop_plugin.instance.get_price_config().get_make_shop_price());
 			return true;
 		} else {
 			player.sendMessage("钱不够");

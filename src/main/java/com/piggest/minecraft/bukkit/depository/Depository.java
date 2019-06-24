@@ -274,4 +274,9 @@ public class Depository extends Multi_block_with_gui implements Ownable, HasRunn
 		}
 		return false;
 	}
+
+	@Override
+	public boolean on_switch_pressed(Player player, int slot, boolean on) {
+		return true;
+	}
 }

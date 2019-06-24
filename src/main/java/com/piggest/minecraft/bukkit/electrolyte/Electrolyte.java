@@ -45,4 +45,10 @@ public class Electrolyte extends Multi_block_with_gui implements HasRunner {
 		return false;
 	}
 
+	@Override
+	public boolean on_switch_pressed(Player player, int slot, boolean on) {
+		// TODO 自动生成的方法存根
+		return false;
+	}
+
 }

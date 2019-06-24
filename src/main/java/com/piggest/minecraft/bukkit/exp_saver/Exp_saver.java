@@ -210,7 +210,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 	}
 
 	public static int get_upgrade_price(int level) {
-		return Dropper_shop_plugin.instance.get_exp_saver_upgrade_base_price() * level;
+		return Dropper_shop_plugin.instance.get_price_config().get_exp_saver_upgrade_base_price() * level;
 	}
 
 	public boolean upgrade_by(Player player) {
@@ -229,5 +229,10 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 					"你的钱不够，经验存储器由" + current_level + "升级至" + (current_level + 1) + "级需要" + need_price + "金币");
 			return false;
 		}
+	}
+
+	@Override
+	public boolean on_switch_pressed(Player player, int slot, boolean on) {
+		return true;
 	}
 }

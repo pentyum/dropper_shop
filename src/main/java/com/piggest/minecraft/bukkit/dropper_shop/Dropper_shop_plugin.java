@@ -28,6 +28,7 @@ import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_manager;
 import com.piggest.minecraft.bukkit.advanced_furnace.Gas;
 import com.piggest.minecraft.bukkit.advanced_furnace.Gas_bottle;
 import com.piggest.minecraft.bukkit.advanced_furnace.Reaction_container;
+import com.piggest.minecraft.bukkit.advanced_furnace.config.Price_config;
 import com.piggest.minecraft.bukkit.depository.Depository;
 import com.piggest.minecraft.bukkit.depository.Depository_command_executor;
 import com.piggest.minecraft.bukkit.depository.Depository_listener;
@@ -67,14 +68,11 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private FileConfiguration lottery_config = null;
 	private File shop_file = null;
 	private File lottery_file = null;
-	private int make_price = 0;
-	private int make_grinder_price = 0;
-	private int make_lottery_pool_price = 0;
-	private int lottery_price = 0;
-	private int exp_saver_upgrade_base_price = 0;
+	
 	private int exp_saver_max_structure_level = 0;
-	private int make_trees_felling_machine_price = 0;
-
+	
+	private Price_config price_config = new Price_config(this);
+	
 	private Dropper_shop_manager shop_manager = new Dropper_shop_manager();
 	private Depository_manager depository_manager = new Depository_manager();
 	private Grinder_manager grinder_manager = new Grinder_manager();
@@ -106,19 +104,6 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	public FileConfiguration get_lottery_config() {
 		return this.lottery_config;
-	}
-
-	public int get_make_shop_price() {
-		return this.make_price;
-	}
-
-	public int get_make_grinder_price() {
-		return this.make_grinder_price;
-	}
-
-	public void set_make_shop_price(int price) {
-		this.make_price = price;
-		this.get_config().set("make-price", price);
 	}
 
 	public FileConfiguration get_config() {
@@ -197,13 +182,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		saveResource("lottery_pool.yml", false);
 		this.config = getConfig();
 		
-		this.make_price = this.config.getInt("make-price");
-		this.make_grinder_price = this.config.getInt("make-grinder-price");
-		this.make_lottery_pool_price = this.config.getInt("make-lottery-pool-price");
-		this.make_trees_felling_machine_price = this.config.getInt("make-trees-felling-machine-price");
-		
-		this.exp_saver_upgrade_base_price = this.config.getInt("exp-saver-upgrade-base-price");
-		this.lottery_price = this.config.getInt("lottery-price");
+		this.price_config.load_price();
 		this.exp_saver_max_structure_level = this.config.getInt("exp-saver-max-structure-level");
 
 		ConfigurationSection price_section = this.config.getConfigurationSection("material");
@@ -371,30 +350,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		return null;
 	}
 
-	public int get_make_lottery_pool_price() {
-		return this.make_lottery_pool_price;
-	}
-
-	public int get_lottery_price() {
-		return this.lottery_price;
-	}
-	
-	public int get_make_trees_felling_machine_price() {
-		return this.make_trees_felling_machine_price;
-	}
-	
-	public int get_exp_saver_upgrade_base_price() {
-		return this.exp_saver_upgrade_base_price;
-	}
-
 	public int get_exp_saver_max_structure_level() {
 		return this.exp_saver_max_structure_level;
-	}
-
-	public void set_lottery_price(int newprice) {
-		this.lottery_price = newprice;
-		this.get_config().set("lottery-price", newprice);
-		this.saveConfig();
 	}
 
 	private void gen_air() {
@@ -450,5 +407,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public void lottery_config_load() {
 		this.lottery_config_load(this.lottery_file);
 	}
-
+	
+	public Price_config get_price_config() {
+		return this.price_config;
+	}
 }

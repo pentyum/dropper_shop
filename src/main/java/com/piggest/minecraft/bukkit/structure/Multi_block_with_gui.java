@@ -62,7 +62,9 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 	}
 
 	public abstract void on_button_pressed(Player player, int slot);
-
+	
+	public abstract boolean on_switch_pressed(Player player, int slot, boolean on);
+	
 	public void set_switch(int i, boolean value) {
 		ItemStack item = this.gui.getItem(i);
 		ItemMeta meta = item.getItemMeta();

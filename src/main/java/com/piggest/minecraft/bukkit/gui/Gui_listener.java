@@ -55,13 +55,19 @@ public class Gui_listener implements Listener {
 				ItemMeta meta = item.getItemMeta();
 				List<String> lore = meta.getLore();
 				String info = lore.get(0);
-				if (info.equals("§r开启")) {
-					lore.set(0, "§r关闭");
-				} else {
-					lore.set(0, "§r开启");
+				if (info.equals("§r开启")) {  //打开开关
+					if (structure.on_switch_pressed((Player) event.getWhoClicked(), slot, true)) {
+						lore.set(0, "§r关闭");
+						meta.setLore(lore);
+						item.setItemMeta(meta);
+					}
+				} else {  //关闭开关
+					if (structure.on_switch_pressed((Player) event.getWhoClicked(), slot, false)) {
+						lore.set(0, "§r开启");
+						meta.setLore(lore);
+						item.setItemMeta(meta);
+					}
 				}
-				meta.setLore(lore);
-				item.setItemMeta(meta);
 			} else if (slot_config.type == Gui_slot_type.Button) {
 				structure.on_button_pressed((Player) event.getWhoClicked(), slot);
 			}

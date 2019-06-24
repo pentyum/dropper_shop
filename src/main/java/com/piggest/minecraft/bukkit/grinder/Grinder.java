@@ -297,7 +297,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 
 	@Override
 	public boolean create_condition(Player player) {
-		int price = Dropper_shop_plugin.instance.get_make_grinder_price();
+		int price = Dropper_shop_plugin.instance.get_price_config().get_make_grinder_price();
 		if (!player.hasPermission("grinder.make")) {
 			player.sendMessage("你没有建立磨粉机的权限");
 			return false;
@@ -324,6 +324,11 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 
 	@Override
 	protected boolean on_break(Player player) {
+		return true;
+	}
+
+	@Override
+	public boolean on_switch_pressed(Player player, int slot, boolean on) {
 		return true;
 	}
 }

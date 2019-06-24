@@ -86,7 +86,7 @@ public class Dropper_shop_command_executor implements CommandExecutor {
 					int set_price = Integer.parseInt(args[1]);
 					ItemStack itemstack = player.getInventory().getItemInMainHand();
 					if (itemstack == null || itemstack.getType() == Material.AIR) {
-						Dropper_shop_plugin.instance.set_make_shop_price(set_price);
+						Dropper_shop_plugin.instance.get_price_config().set_make_shop_price(set_price);
 						player.sendMessage("已设置创建投掷器商店价格为" + set_price);
 					} else {
 						Material item = player.getInventory().getItemInMainHand().getType();

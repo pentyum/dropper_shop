@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 
@@ -11,7 +12,9 @@ public class Trees_felling_machine_manager extends Gui_structure_manager {
 
 	public Trees_felling_machine_manager() {
 		super(Trees_felling_machine.class);
-		this.set_gui(9, Material.LEVER, "§r伐木机开关", Gui_slot_type.Switch);
+		this.set_gui(9, Material.LEVER, "§r伐木机开关(开启需要"
+				+ Dropper_shop_plugin.instance.get_price_config().get_start_trees_felling_machine_price() + "金币)",
+				Gui_slot_type.Switch);
 		this.set_gui(10, Material.PAPER, "§r重置", Gui_slot_type.Button);
 		this.set_gui(12, Material.BLUE_STAINED_GLASS_PANE, "§r右边放入伐木斧头", Gui_slot_type.Indicator);
 		this.set_gui(14, Material.BLUE_STAINED_GLASS_PANE, "§r耐久附魔能减少耐久损耗", Gui_slot_type.Indicator);

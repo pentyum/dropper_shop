@@ -493,4 +493,9 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 	protected boolean on_break(Player player) {
 		return true;
 	}
+
+	@Override
+	public boolean on_switch_pressed(Player player, int slot, boolean on) {
+		return true;
+	}
 }

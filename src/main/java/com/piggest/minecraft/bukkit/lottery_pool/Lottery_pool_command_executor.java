@@ -57,7 +57,7 @@ public class Lottery_pool_command_executor implements TabExecutor {
 						}
 					}
 					int total_pages = (item_list.size() - 1) / 10 + 1;
-					String msg = "当前抽奖费用: " + Dropper_shop_plugin.instance.get_lottery_price();
+					String msg = "当前抽奖费用: " + Dropper_shop_plugin.instance.get_price_config().get_lottery_price();
 					msg += "\n------------抽奖概率公示 第" + String.format("%2d /%2d", page, total_pages) + " 页------------\n";
 					int total = 0;
 					for (i = 0; i < item_list.size(); i++) {
@@ -194,7 +194,7 @@ public class Lottery_pool_command_executor implements TabExecutor {
 						sender.sendMessage("价格不是整数");
 						return true;
 					}
-					Dropper_shop_plugin.instance.set_lottery_price(newprice);
+					Dropper_shop_plugin.instance.get_price_config().set_lottery_price(newprice);
 					sender.sendMessage("价格修改成功");
 				} else if (args[0].equalsIgnoreCase("reload")) {
 					if (!sender.hasPermission("lottery.set")) {
