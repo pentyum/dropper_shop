@@ -36,6 +36,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	@Override
 	public void on_button_pressed(Player player, int slot) {
 		if (slot == 10) {
+			player.sendMessage("已复位");
 			this.scanned_blocks = 0;
 			this.init();
 		}
@@ -307,13 +308,19 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	@Override
 	public boolean on_switch_pressed(Player player, int slot, boolean on) {
 		if (slot == 9) {
-			if (Dropper_shop_plugin.instance.cost_player_money(
-					Dropper_shop_plugin.instance.get_price_config().get_start_trees_felling_machine_price(), player)) {
-				player.sendMessage("开启成功");
-				return true;
+			if (on == true) {
+				if (Dropper_shop_plugin.instance.cost_player_money(
+						Dropper_shop_plugin.instance.get_price_config().get_start_trees_felling_machine_price(),
+						player)) {
+					player.sendMessage("开启成功");
+					return true;
+				} else {
+					player.sendMessage("开启失败，你的金币不够");
+					return false;
+				}
 			} else {
-				player.sendMessage("开启失败，你的金币不够");
-				return false;
+				player.sendMessage("关闭成功");
+				return true;
 			}
 		}
 		return true;

@@ -73,13 +73,13 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	
 	private Price_config price_config = new Price_config(this);
 	
-	private Dropper_shop_manager shop_manager = new Dropper_shop_manager();
-	private Depository_manager depository_manager = new Depository_manager();
-	private Grinder_manager grinder_manager = new Grinder_manager();
-	private Advanced_furnace_manager adv_furnace_manager = new Advanced_furnace_manager();
-	private Exp_saver_manager exp_saver_manager = new Exp_saver_manager();
-	private Lottery_pool_manager lottery_pool_manager = new Lottery_pool_manager();
-	private Trees_felling_machine_manager trees_felling_machine_manager = new Trees_felling_machine_manager();
+	private Dropper_shop_manager shop_manager = null;
+	private Depository_manager depository_manager = null;
+	private Grinder_manager grinder_manager = null;
+	private Advanced_furnace_manager adv_furnace_manager = null;
+	private Exp_saver_manager exp_saver_manager = null;
+	private Lottery_pool_manager lottery_pool_manager = null;
+	private Trees_felling_machine_manager trees_felling_machine_manager = null;
 	private HashMap<Class<? extends Structure>, Structure_manager> structure_manager_map = new HashMap<Class<? extends Structure>, Structure_manager>();
 
 	private HashMap<String, Integer> price_map = new HashMap<String, Integer>();
@@ -97,43 +97,34 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	// private HashMap<String, Gui_config> gui_config = new HashMap<String,
 	// Gui_config>();
 	private HashMap<String, String> enchantment_name = new HashMap<String, String>();
+	
+	public Dropper_shop_plugin() {
+		this.getLogger().info("加载配置中");
+		saveDefaultConfig();
+		saveResource("shops.yml", false);
+		saveResource("lottery_pool.yml", false);
+		this.config = getConfig();
+		
+		this.price_config.load_price();
+		this.exp_saver_max_structure_level = this.config.getInt("exp-saver-max-structure-level");
 
-	public FileConfiguration get_shop_config() {
-		return this.shop_config;
-	}
-
-	public FileConfiguration get_lottery_config() {
-		return this.lottery_config;
-	}
-
-	public FileConfiguration get_config() {
-		return this.config;
-	}
-
-	public HashMap<String, Integer> get_shop_price_map() {
-		return this.price_map;
-	}
-
-	public Economy get_economy() {
-		return this.economy;
-	}
-
-	private boolean initVault() {
-		boolean hasNull = false;
-		RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager()
-				.getRegistration(net.milkbowl.vault.economy.Economy.class);
-		if (economyProvider != null) {
-			if ((economy = economyProvider.getProvider()) == null) {
-				hasNull = true;
-			}
+		ConfigurationSection price_section = this.config.getConfigurationSection("material");
+		Set<String> price_keys = price_section.getKeys(false);
+		for (String material_name : price_keys) {
+			this.price_map.put(material_name, price_section.getInt(material_name));
 		}
-		return !hasNull;
-	}
-
-	@Override
-	public void onEnable() {
-		Dropper_shop_plugin.instance = this;
-
+		ConfigurationSection unit_section = this.config.getConfigurationSection("flint-unit");
+		Set<String> unit_keys = unit_section.getKeys(false);
+		for (String material_name : unit_keys) {
+			this.unit_map.put(material_name, unit_section.getInt(material_name));
+		}
+		this.shop_file = new File(this.getDataFolder(), "shops.yml");
+		this.shop_config = YamlConfiguration.loadConfiguration(shop_file);
+		this.lottery_file = new File(this.getDataFolder(), "lottery_pool.yml");
+		this.lottery_config_load();
+		
+		this.gen_air();
+		
 		this.enchantment_name.put("minecraft:sweeping", "横扫之刃");
 		this.enchantment_name.put("minecraft:aqua_affinity", "水下速掘");
 		this.enchantment_name.put("minecraft:depth_strider", "深海探索者");
@@ -169,6 +160,49 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.enchantment_name.put("minecraft:silk_touch", "精准采集");
 		this.enchantment_name.put("minecraft:sharpness", "锋利");
 		
+	}
+	
+	public FileConfiguration get_shop_config() {
+		return this.shop_config;
+	}
+
+	public FileConfiguration get_lottery_config() {
+		return this.lottery_config;
+	}
+
+	public FileConfiguration get_config() {
+		return this.config;
+	}
+
+	public HashMap<String, Integer> get_shop_price_map() {
+		return this.price_map;
+	}
+
+	public Economy get_economy() {
+		return this.economy;
+	}
+
+	private boolean initVault() {
+		boolean hasNull = false;
+		RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager()
+				.getRegistration(net.milkbowl.vault.economy.Economy.class);
+		if (economyProvider != null) {
+			if ((economy = economyProvider.getProvider()) == null) {
+				hasNull = true;
+			}
+		}
+		return !hasNull;
+	}
+	private void init_structure_manager() {
+		this.getLogger().info("加载结构管理器");
+		this.shop_manager = new Dropper_shop_manager();
+		this.depository_manager = new Depository_manager();
+		this.grinder_manager = new Grinder_manager();
+		this.adv_furnace_manager = new Advanced_furnace_manager();
+		this.exp_saver_manager = new Exp_saver_manager();
+		this.lottery_pool_manager = new Lottery_pool_manager();
+		this.trees_felling_machine_manager = new Trees_felling_machine_manager();
+		
 		this.structure_manager_map.put(Dropper_shop.class, shop_manager);
 		this.structure_manager_map.put(Depository.class, depository_manager);
 		this.structure_manager_map.put(Grinder.class, grinder_manager);
@@ -176,32 +210,13 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.structure_manager_map.put(Exp_saver.class, exp_saver_manager);
 		this.structure_manager_map.put(Lottery_pool.class, lottery_pool_manager);
 		this.structure_manager_map.put(Trees_felling_machine.class, trees_felling_machine_manager);
-
-		saveDefaultConfig();
-		saveResource("shops.yml", false);
-		saveResource("lottery_pool.yml", false);
-		this.config = getConfig();
+	}
+	@Override
+	public void onEnable() {
+		Dropper_shop_plugin.instance = this;
 		
-		this.price_config.load_price();
-		this.exp_saver_max_structure_level = this.config.getInt("exp-saver-max-structure-level");
-
-		ConfigurationSection price_section = this.config.getConfigurationSection("material");
-		Set<String> price_keys = price_section.getKeys(false);
-		for (String material_name : price_keys) {
-			this.price_map.put(material_name, price_section.getInt(material_name));
-		}
-		ConfigurationSection unit_section = this.config.getConfigurationSection("flint-unit");
-		Set<String> unit_keys = unit_section.getKeys(false);
-		for (String material_name : unit_keys) {
-			this.unit_map.put(material_name, unit_section.getInt(material_name));
-		}
-		this.shop_file = new File(this.getDataFolder(), "shops.yml");
-		this.shop_config = YamlConfiguration.loadConfiguration(shop_file);
-		this.lottery_file = new File(this.getDataFolder(), "lottery_pool.yml");
-		this.lottery_config_load();
+		this.init_structure_manager();
 		
-		this.gen_air();
-
 		this.getCommand("depository").setExecutor(new Depository_command_executor());
 		this.getCommand("dropper_shop").setExecutor(new Dropper_shop_command_executor());
 		this.getCommand("grinder").setExecutor(new Grinder_command_executor());
