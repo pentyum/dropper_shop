@@ -120,13 +120,11 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 		this.current_x++;
 		// Bukkit.getServer().getLogger().info("开始检测" + this.current_x + "," +
 		// this.current_z);
-		if (this.current_x >= this.end_x) {
+		if (this.current_x > this.end_x) {
 			this.current_x = this.start_x;
 			this.current_z++;
-			if (this.current_z >= this.end_z) {
-				this.current_z = this.start_z;
-				this.current_x = this.start_x;
-				this.scanned_blocks = 0;
+			if (this.current_z > this.end_z) {
+				this.update_process();
 				this.set_working(false);
 				return this.get_current_pointer_location();
 			}
@@ -284,7 +282,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 
 		this.current_x = this.start_x;
 		this.current_z = this.start_z;
-		this.total_blocks = (this.end_x - this.start_x) * (this.end_z - this.start_z);
+		this.total_blocks = (this.end_x - this.start_x + 1) * (this.end_z - this.start_z + 1);
 		this.set_working(false);
 		this.update_process();
 	}

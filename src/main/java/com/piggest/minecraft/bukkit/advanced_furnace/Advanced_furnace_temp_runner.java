@@ -17,7 +17,7 @@ public class Advanced_furnace_temp_runner extends Structure_runner {
 	}
 
 	public void run() {
-		if (this.adv_furnace.get_location().getChunk().isLoaded() == false) {
+		if (this.adv_furnace.is_loaded() == false) {
 			return;
 		}
 		double current_temp = adv_furnace.get_temperature();

@@ -2,17 +2,19 @@ package com.piggest.minecraft.bukkit.structure;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.utils.Chunk_location;
 
 public abstract class Structure_manager {
 	protected Class<? extends Structure> structure_class = null;
+	protected HashMap<Chunk_location, HashSet<Structure>> chunk_structure_map = new HashMap<Chunk_location, HashSet<Structure>>();
 	protected HashMap<Location, Structure> structure_map = new HashMap<Location, Structure>();
 
 	public Structure_manager(Class<? extends Structure> structure_class) {
@@ -21,6 +23,27 @@ public abstract class Structure_manager {
 
 	public Structure get(Location loc) {
 		return this.structure_map.get(loc);
+	}
+
+	private void add_to_chunk_structure_map(Structure new_structure) {
+		Chunk_location chunk_location = new_structure.get_chunk_location();
+		HashSet<Structure> structures_in_chunk = this.chunk_structure_map.get(chunk_location);
+		if (structures_in_chunk == null) {
+			HashSet<Structure> new_list = new HashSet<Structure>();
+			new_list.add(new_structure);
+			this.chunk_structure_map.put(chunk_location, new_list);
+		} else {
+			structures_in_chunk.add(new_structure);
+		}
+	}
+
+	private void remove_from_chunk_structure_map(Structure structure) {
+		Chunk_location chunk_location = structure.get_chunk_location();
+		HashSet<Structure> structures_in_chunk = this.chunk_structure_map.get(chunk_location);
+		structures_in_chunk.remove(structure);
+		if (structures_in_chunk.size() == 0) {
+			this.chunk_structure_map.remove(chunk_location);
+		}
 	}
 
 	public void add(Structure new_structure) {
@@ -37,6 +60,7 @@ public abstract class Structure_manager {
 				}
 			}
 		}
+		this.add_to_chunk_structure_map(new_structure);
 		this.structure_map.put(new_structure.get_location(), new_structure);
 	}
 
@@ -47,13 +71,14 @@ public abstract class Structure_manager {
 				runnable.cancel();
 			}
 		}
+		this.remove_from_chunk_structure_map(structure);
 		this.structure_map.remove(structure.get_location());
 	}
 
 	public void load_structures() {
 		String structure_name = this.structure_class.getName().replace('.', '-');
-		List<Map<?, ?>> map_list = Dropper_shop_plugin.instance.get_shop_config().getMapList(structure_name);
-		for (Map<?, ?> shop_save : map_list) {
+		List<Map<?, ?>> save_list = Dropper_shop_plugin.instance.get_shop_config().getMapList(structure_name);
+		for (Map<?, ?> shop_save : save_list) {
 			try {
 				Structure shop = structure_class.newInstance();
 				shop.set_from_save(shop_save);
@@ -83,6 +108,10 @@ public abstract class Structure_manager {
 	}
 
 	public abstract Structure find(String player_name, Location loc, boolean new_structure);
-	
+
 	public abstract String get_permission_head();
+
+	public HashSet<Structure> get_all_structures_in_chunk(Chunk_location chunk_location) {
+		return this.chunk_structure_map.get(chunk_location);
+	}
 }

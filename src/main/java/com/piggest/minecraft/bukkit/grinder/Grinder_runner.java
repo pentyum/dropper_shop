@@ -13,7 +13,7 @@ public class Grinder_runner extends Structure_runner {
 	}
 
 	public void run() {
-		if (grinder.get_location().getChunk().isLoaded() == false) {
+		if (grinder.is_loaded() == false) {
 			return;
 		}
 		if (!Grinder.is_empty(grinder.get_flint())) {

@@ -18,7 +18,7 @@ public class Advanced_furnace_io_runner extends Structure_runner {
 
 	@Override
 	public void run() {
-		if (this.adv_furnace.get_location().getChunk().isLoaded() == false) {
+		if (this.adv_furnace.is_loaded() == false) {
 			return;
 		}
 		int solid_check_list[][] = { { 0, 1, 2 }, { 2, 1, 0 }, { 0, 1, -2 }, { -2, 1, 0 } }; // 注入固体

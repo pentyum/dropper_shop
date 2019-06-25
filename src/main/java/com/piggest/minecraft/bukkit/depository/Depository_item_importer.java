@@ -17,7 +17,7 @@ public class Depository_item_importer extends Structure_runner {
 	}
 
 	public void run() {
-		if (this.depository.get_location().getChunk().isLoaded() == false) {
+		if (this.depository.is_loaded() == false) {
 			return;
 		}
 		if (this.depository.is_accessible() == true) {

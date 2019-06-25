@@ -21,10 +21,10 @@ public class Exp_saver_runner extends Structure_runner {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void run() {
-		Location loc = this.exp_saver.get_location();
-		if (loc.getChunk().isLoaded() == false) {
+		if (this.exp_saver.is_loaded() == false) {
 			return;
 		}
+		Location loc = this.exp_saver.get_location();
 		Collection<Entity> near_entities = loc.getWorld().getNearbyEntities(loc, 3, 3, 3);
 		for (Entity entity : near_entities) {
 			if (entity instanceof ExperienceOrb) {

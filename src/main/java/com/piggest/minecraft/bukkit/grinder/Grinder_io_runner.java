@@ -18,11 +18,11 @@ public class Grinder_io_runner extends Structure_runner {
 	}
 
 	public void run() {
-		Hopper hopper = grinder.get_hopper();
-		Chest chest = grinder.get_chest();
-		if (this.grinder.get_location().getChunk().isLoaded() == false) {
+		if (this.grinder.is_loaded() == false) {
 			return;
 		}
+		Hopper hopper = grinder.get_hopper();
+		Chest chest = grinder.get_chest();
 		if (hopper != null) {
 			org.bukkit.block.data.type.Hopper hopper_data = (org.bukkit.block.data.type.Hopper) hopper.getBlockData();
 			if (hopper_data.getFacing() == BlockFace.DOWN) {

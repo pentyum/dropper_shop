@@ -20,12 +20,12 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 	}
 
 	public void run() {
+		if (this.advanced_furnace.is_loaded() == false) {
+			return;
+		}
 		ItemStack solid_reactant_slot = advanced_furnace.get_gui_item(advanced_furnace.get_solid_reactant_slot());
 		ItemStack gas_reactant_slot = advanced_furnace.get_gui_item(advanced_furnace.get_gas_reactant_slot());
 		Reaction_container reaction_container = this.advanced_furnace.get_reaction_container();
-		if (this.advanced_furnace.get_location().getChunk().isLoaded() == false) {
-			return;
-		}
 		if (!Grinder.is_empty(solid_reactant_slot)) { // 固体进入反应器
 			Solid solid = Solid.get_solid(solid_reactant_slot);
 			if (solid != null) {

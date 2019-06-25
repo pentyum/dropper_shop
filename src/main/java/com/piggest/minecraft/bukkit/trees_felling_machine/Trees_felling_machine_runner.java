@@ -17,7 +17,8 @@ public class Trees_felling_machine_runner extends Structure_runner {
 
 	@Override
 	public void run() {
-		if (!machine.get_location().getChunk().isLoaded()) {
+		if (!machine.is_loaded()) {
+			// Dropper_shop_plugin.instance.getLogger().info(machine.get_location()+"机器区块没有加载，暂停扫描");
 			return;
 		}
 		int solid_check_list[][] = { { 0, 1, 2 }, { 2, 1, 0 }, { 0, 1, -2 }, { -2, 1, 0 } }; // 注入固体

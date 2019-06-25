@@ -92,6 +92,7 @@ public class Use_wrench_listener implements Listener {
 							if (structure != null && player.isSneaking() == false) {
 								if (structure instanceof Multi_block_structure && structure.create_condition(player)) {
 									manager.add(structure);
+									structure.set_loaded(true);
 									player.sendMessage(structure.getClass().getSimpleName() + "结构建立完成");
 									event.setCancelled(true);
 									return;
