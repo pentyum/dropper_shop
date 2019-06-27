@@ -9,6 +9,19 @@ import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 
 public class Trees_felling_machine_manager extends Gui_structure_manager {
+	private Material[][][] model = {
+			{ { Material.CHISELED_QUARTZ_BLOCK, Material.QUARTZ_PILLAR, Material.CHISELED_QUARTZ_BLOCK },
+				{ Material.QUARTZ_PILLAR, null, Material.QUARTZ_PILLAR },
+				{ Material.CHISELED_QUARTZ_BLOCK, Material.QUARTZ_PILLAR, Material.CHISELED_QUARTZ_BLOCK } },
+			{ { Material.QUARTZ_PILLAR, Material.GLASS_PANE, Material.QUARTZ_PILLAR },
+				{ Material.GLASS_PANE, Material.STONECUTTER, Material.GLASS_PANE },
+				{ Material.QUARTZ_PILLAR, Material.GLASS_PANE, Material.QUARTZ_PILLAR } },
+			{ { Material.CHISELED_QUARTZ_BLOCK, Material.QUARTZ_PILLAR, Material.CHISELED_QUARTZ_BLOCK },
+				{ Material.QUARTZ_PILLAR, null, Material.QUARTZ_PILLAR },
+				{ Material.CHISELED_QUARTZ_BLOCK, Material.QUARTZ_PILLAR, Material.CHISELED_QUARTZ_BLOCK } } };
+	private int center_x = 1;
+	private int center_y = 1;
+	private int center_z = 1;
 
 	public Trees_felling_machine_manager() {
 		super(Trees_felling_machine.class);
@@ -39,7 +52,7 @@ public class Trees_felling_machine_manager extends Gui_structure_manager {
 						if (new_structure == true) {
 							machine = new Trees_felling_machine();
 							machine.set_location(check_loc);
-							if (machine.completed() > 0) {
+							if (machine.completed() == true) {
 								machine.init();
 								return machine;
 							}
@@ -83,5 +96,15 @@ public class Trees_felling_machine_manager extends Gui_structure_manager {
 	@Override
 	public String get_permission_head() {
 		return "trees_felling_machine";
+	}
+
+	@Override
+	public Material[][][] get_model() {
+		return this.model;
+	}
+
+	@Override
+	public int[] get_center() {
+		return new int[] {this.center_x,this.center_y,this.center_z};
 	}
 }

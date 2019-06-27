@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
@@ -84,7 +85,7 @@ public abstract class Structure_manager {
 				shop.set_from_save(shop_save);
 				if (shop instanceof Multi_block_structure) {
 					Multi_block_structure multi_block_struct = (Multi_block_structure) shop;
-					if (multi_block_struct.completed() > 0) {
+					if (multi_block_struct.completed() == true) {
 						this.add(multi_block_struct);
 					}
 				} else {
@@ -114,4 +115,7 @@ public abstract class Structure_manager {
 	public HashSet<Structure> get_all_structures_in_chunk(Chunk_location chunk_location) {
 		return this.chunk_structure_map.get(chunk_location);
 	}
+	
+	public abstract Material[][][] get_model(); //model[y][z][x]
+	public abstract int[] get_center();
 }

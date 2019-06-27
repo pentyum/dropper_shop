@@ -8,6 +8,19 @@ import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 
 public class Depository_manager extends Gui_structure_manager {
 	public static Depository_manager instance = null;
+	private Material[][][] model = {
+			{ { Material.LAPIS_BLOCK, Material.IRON_BLOCK, Material.LAPIS_BLOCK },
+				{ Material.IRON_BLOCK, Material.DIAMOND_BLOCK, Material.IRON_BLOCK },
+				{ Material.LAPIS_BLOCK, Material.IRON_BLOCK, Material.LAPIS_BLOCK } },
+			{ { Material.IRON_BLOCK, Material.IRON_BARS, Material.IRON_BLOCK },
+				{ Material.IRON_BARS, Material.END_ROD, Material.IRON_BARS },
+				{ Material.IRON_BLOCK, Material.IRON_BARS, Material.IRON_BLOCK } },
+			{ { Material.LAPIS_BLOCK, Material.IRON_BLOCK, Material.LAPIS_BLOCK },
+				{ Material.IRON_BLOCK, Material.DIAMOND_BLOCK, Material.IRON_BLOCK },
+				{ Material.LAPIS_BLOCK, Material.IRON_BLOCK, Material.LAPIS_BLOCK } } };
+	private int center_x = 1;
+	private int center_y = 1;
+	private int center_z = 1;
 
 	public Depository_manager() {
 		super(Depository.class);
@@ -30,7 +43,7 @@ public class Depository_manager extends Gui_structure_manager {
 						if (new_deop == true) {
 							depository = new Depository();
 							depository.set_location(check_loc);
-							if (depository.completed() > 0) {
+							if (depository.completed() == true) {
 								depository.set_owner(player_name);
 								return depository;
 							}
@@ -52,11 +65,11 @@ public class Depository_manager extends Gui_structure_manager {
 		}
 		return null;
 	}
-	
+
 	public Depository get(Location location) {
 		return (Depository) super.get(location);
 	}
-	
+
 	@Override
 	public String get_gui_name() {
 		return "存储器";
@@ -67,16 +80,16 @@ public class Depository_manager extends Gui_structure_manager {
 		return 9;
 	}
 
-	//@Override
-	//public InventoryType get_inventory_type() {
-	//	return InventoryType.HOPPER;
-	//}
-	
+	// @Override
+	// public InventoryType get_inventory_type() {
+	// return InventoryType.HOPPER;
+	// }
+
 	@Override
 	public InventoryType get_inventory_type() {
 		return InventoryType.CHEST;
 	}
-	
+
 	@Override
 	public int[] get_process_bar() {
 		return NO_BAR;
@@ -85,5 +98,15 @@ public class Depository_manager extends Gui_structure_manager {
 	@Override
 	public String get_permission_head() {
 		return "depository";
+	}
+
+	@Override
+	public Material[][][] get_model() {
+		return this.model;
+	}
+	
+	@Override
+	public int[] get_center() {
+		return new int[] {this.center_x,this.center_y,this.center_z};
 	}
 }

@@ -16,10 +16,24 @@ public class Grinder_manager extends Gui_structure_manager {
 	public HashMap<Material, ItemStack> recipe = new HashMap<Material, ItemStack>();
 	public HashMap<Material, Integer> recipe_time = new HashMap<Material, Integer>();
 	private String gui_name = "磨粉机";
+
+	private Material[][][] model = {
+			{ { null, null, null }, 
+				{ null, Material.IRON_BLOCK, null }, 
+				{ null, null, null } },
+			{ { null, null, null }, 
+				{ null, Material.COBBLESTONE_WALL, null }, 
+				{ null, null, null } },
+			{ { null, Material.END_ROD, null }, 
+				{ Material.END_ROD, Material.SMOOTH_STONE, Material.END_ROD },
+				{ null, Material.END_ROD, null } } };
+	private int center_x = 1;
+	private int center_y = 2;
+	private int center_z = 1;
 	
 	public Grinder_manager() {
 		super(Grinder.class);
-		//this.set_bar(0,"§e磨粉机工作进度: %d %%");
+		// this.set_bar(0,"§e磨粉机工作进度: %d %%");
 		this.set_gui(10, Material.BLUE_STAINED_GLASS_PANE, "§r左边放原料", Gui_slot_type.Indicator);
 		this.set_gui(12, Material.BLUE_STAINED_GLASS_PANE, "§r左边放燧石或者黑曜石", Gui_slot_type.Indicator);
 		this.set_gui(14, Material.BLUE_STAINED_GLASS_PANE, "§r左边为产品", Gui_slot_type.Indicator);
@@ -34,7 +48,7 @@ public class Grinder_manager extends Gui_structure_manager {
 		} else {
 			Grinder grinder = new Grinder();
 			grinder.set_location(loc);
-			if (grinder.completed() == 0) {
+			if (grinder.completed() == false) {
 				return null;
 			} else {
 				return grinder;
@@ -158,5 +172,15 @@ public class Grinder_manager extends Gui_structure_manager {
 	@Override
 	public String get_permission_head() {
 		return "grinder";
+	}
+
+	@Override
+	public Material[][][] get_model() {
+		return this.model;
+	}
+	
+	@Override
+	public int[] get_center() {
+		return new int[] {this.center_x,this.center_y,this.center_z};
 	}
 }

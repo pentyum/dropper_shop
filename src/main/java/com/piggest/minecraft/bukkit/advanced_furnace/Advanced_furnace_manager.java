@@ -9,6 +9,19 @@ import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 
 public class Advanced_furnace_manager extends Gui_structure_manager {
 	public static Advanced_furnace_manager instance = null;
+	private Material[][][] model = {
+			{ { Material.GOLD_BLOCK, Material.IRON_BLOCK, Material.GOLD_BLOCK },
+				{ Material.IRON_BLOCK, Material.IRON_BLOCK, Material.IRON_BLOCK },
+				{ Material.GOLD_BLOCK, Material.IRON_BLOCK, Material.GOLD_BLOCK } },
+			{ { Material.IRON_BLOCK, Material.IRON_BARS, Material.IRON_BLOCK },
+				{ Material.IRON_BARS, Material.FURNACE, Material.IRON_BARS },
+				{ Material.IRON_BLOCK, Material.IRON_BARS, Material.IRON_BLOCK } },
+			{ { Material.GOLD_BLOCK, Material.IRON_BLOCK, Material.GOLD_BLOCK },
+				{ Material.IRON_BLOCK, null, Material.IRON_BLOCK },
+				{ Material.GOLD_BLOCK, Material.IRON_BLOCK, Material.GOLD_BLOCK } } };
+	private int center_x = 1;
+	private int center_y = 1;
+	private int center_z = 1;
 
 	public Advanced_furnace_manager() {
 		super(Advanced_furnace.class);
@@ -48,7 +61,7 @@ public class Advanced_furnace_manager extends Gui_structure_manager {
 							adv_furnace = new Advanced_furnace();
 							adv_furnace.set_location(check_loc);
 							adv_furnace.set_temperature(adv_furnace.get_base_temperature());
-							if (adv_furnace.completed() > 0) {
+							if (adv_furnace.completed() == true) {
 								return adv_furnace;
 							}
 						} else {
@@ -68,11 +81,11 @@ public class Advanced_furnace_manager extends Gui_structure_manager {
 	public Advanced_furnace find(String player_name, Location loc, boolean new_structure) {
 		return this.find(loc, new_structure);
 	}
-	
+
 	public Advanced_furnace get(Location location) {
 		return (Advanced_furnace) super.get(location);
 	}
-	
+
 	@Override
 	public String get_gui_name() {
 		return "高级熔炉";
@@ -96,5 +109,15 @@ public class Advanced_furnace_manager extends Gui_structure_manager {
 	@Override
 	public String get_permission_head() {
 		return "adv_furnace";
+	}
+	
+	@Override
+	public Material[][][] get_model(){
+		return this.model;
+	}
+	
+	@Override
+	public int[] get_center() {
+		return new int[] {this.center_x,this.center_y,this.center_z};
 	}
 }

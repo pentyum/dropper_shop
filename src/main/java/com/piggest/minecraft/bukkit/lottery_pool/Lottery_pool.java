@@ -27,7 +27,7 @@ public class Lottery_pool extends Multi_block_structure {
 
 	@Override
 	public void on_right_click(Player player) {
-		if (this.completed() == 0) {
+		if (this.completed() == false) {
 			this.remove();
 			return;
 		}
@@ -42,33 +42,33 @@ public class Lottery_pool extends Multi_block_structure {
 	}
 
 	@Override
-	public int completed() {
+	public boolean completed() {
 		if (this.get_block(0, 0, 0).getType() != Material.DIAMOND_BLOCK) {
-			return 0;
+			return false;
 		}
 		if (this.get_block(6, 0, 0).getType() != Material.OBSIDIAN) {
-			return 0;
+			return false;
 		}
 		if (this.get_block(-6, 0, 0).getType() != Material.OBSIDIAN) {
-			return 0;
+			return false;
 		}
 		if (this.get_block(0, 0, 6).getType() != Material.OBSIDIAN) {
-			return 0;
+			return false;
 		}
 		if (this.get_block(0, 0, -6).getType() != Material.OBSIDIAN) {
-			return 0;
+			return false;
 		}
 		if (this.get_block(4, 0, 4).getType() != Material.OBSIDIAN) {
-			return 0;
+			return false;
 		}
 		if (this.get_block(-4, 0, 4).getType() != Material.OBSIDIAN) {
-			return 0;
+			return false;
 		}
 		if (this.get_block(4, 0, -4).getType() != Material.OBSIDIAN) {
-			return 0;
+			return false;
 		}
 		if (this.get_block(-4, 0, -4).getType() != Material.OBSIDIAN) {
-			return 0;
+			return false;
 		}
 		World world = this.get_location().getWorld();
 		Predicate<Entity> predicate = new Predicate<Entity>() {
@@ -83,7 +83,7 @@ public class Lottery_pool extends Multi_block_structure {
 		Collection<Entity> crystals = world.getNearbyEntities(this.get_location(), 6, 2, 6, predicate);
 		Dropper_shop_plugin.instance.getLogger().info("末影水晶数量" + crystals.size());
 		if (crystals.size() != 8) {
-			return 0;
+			return false;
 		} else {
 			int i = 0;
 			for (Entity crystal : crystals) {
@@ -92,7 +92,7 @@ public class Lottery_pool extends Multi_block_structure {
 			}
 		}
 		Dropper_shop_plugin.instance.getLogger().info("检测通过");
-		return 1;
+		return true;
 	}
 
 	@Override

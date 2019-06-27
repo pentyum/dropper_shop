@@ -1,31 +1,28 @@
 package com.piggest.minecraft.bukkit.exp_saver;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.PrepareAnvilEvent;
+import org.bukkit.inventory.AnvilInventory;
+
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 
 public class Exp_saver_listener implements Listener {
-	/*
+
 	@EventHandler
-	public void onInventoryClick(InventoryClickEvent event) {
-		if (event.isCancelled() == true) {
-			return;
+	public void onPrepareAnvil(PrepareAnvilEvent event) {
+		AnvilInventory inventory = event.getInventory();
+		int raw_repair_cost = inventory.getRepairCost();
+		Bukkit.getLogger().info("修理需要等级:" + raw_repair_cost);
+		Location loc = inventory.getLocation();
+		Bukkit.getLogger().info(inventory.getLocation().toString());
+		Exp_saver exp_saver = Dropper_shop_plugin.instance.get_exp_saver_manager().find(loc, false);
+		if (exp_saver != null) {
+			Bukkit.getLogger().info("找到了经验存储器");
+			inventory.setRepairCost(0);
 		}
-		if (event.getClickedInventory() == null) {
-			return;
-		}
-		if (event.getClickedInventory().getName().equals("经验存储器")) {
-			int slot = event.getSlot();
-			if (slot >= 0 && slot <= 8 || Arrays.binarySearch(Exp_saver.config.get_buttons(), slot) >= 0) {
-				if (slot >= 9) {
-					ItemStack item = event.getCurrentItem();
-					ItemMeta meta = item.getItemMeta();
-					List<String> lore = new ArrayList<String>();
-					lore.add(event.getWhoClicked().getName());
-					meta.setLore(lore);
-					item.setItemMeta(meta);
-				}
-				event.setCancelled(true);
-			}
-		}
+		inventory.setRepairCost(0);
 	}
-	*/
 }

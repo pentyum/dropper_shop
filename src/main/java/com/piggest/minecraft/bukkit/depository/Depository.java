@@ -7,8 +7,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -189,53 +187,7 @@ public class Depository extends Multi_block_with_gui implements Ownable, HasRunn
 		save.put("levels", levels);
 		return save;
 	}
-
-	@Override
-	public int completed() {
-		int x;
-		int y;
-		int z;
-		for (x = -1; x <= 1; x++) {
-			for (y = -1; y <= 1; y++) {
-				for (z = -1; z <= 1; z++) {
-					Material material = this.get_block(x, y, z).getType();
-					if (x == 0 && y == 0 && z == 0 && material != Material.END_ROD) {
-						Bukkit.getLogger().info("末地烛不对");
-						return 0;
-					}
-					if (Math.abs(x) == 1 && Math.abs(y) == 1 && Math.abs(z) == 1 && material != Material.LAPIS_BLOCK) {
-						Bukkit.getLogger().info("青金石不对");
-						return 0;
-					}
-					if (Math.abs(x) + Math.abs(z) + Math.abs(y) == 2 && material != Material.IRON_BLOCK) {
-						Bukkit.getLogger().info("铁块不对");
-						return 0;
-					}
-					if (Math.abs(x) + Math.abs(z) == 1 && Math.abs(y) == 0 && material != Material.IRON_BARS) {
-						Bukkit.getLogger().info("铁栏杆不对");
-						return 0;
-					}
-					if (Math.abs(x) == 0 && Math.abs(z) == 0 && Math.abs(y) == 1 && material != Material.DIAMOND_BLOCK) {
-						Bukkit.getLogger().info("钻石块不对");
-						return 0;
-					}
-				}
-			}
-		}
-		return 1;
-	}
-
-	@Override
-	public boolean in_structure(Location loc) {
-		int r_x = loc.getBlockX() - this.x;
-		int r_y = loc.getBlockY() - this.y;
-		int r_z = loc.getBlockZ() - this.z;
-		if (Math.abs(r_x) <= 1 && Math.abs(r_y) <= 1 && Math.abs(r_z) <= 1) {
-			return true;
-		}
-		return false;
-	}
-
+	
 	public Set<Entry<String, Integer>> get_contents_entry() {
 		return this.contents.entrySet();
 	}

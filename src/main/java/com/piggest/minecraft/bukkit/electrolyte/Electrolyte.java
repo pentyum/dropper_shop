@@ -16,12 +16,6 @@ public class Electrolyte extends Multi_block_with_gui implements HasRunner {
 	}
 
 	@Override
-	public int completed() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public boolean in_structure(Location loc) {
 		// TODO Auto-generated method stub
 		return false;

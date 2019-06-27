@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
@@ -119,41 +118,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 		}
 		return false;
 	}
-
-	@Override
-	public int completed() {
-		if (this.get_block(0, 0, 0).getType() != Material.SMOOTH_STONE) {
-			return 0;
-		}
-		if (this.get_block(0, -1, 0).getType() != Material.COBBLESTONE_WALL) {
-			return 0;
-		}
-		if (this.get_block(1, 0, 0).getType() != Material.END_ROD) {
-			return 0;
-		}
-		if (this.get_block(-1, 0, 0).getType() != Material.END_ROD) {
-			return 0;
-		}
-		if (this.get_block(0, 0, 1).getType() != Material.END_ROD) {
-			return 0;
-		}
-		if (this.get_block(0, 0, -1).getType() != Material.END_ROD) {
-			return 0;
-		}
-		if (this.get_block(0, -2, 0).getType() != Material.IRON_BLOCK) {
-			return 0;
-		}
-		return 1;
-	}
-
-	@Override
-	public boolean in_structure(Location loc) {
-		if (loc.equals(this.get_location())) {
-			return true;
-		}
-		return false;
-	}
-
+	
 	public synchronized Hopper get_hopper() {
 		BlockState up_block = this.get_block(0, 1, 0).getState();
 		if (up_block instanceof Hopper) {

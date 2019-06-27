@@ -47,4 +47,14 @@ public class Dropper_shop_manager extends Structure_manager {
 	public String get_permission_head() {
 		return "dropper_shop";
 	}
+
+	@Override
+	public Material[][][] get_model() {
+		return null;
+	}
+
+	@Override
+	public int[] get_center() {
+		return null;
+	}
 }

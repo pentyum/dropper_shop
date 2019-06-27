@@ -5,8 +5,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -22,16 +23,17 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 	private int max_saved_exp = 6000;
 	private int structure_level = 1;
 	private Exp_saver_runner exp_saver_runner = new Exp_saver_runner(this);
-
+	private boolean has_anvil = false;
+	
 	public Exp_saver() {
 		this.set_process(0);
 		this.set_structure_level(1);
 	}
-
+	
 	@Override
-	public int completed() {
+	public boolean completed() {
 		if (this.get_block(0, 0, 0).getType() != Material.DIAMOND_BLOCK) {
-			return 0;
+			return false;
 		}
 		HashSet<Material> block_set = new HashSet<Material>();
 		for (int i = -1; i <= 1; i++) {
@@ -40,28 +42,20 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 			}
 		}
 		if (!block_set.contains(Material.CREEPER_HEAD)) {
-			return 0;
+			return false;
 		}
 		if (!block_set.contains(Material.ZOMBIE_HEAD)) {
-			return 0;
+			return false;
 		}
 		if (!block_set.contains(Material.SKELETON_SKULL)) {
-			return 0;
+			return false;
 		}
 		if (!block_set.contains(Material.WITHER_SKELETON_SKULL)) {
-			return 0;
+			return false;
 		}
-		return 1;
+		return true;
 	}
-
-	@Override
-	public boolean in_structure(Location loc) {
-		if (loc.equals(this.get_location())) {
-			return true;
-		}
-		return false;
-	}
-
+	
 	@Override
 	public boolean create_condition(Player player) {
 		if (!player.hasPermission("exp_saver.make")) {
@@ -176,6 +170,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 			this.input_exp(1000, player);
 		} else if (slot == 18) {
 			this.upgrade_by(player);
+		} else if (slot == 19) {
 		}
 	}
 
@@ -234,5 +229,29 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 	@Override
 	public boolean on_switch_pressed(Player player, int slot, boolean on) {
 		return true;
+	}
+	
+	public boolean has_anvil() {
+		return this.has_anvil;
+	}
+	
+	public BlockState get_anvil() {
+		Block anvil = this.get_block(1, 0, 0);
+		if (anvil.getType() == Material.ANVIL) {
+			return anvil.getState();
+		}
+		anvil = this.get_block(-1, 0, 0);
+		if (anvil.getType() == Material.ANVIL) {
+			return anvil.getState();
+		}
+		anvil = this.get_block(0, 0, 1);
+		if (anvil.getType() == Material.ANVIL) {
+			return anvil.getState();
+		}
+		anvil = this.get_block(0, 0, -1);
+		if (anvil.getType() == Material.ANVIL) {
+			return anvil.getState();
+		}
+		return null;
 	}
 }

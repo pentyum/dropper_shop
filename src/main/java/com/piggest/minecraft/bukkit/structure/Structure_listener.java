@@ -14,7 +14,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
-
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Chunk_location;
 
@@ -61,7 +60,13 @@ public class Structure_listener implements Listener {
 		for (Entry<Class<? extends Structure>, Structure_manager> entry : structure_manager.entrySet()) {
 			Structure_manager manager = entry.getValue();
 			Structure structure = manager.find(null, block.getLocation(), false);
-			if (structure != null) {
+			if (structure != null) { // 附近有结构
+				if (structure instanceof Multi_block_structure) {
+					Multi_block_structure multi_block_structure = (Multi_block_structure) structure;
+					if (!multi_block_structure.in_structure(block.getLocation())) {
+						return;
+					}
+				}
 				if (structure.on_break(player) == false) {
 					event.setCancelled(true);
 				} else {
@@ -87,8 +92,11 @@ public class Structure_listener implements Listener {
 				Structure structure = manager.find(player.getName(), block.getLocation(), false);
 				if (structure != null && player.isSneaking() == false) {
 					if (structure instanceof Multi_block_structure) {
-						((Multi_block_structure) structure).on_right_click(player);
-						event.setCancelled(true);
+						Multi_block_structure multi_block_structure = (Multi_block_structure) structure;
+						if (multi_block_structure.in_structure(block.getLocation())) {
+							multi_block_structure.on_right_click(player);
+							event.setCancelled(true);
+						}
 					}
 				}
 			}
