@@ -17,12 +17,10 @@ public class Exp_saver_listener implements Listener {
 		int raw_repair_cost = inventory.getRepairCost();
 		Bukkit.getLogger().info("修理需要等级:" + raw_repair_cost);
 		Location loc = inventory.getLocation();
-		Bukkit.getLogger().info(inventory.getLocation().toString());
 		Exp_saver exp_saver = Dropper_shop_plugin.instance.get_exp_saver_manager().find(loc, false);
 		if (exp_saver != null) {
 			Bukkit.getLogger().info("找到了经验存储器");
-			inventory.setRepairCost(0);
+			inventory.setRepairCost(1);
 		}
-		inventory.setRepairCost(0);
 	}
 }
