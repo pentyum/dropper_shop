@@ -6,8 +6,6 @@ import java.util.HashSet;
 import java.util.Map;
 
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -23,13 +21,18 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 	private int max_saved_exp = 6000;
 	private int structure_level = 1;
 	private Exp_saver_runner exp_saver_runner = new Exp_saver_runner(this);
-	private boolean has_anvil = false;
-	
+	private int anvil_count = 0;
+	private int chipped_anvil_count = 0;
+	private int damaged_anvil_count = 0;
+
+	private int remove_next = 0;
+
 	public Exp_saver() {
 		this.set_process(0);
 		this.set_structure_level(1);
+		this.set_anvil_count(0, 0, 0);
 	}
-	
+
 	@Override
 	public boolean completed() {
 		if (this.get_block(0, 0, 0).getType() != Material.DIAMOND_BLOCK) {
@@ -55,7 +58,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean create_condition(Player player) {
 		if (!player.hasPermission("exp_saver.make")) {
@@ -75,8 +78,12 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 	public void set_from_save(Map<?, ?> shop_save) {
 		super.set_from_save(shop_save);
 		this.set_structure_level((int) shop_save.get("structure-level"));
-		this.add_exp((Integer) shop_save.get("saved-exp"));
+		this.add_exp((int) shop_save.get("saved-exp"));
 		this.set_mending((ItemStack) shop_save.get("mending-item"));
+		int anvil = (int) shop_save.get("anvil-count");
+		int chipped_anvil = (int) shop_save.get("chipped-anvil-count");
+		int damaged_anvil = (int) shop_save.get("damaged-anvil-count");
+		this.set_anvil_count(anvil, chipped_anvil, damaged_anvil);
 	}
 
 	private void set_mending(ItemStack item) {
@@ -89,6 +96,9 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 		save.put("saved-exp", this.saved_exp);
 		save.put("structure-level", this.structure_level);
 		save.put("mending-item", this.get_mending());
+		save.put("anvil-count", this.anvil_count);
+		save.put("chipped-anvil-count", this.chipped_anvil_count);
+		save.put("damaged-anvil-count", this.damaged_anvil_count);
 		return save;
 	}
 
@@ -151,7 +161,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 	 */
 
 	public void set_process(int process) {
-		this.set_process(0, process, "§e当前经验: %d/%d", this.saved_exp, this.get_max_saved_exp());
+		this.set_process(0, process, "§e当前经验: %d/%d (%d级)", this.saved_exp, this.get_max_saved_exp(), this.get_level());
 	}
 
 	@Override
@@ -230,28 +240,56 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 	public boolean on_switch_pressed(Player player, int slot, boolean on) {
 		return true;
 	}
-	
+
 	public boolean has_anvil() {
-		return this.has_anvil;
+		return (this.anvil_count >= Dropper_shop_plugin.instance.get_exp_saver_anvil_upgrade_need()
+				&& this.chipped_anvil_count >= Dropper_shop_plugin.instance.get_exp_saver_anvil_upgrade_need()
+				&& this.damaged_anvil_count >= Dropper_shop_plugin.instance.get_exp_saver_anvil_upgrade_need());
 	}
-	
-	public BlockState get_anvil() {
-		Block anvil = this.get_block(1, 0, 0);
-		if (anvil.getType() == Material.ANVIL) {
-			return anvil.getState();
+
+	public int get_level() {
+		return SetExpFix.getLevelbyExp(this.saved_exp);
+	}
+
+	void set_remove_exp_next(int need_exp) {
+		this.remove_next = need_exp;
+	}
+
+	int do_remove_exp() {
+		int removed = this.remove_next;
+		this.remove_exp(removed);
+		this.remove_next = 0;
+		return removed;
+	}
+
+	public void set_anvil_count(int anvil, int chipped_anvil, int damaged_anvil) {
+		this.anvil_count = anvil;
+		this.chipped_anvil_count = chipped_anvil;
+		this.damaged_anvil_count = damaged_anvil;
+		ItemStack anvil_icon = this.gui.getItem(19);
+		ItemMeta meta = anvil_icon.getItemMeta();
+		if (this.has_anvil()) {
+			meta.setDisplayName("§e铁砧升级已完成");
+		} else {
+			meta.setDisplayName("§e铁砧升级未完成");
 		}
-		anvil = this.get_block(-1, 0, 0);
-		if (anvil.getType() == Material.ANVIL) {
-			return anvil.getState();
-		}
-		anvil = this.get_block(0, 0, 1);
-		if (anvil.getType() == Material.ANVIL) {
-			return anvil.getState();
-		}
-		anvil = this.get_block(0, 0, -1);
-		if (anvil.getType() == Material.ANVIL) {
-			return anvil.getState();
-		}
-		return null;
+		ArrayList<String> lore = new ArrayList<String>();
+		lore.add("§7铁砧: " + anvil + "/" + Dropper_shop_plugin.instance.get_exp_saver_anvil_upgrade_need());
+		lore.add("§7开裂的铁砧: " + chipped_anvil + "/" + Dropper_shop_plugin.instance.get_exp_saver_anvil_upgrade_need());
+		lore.add("§7损坏的铁砧: " + damaged_anvil + "/" + Dropper_shop_plugin.instance.get_exp_saver_anvil_upgrade_need());
+		meta.setLore(lore);
+		anvil_icon.setItemMeta(meta);
+	}
+
+	public int get_anvil_count() {
+		return this.anvil_count;
+	}
+
+	public int get_chipped_anvil_count() {
+		return this.chipped_anvil_count;
+	}
+
+	public int get_damaged_anvil_count() {
+		return this.damaged_anvil_count;
 	}
 }

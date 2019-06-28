@@ -28,7 +28,7 @@ import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_manager;
 import com.piggest.minecraft.bukkit.advanced_furnace.Gas;
 import com.piggest.minecraft.bukkit.advanced_furnace.Gas_bottle;
 import com.piggest.minecraft.bukkit.advanced_furnace.Reaction_container;
-import com.piggest.minecraft.bukkit.advanced_furnace.config.Price_config;
+import com.piggest.minecraft.bukkit.config.Price_config;
 import com.piggest.minecraft.bukkit.depository.Depository;
 import com.piggest.minecraft.bukkit.depository.Depository_command_executor;
 import com.piggest.minecraft.bukkit.depository.Depository_listener;
@@ -68,11 +68,12 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private FileConfiguration lottery_config = null;
 	private File shop_file = null;
 	private File lottery_file = null;
-	
+
 	private int exp_saver_max_structure_level = 0;
-	
+	private int exp_saver_anvil_upgrade_need = 0;
+
 	private Price_config price_config = new Price_config(this);
-	
+
 	private Dropper_shop_manager shop_manager = null;
 	private Depository_manager depository_manager = null;
 	private Grinder_manager grinder_manager = null;
@@ -97,16 +98,17 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	// private HashMap<String, Gui_config> gui_config = new HashMap<String,
 	// Gui_config>();
 	private HashMap<String, String> enchantment_name = new HashMap<String, String>();
-	
+
 	public Dropper_shop_plugin() {
 		this.getLogger().info("加载配置中");
 		saveDefaultConfig();
 		saveResource("shops.yml", false);
 		saveResource("lottery_pool.yml", false);
 		this.config = getConfig();
-		
+
 		this.price_config.load_price();
 		this.exp_saver_max_structure_level = this.config.getInt("exp-saver-max-structure-level");
+		this.exp_saver_anvil_upgrade_need = this.config.getInt("exp-saver-anvil-upgrade-need");
 
 		ConfigurationSection price_section = this.config.getConfigurationSection("material");
 		Set<String> price_keys = price_section.getKeys(false);
@@ -122,9 +124,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.shop_config = YamlConfiguration.loadConfiguration(shop_file);
 		this.lottery_file = new File(this.getDataFolder(), "lottery_pool.yml");
 		this.lottery_config_load();
-		
+
 		this.gen_air();
-		
+
 		this.enchantment_name.put("minecraft:sweeping", "横扫之刃");
 		this.enchantment_name.put("minecraft:aqua_affinity", "水下速掘");
 		this.enchantment_name.put("minecraft:depth_strider", "深海探索者");
@@ -159,9 +161,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.enchantment_name.put("minecraft:unbreaking", "耐久");
 		this.enchantment_name.put("minecraft:silk_touch", "精准采集");
 		this.enchantment_name.put("minecraft:sharpness", "锋利");
-		
+
 	}
-	
+
 	public FileConfiguration get_shop_config() {
 		return this.shop_config;
 	}
@@ -193,6 +195,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		}
 		return !hasNull;
 	}
+
 	private void init_structure_manager() {
 		this.getLogger().info("加载结构管理器");
 		this.shop_manager = new Dropper_shop_manager();
@@ -202,7 +205,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.exp_saver_manager = new Exp_saver_manager();
 		this.lottery_pool_manager = new Lottery_pool_manager();
 		this.trees_felling_machine_manager = new Trees_felling_machine_manager();
-		
+
 		this.structure_manager_map.put(Dropper_shop.class, shop_manager);
 		this.structure_manager_map.put(Depository.class, depository_manager);
 		this.structure_manager_map.put(Grinder.class, grinder_manager);
@@ -211,12 +214,13 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.structure_manager_map.put(Lottery_pool.class, lottery_pool_manager);
 		this.structure_manager_map.put(Trees_felling_machine.class, trees_felling_machine_manager);
 	}
+
 	@Override
 	public void onEnable() {
 		Dropper_shop_plugin.instance = this;
-		
+
 		this.init_structure_manager();
-		
+
 		this.getCommand("depository").setExecutor(new Depository_command_executor());
 		this.getCommand("dropper_shop").setExecutor(new Dropper_shop_command_executor());
 		this.getCommand("grinder").setExecutor(new Grinder_command_executor());
@@ -414,16 +418,20 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public String get_enchantment_name(Enchantment ench) {
 		return this.get_enchantment_name(ench.getKey().toString());
 	}
-	
+
 	public void lottery_config_load(File lottery_file) {
 		this.lottery_config = YamlConfiguration.loadConfiguration(lottery_file);
 	}
-	
+
 	public void lottery_config_load() {
 		this.lottery_config_load(this.lottery_file);
 	}
-	
+
 	public Price_config get_price_config() {
 		return this.price_config;
+	}
+
+	public int get_exp_saver_anvil_upgrade_need() {
+		return this.exp_saver_anvil_upgrade_need;
 	}
 }

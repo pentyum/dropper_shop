@@ -1,4 +1,4 @@
-package com.piggest.minecraft.bukkit.advanced_furnace.config;
+package com.piggest.minecraft.bukkit.config;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 
@@ -12,7 +12,7 @@ public class Price_config {
 	private int exp_saver_upgrade_base_price = 0;
 	private int make_trees_felling_machine_price = 0;
 	private int start_trees_felling_machine_price = 0;
-
+	
 	public Price_config(Dropper_shop_plugin dropper_shop_plugin) {
 		this.plugin = dropper_shop_plugin;
 	}
