@@ -8,6 +8,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Leaves;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -39,7 +41,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 			this.init();
 		}
 	}
-	
+
 	@Override
 	public boolean create_condition(Player player) {
 		int price = Dropper_shop_plugin.instance.get_price_config().get_make_trees_felling_machine_price();
@@ -79,6 +81,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 			this.current_x = this.start_x;
 			this.current_z++;
 			if (this.current_z > this.end_z) {
+				this.scanned_blocks++;
 				this.update_process();
 				this.set_working(false);
 				return this.get_current_pointer_location();
@@ -96,6 +99,9 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 		if (axe == null) {
 			return;
 		}
+		if (this.get_chest() == null) {
+			return;
+		}
 		for (y = 250; y >= 63; y--) { // 从高空开始往下检测
 			Block block = this.get_location().getWorld().getBlockAt(this.current_x, y, this.current_z);
 			if (block.getType() != Material.AIR) { // 获得第一个非空气方块的类型
@@ -108,19 +114,74 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 				for (; y >= 40; y--) { // 继续往下检测，找到原木方块
 					Block block = this.get_location().getWorld().getBlockAt(this.current_x, y, this.current_z);
 					if (block.getType().name().contains("_LOG")) { // 如果是原木方块则进入砍伐程序
-						if (this.get_chest() == null) { // 没箱子可以输出，则直接返回，指针不动
-							return;
-						}
 						ItemStack item = new ItemStack(block.getType());
-						HashMap<Integer, ItemStack> cannot_added = this.get_chest().getInventory().addItem(item);
-						if (!cannot_added.isEmpty()) { // 箱子满了，也直接返回，指针不动
+						if (this.get_axe() == null) {
 							return;
 						}
-						if (this.get_axe() == null) {
+						if (!this.insert_item_to_chest(item)) { // 箱子满了，也直接返回，指针不动
 							return;
 						}
 						block.setType(Material.AIR);
 						this.use_axe();
+					} else if (block.getType().name().contains("_LEAVES")) { // 如果是树叶方块则进入树叶清楚程序
+						BlockData data = block.getBlockData();
+						Leaves leaves = (Leaves) data;
+						if (leaves.isPersistent() == true) { // 树叶为人为放置，直接跳过。
+							continue;
+						}
+						int silk_touch_level = axe.getEnchantmentLevel(Enchantment.SILK_TOUCH);
+						if (silk_touch_level > 0) { // 有精准采集附魔，直接获得树叶方块
+							ItemStack item = new ItemStack(block.getType());
+							if (this.get_axe() == null) {
+								return;
+							}
+							if (!this.insert_item_to_chest(item)) { // 箱子满了，也直接返回，指针不动
+								return;
+							}
+							block.setType(Material.AIR);
+							this.use_axe();
+						} else { // 没有精准采集附魔
+							Random rand = new Random();
+							int num = rand.nextInt(300);
+							Material type = block.getType();
+							ItemStack new_item = null;
+							if (type == Material.OAK_LEAVES || type == Material.DARK_OAK_LEAVES) {
+								if (num == 0) {
+									new_item = new ItemStack(Material.APPLE);
+								} else if (num >= 1 && num <= 10) {
+									if (type == Material.OAK_LEAVES) {
+										new_item = new ItemStack(Material.OAK_SAPLING);
+									} else {
+										new_item = new ItemStack(Material.DARK_OAK_SAPLING);
+									}
+								}
+							} else if (type == Material.ACACIA_LEAVES) {
+								if (num < 10) {
+									new_item = new ItemStack(Material.ACACIA_SAPLING);
+								}
+							} else if (type == Material.BIRCH_LEAVES) {
+								if (num < 10) {
+									new_item = new ItemStack(Material.BIRCH_SAPLING);
+								}
+							} else if (type == Material.SPRUCE_LEAVES) {
+								if (num < 10) {
+									new_item = new ItemStack(Material.SPRUCE_SAPLING);
+								}
+							} else if (type == Material.JUNGLE_LEAVES) {
+								if (num < 5) {
+									new_item = new ItemStack(Material.JUNGLE_SAPLING);
+								}
+							}
+							if (this.get_axe() == null) {
+								return;
+							}
+							if (new_item != null) {
+								if (!this.insert_item_to_chest(new_item)) { // 箱子满了，也直接返回，指针不动
+									return;
+								}
+							}
+							block.setType(Material.AIR);
+						}
 					}
 				}
 			}
@@ -163,6 +224,17 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 
 	private void set_axe(ItemStack item) {
 		this.gui.setItem(13, item);
+	}
+
+	public boolean insert_item_to_chest(ItemStack item) {
+		if (this.get_chest() == null) { // 没箱子可以输出
+			return false;
+		}
+		HashMap<Integer, ItemStack> cannot_added = this.get_chest().getInventory().addItem(item);
+		if (!cannot_added.isEmpty()) { // 箱子满了
+			return false;
+		}
+		return true;
 	}
 
 	@SuppressWarnings("deprecation")
