@@ -32,10 +32,10 @@ public class Exp_saver_listener implements Listener {
 				int need_exp = SetExpFix.getExpToLevel(current_level) - SetExpFix.getExpToLevel(target_level);
 				Bukkit.getLogger().info("需要" + need_exp + "点经验");
 				Bukkit.getLogger().info("经验存储器有" + exp_saver.get_saved_exp() + "点经验");
-				Bukkit.getLogger().info("经验存储器将从"+current_level+"降到"+target_level);
-				if (target_level >= 0 && exp_saver.get_saved_exp() >= need_exp) {
+				Bukkit.getLogger().info("经验存储器将从" + current_level + "降到" + target_level);
+				if (raw_repair_cost < 255 && target_level >= 0 && exp_saver.get_saved_exp() >= need_exp) {
 					Bukkit.getLogger().info("经验存储器经验足够，启动经验转移机制");
-					inventory.setMaximumRepairCost(100);
+					inventory.setMaximumRepairCost(255);
 					exp_saver.set_remove_exp_next(need_exp);
 					inventory.setRepairCost(1);
 				}
