@@ -3,6 +3,7 @@ package com.piggest.minecraft.bukkit.trees_felling_machine;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.Stack;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -111,8 +112,15 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 		}
 		if (check_block != null) {
 			if (check_block.getType().name().contains("_LEAVES")) { // 第一个非空气方块是树叶，则判定为树
+				Stack<Block> tree_stack = new Stack<Block>();
 				for (; y >= 40; y--) { // 继续往下检测，找到原木方块
 					Block block = this.get_location().getWorld().getBlockAt(this.current_x, y, this.current_z);
+					if (block.getType().name().contains("_LOG") || block.getType().name().contains("_LEAVES")) {
+						tree_stack.push(block);
+					}
+				}
+				while(!tree_stack.isEmpty()) {
+					Block block = tree_stack.pop();
 					if (block.getType().name().contains("_LOG")) { // 如果是原木方块则进入砍伐程序
 						ItemStack item = new ItemStack(block.getType());
 						if (this.get_axe() == null) {
