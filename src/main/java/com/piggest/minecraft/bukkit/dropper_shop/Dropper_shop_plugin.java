@@ -71,6 +71,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	private int exp_saver_max_structure_level = 0;
 	private int exp_saver_anvil_upgrade_need = 0;
+	private int exp_saver_remove_repaircost_exp = 0;
 
 	private Price_config price_config = new Price_config(this);
 
@@ -109,7 +110,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.price_config.load_price();
 		this.exp_saver_max_structure_level = this.config.getInt("exp-saver-max-structure-level");
 		this.exp_saver_anvil_upgrade_need = this.config.getInt("exp-saver-anvil-upgrade-need");
-
+		this.exp_saver_remove_repaircost_exp = this.config.getInt("exp-saver-remove-repaircost-exp");
+		
 		ConfigurationSection price_section = this.config.getConfigurationSection("material");
 		Set<String> price_keys = price_section.getKeys(false);
 		for (String material_name : price_keys) {
@@ -433,5 +435,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	public int get_exp_saver_anvil_upgrade_need() {
 		return this.exp_saver_anvil_upgrade_need;
+	}
+	
+	public int get_exp_saver_remove_repaircost_exp() {
+		return this.exp_saver_remove_repaircost_exp;
 	}
 }

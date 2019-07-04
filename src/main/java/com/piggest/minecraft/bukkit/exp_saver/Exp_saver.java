@@ -11,10 +11,12 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.piggest.minecraft.bukkit.config.Price_config;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.utils.Repair_cost;
 
 public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 	private int saved_exp = 0;
@@ -31,6 +33,12 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 		this.set_process(0);
 		this.set_structure_level(1);
 		this.set_anvil_count(0, 0, 0);
+		ItemStack remove_repaircost_button = this.gui.getItem(20);
+		ItemMeta meta = remove_repaircost_button.getItemMeta();
+		ArrayList<String> lore = new ArrayList<String>();
+		lore.add("§r需要" + Dropper_shop_plugin.instance.get_exp_saver_remove_repaircost_exp() + "点经验");
+		meta.setLore(lore);
+		remove_repaircost_button.setItemMeta(meta);
 	}
 
 	@Override
@@ -180,7 +188,33 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 			this.input_exp(1000, player);
 		} else if (slot == 18) {
 			this.upgrade_by(player);
-		} else if (slot == 19) {
+		} else if (slot == 20) {
+			if (!this.has_anvil()) {
+				player.sendMessage("没有进行铁砧升级，无法移除铁砧惩罚标签");
+				return;
+			}
+			ItemStack item = this.get_mending();
+			if (item == null) {
+				player.sendMessage("物品为空");
+				return;
+			}
+			if (item.getType() == Material.AIR) {
+				player.sendMessage("物品为空");
+				return;
+			}
+			Integer repaircost = Repair_cost.getRepairCost(item);
+			if (repaircost == null) {
+				player.sendMessage("该物品没有铁砧惩罚标签");
+				return;
+			}
+			int need_exp = Dropper_shop_plugin.instance.get_exp_saver_remove_repaircost_exp();
+			if (this.get_saved_exp() < need_exp) {
+				player.sendMessage("存储器经验不足，需要" + need_exp + "点经验");
+				return;
+			}
+			this.remove_exp(need_exp);
+			Repair_cost.setRepairCost(item, null);
+			player.sendMessage("已移除铁砧惩罚标签");
 		}
 	}
 
@@ -215,7 +249,9 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 	}
 
 	public static int get_upgrade_price(int level) {
-		return Dropper_shop_plugin.instance.get_price_config().get_exp_saver_upgrade_base_price() * level;
+		Price_config price_config = Dropper_shop_plugin.instance.get_price_config();
+		return price_config.get_exp_saver_upgrade_level_price() * level
+				+ price_config.get_exp_saver_upgrade_base_price();
 	}
 
 	public boolean upgrade_by(Player player) {
