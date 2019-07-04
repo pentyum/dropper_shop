@@ -39,7 +39,7 @@ public class Exp_saver_runner extends Structure_runner {
 		if (!Grinder.is_empty(mending)) {
 			if (!Update_component.is_component(mending)) {
 				if (mending.getDurability() > 0) {
-					mending.setDurability((short) (mending.getDurability() - exp_saver.remove_exp(1)));
+					exp_saver.edit_mending_slot(0);
 				} else {
 					if (mending.getType() == Material.ANVIL) {
 						if (exp_saver.get_anvil_count() < Dropper_shop_plugin.instance

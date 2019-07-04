@@ -189,33 +189,48 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 		} else if (slot == 18) {
 			this.upgrade_by(player);
 		} else if (slot == 20) {
-			if (!this.has_anvil()) {
-				player.sendMessage("没有进行铁砧升级，无法移除铁砧惩罚标签");
-				return;
-			}
-			ItemStack item = this.get_mending();
-			if (item == null) {
-				player.sendMessage("物品为空");
-				return;
-			}
-			if (item.getType() == Material.AIR) {
-				player.sendMessage("物品为空");
-				return;
-			}
-			Integer repaircost = Repair_cost.getRepairCost(item);
-			if (repaircost == null) {
-				player.sendMessage("该物品没有铁砧惩罚标签");
-				return;
-			}
-			int need_exp = Dropper_shop_plugin.instance.get_exp_saver_remove_repaircost_exp();
-			if (this.get_saved_exp() < need_exp) {
-				player.sendMessage("存储器经验不足，需要" + need_exp + "点经验");
-				return;
-			}
-			this.remove_exp(need_exp);
-			Repair_cost.setRepairCost(item, null);
-			player.sendMessage("已移除铁砧惩罚标签");
+			this.remove_repaircost_tag(player);
 		}
+	}
+
+	@SuppressWarnings("deprecation")
+	public synchronized void edit_mending_slot(int edit_type) {  //保障线程安全
+		ItemStack mending = this.get_mending();
+		if (edit_type == 0) { // 修理
+			mending.setDurability((short) (mending.getDurability() - this.remove_exp(1)));
+		} else if (edit_type == 1) { // 移除tag
+			ItemStack new_item = Repair_cost.setRepairCost(mending, null);
+			this.set_mending(new_item);
+		}
+	}
+
+	public void remove_repaircost_tag(Player player) {
+		if (!this.has_anvil()) {
+			player.sendMessage("没有进行铁砧升级，无法移除铁砧惩罚标签");
+			return;
+		}
+		ItemStack item = this.get_mending();
+		if (item == null) {
+			player.sendMessage("物品为空");
+			return;
+		}
+		if (item.getType() == Material.AIR) {
+			player.sendMessage("物品为空");
+			return;
+		}
+		Integer repaircost = Repair_cost.getRepairCost(item);
+		if (repaircost == null) {
+			player.sendMessage("该物品没有铁砧惩罚标签");
+			return;
+		}
+		int need_exp = Dropper_shop_plugin.instance.get_exp_saver_remove_repaircost_exp();
+		if (this.get_saved_exp() < need_exp) {
+			player.sendMessage("存储器经验不足，需要" + need_exp + "点经验");
+			return;
+		}
+		this.remove_exp(need_exp);
+		this.edit_mending_slot(1);
+		player.sendMessage("已移除铁砧惩罚标签");
 	}
 
 	public ItemStack get_mending() {
