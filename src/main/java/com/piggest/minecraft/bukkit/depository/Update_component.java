@@ -16,14 +16,30 @@ import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 
 public class Update_component {
 	public static String name = "§r存储升级组件";
+	public static String adv_furnace_overload_name = "高速升级组件";
+	public static String adv_furnace_time_name = "长时升级组件";
 	public static ItemStack[] component_item = new ItemStack[Depository.capacity_level.length];
-
-	public static NamespacedKey namespace0 = new NamespacedKey(Dropper_shop_plugin.instance, "update_component_0");
-	public static NamespacedKey namespace1 = new NamespacedKey(Dropper_shop_plugin.instance, "update_component_1");
-	public static NamespacedKey namespace2 = new NamespacedKey(Dropper_shop_plugin.instance, "update_component_2");
-	public static NamespacedKey namespace3 = new NamespacedKey(Dropper_shop_plugin.instance, "update_component_3");
-	public static NamespacedKey namespace4 = new NamespacedKey(Dropper_shop_plugin.instance, "update_component_4");
-
+	public static ItemStack[] overload_component_item = new ItemStack[5];
+	public static ItemStack[] time_component_item = new ItemStack[5];
+	
+	public static NamespacedKey namespace0 = null;
+	public static NamespacedKey namespace1 = null;
+	public static NamespacedKey namespace2 = null;
+	public static NamespacedKey namespace3 = null;
+	public static NamespacedKey namespace4 = null;
+	
+	public static NamespacedKey overload_namespace0 = null;
+	public static NamespacedKey overload_namespace1 = null;
+	public static NamespacedKey overload_namespace2 = null;
+	public static NamespacedKey overload_namespace3 = null;
+	public static NamespacedKey overload_namespace4 = null;
+	
+	public static NamespacedKey time_namespace0 = null;
+	public static NamespacedKey time_namespace1 = null;
+	public static NamespacedKey time_namespace2 = null;
+	public static NamespacedKey time_namespace3 = null;
+	public static NamespacedKey time_namespace4 = null;
+	
 	public static boolean is_component(ItemStack item) {
 		if (item == null) {
 			return false;
@@ -77,7 +93,24 @@ public class Update_component {
 	}
 
 	public static void set_recipe() {
-
+		Update_component.namespace0 = new NamespacedKey(Dropper_shop_plugin.instance, "update_component_0");
+		Update_component.namespace1 = new NamespacedKey(Dropper_shop_plugin.instance, "update_component_1");
+		Update_component.namespace2 = new NamespacedKey(Dropper_shop_plugin.instance, "update_component_2");
+		Update_component.namespace3 = new NamespacedKey(Dropper_shop_plugin.instance, "update_component_3");
+		Update_component.namespace4 = new NamespacedKey(Dropper_shop_plugin.instance, "update_component_4");
+		
+		Update_component.overload_namespace0 = new NamespacedKey(Dropper_shop_plugin.instance, "overload_component_0");
+		Update_component.overload_namespace1 = new NamespacedKey(Dropper_shop_plugin.instance, "overload_component_1");
+		Update_component.overload_namespace2 = new NamespacedKey(Dropper_shop_plugin.instance, "overload_component_2");
+		Update_component.overload_namespace3 = new NamespacedKey(Dropper_shop_plugin.instance, "overload_component_3");
+		Update_component.overload_namespace4 = new NamespacedKey(Dropper_shop_plugin.instance, "overload_component_4");
+		
+		Update_component.time_namespace0 = new NamespacedKey(Dropper_shop_plugin.instance, "time_component_0");
+		Update_component.time_namespace1 = new NamespacedKey(Dropper_shop_plugin.instance, "time_component_1");
+		Update_component.time_namespace2 = new NamespacedKey(Dropper_shop_plugin.instance, "time_component_2");
+		Update_component.time_namespace3 = new NamespacedKey(Dropper_shop_plugin.instance, "time_component_3");
+		Update_component.time_namespace4 = new NamespacedKey(Dropper_shop_plugin.instance, "time_component_4");
+		
 		ShapedRecipe sr0 = new ShapedRecipe(namespace0, Update_component.component_item[0]);
 		sr0.shape("ibi", "bcb", "ibi");
 		sr0.setIngredient('b', Material.IRON_BARS);
@@ -85,7 +118,7 @@ public class Update_component {
 		sr0.setIngredient('i', Material.IRON_BLOCK);
 		Dropper_shop_plugin.instance.getServer().addRecipe(sr0);
 		Dropper_shop_plugin.instance.get_sr().add(sr0);
-		Dropper_shop_plugin.instance.getLogger().info("升级模块合成表已经添加");
+		Dropper_shop_plugin.instance.getLogger().info("存储器升级模块合成表已经添加");
 
 		ShapedRecipe sr1 = new ShapedRecipe(namespace1, Update_component.component_item[1]);
 		sr1.shape("bcb", "cpc", "bcb");
@@ -94,7 +127,7 @@ public class Update_component {
 		sr1.setIngredient('b', Material.QUARTZ_BLOCK);
 		Dropper_shop_plugin.instance.getServer().addRecipe(sr1);
 		Dropper_shop_plugin.instance.get_sr().add(sr1);
-		Dropper_shop_plugin.instance.getLogger().info("1级升级模块合成表已经添加");
+		Dropper_shop_plugin.instance.getLogger().info("存储器1级升级模块合成表已经添加");
 
 		ShapedRecipe sr2 = new ShapedRecipe(namespace2, Update_component.component_item[2]);
 		sr2.shape("bcb", "cpc", "bcb");
@@ -103,7 +136,7 @@ public class Update_component {
 		sr2.setIngredient('b', Material.GOLD_BLOCK);
 		Dropper_shop_plugin.instance.getServer().addRecipe(sr2);
 		Dropper_shop_plugin.instance.get_sr().add(sr2);
-		Dropper_shop_plugin.instance.getLogger().info("2级升级模块合成表已经添加");
+		Dropper_shop_plugin.instance.getLogger().info("存储器2级升级模块合成表已经添加");
 
 		ShapedRecipe sr3 = new ShapedRecipe(namespace3, Update_component.component_item[3]);
 		sr3.shape("bcb", "cpc", "bcb");
@@ -112,7 +145,7 @@ public class Update_component {
 		sr3.setIngredient('b', Material.EMERALD_BLOCK);
 		Dropper_shop_plugin.instance.getServer().addRecipe(sr3);
 		Dropper_shop_plugin.instance.get_sr().add(sr3);
-		Dropper_shop_plugin.instance.getLogger().info("3级升级模块合成表已经添加");
+		Dropper_shop_plugin.instance.getLogger().info("存储器3级升级模块合成表已经添加");
 
 		ShapedRecipe sr4 = new ShapedRecipe(namespace4, Update_component.component_item[4]);
 		sr4.shape("bcb", "cpc", "bcb");
@@ -121,7 +154,7 @@ public class Update_component {
 		sr4.setIngredient('b', Material.DIAMOND_BLOCK);
 		Dropper_shop_plugin.instance.getServer().addRecipe(sr4);
 		Dropper_shop_plugin.instance.get_sr().add(sr4);
-		Dropper_shop_plugin.instance.getLogger().info("4级升级模块合成表已经添加");
+		Dropper_shop_plugin.instance.getLogger().info("存储器4级升级模块合成表已经添加");
 	}
 
 	public static int get_level(ItemStack item) {

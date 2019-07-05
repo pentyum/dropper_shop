@@ -48,7 +48,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		if (block.getWorld().getEnvironment() == Environment.NETHER) {
 			env_temp = 50;
 		} else if (block.getWorld().getEnvironment() == Environment.THE_END) {
-			env_temp = -10;
+			env_temp = -20;
 		}
 		light_temp = -8 + block.getLightLevel();
 		// Dropper_shop_plugin.instance.getLogger().info("温度=" + base_temp + "+" +
@@ -141,6 +141,9 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		this.set_auto_product((boolean) shop_save.get("auto-product"));
 		this.set_make_money((boolean) shop_save.get("make-money"));
 		this.set_money((int) shop_save.get("money"));
+		this.set_heat_keeping_upgrade((boolean) shop_save.get("heat-keeping-upgrade"));
+		this.set_overload_upgrade((int) shop_save.get("overload-upgrade"));
+		this.set_overload_upgrade((int) shop_save.get("time-upgrade"));
 	}
 
 	public void set_solid_reactant_slot(ItemStack slot_item) {
@@ -228,7 +231,8 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	}
 
 	public double get_power() { // 产热功率 K/tick
-		return this.power;
+		return this.power * (1 + 0.01 * this.get_manager().get_power_add_per_overload_upgrade() * this.overload_upgrade)
+				* (1 - 0.01 * this.get_manager().get_power_loss_per_time_upgrade() * this.time_upgrade);
 	}
 
 	public Fuel get_fuel() {
@@ -550,6 +554,8 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		lore.add("§r该升级可以增加燃料功率，");
 		lore.add("§r但是会减少燃料燃烧时间，总产能下降");
 		lore.add("§r需要添加升级组件");
+		lore.add("§7每级提升" + this.get_manager().get_power_add_per_overload_upgrade() + "%功率，降低"
+				+ this.get_manager().get_time_loss_per_overload_upgrade() + "%燃烧时间");
 		meta.setLore(lore);
 		icon.setItemMeta(meta);
 	}
@@ -563,7 +569,22 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		lore.add("§r该升级可以增加燃料燃烧时间，");
 		lore.add("§r但是会减少燃料功率，总产能上升");
 		lore.add("§r需要添加升级组件");
+		lore.add("§7每级提升" + this.get_manager().get_time_add_per_time_upgrade() + "%燃烧时间，降低"
+				+ this.get_manager().get_power_loss_per_time_upgrade() + "%功率");
 		meta.setLore(lore);
 		icon.setItemMeta(meta);
+	}
+
+	public int get_time_upgrade() {
+		return this.time_upgrade;
+	}
+
+	public double get_overload_upgrade() {
+		return this.overload_upgrade;
+	}
+
+	@Override
+	public Advanced_furnace_manager get_manager() {
+		return (Advanced_furnace_manager) this.get_manager();
 	}
 }

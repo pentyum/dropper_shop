@@ -34,7 +34,7 @@ public class Exp_saver_manager extends Gui_structure_manager {
 		this.set_gui(14, Material.BLUE_STAINED_GLASS_PANE, "§r每点经验修复一点耐久值", Gui_slot_type.Indicator);
 		this.set_gui(18, Material.IRON_PICKAXE, "§e等级升级", Gui_slot_type.Button);
 		this.set_gui(19, Material.ANVIL, "§e铁砧升级未完成", Gui_slot_type.Indicator);
-		this.set_gui(20, Material.NAME_TAG, "§e移除铁砧惩罚标记", Gui_slot_type.Button);
+		this.set_gui(20, Material.NAME_TAG, "§e移除铁砧惩罚标签", Gui_slot_type.Button);
 	}
 
 	@Override
