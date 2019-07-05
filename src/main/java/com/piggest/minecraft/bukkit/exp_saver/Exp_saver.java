@@ -254,6 +254,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 		ArrayList<String> lore = new ArrayList<String>();
 		lore.add("§r当前等级: " + structure_level);
 		lore.add("§r升级所需金币: " + Exp_saver.get_upgrade_price(structure_level));
+		lore.add("§r点击即可升级");
 		meta.setLore(lore);
 		upgrade_button.setItemMeta(meta);
 		this.add_exp(0);
@@ -329,6 +330,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 		lore.add("§7铁砧: " + anvil + "/" + Dropper_shop_plugin.instance.get_exp_saver_anvil_upgrade_need());
 		lore.add("§7开裂的铁砧: " + chipped_anvil + "/" + Dropper_shop_plugin.instance.get_exp_saver_anvil_upgrade_need());
 		lore.add("§7损坏的铁砧: " + damaged_anvil + "/" + Dropper_shop_plugin.instance.get_exp_saver_anvil_upgrade_need());
+		lore.add("§r把铁砧投入物品修补栏即可升级");
 		meta.setLore(lore);
 		anvil_icon.setItemMeta(meta);
 	}

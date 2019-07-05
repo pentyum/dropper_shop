@@ -505,6 +505,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		ArrayList<String> lore = new ArrayList<String>();
 		lore.add("§r当前等级: " + structure_level);
 		lore.add("§r升级所需金币: " + Exp_saver.get_upgrade_price(structure_level));
+		lore.add("§r点击即可升级");
 		meta.setLore(lore);
 		upgrade_button.setItemMeta(meta);
 	}
@@ -535,6 +536,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		ArrayList<String> lore = new ArrayList<String>();
 		lore.add("§r状态: " + (upgrade ? "已升级" : "未升级"));
 		lore.add("§r该升级可以允许你添加保温材料，减少热量损耗");
+		lore.add("§r需要添加升级组件");
 		meta.setLore(lore);
 		icon.setItemMeta(meta);
 	}
