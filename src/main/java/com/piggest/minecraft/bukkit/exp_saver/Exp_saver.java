@@ -13,12 +13,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.config.Price_config;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.structure.Capacity_upgradable;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 import com.piggest.minecraft.bukkit.utils.Repair_cost;
 
-public class Exp_saver extends Multi_block_with_gui implements HasRunner {
+public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capacity_upgradable {
 	private int saved_exp = 0;
 	private int max_saved_exp = 6000;
 	private int structure_level = 1;
@@ -187,14 +188,14 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 		} else if (slot == 17) {
 			this.input_exp(1000, player);
 		} else if (slot == 18) {
-			this.upgrade_by(player);
+			this.capacity_upgrade_by(player);
 		} else if (slot == 20) {
 			this.remove_repaircost_tag(player);
 		}
 	}
 
 	@SuppressWarnings("deprecation")
-	public synchronized void edit_mending_slot(int edit_type) {  //保障线程安全
+	public synchronized void edit_mending_slot(int edit_type) { // 保障线程安全
 		ItemStack mending = this.get_mending();
 		if (edit_type == 0) { // 修理
 			mending.setDurability((short) (mending.getDurability() - this.remove_exp(1)));
@@ -269,7 +270,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner {
 				+ price_config.get_exp_saver_upgrade_base_price();
 	}
 
-	public boolean upgrade_by(Player player) {
+	public boolean capacity_upgrade_by(Player player) {
 		int current_level = this.get_structure_level();
 		if (current_level >= Dropper_shop_plugin.instance.get_exp_saver_max_structure_level()) {
 			player.sendMessage("已经升级至满级");

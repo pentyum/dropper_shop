@@ -11,25 +11,34 @@ import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
 import org.bukkit.block.Furnace;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.exp_saver.Exp_saver;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.structure.Capacity_upgradable;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
-public class Advanced_furnace extends Multi_block_with_gui implements HasRunner {
+public class Advanced_furnace extends Multi_block_with_gui implements HasRunner, Capacity_upgradable {
 	private Reaction_container reaction_container = new Reaction_container();
 	private double power = 0;
 	private Advanced_furnace_temp_runner temp_runner = new Advanced_furnace_temp_runner(this);
 	private Advanced_furnace_reaction_runner reaction_runner = new Advanced_furnace_reaction_runner(this);
 	private Advanced_furnace_io_runner io_runner = new Advanced_furnace_io_runner(this);
+	private int heat_keeping_value = 0;
 	private Fuel fuel;
 	public int fuel_ticks = 0;
 	private int money = 0;
-	private int money_limit = 10000;
+	private int money_limit = 9000;
+	private int structure_level = 1;
+	private boolean heat_keeping_upgrade = false;
+	private int overload_upgrade = 0;
+	private int time_upgrade = 0;
 
 	public static double get_block_temperature(Block block) {
 		double base_temp = block.getTemperature() * 20 + 270;
@@ -62,6 +71,10 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 		this.set_open(false);
 		this.set_make_money(false);
 		this.set_money(0);
+		this.set_structure_level(1);
+		this.set_heat_keeping_upgrade(false);
+		this.set_overload_upgrade(0);
+		this.set_time_upgrade(0);
 	}
 
 	public double get_base_temperature() {
@@ -116,6 +129,9 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 					(Integer) shop_save.get("solid-reactant-slot-num"));
 			this.set_solid_reactant_slot(solid_reactant_slot_item);
 		}
+		if (shop_save.get("fuel-product-slot") != null) {
+			this.set_fuel_product_slot((ItemStack) shop_save.get("fuel-product-slot"));
+		}
 		for (Entry<String, Integer> entry : contents.entrySet()) {
 			String name = entry.getKey();
 			Integer unit = entry.getValue();
@@ -128,11 +144,15 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 	}
 
 	public void set_solid_reactant_slot(ItemStack slot_item) {
-		this.gui.setItem(9, slot_item);
+		this.gui.setItem(this.get_solid_reactant_slot(), slot_item);
 	}
 
 	public void set_fuel_slot(ItemStack slot_item) {
-		this.gui.setItem(17, slot_item);
+		this.gui.setItem(this.get_fuel_slot(), slot_item);
+	}
+
+	public void set_fuel_product_slot(ItemStack item) {
+		this.gui.setItem(this.get_fuel_product_slot(), item);
 	}
 
 	@Override
@@ -149,6 +169,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 		ItemStack fuel_slot = this.gui.getItem(get_fuel_slot());
 		ItemStack solid_product_slot = this.gui.getItem(this.get_solid_product_slot());
 		ItemStack solid_reactant_slot = this.gui.getItem(this.get_solid_reactant_slot());
+		ItemStack fuel_product_slot = this.gui.getItem(this.get_fuel_product_slot());
 		if (!Grinder.is_empty(fuel_slot)) {
 			save.put("fuel-slot", Material_ext.get_id_name(fuel_slot));
 			save.put("fuel-slot-num", fuel_slot.getAmount());
@@ -161,6 +182,9 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 			save.put("solid-reactant-slot", Material_ext.get_id_name(solid_reactant_slot));
 			save.put("solid-reactant-slot-num", solid_reactant_slot.getAmount());
 		}
+		if (!Grinder.is_empty(fuel_product_slot)) {
+			save.put("fuel-product-slot", fuel_product_slot);
+		}
 		for (Entry<Chemical, Integer> entry : this.get_reaction_container().get_all_chemical().entrySet()) {
 			Chemical chemical = entry.getKey();
 			Integer unit = entry.getValue();
@@ -171,9 +195,13 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 		save.put("open", this.is_open());
 		save.put("make-money", this.get_make_money());
 		save.put("money", this.money);
+		save.put("structure-level", this.structure_level);
+		save.put("heat-keeping-upgrade", this.heat_keeping_upgrade);
+		save.put("overload-upgrade", this.overload_upgrade);
+		save.put("time-upgrade", this.time_upgrade);
 		return save;
 	}
-	
+
 	public Furnace get_center_furnace() {
 		return (Furnace) this.get_location().getBlock().getState();
 	}
@@ -217,7 +245,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 			lore.set(1, "§r燃料: " + fuel.name());
 			power = fuel.get_power();
 		} else {
-			lore.set(1, "§r燃料: null");
+			lore.set(1, "§r燃料: 无");
 		}
 		temp_info_meta.setLore(lore);
 		temp_info.setItemMeta(temp_info_meta);
@@ -225,7 +253,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 	}
 
 	public double get_k() { // 热传导率 K/(deltaK tick)
-		return 0.0015;
+		return 0.0015 * (1 - 0.01 * this.get_heat_keeping_value());
 	}
 
 	public double get_power_loss() {
@@ -341,6 +369,10 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 		return 17;
 	}
 
+	public int get_fuel_product_slot() {
+		return 35;
+	}
+
 	public int get_solid_product_slot() {
 		return 18;
 	}
@@ -363,8 +395,9 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 	}
 
 	public int add_money(int money) {
-		if (this.money + money > this.money_limit) {
-			money = this.money_limit - this.money;
+		int money_limit = this.get_money_limit();
+		if (this.money + money > money_limit) {
+			money = money_limit - this.money;
 		}
 		this.set_money(this.money + money);
 		return this.money;
@@ -379,7 +412,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 		ItemStack item = this.gui.getItem(8);
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = meta.getLore();
-		String string = "§r储存: " + money + "/" + this.money_limit;
+		String string = "§r储存: " + money + "/" + this.get_money_limit();
 		try {
 			lore.set(1, string);
 		} catch (IndexOutOfBoundsException e) {
@@ -396,7 +429,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 	}
 
 	public int get_money_limit() {
-		return this.money_limit;
+		return this.money_limit + 1000 * this.structure_level;
 	}
 
 	@Override
@@ -441,6 +474,8 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 					iterator.remove();
 				}
 			}
+		} else if (slot == 27) {
+			this.capacity_upgrade_by(player);
 		}
 	}
 
@@ -452,5 +487,81 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner 
 	@Override
 	public boolean on_switch_pressed(Player player, int slot, boolean on) {
 		return true;
+	}
+
+	public int get_heat_keeping_value() { // 热传导率降低率，单位百分比
+		return this.heat_keeping_value;
+	}
+
+	public int get_structure_level() {
+		return this.structure_level;
+	}
+
+	public void set_structure_level(int structure_level) {
+		this.structure_level = structure_level;
+		ItemStack upgrade_button = this.gui.getItem(27);
+		ItemMeta meta = upgrade_button.getItemMeta();
+		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+		ArrayList<String> lore = new ArrayList<String>();
+		lore.add("§r当前等级: " + structure_level);
+		lore.add("§r升级所需金币: " + Exp_saver.get_upgrade_price(structure_level));
+		meta.setLore(lore);
+		upgrade_button.setItemMeta(meta);
+	}
+
+	@Override
+	public boolean capacity_upgrade_by(Player player) {
+		int current_level = this.get_structure_level();
+		if (current_level >= Dropper_shop_plugin.instance.get_exp_saver_max_structure_level()) {
+			player.sendMessage("已经升级至满级");
+			return false;
+		}
+		int need_price = Exp_saver.get_upgrade_price(current_level);
+		if (Dropper_shop_plugin.instance.cost_player_money(need_price, player)) {
+			this.set_structure_level(current_level + 1);
+			player.sendMessage("消耗了" + need_price + "金币把高级熔炉升级至" + (current_level + 1) + "级");
+			return true;
+		} else {
+			player.sendMessage("你的钱不够，高级熔炉由" + current_level + "升级至" + (current_level + 1) + "级需要" + need_price + "金币");
+			return false;
+		}
+	}
+
+	public void set_heat_keeping_upgrade(boolean upgrade) {
+		this.heat_keeping_upgrade = upgrade;
+		ItemStack icon = this.gui.getItem(28);
+		ItemMeta meta = icon.getItemMeta();
+		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+		ArrayList<String> lore = new ArrayList<String>();
+		lore.add("§r状态: " + (upgrade ? "已升级" : "未升级"));
+		lore.add("§r该升级可以允许你添加保温材料，减少热量损耗");
+		meta.setLore(lore);
+		icon.setItemMeta(meta);
+	}
+
+	public void set_overload_upgrade(int level) {
+		this.overload_upgrade = level;
+		ItemStack icon = this.gui.getItem(29);
+		ItemMeta meta = icon.getItemMeta();
+		ArrayList<String> lore = new ArrayList<String>();
+		lore.add("§r当前等级: " + level);
+		lore.add("§r该升级可以增加燃料功率，");
+		lore.add("§r但是会减少燃料燃烧时间，总产能下降");
+		lore.add("§r需要添加升级组件");
+		meta.setLore(lore);
+		icon.setItemMeta(meta);
+	}
+
+	public void set_time_upgrade(int level) {
+		this.time_upgrade = level;
+		ItemStack icon = this.gui.getItem(30);
+		ItemMeta meta = icon.getItemMeta();
+		ArrayList<String> lore = new ArrayList<String>();
+		lore.add("§r当前等级: " + level);
+		lore.add("§r该升级可以增加燃料燃烧时间，");
+		lore.add("§r但是会减少燃料功率，总产能上升");
+		lore.add("§r需要添加升级组件");
+		meta.setLore(lore);
+		icon.setItemMeta(meta);
 	}
 }

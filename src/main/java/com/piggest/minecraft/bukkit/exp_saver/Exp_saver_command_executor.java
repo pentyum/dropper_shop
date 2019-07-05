@@ -51,7 +51,7 @@ public class Exp_saver_command_executor implements TabExecutor {
 				player.sendMessage("经验存储器结构已经移除");
 				return true;
 			} else if (args[0].equalsIgnoreCase("upgrade")) {
-				exp_saver.upgrade_by(player);
+				exp_saver.capacity_upgrade_by(player);
 				return true;
 			}
 		}

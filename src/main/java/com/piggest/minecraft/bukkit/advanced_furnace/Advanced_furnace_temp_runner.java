@@ -1,5 +1,6 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
@@ -51,6 +52,10 @@ public class Advanced_furnace_temp_runner extends Structure_runner {
 			Fuel fuel = Fuel.get_fuel(fuel_item);
 			if (fuel != null) {
 				fuel_item.setAmount(fuel_item.getAmount() - 1);
+				if (fuel == Fuel.lava_bucket) {
+					ItemStack bucket = new ItemStack(Material.BUCKET);
+					this.adv_furnace.set_fuel_product_slot(bucket);
+				}
 				adv_furnace.set_fuel(fuel);
 			}
 		}
