@@ -585,6 +585,6 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 
 	@Override
 	public Advanced_furnace_manager get_manager() {
-		return (Advanced_furnace_manager) this.get_manager();
+		return (Advanced_furnace_manager) super.get_manager();
 	}
 }
