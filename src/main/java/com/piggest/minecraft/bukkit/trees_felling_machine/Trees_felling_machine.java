@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.Stack;
 
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
@@ -115,13 +116,13 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 				Stack<Block> tree_stack = new Stack<Block>();
 				for (; y >= 40; y--) { // 继续往下检测，找到原木方块
 					Block block = this.get_location().getWorld().getBlockAt(this.current_x, y, this.current_z);
-					if (block.getType().name().contains("_LOG") || block.getType().name().contains("_LEAVES")) {
+					if (Tag.LOGS.isTagged(block.getType()) || Tag.LEAVES.isTagged(block.getType())) {
 						tree_stack.push(block);
 					}
 				}
-				while(!tree_stack.isEmpty()) {
+				while (!tree_stack.isEmpty()) {
 					Block block = tree_stack.pop();
-					if (block.getType().name().contains("_LOG")) { // 如果是原木方块则进入砍伐程序
+					if (Tag.LOGS.isTagged(block.getType())) { // 如果是原木方块则进入砍伐程序
 						ItemStack item = new ItemStack(block.getType());
 						if (this.get_axe() == null) {
 							return;
@@ -131,7 +132,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 						}
 						block.setType(Material.AIR);
 						this.use_axe();
-					} else if (block.getType().name().contains("_LEAVES")) { // 如果是树叶方块则进入树叶清楚程序
+					} else if (Tag.LEAVES.isTagged(block.getType())) { // 如果是树叶方块则进入树叶清楚程序
 						BlockData data = block.getBlockData();
 						Leaves leaves = (Leaves) data;
 						if (leaves.isPersistent() == true) { // 树叶为人为放置，直接跳过。

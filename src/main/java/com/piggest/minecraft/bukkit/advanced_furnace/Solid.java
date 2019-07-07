@@ -1,7 +1,10 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
 public enum Solid implements Chemical {
@@ -20,6 +23,14 @@ public enum Solid implements Chemical {
 	Solid(int unit, String display_name) {
 		this.unit = unit;
 		this.display_name = display_name;
+	}
+
+	public NamespacedKey get_namespacedkey() {
+		if (Material.getMaterial(this.name()) == null) {
+			return Dropper_shop_plugin.instance.get_key(this.name());
+		} else {
+			return NamespacedKey.minecraft(this.name().toLowerCase());
+		}
 	}
 
 	public static Solid get_solid(ItemStack itemstack) {

@@ -1,10 +1,14 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
+import org.bukkit.NamespacedKey;
+
 public interface Chemical {
 
 	public String get_displayname();
 
 	public String get_name();
+	
+	public NamespacedKey get_namespacedkey();
 	
 	public static Chemical get_chemical(String name) {
 		if (name.contains("_LOG")) {
