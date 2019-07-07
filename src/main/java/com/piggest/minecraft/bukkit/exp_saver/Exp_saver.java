@@ -32,7 +32,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 
 	public Exp_saver() {
 		this.set_process(0);
-		this.set_structure_level(1);
+		this.set_capacity_level(1);
 		this.set_anvil_count(0, 0, 0);
 		ItemStack remove_repaircost_button = this.gui.getItem(20);
 		ItemMeta meta = remove_repaircost_button.getItemMeta();
@@ -86,7 +86,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 	@Override
 	public void set_from_save(Map<?, ?> shop_save) {
 		super.set_from_save(shop_save);
-		this.set_structure_level((int) shop_save.get("structure-level"));
+		
 		this.add_exp((int) shop_save.get("saved-exp"));
 		this.set_mending((ItemStack) shop_save.get("mending-item"));
 		int anvil = (int) shop_save.get("anvil-count");
@@ -103,7 +103,6 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 	public HashMap<String, Object> get_save() {
 		HashMap<String, Object> save = super.get_save();
 		save.put("saved-exp", this.saved_exp);
-		save.put("structure-level", this.structure_level);
 		save.put("mending-item", this.get_mending());
 		save.put("anvil-count", this.anvil_count);
 		save.put("chipped-anvil-count", this.chipped_anvil_count);
@@ -242,11 +241,11 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 		return this.max_saved_exp + 2000 * this.structure_level;
 	}
 
-	public int get_structure_level() {
+	public int get_capacity_level() {
 		return this.structure_level;
 	}
 
-	public void set_structure_level(int structure_level) {
+	public void set_capacity_level(int structure_level) {
 		this.structure_level = structure_level;
 		ItemStack upgrade_button = this.gui.getItem(18);
 		ItemMeta meta = upgrade_button.getItemMeta();
@@ -272,14 +271,14 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 	}
 
 	public boolean capacity_upgrade_by(Player player) {
-		int current_level = this.get_structure_level();
+		int current_level = this.get_capacity_level();
 		if (current_level >= Dropper_shop_plugin.instance.get_exp_saver_max_structure_level()) {
 			player.sendMessage("已经升级至满级");
 			return false;
 		}
 		int need_price = Exp_saver.get_upgrade_price(current_level);
 		if (Dropper_shop_plugin.instance.cost_player_money(need_price, player)) {
-			this.set_structure_level(current_level + 1);
+			this.set_capacity_level(current_level + 1);
 			player.sendMessage("消耗了" + need_price + "金币把经验存储器升级至" + (current_level + 1) + "级");
 			return true;
 		} else {

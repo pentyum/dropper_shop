@@ -40,7 +40,11 @@ public class Chunk_location {
 	public Chunk get_chunk() {
 		return this.get_world().getChunkAt(this.x, this.z);
 	}
-
+	
+	public boolean is_loaded() {
+		return this.get_world().isChunkLoaded(get_x(), get_z());
+	}
+	
 	@Override
 	public boolean equals(Object other) {
 		if (other instanceof Chunk_location) {

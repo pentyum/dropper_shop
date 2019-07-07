@@ -71,7 +71,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		this.set_open(false);
 		this.set_make_money(false);
 		this.set_money(0);
-		this.set_structure_level(1);
+		this.set_capacity_level(1);
 		this.set_heat_keeping_upgrade(false);
 		this.set_overload_upgrade(0);
 		this.set_time_upgrade(0);
@@ -497,11 +497,11 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		return this.heat_keeping_value;
 	}
 
-	public int get_structure_level() {
+	public int get_capacity_level() {
 		return this.structure_level;
 	}
 
-	public void set_structure_level(int structure_level) {
+	public void set_capacity_level(int structure_level) {
 		this.structure_level = structure_level;
 		ItemStack upgrade_button = this.gui.getItem(27);
 		ItemMeta meta = upgrade_button.getItemMeta();
@@ -516,14 +516,14 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 
 	@Override
 	public boolean capacity_upgrade_by(Player player) {
-		int current_level = this.get_structure_level();
+		int current_level = this.get_capacity_level();
 		if (current_level >= Dropper_shop_plugin.instance.get_exp_saver_max_structure_level()) {
 			player.sendMessage("已经升级至满级");
 			return false;
 		}
 		int need_price = Exp_saver.get_upgrade_price(current_level);
 		if (Dropper_shop_plugin.instance.cost_player_money(need_price, player)) {
-			this.set_structure_level(current_level + 1);
+			this.set_capacity_level(current_level + 1);
 			player.sendMessage("消耗了" + need_price + "金币把高级熔炉升级至" + (current_level + 1) + "级");
 			return true;
 		} else {

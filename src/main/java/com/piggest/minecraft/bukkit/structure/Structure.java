@@ -15,8 +15,7 @@ public abstract class Structure {
 	protected int x;
 	protected int y;
 	protected int z;
-	private boolean loaded = false;
-
+	
 	public void set_from_save(Map<?, ?> save) {
 		this.x = (int) save.get("x");
 		this.y = (int) save.get("y");
@@ -25,6 +24,10 @@ public abstract class Structure {
 		if (this instanceof Ownable) {
 			Ownable ownable = (Ownable) this;
 			ownable.set_owner((String) save.get("owner"));
+		}
+		if (this instanceof Capacity_upgradable) {
+			Capacity_upgradable upgradable = (Capacity_upgradable) this;
+			upgradable.set_capacity_level((int) save.get("structure-level"));
 		}
 	}
 
@@ -56,12 +59,7 @@ public abstract class Structure {
 	}
 
 	public boolean is_loaded() {
-		return this.loaded;
-	}
-
-	public void set_loaded(boolean loaded) {
-		Dropper_shop_plugin.instance.getLogger().info(this.toString() + "激活状态:" + loaded);
-		this.loaded = loaded;
+		return this.get_chunk_location().is_loaded();
 	}
 
 	public HashMap<String, Object> get_save() {
@@ -73,6 +71,10 @@ public abstract class Structure {
 		if (this instanceof Ownable) {
 			Ownable ownable = (Ownable) this;
 			save.put("owner", ownable.get_owner_name());
+		}
+		if (this instanceof Capacity_upgradable) {
+			Capacity_upgradable upgradable = (Capacity_upgradable) this;
+			save.put("structure-level", upgradable.get_capacity_level());
 		}
 		return save;
 	}
