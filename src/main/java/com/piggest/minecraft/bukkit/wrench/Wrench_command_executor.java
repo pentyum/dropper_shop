@@ -13,31 +13,28 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
 public class Wrench_command_executor implements CommandExecutor {
 	private Use_wrench_listener item_listener = new Use_wrench_listener(this);
-	private ItemStack wrench_item = null;
 	private NamespacedKey namespace = new NamespacedKey(Dropper_shop_plugin.instance, "wrench");
 	private ConfigurationSection price = null;
 
-	public ItemStack get_wrench_item() {
-		return this.wrench_item;
-	}
-
 	public void init_wrench_item() {
-		this.wrench_item = new ItemStack(Material.IRON_PICKAXE);
-		ItemMeta meta = wrench_item.getItemMeta();
+		ItemStack item = new ItemStack(Material.IRON_PICKAXE);
+		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName("§r扳手");
 		ArrayList<String> lore = new ArrayList<String>();
 		lore.add("§r右键方块使方块");
 		lore.add("§r正面转至该面");
 		lore.add("§r(潜行状态下相反)");
 		meta.setLore(lore);
-		this.wrench_item.setItemMeta(meta);
+		item.setItemMeta(meta);
+		Material_ext.register("wrench", item);
 	}
 
 	private void set_recipe() {
-		ShapedRecipe sr1 = new ShapedRecipe(this.namespace, this.wrench_item);
+		ShapedRecipe sr1 = new ShapedRecipe(this.namespace, Material_ext.new_item("wrench", 1));
 		sr1.shape("i i", "iii", " i ");
 		sr1.setIngredient('i', Material.IRON_INGOT);
 		Dropper_shop_plugin.instance.getServer().addRecipe(sr1);
@@ -117,7 +114,7 @@ public class Wrench_command_executor implements CommandExecutor {
 						sender.sendMessage("只有玩家才能获得扳手");
 					} else {
 						Player player = (Player) sender;
-						player.getInventory().addItem(this.wrench_item.clone());
+						player.getInventory().addItem(Material_ext.new_item("wrench", 1));
 					}
 				} else {
 					sender.sendMessage("你没有权限直接获得扳手");

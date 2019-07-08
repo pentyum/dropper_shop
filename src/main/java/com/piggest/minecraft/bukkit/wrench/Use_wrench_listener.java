@@ -18,6 +18,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
 import com.piggest.minecraft.bukkit.structure.Structure;
 import com.piggest.minecraft.bukkit.structure.Structure_manager;
@@ -48,10 +49,11 @@ public class Use_wrench_listener implements Listener {
 
 	@EventHandler
 	public void on_use_wrench(PlayerInteractEvent event) {
-		if (event.useItemInHand() != Result.DENY && event.useInteractedBlock() != Result.DENY && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+		if (event.useItemInHand() != Result.DENY && event.useInteractedBlock() != Result.DENY
+				&& event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			if (event.hasItem() == true && event.getBlockFace() != null) {
 				ItemStack wrench_item = event.getItem();
-				if (wrench_item.isSimilar(wrench_plugin.get_wrench_item())) {
+				if (Material_ext.get_id_name(wrench_item).equalsIgnoreCase("wrench")) {
 					Player player = event.getPlayer();
 					if (!player.hasPermission("wrench.use")) {
 						player.sendMessage("你没有使用扳手的权限!");

@@ -23,7 +23,7 @@ public class Material_ext {
 	public static String get_name(Material material) { // 获得材质名称
 		return material.name();
 	}
-
+	
 	public static String get_display_name(ItemStack itemstack) { // 获得显示名称
 		if (itemstack.hasItemMeta() == true) {
 			ItemMeta meta = itemstack.getItemMeta();
@@ -38,6 +38,10 @@ public class Material_ext {
 		return get_namespacedkey(itemstack).getKey();
 	}
 
+	public static String get_full_name(ItemStack itemstack) {
+		return get_namespacedkey(itemstack).toString();
+	}
+
 	@SuppressWarnings("deprecation")
 	public static NamespacedKey get_namespacedkey(ItemStack itemstack) { // 获得内部ID名称
 		net.minecraft.server.v1_14_R1.ItemStack nms_item = CraftItemStack.asNMSCopy(itemstack);
@@ -46,8 +50,10 @@ public class Material_ext {
 			String id_name = tag.getString("ext_id");
 			if (id_name != null) {
 				String[] namespace_and_key = id_name.split(":");
-				NamespacedKey namespacedkey = new NamespacedKey(namespace_and_key[0], namespace_and_key[1]);
-				return namespacedkey;
+				if (namespace_and_key.length == 2) {
+					NamespacedKey namespacedkey = new NamespacedKey(namespace_and_key[0], namespace_and_key[1]);
+					return namespacedkey;
+				}
 			}
 		}
 		if (itemstack.hasItemMeta() == true) {
