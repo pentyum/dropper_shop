@@ -52,6 +52,9 @@ import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool;
 import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_command_executor;
 import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_manager;
 import com.piggest.minecraft.bukkit.music_stick.Note_stick_listener;
+import com.piggest.minecraft.bukkit.pigman_switch.Pigman_spawn_listener;
+import com.piggest.minecraft.bukkit.pigman_switch.Pigman_switch;
+import com.piggest.minecraft.bukkit.pigman_switch.Pigman_switch_manager;
 import com.piggest.minecraft.bukkit.structure.Structure;
 import com.piggest.minecraft.bukkit.structure.Structure_listener;
 import com.piggest.minecraft.bukkit.structure.Structure_manager;
@@ -96,10 +99,11 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	private Listener[] structure_listeners = { new Depository_listener(), new Dropper_shop_listener(),
 			new Update_component_listener(), new Grinder_listener(), new Advanced_furnace_listener(),
-			new Exp_saver_listener() };
+			new Exp_saver_listener(),new Pigman_spawn_listener() };
 	// private HashMap<String, Gui_config> gui_config = new HashMap<String,
 	// Gui_config>();
 	private HashMap<String, String> enchantment_name = new HashMap<String, String>();
+	private Pigman_switch_manager pigman_switch_manager;
 
 	public Dropper_shop_plugin() {
 		this.getLogger().info("加载配置中");
@@ -208,7 +212,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.exp_saver_manager = new Exp_saver_manager();
 		this.lottery_pool_manager = new Lottery_pool_manager();
 		this.trees_felling_machine_manager = new Trees_felling_machine_manager();
-
+		this.pigman_switch_manager = new Pigman_switch_manager();
+		
 		this.structure_manager_map.put(Dropper_shop.class, shop_manager);
 		this.structure_manager_map.put(Depository.class, depository_manager);
 		this.structure_manager_map.put(Grinder.class, grinder_manager);
@@ -216,6 +221,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.structure_manager_map.put(Exp_saver.class, exp_saver_manager);
 		this.structure_manager_map.put(Lottery_pool.class, lottery_pool_manager);
 		this.structure_manager_map.put(Trees_felling_machine.class, trees_felling_machine_manager);
+		this.structure_manager_map.put(Pigman_switch.class, pigman_switch_manager);
 	}
 
 	@Override

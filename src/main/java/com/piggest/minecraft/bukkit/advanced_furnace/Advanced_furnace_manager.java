@@ -42,7 +42,7 @@ public class Advanced_furnace_manager extends Gui_structure_manager {
 		this.set_gui(6, Material.DISPENSER, "§r清除全部气体", Gui_slot_type.Button);
 		this.set_gui(8, Material.CHEST, "§e金币制造", Gui_slot_type.Switch);
 		this.set_gui(26, Material.FURNACE, "§e信息", Gui_slot_type.Indicator);
-		this.set_gui(27, Material.IRON_PICKAXE, "§e金币容量升级", Gui_slot_type.Indicator);
+		this.set_gui(27, Material.IRON_PICKAXE, "§e金币容量升级", Gui_slot_type.Button);
 		this.set_gui(28, Material.IRON_CHESTPLATE, "§e保温升级", Gui_slot_type.Indicator);
 		this.set_gui(29, Material.GLOWSTONE_DUST, "§e高速燃烧升级", Gui_slot_type.Indicator);
 		this.set_gui(30, Material.REDSTONE, "§e长时燃烧升级", Gui_slot_type.Indicator);

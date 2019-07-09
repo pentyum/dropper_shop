@@ -115,7 +115,25 @@ public abstract class Structure_manager {
 	public HashSet<Structure> get_all_structures_in_chunk(Chunk_location chunk_location) {
 		return this.chunk_structure_map.get(chunk_location);
 	}
-	
-	public abstract Material[][][] get_model(); //model[y][z][x]
+
+	public HashSet<Structure> get_all_structures_around_chunk(Chunk_location chunk_location, int r) {
+		HashSet<Structure> result = new HashSet<Structure>();
+		int center_x = chunk_location.get_x();
+		int center_z = chunk_location.get_z();
+		int x, z;
+		for (x = center_x - r; x <= center_x + r; x++) {
+			for (z = center_z - r; z <= center_z + r; z++) {
+				Chunk_location check_chunk = new Chunk_location(chunk_location.get_world_name(), x, z);
+				HashSet<Structure> find = this.get_all_structures_in_chunk(check_chunk);
+				if (find != null) {
+					result.addAll(find);
+				}
+			}
+		}
+		return result;
+	}
+
+	public abstract Material[][][] get_model(); // model[y][z][x]
+
 	public abstract int[] get_center();
 }
