@@ -198,7 +198,6 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		save.put("open", this.is_open());
 		save.put("make-money", this.get_make_money());
 		save.put("money", this.money);
-		save.put("structure-level", this.structure_level);
 		save.put("heat-keeping-upgrade", this.heat_keeping_upgrade);
 		save.put("overload-upgrade", this.overload_upgrade);
 		save.put("time-upgrade", this.time_upgrade);
