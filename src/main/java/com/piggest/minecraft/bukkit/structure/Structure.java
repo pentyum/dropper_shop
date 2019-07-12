@@ -15,7 +15,7 @@ public abstract class Structure {
 	protected int x;
 	protected int y;
 	protected int z;
-	
+
 	public void set_from_save(Map<?, ?> save) {
 		this.x = (int) save.get("x");
 		this.y = (int) save.get("y");
@@ -58,6 +58,9 @@ public abstract class Structure {
 		return new Chunk_location(this.world_name, this.x / 16, this.z / 16);
 	}
 
+	/**
+	 * 判断结构所在区块是否被加载
+	 */
 	public boolean is_loaded() {
 		return this.get_chunk_location().is_loaded();
 	}
@@ -83,12 +86,18 @@ public abstract class Structure {
 		return Dropper_shop_plugin.instance.get_structure_manager().get(this.getClass());
 	}
 
+	/**
+	 * 创建前调用的函数，返回true表明创建成功。
+	 */
 	public abstract boolean create_condition(Player player);
 
 	public void remove() {
 		this.get_manager().remove(this);
 	}
 
+	/**
+	 * 破坏方块时调用的函数，返回true表面允许破坏。
+	 */
 	protected abstract boolean on_break(Player player);
 
 	@Override
