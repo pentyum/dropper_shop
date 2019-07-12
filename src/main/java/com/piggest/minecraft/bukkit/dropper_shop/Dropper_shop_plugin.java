@@ -228,7 +228,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		Dropper_shop_plugin.instance = this;
-		this.nms_manager = new NMS_manager(this.getServer().getVersion());
+		this.nms_manager = new NMS_manager(Bukkit.getBukkitVersion());
 		this.init_structure_manager();
 
 		this.getCommand("depository").setExecutor(new Depository_command_executor());

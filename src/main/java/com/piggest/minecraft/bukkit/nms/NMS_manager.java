@@ -7,6 +7,16 @@ public class NMS_manager {
 
 	public NMS_manager(String version) {
 		Dropper_shop_plugin.instance.getLogger().info("当前NMS:" + version);
-		ext_id_provider = new Ext_id_1_14();
+		NMS_version nms_version = NMS_version.parse_version(version);
+		switch (nms_version) {
+		case v1_14:
+			Dropper_shop_plugin.instance.getLogger().info("已适配NMS:" + version);
+			ext_id_provider = new Ext_id_1_14();
+			break;
+		default:
+			Dropper_shop_plugin.instance.getLogger().warning("NMS未能适配!");
+			ext_id_provider = new Ext_id_1_14();
+			break;
+		}
 	}
 }
