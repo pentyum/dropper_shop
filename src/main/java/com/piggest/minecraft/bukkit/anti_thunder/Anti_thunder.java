@@ -59,6 +59,7 @@ public class Anti_thunder extends Multi_block_structure implements Ownable {
 
 	@Override
 	protected boolean on_break(Player player) {
+		this.runner.cancel();
 		return true;
 	}
 

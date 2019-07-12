@@ -12,42 +12,51 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_manager;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.nms.NMS_manager;
 
 public class Update_component {
 	public static String name = "§r存储升级组件";
-	public static String adv_furnace_overload_name = "高速升级组件";
-	public static String adv_furnace_time_name = "长时升级组件";
+	public static String id_name = "depository_upgrade_component";
+
+	public static String adv_furnace_overload_name = "§r高速升级组件";
+	public static String adv_furnace_overload_id_name = "adv_furnace_overload_upgrade_component";
+
+	public static String adv_furnace_time_name = "§r长时升级组件";
+	public static String adv_furnace_time_id_name = "adv_furnace_time_upgrade_component";
+
 	public static ItemStack[] component_item = new ItemStack[Depository.capacity_level.length];
 	public static ItemStack[] overload_component_item = new ItemStack[5];
 	public static ItemStack[] time_component_item = new ItemStack[5];
-	
-	public static NamespacedKey namespace0 = null;
-	public static NamespacedKey namespace1 = null;
-	public static NamespacedKey namespace2 = null;
-	public static NamespacedKey namespace3 = null;
-	public static NamespacedKey namespace4 = null;
-	
-	public static NamespacedKey overload_namespace0 = null;
-	public static NamespacedKey overload_namespace1 = null;
-	public static NamespacedKey overload_namespace2 = null;
-	public static NamespacedKey overload_namespace3 = null;
-	public static NamespacedKey overload_namespace4 = null;
-	
-	public static NamespacedKey time_namespace0 = null;
-	public static NamespacedKey time_namespace1 = null;
-	public static NamespacedKey time_namespace2 = null;
-	public static NamespacedKey time_namespace3 = null;
-	public static NamespacedKey time_namespace4 = null;
-	
-	public static boolean is_component(ItemStack item) {
+
+	public static NamespacedKey depository_upgrade0 = null;
+	public static NamespacedKey depository_upgrade1 = null;
+	public static NamespacedKey depository_upgrade2 = null;
+	public static NamespacedKey depository_upgrade3 = null;
+	public static NamespacedKey depository_upgrade4 = null;
+
+	public static NamespacedKey adv_furnace_overload0 = null;
+	public static NamespacedKey adv_furnace_overload1 = null;
+	public static NamespacedKey adv_furnace_overload2 = null;
+	public static NamespacedKey adv_furnace_overload3 = null;
+	public static NamespacedKey adv_furnace_overload4 = null;
+
+	public static NamespacedKey adv_furnace_time0 = null;
+	public static NamespacedKey adv_furnace_time1 = null;
+	public static NamespacedKey adv_furnace_time2 = null;
+	public static NamespacedKey adv_furnace_time3 = null;
+	public static NamespacedKey adv_furnace_time4 = null;
+
+	public static boolean is_depository_upgrade_component(ItemStack item) {
 		if (item == null) {
 			return false;
 		}
-		if (item.getItemMeta().hasDisplayName() == false) {
+		String ext_id = NMS_manager.ext_id_provider.get_ext_id(item);
+		if (ext_id == null) {
 			return false;
 		}
-		return item.getItemMeta().getDisplayName().equals(Update_component.name);
+		return ext_id.equals(Update_component.id_name);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -70,7 +79,8 @@ public class Update_component {
 		item.setItemMeta(meta);
 	}
 
-	public static ItemStack[] init_component() {
+	private static ItemStack[] init_depository_component() {
+		Dropper_shop_plugin.instance.getLogger().info("开始初始化存储器升级组件");
 		ItemStack component_item = new ItemStack(Material.IRON_PICKAXE);
 		ItemMeta meta = component_item.getItemMeta();
 		meta.setDisplayName(Update_component.name);
@@ -85,6 +95,7 @@ public class Update_component {
 		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 		component_item.setItemMeta(meta);
 		Update_component.set_process(component_item, 0);
+		component_item = NMS_manager.ext_id_provider.set_ext_id(component_item, Update_component.id_name);
 		for (int level = 0; level < Update_component.component_item.length; level++) {
 			Update_component.component_item[level] = component_item.clone();
 			Update_component.set_level(Update_component.component_item[level], level);
@@ -92,26 +103,62 @@ public class Update_component {
 		return Update_component.component_item;
 	}
 
-	public static void set_recipe() {
-		Update_component.namespace0 = new NamespacedKey(Dropper_shop_plugin.instance, "update_component_0");
-		Update_component.namespace1 = new NamespacedKey(Dropper_shop_plugin.instance, "update_component_1");
-		Update_component.namespace2 = new NamespacedKey(Dropper_shop_plugin.instance, "update_component_2");
-		Update_component.namespace3 = new NamespacedKey(Dropper_shop_plugin.instance, "update_component_3");
-		Update_component.namespace4 = new NamespacedKey(Dropper_shop_plugin.instance, "update_component_4");
-		
-		Update_component.overload_namespace0 = new NamespacedKey(Dropper_shop_plugin.instance, "overload_component_0");
-		Update_component.overload_namespace1 = new NamespacedKey(Dropper_shop_plugin.instance, "overload_component_1");
-		Update_component.overload_namespace2 = new NamespacedKey(Dropper_shop_plugin.instance, "overload_component_2");
-		Update_component.overload_namespace3 = new NamespacedKey(Dropper_shop_plugin.instance, "overload_component_3");
-		Update_component.overload_namespace4 = new NamespacedKey(Dropper_shop_plugin.instance, "overload_component_4");
-		
-		Update_component.time_namespace0 = new NamespacedKey(Dropper_shop_plugin.instance, "time_component_0");
-		Update_component.time_namespace1 = new NamespacedKey(Dropper_shop_plugin.instance, "time_component_1");
-		Update_component.time_namespace2 = new NamespacedKey(Dropper_shop_plugin.instance, "time_component_2");
-		Update_component.time_namespace3 = new NamespacedKey(Dropper_shop_plugin.instance, "time_component_3");
-		Update_component.time_namespace4 = new NamespacedKey(Dropper_shop_plugin.instance, "time_component_4");
-		
-		ShapedRecipe sr0 = new ShapedRecipe(namespace0, Update_component.component_item[0]);
+	private static void init_adv_furnace_overload_component() {
+		Dropper_shop_plugin.instance.getLogger().info("开始初始化高级熔炉高速升级组件");
+		ItemStack component_item = new ItemStack(Material.IRON_AXE);
+		ItemMeta meta = component_item.getItemMeta();
+		meta.setDisplayName(Update_component.adv_furnace_overload_name);
+		ArrayList<String> lore = new ArrayList<String>();
+		lore.add("§r升级等级: 0");
+		lore.add("§r升级进度: 0%");
+		lore.add("");
+		lore.add("§7在高级熔炉中:");
+		lore.add("§9+" + Advanced_furnace_manager.instance.get_power_add_per_overload_upgrade() + "% 燃烧功率");
+		lore.add("§9-" + Advanced_furnace_manager.instance.get_time_loss_per_overload_upgrade() + "% 燃烧时间");
+		meta.setLore(lore);
+		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+		component_item.setItemMeta(meta);
+		Update_component.set_process(component_item, 0);
+		component_item = NMS_manager.ext_id_provider.set_ext_id(component_item,
+				Update_component.adv_furnace_overload_id_name);
+		for (int level = 0; level < Update_component.component_item.length; level++) {
+			Update_component.overload_component_item[level] = component_item.clone();
+			Update_component.set_level(Update_component.overload_component_item[level], level);
+		}
+	}
+
+	private static void init_adv_furnace_time_component() {
+		Dropper_shop_plugin.instance.getLogger().info("开始初始化高级熔炉长时升级组件");
+		ItemStack component_item = new ItemStack(Material.IRON_HOE);
+		ItemMeta meta = component_item.getItemMeta();
+		meta.setDisplayName(Update_component.adv_furnace_time_name);
+		ArrayList<String> lore = new ArrayList<String>();
+		lore.add("§r升级等级: 0");
+		lore.add("§r升级进度: 0%");
+		lore.add("");
+		lore.add("§7在高级熔炉中:");
+		lore.add("§9+" + Advanced_furnace_manager.instance.get_time_add_per_time_upgrade() + "% 燃烧时间");
+		lore.add("§9-" + Advanced_furnace_manager.instance.get_power_loss_per_time_upgrade() + "% 燃烧功率");
+		meta.setLore(lore);
+		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+		component_item.setItemMeta(meta);
+		Update_component.set_process(component_item, 0);
+		component_item = NMS_manager.ext_id_provider.set_ext_id(component_item,
+				Update_component.adv_furnace_time_id_name);
+		for (int level = 0; level < Update_component.component_item.length; level++) {
+			Update_component.time_component_item[level] = component_item.clone();
+			Update_component.set_level(Update_component.time_component_item[level], level);
+		}
+	}
+
+	private static void set_depositoiry_recipe() {
+		Update_component.depository_upgrade0 = new NamespacedKey(Dropper_shop_plugin.instance, "upgrade_component_0");
+		Update_component.depository_upgrade1 = new NamespacedKey(Dropper_shop_plugin.instance, "upgrade_component_1");
+		Update_component.depository_upgrade2 = new NamespacedKey(Dropper_shop_plugin.instance, "upgrade_component_2");
+		Update_component.depository_upgrade3 = new NamespacedKey(Dropper_shop_plugin.instance, "upgrade_component_3");
+		Update_component.depository_upgrade4 = new NamespacedKey(Dropper_shop_plugin.instance, "upgrade_component_4");
+
+		ShapedRecipe sr0 = new ShapedRecipe(depository_upgrade0, Update_component.component_item[0]);
 		sr0.shape("ibi", "bcb", "ibi");
 		sr0.setIngredient('b', Material.IRON_BARS);
 		sr0.setIngredient('c', Material.CHEST);
@@ -120,7 +167,7 @@ public class Update_component {
 		Dropper_shop_plugin.instance.get_sr().add(sr0);
 		Dropper_shop_plugin.instance.getLogger().info("存储器升级模块合成表已经添加");
 
-		ShapedRecipe sr1 = new ShapedRecipe(namespace1, Update_component.component_item[1]);
+		ShapedRecipe sr1 = new ShapedRecipe(depository_upgrade1, Update_component.component_item[1]);
 		sr1.shape("bcb", "cpc", "bcb");
 		sr1.setIngredient('c', Material.CHEST);
 		sr1.setIngredient('p', Material.IRON_PICKAXE);
@@ -129,7 +176,7 @@ public class Update_component {
 		Dropper_shop_plugin.instance.get_sr().add(sr1);
 		Dropper_shop_plugin.instance.getLogger().info("存储器1级升级模块合成表已经添加");
 
-		ShapedRecipe sr2 = new ShapedRecipe(namespace2, Update_component.component_item[2]);
+		ShapedRecipe sr2 = new ShapedRecipe(depository_upgrade2, Update_component.component_item[2]);
 		sr2.shape("bcb", "cpc", "bcb");
 		sr2.setIngredient('c', Material.CHEST);
 		sr2.setIngredient('p', Material.IRON_PICKAXE);
@@ -138,7 +185,7 @@ public class Update_component {
 		Dropper_shop_plugin.instance.get_sr().add(sr2);
 		Dropper_shop_plugin.instance.getLogger().info("存储器2级升级模块合成表已经添加");
 
-		ShapedRecipe sr3 = new ShapedRecipe(namespace3, Update_component.component_item[3]);
+		ShapedRecipe sr3 = new ShapedRecipe(depository_upgrade3, Update_component.component_item[3]);
 		sr3.shape("bcb", "cpc", "bcb");
 		sr3.setIngredient('c', Material.CHEST);
 		sr3.setIngredient('p', Material.IRON_PICKAXE);
@@ -147,7 +194,7 @@ public class Update_component {
 		Dropper_shop_plugin.instance.get_sr().add(sr3);
 		Dropper_shop_plugin.instance.getLogger().info("存储器3级升级模块合成表已经添加");
 
-		ShapedRecipe sr4 = new ShapedRecipe(namespace4, Update_component.component_item[4]);
+		ShapedRecipe sr4 = new ShapedRecipe(depository_upgrade4, Update_component.component_item[4]);
 		sr4.shape("bcb", "cpc", "bcb");
 		sr4.setIngredient('c', Material.ENDER_CHEST);
 		sr4.setIngredient('p', Material.IRON_PICKAXE);
@@ -155,6 +202,33 @@ public class Update_component {
 		Dropper_shop_plugin.instance.getServer().addRecipe(sr4);
 		Dropper_shop_plugin.instance.get_sr().add(sr4);
 		Dropper_shop_plugin.instance.getLogger().info("存储器4级升级模块合成表已经添加");
+	}
+
+	private static void set_adv_furnace_overload_recipe() {
+		Update_component.adv_furnace_overload0 = new NamespacedKey(Dropper_shop_plugin.instance,
+				"overload_component_0");
+		Update_component.adv_furnace_overload1 = new NamespacedKey(Dropper_shop_plugin.instance,
+				"overload_component_1");
+		Update_component.adv_furnace_overload2 = new NamespacedKey(Dropper_shop_plugin.instance,
+				"overload_component_2");
+		Update_component.adv_furnace_overload3 = new NamespacedKey(Dropper_shop_plugin.instance,
+				"overload_component_3");
+		Update_component.adv_furnace_overload4 = new NamespacedKey(Dropper_shop_plugin.instance,
+				"overload_component_4");
+	}
+
+	private static void set_adv_furnace_time_recipe() {
+		Update_component.adv_furnace_time0 = new NamespacedKey(Dropper_shop_plugin.instance, "time_component_0");
+		Update_component.adv_furnace_time1 = new NamespacedKey(Dropper_shop_plugin.instance, "time_component_1");
+		Update_component.adv_furnace_time2 = new NamespacedKey(Dropper_shop_plugin.instance, "time_component_2");
+		Update_component.adv_furnace_time3 = new NamespacedKey(Dropper_shop_plugin.instance, "time_component_3");
+		Update_component.adv_furnace_time4 = new NamespacedKey(Dropper_shop_plugin.instance, "time_component_4");
+	}
+
+	public static void set_recipe() {
+		Update_component.set_depositoiry_recipe();
+		Update_component.set_adv_furnace_overload_recipe();
+		Update_component.set_adv_furnace_time_recipe();
 	}
 
 	public static int get_level(ItemStack item) {
@@ -186,4 +260,15 @@ public class Update_component {
 		}
 		return 0;
 	}
+
+	public static void init_component() {
+		Update_component.init_depository_component();
+		Update_component.init_adv_furnace_overload_component();
+		Update_component.init_adv_furnace_time_component();
+	}
+
+	public static boolean is_component(ItemStack item) {
+		return Update_component.is_depository_upgrade_component(item);
+	}
+
 }

@@ -14,11 +14,14 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.nms.NMS_manager;
 
 public class Reader {
 	public static String name = "§r存储读取器";
+	public static String id_name = "depository_remote_reader";
 	public static ItemStack reader_item = null;
-	private static NamespacedKey namespace = new NamespacedKey(Dropper_shop_plugin.instance, "Reader");
+	private static NamespacedKey namespace = new NamespacedKey(Dropper_shop_plugin.instance,
+			"depository_remote_reader");
 
 	public static Location lore_parse_loction(List<String> lore) {
 		String world_name = null;
@@ -139,13 +142,11 @@ public class Reader {
 		if (item == null) {
 			return false;
 		}
-		if (item.hasItemMeta() == false) {
+		String ext_id = NMS_manager.ext_id_provider.get_ext_id(item);
+		if (ext_id == null) {
 			return false;
 		}
-		if (item.getItemMeta().hasDisplayName() == false) {
-			return false;
-		}
-		return item.getItemMeta().getDisplayName().equals(Reader.name);
+		return ext_id.equals(Reader.id_name);
 	}
 
 	public static ItemStack init_reader_item() {
@@ -161,12 +162,12 @@ public class Reader {
 		lore.add("§r数量: 0");
 		meta.setLore(lore);
 		reader_item.setItemMeta(meta);
-		Reader.reader_item = reader_item;
+		Reader.reader_item = NMS_manager.ext_id_provider.set_ext_id(reader_item, id_name);
 		return reader_item;
 	}
 
 	public static void set_recipe() {
-		ShapedRecipe sr1 = new ShapedRecipe(Reader.namespace , Reader.reader_item);
+		ShapedRecipe sr1 = new ShapedRecipe(Reader.namespace, Reader.reader_item);
 		sr1.shape("rsr", "scs", "rsr");
 		sr1.setIngredient('s', Material.NETHER_STAR);
 		sr1.setIngredient('c', Material.ENDER_CHEST);

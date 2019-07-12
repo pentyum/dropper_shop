@@ -22,13 +22,13 @@ public class Update_component_listener implements Listener {
 			}
 		}
 		ItemStack item = event.getRecipe().getResult();
-		if (Update_component.is_component(item)) {
+		if (Update_component.is_depository_upgrade_component(item)) {
 			int level = Update_component.get_level(item);
 			if (level == 0) {
 				return;
 			}
 			ItemStack basis = res_list[5];
-			if (!Update_component.is_component(basis)) {
+			if (!Update_component.is_depository_upgrade_component(basis)) {
 				event.getWhoClicked().sendMessage("必须使用升级组件合成，而你使用的是" + basis.getType().name());
 				event.setCancelled(true);
 				return;

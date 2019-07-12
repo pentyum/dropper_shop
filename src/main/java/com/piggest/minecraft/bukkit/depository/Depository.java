@@ -50,7 +50,7 @@ public class Depository extends Multi_block_with_gui implements Ownable, HasRunn
 	public int get_max_type() {
 		int type = 2;
 		for (ItemStack item : this.getInventory().getContents()) {
-			if (Update_component.is_component(item)) {
+			if (Update_component.is_depository_upgrade_component(item)) {
 				if (Update_component.get_process(item) == 100) {
 					type++;
 				}
@@ -66,7 +66,7 @@ public class Depository extends Multi_block_with_gui implements Ownable, HasRunn
 	public int get_max_capacity() {
 		int capacity = 5000;
 		for (ItemStack item : this.getInventory().getContents()) {
-			if (Update_component.is_component(item)) {
+			if (Update_component.is_depository_upgrade_component(item)) {
 				if (Update_component.get_process(item) == 100) {
 					capacity += Depository.capacity_level[Update_component.get_level(item)];
 				}
@@ -78,7 +78,7 @@ public class Depository extends Multi_block_with_gui implements Ownable, HasRunn
 	public int get_price() {
 		int price = 5;
 		for (ItemStack item : this.getInventory().getContents()) {
-			if (Update_component.is_component(item)) {
+			if (Update_component.is_depository_upgrade_component(item)) {
 				price = price + Depository.price_level[Update_component.get_level(item)];
 			}
 		}
@@ -179,7 +179,7 @@ public class Depository extends Multi_block_with_gui implements Ownable, HasRunn
 		HashMap<String, Object> save = super.get_save();
 		save.put("contents", this.contents);
 		for (ItemStack item : this.getInventory().getContents()) {
-			if (Update_component.is_component(item)) {
+			if (Update_component.is_depository_upgrade_component(item)) {
 				int[] item_info = { Update_component.get_level(item), Update_component.get_process(item) };
 				levels.add(item_info);
 			}

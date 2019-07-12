@@ -115,7 +115,7 @@ public class Depository_listener implements Listener {
 			ItemStack item = event.getCurrentItem();
 			if (item != null && item.getType() != Material.AIR) {
 				// event.getWhoClicked().sendMessage("你点击了" + item.getType().name());
-				if (Update_component.is_component(item)) {
+				if (Update_component.is_depository_upgrade_component(item)) {
 					Update_component.set_process(item, 0);
 				}
 			}
