@@ -64,4 +64,9 @@ public class Chunk_location {
 	public int hashCode() {
 		return this.world_name.length() + this.x + this.z;
 	}
+	
+	@Override
+	public String toString() {
+		return "(" + this.world_name + "," + this.x + "," + this.z + ")";
+	}
 }

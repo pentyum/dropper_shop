@@ -47,15 +47,15 @@ public abstract class Structure {
 	}
 
 	public int get_chunk_x() {
-		return this.x / 16;
+		return this.x >> 4;
 	}
 
 	public int get_chunk_z() {
-		return this.y / 16;
+		return this.z >> 4;
 	}
 
 	public Chunk_location get_chunk_location() {
-		return new Chunk_location(this.world_name, this.x / 16, this.z / 16);
+		return new Chunk_location(this.world_name, this.x >> 4, this.z >> 4);
 	}
 
 	/**

@@ -11,24 +11,49 @@ public class Anti_thunder_manager extends Structure_manager {
 	public static Anti_thunder_manager instance;
 	private Material[][][] model = {
 			{ { Material.IRON_BLOCK, Material.IRON_BLOCK, Material.IRON_BLOCK },
-				{ Material.IRON_BLOCK, Material.IRON_BLOCK, Material.IRON_BLOCK },
-				{ Material.IRON_BLOCK, Material.IRON_BLOCK, Material.IRON_BLOCK } },
-			{ { null, null, null },
-				{ null, Material.PISTON, null },
-				{ null, null, null } }
-		};
+					{ Material.IRON_BLOCK, Material.IRON_BLOCK, Material.IRON_BLOCK },
+					{ Material.IRON_BLOCK, Material.IRON_BLOCK, Material.IRON_BLOCK } },
+			{ { null, null, null }, { null, Material.PISTON, null }, { null, null, null } } };
 	private int center_x = 1;
 	private int center_y = 1;
 	private int center_z = 1;
-	
+
 	public Anti_thunder_manager() {
 		super(Anti_thunder.class);
 		instance = this;
 	}
-	
+
 	@Override
 	public Structure find(String player_name, Location loc, boolean new_structure) {
-		// TODO 自动生成的方法存根
+		int x;
+		int y;
+		int z;
+		Anti_thunder anti_thunder;
+		for (x = -1; x <= 1; x++) {
+			for (y = 0; y <= 1; y++) {
+				for (z = -1; z <= 1; z++) {
+					Location check_loc = loc.clone().add(x, y, z);
+					Material material = check_loc.getBlock().getType();
+					// Bukkit.getLogger().info("正在搜索"+check_loc.toString());
+					if (material == Material.PISTON) {
+						// Bukkit.getLogger().info("在" + check_loc.toString() + "找到了末地烛");
+						if (new_structure == true) {
+							anti_thunder = new Anti_thunder();
+							anti_thunder.set_location(check_loc);
+							anti_thunder.set_owner(player_name);
+							if (anti_thunder.completed() == true) {
+								return anti_thunder;
+							}
+						} else {
+							anti_thunder = this.get(check_loc);
+							if (anti_thunder != null) {
+								return anti_thunder;
+							}
+						}
+					}
+				}
+			}
+		}
 		return null;
 	}
 
@@ -44,14 +69,19 @@ public class Anti_thunder_manager extends Structure_manager {
 
 	@Override
 	public int[] get_center() {
-		return new int[] {this.center_x,this.center_y,this.center_z};
+		return new int[] { this.center_x, this.center_y, this.center_z };
 	}
-	
+
 	public int get_cycle() {
 		return Dropper_shop_plugin.instance.get_config().getInt("anti-thunder-cycle");
 	}
-	
+
 	public int get_price() {
 		return Dropper_shop_plugin.instance.get_price_config().get_anti_thunder_price();
+	}
+
+	@Override
+	public Anti_thunder get(Location loc) {
+		return (Anti_thunder) super.get(loc);
 	}
 }

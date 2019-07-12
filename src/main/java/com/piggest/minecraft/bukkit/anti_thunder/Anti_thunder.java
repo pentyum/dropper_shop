@@ -1,5 +1,8 @@
 package com.piggest.minecraft.bukkit.anti_thunder;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -8,21 +11,20 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Piston;
 import org.bukkit.entity.Player;
-
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
 import com.piggest.minecraft.bukkit.structure.Ownable;
 import net.milkbowl.vault.economy.Economy;
 
-public class Anti_thunder extends Multi_block_structure implements Ownable{
+public class Anti_thunder extends Multi_block_structure implements Ownable {
 	private String owner;
 	private boolean active = false;
 	private Anti_thunder_runner runner = new Anti_thunder_runner(this);
-	
+
 	@Override
 	public boolean completed() {
 		boolean super_structure = super.completed();
-		if(super_structure==false) {
+		if (super_structure == false) {
 			return false;
 		}
 		Location core_loc = this.get_location();
@@ -44,6 +46,7 @@ public class Anti_thunder extends Multi_block_structure implements Ownable{
 		}
 		return true;
 	}
+
 	@Override
 	public void on_right_click(Player player) {
 		return;
@@ -74,18 +77,19 @@ public class Anti_thunder extends Multi_block_structure implements Ownable{
 	public String get_owner_name() {
 		return this.owner;
 	}
-	
+
 	public boolean is_active() {
 		return this.active;
 	}
-	
+
 	public boolean activate(boolean active) {
 		if (active == true) {
 			if (this.completed() == true) {
 				if (runner.started() == false) {
 					runner.start();
 					Dropper_shop_plugin.instance.getLogger().info("10秒后启动扣钱线程");
-					runner.runTaskTimerAsynchronously(Dropper_shop_plugin.instance, 10 * 20, this.get_manager().get_cycle() * 20);
+					runner.runTaskTimerAsynchronously(Dropper_shop_plugin.instance, 10 * 20,
+							this.get_manager().get_cycle() * 20);
 				} else {
 					OfflinePlayer owner = this.get_owner();
 					Economy economy = Dropper_shop_plugin.instance.get_economy();
@@ -130,7 +134,21 @@ public class Anti_thunder extends Multi_block_structure implements Ownable{
 			}
 		}
 	}
-	
+
+	@Override
+	public void set_from_save(Map<?, ?> shop_save) {
+		super.set_from_save(shop_save);
+		boolean active = (boolean) shop_save.get("active");
+		this.activate(active);
+	}
+
+	@Override
+	public HashMap<String, Object> get_save() {
+		HashMap<String, Object> save = super.get_save();
+		save.put("active", this.is_active());
+		return save;
+	}
+
 	@Override
 	public Anti_thunder_manager get_manager() {
 		return (Anti_thunder_manager) super.get_manager();
