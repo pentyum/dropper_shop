@@ -2,29 +2,28 @@ package com.piggest.minecraft.bukkit.material_ext;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-
-import net.minecraft.server.v1_14_R1.NBTTagCompound;
-import net.minecraft.server.v1_14_R1.NBTTagString;
+import com.piggest.minecraft.bukkit.nms.NMS_manager;
 
 public class Material_ext {
 	private static HashMap<NamespacedKey, ItemStack> ext_material_map = new HashMap<NamespacedKey, ItemStack>();
-	// private static HashMap<String, ItemStack> ext_material_map = new
-	// HashMap<String, ItemStack>();
 
-	public static String get_name(Material material) { // 获得材质名称
+	/*
+	 * 获得材质名称
+	 */
+	public static String get_name(Material material) {
 		return material.name();
 	}
-	
-	public static String get_display_name(ItemStack itemstack) { // 获得显示名称
+
+	/*
+	 * 获得显示名称
+	 */
+	public static String get_display_name(ItemStack itemstack) {
 		if (itemstack.hasItemMeta() == true) {
 			ItemMeta meta = itemstack.getItemMeta();
 			if (meta.hasDisplayName() == true) {
@@ -34,46 +33,48 @@ public class Material_ext {
 		return itemstack.getType().name();
 	}
 
+	/*
+	 * 获得内部名称，如stone
+	 */
 	public static String get_id_name(ItemStack itemstack) {
 		return get_namespacedkey(itemstack).getKey();
 	}
 
-	public static String get_full_name(ItemStack itemstack) {
-		return get_namespacedkey(itemstack).toString();
+	/*
+	 * 获得带命名空间的全名，如minecraft:stone
+	 */
+	public static String get_full_name(ItemStack item) {
+		String ext_id = NMS_manager.ext_id_provider.get_ext_id(item);
+		if (ext_id != null) {
+			return ext_id;
+		}
+		return item.getType().getKey().toString();
 	}
 
+	/*
+	 * 获得namespacedkey
+	 */
 	@SuppressWarnings("deprecation")
-	public static NamespacedKey get_namespacedkey(ItemStack itemstack) { // 获得内部ID名称
-		net.minecraft.server.v1_14_R1.ItemStack nms_item = CraftItemStack.asNMSCopy(itemstack);
-		if (nms_item.hasTag()) {
-			NBTTagCompound tag = nms_item.getTag();
-			String id_name = tag.getString("ext_id");
-			if (id_name != null) {
-				String[] namespace_and_key = id_name.split(":");
-				if (namespace_and_key.length == 2) {
-					NamespacedKey namespacedkey = new NamespacedKey(namespace_and_key[0], namespace_and_key[1]);
-					return namespacedkey;
-				}
-			}
+	public static NamespacedKey get_namespacedkey(ItemStack item) {
+		String full_name = get_full_name(item);
+		String[] namespace_and_key = full_name.split(":");
+		if (namespace_and_key.length == 2) {
+			NamespacedKey namespacedkey = new NamespacedKey(namespace_and_key[0], namespace_and_key[1]);
+			return namespacedkey;
 		}
-		if (itemstack.hasItemMeta() == true) {
-			ItemMeta meta = itemstack.getItemMeta();
-			if (meta.hasDisplayName() == true) {
-				for (Entry<NamespacedKey, ItemStack> entry : ext_material_map.entrySet()) {
-					if (itemstack.isSimilar(entry.getValue())) {
-						return entry.getKey();
-					}
-				}
-			}
-		}
-		return itemstack.getType().getKey();
+		return null;
 	}
 
-	private static ItemStack new_item(NamespacedKey namespacedkey, int num) { // 根据内部ID生成ItemStack，等效于new //
-																				// ItemStack(Material)
+	/*
+	 * 根据内部ID生成ItemStack，等效于new ItemStack(Material)
+	 */
+	private static ItemStack new_item(NamespacedKey namespacedkey, int num) {
 		return new_item(namespacedkey, num, null);
 	}
 
+	/*
+	 * 以名称新建物品，如果原版中没找到，则到本插件中寻找。
+	 */
 	public static ItemStack new_item(String id_name, int num) {
 		NamespacedKey namespacedkey = null;
 		if (Material.getMaterial(id_name.toUpperCase()) == null) {
@@ -84,6 +85,9 @@ public class Material_ext {
 		return new_item(namespacedkey, num);
 	}
 
+	/*
+	 * 新建特定namespacedkey的物品。
+	 */
 	private static ItemStack new_item(NamespacedKey namespacedkey, int num, Map<Enchantment, Integer> enchantments) {
 		ItemStack new_item = null;
 		if (namespacedkey.getNamespace().equals(NamespacedKey.MINECRAFT)) {
@@ -98,15 +102,17 @@ public class Material_ext {
 		return new_item;
 	}
 
-	private static ItemStack register(NamespacedKey namespacedkey, ItemStack itemstack) {
-		net.minecraft.server.v1_14_R1.ItemStack nms_item = CraftItemStack.asNMSCopy(itemstack);
-		NBTTagCompound tag = (nms_item.hasTag()) ? nms_item.getTag() : new NBTTagCompound();
-		tag.set("ext_id", new NBTTagString(namespacedkey.toString()));
-		nms_item.setTag(tag);
-		itemstack = CraftItemStack.asBukkitCopy(nms_item);
-		return Material_ext.ext_material_map.put(namespacedkey, itemstack.clone());
+	/*
+	 * 以namespacedkey注册物品
+	 */
+	private static ItemStack register(NamespacedKey namespacedkey, ItemStack item) {
+		item = NMS_manager.ext_id_provider.set_ext_id(item, namespacedkey.toString());
+		return Material_ext.ext_material_map.put(namespacedkey, item.clone());
 	}
 
+	/*
+	 * 注册本插件命名空间下的物品
+	 */
 	public static ItemStack register(String id_name, ItemStack itemstack) {
 		NamespacedKey namespacedkey = Dropper_shop_plugin.instance.get_key(id_name);
 		return register(namespacedkey, itemstack);
