@@ -1,6 +1,7 @@
 package com.piggest.minecraft.bukkit.structure;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -32,7 +33,12 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 			int slot = entry.getKey();
 			Slot_config slot_config = entry.getValue();
 			ItemStack item = new ItemStack(slot_config.material);
-			Grinder.set_item_name(item, slot_config.name);
+			ItemMeta meta = item.getItemMeta();
+			meta.setDisplayName(slot_config.name);
+			if (slot_config.lore != null) {
+				meta.setLore(new ArrayList<String>(Arrays.asList(slot_config.lore)));
+			}
+			item.setItemMeta(meta);
 			this.getInventory().setItem(slot, item);
 		}
 	}
@@ -42,9 +48,9 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 		if (player.hasPermission(this.get_manager().get_permission_head() + ".use")) {
 			player.closeInventory();
 			player.openInventory(this.getInventory());
-			//if (this.is_loaded() == false) {
-			//	this.set_loaded(true);
-			//}
+			// if (this.is_loaded() == false) {
+			// this.set_loaded(true);
+			// }
 		} else {
 			player.sendMessage("你没有权限使用" + this.get_manager().get_gui_name());
 		}

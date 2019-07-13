@@ -61,7 +61,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		ItemMeta temp_info_meta = temp_info.getItemMeta();
 		ArrayList<String> lore = new ArrayList<String>();
 		lore.add("§r温度: 0 K");
-		lore.add("§r燃料: null");
+		lore.add("§r燃料: 无");
 		lore.add("§r燃料功率: " + 0 + " K/tick");
 		lore.add("§r剩余燃烧时间: " + 0 + " s");
 		temp_info_meta.setLore(lore);
@@ -538,8 +538,8 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 		ArrayList<String> lore = new ArrayList<String>();
 		lore.add("§r状态: " + (upgrade ? "已升级" : "未升级"));
-		lore.add("§r该升级可以允许你添加保温材料，减少热量损耗");
-		lore.add("§r需要添加升级组件");
+		lore.add("§7该升级可以允许你添加保温材料，减少热量损耗");
+		lore.add("§7需要添加升级组件");
 		meta.setLore(lore);
 		icon.setItemMeta(meta);
 	}
@@ -550,10 +550,10 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		ItemMeta meta = icon.getItemMeta();
 		ArrayList<String> lore = new ArrayList<String>();
 		lore.add("§r当前等级: " + level);
-		lore.add("§r该升级可以增加燃料功率，");
-		lore.add("§r但是会减少燃料燃烧时间，总产能下降");
-		lore.add("§r需要添加升级组件");
-		lore.add("§7每级提升" + this.get_manager().get_power_add_per_overload_upgrade() + "%功率，降低"
+		lore.add("§7该升级可以增加燃料功率，");
+		lore.add("§7但是会减少燃料燃烧时间，总产能下降");
+		lore.add("§7需要添加升级组件");
+		lore.add("§6每级提升" + this.get_manager().get_power_add_per_overload_upgrade() + "%功率，降低"
 				+ this.get_manager().get_time_loss_per_overload_upgrade() + "%燃烧时间");
 		meta.setLore(lore);
 		icon.setItemMeta(meta);
@@ -565,10 +565,10 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		ItemMeta meta = icon.getItemMeta();
 		ArrayList<String> lore = new ArrayList<String>();
 		lore.add("§r当前等级: " + level);
-		lore.add("§r该升级可以增加燃料燃烧时间，");
-		lore.add("§r但是会减少燃料功率，总产能上升");
-		lore.add("§r需要添加升级组件");
-		lore.add("§7每级提升" + this.get_manager().get_time_add_per_time_upgrade() + "%燃烧时间，降低"
+		lore.add("§7该升级可以增加燃料燃烧时间，");
+		lore.add("§7但是会减少燃料功率，总产能上升");
+		lore.add("§7需要添加升级组件");
+		lore.add("§6每级提升" + this.get_manager().get_time_add_per_time_upgrade() + "%燃烧时间，降低"
 				+ this.get_manager().get_power_loss_per_time_upgrade() + "%功率");
 		meta.setLore(lore);
 		icon.setItemMeta(meta);
