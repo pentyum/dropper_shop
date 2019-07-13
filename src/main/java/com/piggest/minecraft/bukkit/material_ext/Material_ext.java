@@ -36,8 +36,12 @@ public class Material_ext {
 	/*
 	 * 获得内部名称，如stone
 	 */
-	public static String get_id_name(ItemStack itemstack) {
-		return get_namespacedkey(itemstack).getKey();
+	public static String get_id_name(ItemStack item) {
+		NamespacedKey namespacedkey = get_namespacedkey(item);
+		if (namespacedkey == null) {
+			return null;
+		}
+		return namespacedkey.getKey();
 	}
 
 	/*
