@@ -20,6 +20,17 @@ public class Wrench_command_executor implements CommandExecutor {
 	private NamespacedKey namespace = new NamespacedKey(Dropper_shop_plugin.instance, "wrench");
 	private ConfigurationSection price = null;
 
+	public boolean is_wrench(ItemStack item) {
+		if (item == null) {
+			return false;
+		}
+		String ext_id = Material_ext.get_id_name(item);
+		if (ext_id == null) {
+			return false;
+		}
+		return ext_id.equals("wrench");
+	}
+
 	public void init_wrench_item() {
 		ItemStack item = new ItemStack(Material.IRON_PICKAXE);
 		ItemMeta meta = item.getItemMeta();
