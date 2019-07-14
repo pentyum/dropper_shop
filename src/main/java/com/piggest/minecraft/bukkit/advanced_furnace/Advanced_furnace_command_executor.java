@@ -68,6 +68,33 @@ public class Advanced_furnace_command_executor implements TabExecutor {
 				player.sendMessage("已获得" + money);
 				adv_furnace.set_money(0);
 				return true;
+			} else if (args[0].equalsIgnoreCase("set_overload") || args[0].equalsIgnoreCase("set_time")) {
+				if (!player.hasPermission("adv_furnace.admin")) {
+					player.sendMessage("你没有权限直接设置等级");
+					return true;
+				}
+				Advanced_furnace adv_furnace = Dropper_shop_plugin.instance.get_adv_furnace_manager()
+						.find(look_block.getLocation(), false);
+				if (adv_furnace == null) {
+					player.sendMessage("没有检测到完整的高级熔炉结构");
+					return true;
+				}
+				if (args.length < 2) {
+					player.sendMessage("没有输入等级");
+					return true;
+				}
+				int level = 0;
+				try {
+					level = Integer.parseInt(args[1]);
+				} catch (NumberFormatException e) {
+					player.sendMessage("等级不是数字");
+					return true;
+				}
+				if (args[0].equalsIgnoreCase("set_overload")) {
+					adv_furnace.set_overload_upgrade(level);
+				} else {
+					adv_furnace.set_time_upgrade(level);
+				}
 			}
 		}
 		return false;

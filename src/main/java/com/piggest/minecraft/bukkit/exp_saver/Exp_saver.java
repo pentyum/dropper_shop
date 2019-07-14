@@ -86,7 +86,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 	@Override
 	public void set_from_save(Map<?, ?> shop_save) {
 		super.set_from_save(shop_save);
-		
+
 		this.add_exp((int) shop_save.get("saved-exp"));
 		this.set_mending((ItemStack) shop_save.get("mending-item"));
 		int anvil = (int) shop_save.get("anvil-count");
@@ -251,9 +251,9 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 		ItemMeta meta = upgrade_button.getItemMeta();
 		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 		ArrayList<String> lore = new ArrayList<String>();
-		lore.add("§r当前等级: " + structure_level);
-		lore.add("§r升级所需金币: " + Exp_saver.get_upgrade_price(structure_level));
-		lore.add("§r点击即可升级");
+		lore.add("§r当前等级: " + structure_level + " / " + Dropper_shop_plugin.instance.get_exp_saver_max_structure_level());
+		lore.add("§7升级所需金币: " + Exp_saver.get_upgrade_price(structure_level));
+		lore.add("§7点击即可升级");
 		meta.setLore(lore);
 		upgrade_button.setItemMeta(meta);
 		this.add_exp(0);

@@ -25,6 +25,7 @@ public class Advanced_furnace_upgrade_runner extends Structure_runner {
 					adv_furnace.set_time_upgrade(adv_furnace.get_time_upgrade() + 1);
 				}
 				upgrade_components.setAmount(0);
+				return;
 			}
 			if (Upgrade_component.get_process(upgrade_components) < 100) {
 				Upgrade_component.set_process(upgrade_components,

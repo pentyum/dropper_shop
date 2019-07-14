@@ -36,10 +36,7 @@ public class Advanced_furnace_temp_runner extends Structure_runner {
 
 	private void run_fuel() {
 		int max_ticks = (int) (adv_furnace.get_fuel().get_ticks()
-				* (1 + 0.01 * adv_furnace.get_manager().get_time_add_per_time_upgrade()
-						* adv_furnace.get_time_upgrade())
-				* (1 - 0.01 * adv_furnace.get_manager().get_time_loss_per_overload_upgrade()
-						* adv_furnace.get_overload_upgrade()));
+				*adv_furnace.get_time_modify());
 		int last_sec = (max_ticks - adv_furnace.fuel_ticks) / 20;
 		adv_furnace.set_last_sec(last_sec);
 		if (adv_furnace.fuel_ticks >= max_ticks) {

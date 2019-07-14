@@ -88,6 +88,9 @@ permissions:
   adv_furnace.use:
     description: Use advanced furnace.
     default: true
+  adv_furnace.admin:
+    description: Change advanced furnace.
+    default: op
   wrench.*:
     description: Gives access to all wrench commands
     default: op

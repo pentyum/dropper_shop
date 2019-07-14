@@ -134,7 +134,7 @@ public class Advanced_furnace_manager extends Gui_structure_manager {
 	}
 
 	public int get_time_add_per_time_upgrade() {
-		return 7;
+		return 8;
 	}
 
 	public int get_time_loss_per_overload_upgrade() {
@@ -142,7 +142,7 @@ public class Advanced_furnace_manager extends Gui_structure_manager {
 	}
 
 	public int get_power_add_per_overload_upgrade() {
-		return 6;
+		return 7;
 	}
 
 	public int get_power_loss_per_time_upgrade() {

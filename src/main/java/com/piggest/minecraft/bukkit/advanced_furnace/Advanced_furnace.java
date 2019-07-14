@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bukkit.ChatColor;
 import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
 import org.bukkit.block.Furnace;
@@ -157,7 +158,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		this.set_money((int) shop_save.get("money"));
 		this.set_heat_keeping_upgrade((boolean) shop_save.get("heat-keeping-upgrade"));
 		this.set_overload_upgrade((int) shop_save.get("overload-upgrade"));
-		this.set_overload_upgrade((int) shop_save.get("time-upgrade"));
+		this.set_time_upgrade((int) shop_save.get("time-upgrade"));
 	}
 
 	public void set_solid_reactant_slot(ItemStack slot_item) {
@@ -188,7 +189,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		ItemStack solid_reactant_slot = this.gui.getItem(Advanced_furnace.solid_reactant_slot);
 		ItemStack fuel_product_slot = this.gui.getItem(Advanced_furnace.fuel_product_slot);
 		ItemStack upgrade_component_slot = this.gui.getItem(Advanced_furnace.upgrade_component_slot);
-		
+
 		if (!Grinder.is_empty(fuel_slot)) {
 			save.put("fuel-slot", Material_ext.get_id_name(fuel_slot));
 			save.put("fuel-slot-num", fuel_slot.getAmount());
@@ -243,14 +244,23 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		ItemStack temp_info = this.gui.getItem(26);
 		ItemMeta temp_info_meta = temp_info.getItemMeta();
 		List<String> lore = temp_info_meta.getLore();
-		lore.set(2, "§r燃料功率: " + String.format("%.2f", power) + " K/tick");
+		lore.set(2, "§r燃料功率: " + String.format("%.2f", this.get_power()) + " K/tick");
 		temp_info_meta.setLore(lore);
 		temp_info.setItemMeta(temp_info_meta);
 	}
 
 	public double get_power() { // 产热功率 K/tick
-		return this.power * (1 + 0.01 * this.get_manager().get_power_add_per_overload_upgrade() * this.overload_upgrade)
+		return this.power * this.get_power_modify();
+	}
+
+	private double get_power_modify() {
+		return (1 + 0.01 * this.get_manager().get_power_add_per_overload_upgrade() * this.overload_upgrade)
 				* (1 - 0.01 * this.get_manager().get_power_loss_per_time_upgrade() * this.time_upgrade);
+	}
+
+	double get_time_modify() {
+		return (1 + 0.01 * this.get_manager().get_time_add_per_time_upgrade() * this.time_upgrade)
+				* (1 - 0.01 * this.get_manager().get_time_loss_per_overload_upgrade() * this.overload_upgrade);
 	}
 
 	public Fuel get_fuel() {
@@ -501,9 +511,10 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		ItemMeta meta = upgrade_button.getItemMeta();
 		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 		ArrayList<String> lore = new ArrayList<String>();
-		lore.add("§r当前等级: " + structure_level);
-		lore.add("§r升级所需金币: " + Exp_saver.get_upgrade_price(structure_level));
-		lore.add("§r点击即可升级");
+		lore.add("§r当前等级: " + structure_level + " / "
+				+ Dropper_shop_plugin.instance.get_exp_saver_max_structure_level());
+		lore.add("§7升级所需金币: " + Exp_saver.get_upgrade_price(structure_level));
+		lore.add("§7点击即可升级");
 		meta.setLore(lore);
 		upgrade_button.setItemMeta(meta);
 	}
@@ -552,6 +563,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 				+ this.get_manager().get_time_loss_per_overload_upgrade() + "%燃烧时间");
 		meta.setLore(lore);
 		icon.setItemMeta(meta);
+		this.refresh_upgrade_info();
 	}
 
 	public void set_time_upgrade(int level) {
@@ -565,6 +577,31 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		lore.add("§7需要添加升级组件");
 		lore.add("§6每级提升" + this.get_manager().get_time_add_per_time_upgrade() + "%燃烧时间，降低"
 				+ this.get_manager().get_power_loss_per_time_upgrade() + "%功率");
+		meta.setLore(lore);
+		icon.setItemMeta(meta);
+		this.refresh_upgrade_info();
+	}
+
+	private void refresh_upgrade_info() {
+		ItemStack icon = this.gui.getItem(31);
+		ItemMeta meta = icon.getItemMeta();
+		ArrayList<String> lore = new ArrayList<String>();
+		double power_modify = this.get_power_modify();
+		double time_modify = this.get_time_modify();
+		ChatColor power_color = ChatColor.GRAY;
+		ChatColor time_color = ChatColor.GRAY;
+		if (power_modify < 1) {
+			power_color = ChatColor.RED;
+		} else if (power_modify > 1) {
+			power_color = ChatColor.GOLD;
+		}
+		if (time_modify < 1) {
+			time_color = ChatColor.RED;
+		} else if (time_modify > 1) {
+			time_color = ChatColor.GOLD;
+		}
+		lore.add(power_color + "功率提升共计: " + String.format("%.2f", (power_modify - 1) * 100) + "%");
+		lore.add(time_color + "时间提升共计: " + String.format("%.2f", (time_modify - 1) * 100) + "%");
 		meta.setLore(lore);
 		icon.setItemMeta(meta);
 	}
