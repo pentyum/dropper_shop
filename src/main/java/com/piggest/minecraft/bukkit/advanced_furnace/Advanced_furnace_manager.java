@@ -11,14 +11,14 @@ public class Advanced_furnace_manager extends Gui_structure_manager {
 	public static Advanced_furnace_manager instance = null;
 	private Material[][][] model = {
 			{ { Material.GOLD_BLOCK, Material.IRON_BLOCK, Material.GOLD_BLOCK },
-				{ Material.IRON_BLOCK, Material.IRON_BLOCK, Material.IRON_BLOCK },
-				{ Material.GOLD_BLOCK, Material.IRON_BLOCK, Material.GOLD_BLOCK } },
+					{ Material.IRON_BLOCK, Material.IRON_BLOCK, Material.IRON_BLOCK },
+					{ Material.GOLD_BLOCK, Material.IRON_BLOCK, Material.GOLD_BLOCK } },
 			{ { Material.IRON_BLOCK, Material.IRON_BARS, Material.IRON_BLOCK },
-				{ Material.IRON_BARS, Material.FURNACE, Material.IRON_BARS },
-				{ Material.IRON_BLOCK, Material.IRON_BARS, Material.IRON_BLOCK } },
+					{ Material.IRON_BARS, Material.FURNACE, Material.IRON_BARS },
+					{ Material.IRON_BLOCK, Material.IRON_BARS, Material.IRON_BLOCK } },
 			{ { Material.GOLD_BLOCK, Material.IRON_BLOCK, Material.GOLD_BLOCK },
-				{ Material.IRON_BLOCK, null, Material.IRON_BLOCK },
-				{ Material.GOLD_BLOCK, Material.IRON_BLOCK, Material.GOLD_BLOCK } } };
+					{ Material.IRON_BLOCK, null, Material.IRON_BLOCK },
+					{ Material.GOLD_BLOCK, Material.IRON_BLOCK, Material.GOLD_BLOCK } } };
 	private int center_x = 1;
 	private int center_y = 1;
 	private int center_z = 1;
@@ -26,10 +26,14 @@ public class Advanced_furnace_manager extends Gui_structure_manager {
 	public Advanced_furnace_manager() {
 		super(Advanced_furnace.class);
 		Advanced_furnace_manager.instance = this;
-		this.set_gui(10, Material.BLUE_STAINED_GLASS_PANE, "§r左边放固体原料", Gui_slot_type.Indicator);
+		this.set_gui(1, Material.BLUE_STAINED_GLASS_PANE, "§r说明",
+				new String[] { "§7层数为从下面往上数", "§7温度下降速率由傅里叶热传导定律决定", "§7熔炉反应速率由阿伦尼乌斯公式决定" }, Gui_slot_type.Indicator);
+		this.set_gui(10, Material.BLUE_STAINED_GLASS_PANE, "§r左边放固体原料", new String[] { "§7在第3层中间放置漏斗可以自动添加" },
+				Gui_slot_type.Indicator);
 		this.set_gui(12, Material.BLUE_STAINED_GLASS_PANE, "§r左边放气体原料", Gui_slot_type.Indicator);
 		this.set_gui(14, Material.BLUE_STAINED_GLASS_PANE, "§r左边放液体原料", Gui_slot_type.Indicator);
-		this.set_gui(16, Material.BLUE_STAINED_GLASS_PANE, "§r右边放燃料", Gui_slot_type.Indicator);
+		this.set_gui(16, Material.BLUE_STAINED_GLASS_PANE, "§r右边放燃料", new String[] { "§7在第1层中间放置漏斗可以自动添加" },
+				Gui_slot_type.Indicator);
 		this.set_gui(19, Material.BLUE_STAINED_GLASS_PANE, "§r左边为固体产品", Gui_slot_type.Indicator);
 		this.set_gui(21, Material.BLUE_STAINED_GLASS_PANE, "§r左边为气体产品", Gui_slot_type.Indicator);
 		this.set_gui(23, Material.BLUE_STAINED_GLASS_PANE, "§r左边为液体产品", Gui_slot_type.Indicator);
@@ -41,12 +45,14 @@ public class Advanced_furnace_manager extends Gui_structure_manager {
 		this.set_gui(5, Material.GLASS_BOTTLE, "§e敞口反应", Gui_slot_type.Switch);
 		this.set_gui(6, Material.DISPENSER, "§r清除全部气体", Gui_slot_type.Button);
 		this.set_gui(8, Material.CHEST, "§e金币制造", Gui_slot_type.Switch);
-		this.set_gui(26, Material.FURNACE, "§e信息", Gui_slot_type.Indicator);
+		this.set_gui(26, Material.FURNACE, "§e燃料信息", Gui_slot_type.Indicator);
 		this.set_gui(27, Material.IRON_PICKAXE, "§e金币容量升级", Gui_slot_type.Button);
 		this.set_gui(28, Material.IRON_CHESTPLATE, "§e保温升级", Gui_slot_type.Indicator);
 		this.set_gui(29, Material.GLOWSTONE_DUST, "§e高速燃烧升级", Gui_slot_type.Indicator);
 		this.set_gui(30, Material.REDSTONE, "§e长时燃烧升级", Gui_slot_type.Indicator);
-		this.set_gui(32, Material.BLUE_STAINED_GLASS_PANE, "§r右边为升级组件加入区", Gui_slot_type.Indicator);
+		this.set_gui(31, Material.CLOCK, "§e升级信息", Gui_slot_type.Indicator);
+		this.set_gui(32, Material.BLUE_STAINED_GLASS_PANE, "§r右边为升级组件加入区",
+				new String[] { "§7读条完成后即升级成功", "§7读条期间取出将重置进度" }, Gui_slot_type.Indicator);
 		this.set_gui(34, Material.BLUE_STAINED_GLASS_PANE, "§r右边为燃料燃烧产品", Gui_slot_type.Indicator);
 	}
 
@@ -116,29 +122,29 @@ public class Advanced_furnace_manager extends Gui_structure_manager {
 	public String get_permission_head() {
 		return "adv_furnace";
 	}
-	
+
 	@Override
-	public Material[][][] get_model(){
+	public Material[][][] get_model() {
 		return this.model;
 	}
-	
+
 	@Override
 	public int[] get_center() {
-		return new int[] {this.center_x,this.center_y,this.center_z};
+		return new int[] { this.center_x, this.center_y, this.center_z };
 	}
-	
+
 	public int get_time_add_per_time_upgrade() {
 		return 7;
 	}
-	
+
 	public int get_time_loss_per_overload_upgrade() {
 		return 7;
 	}
-	
+
 	public int get_power_add_per_overload_upgrade() {
 		return 6;
 	}
-	
+
 	public int get_power_loss_per_time_upgrade() {
 		return 4;
 	}

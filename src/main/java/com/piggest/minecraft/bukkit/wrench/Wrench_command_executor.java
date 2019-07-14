@@ -36,9 +36,9 @@ public class Wrench_command_executor implements CommandExecutor {
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName("§r扳手");
 		ArrayList<String> lore = new ArrayList<String>();
-		lore.add("§r右键方块使方块");
-		lore.add("§r正面转至该面");
-		lore.add("§r(潜行状态下相反)");
+		lore.add("§7右键方块使方块");
+		lore.add("§7正面转至该面");
+		lore.add("§7(潜行状态下相反)");
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 		Material_ext.register("wrench", item);

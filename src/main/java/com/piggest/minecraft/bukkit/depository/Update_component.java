@@ -68,7 +68,7 @@ public class Update_component {
 		short new_damage = (short) (process * 250 / 100);
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = meta.getLore();
-		lore.set(1, "§r升级进度: " + process + "%");
+		lore.set(1, "§7升级进度: " + process + "%");
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 		item.setDurability((short) (250 - new_damage));
@@ -77,8 +77,10 @@ public class Update_component {
 	public static void set_level(ItemStack item, int level) {
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = meta.getLore();
-		lore.set(0, "§r升级等级: " + level);
-		lore.set(5, "§9+" + Depository.capacity_level[level] + " 容量");
+		lore.set(0, "§7升级等级: " + level);
+		if (Update_component.is_depository_upgrade_component(item)) {
+			lore.set(5, "§9+" + Depository.capacity_level[level - 1] + " 容量");
+		}
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 	}
@@ -89,8 +91,8 @@ public class Update_component {
 		ItemMeta meta = component_item.getItemMeta();
 		meta.setDisplayName(Update_component.name);
 		ArrayList<String> lore = new ArrayList<String>();
-		lore.add("§r升级等级: 0");
-		lore.add("§r升级进度: 0%");
+		lore.add("§7升级等级: 1");
+		lore.add("§7升级进度: 0%");
 		lore.add("");
 		lore.add("§7在存储器中:");
 		lore.add("§9+" + 1 + " 种类");
@@ -102,7 +104,7 @@ public class Update_component {
 		component_item = NMS_manager.ext_id_provider.set_ext_id(component_item, Update_component.id_name);
 		for (int level = 0; level < Update_component.component_item.length; level++) {
 			Update_component.component_item[level] = component_item.clone();
-			Update_component.set_level(Update_component.component_item[level], level);
+			Update_component.set_level(Update_component.component_item[level], level + 1);
 		}
 		return Update_component.component_item;
 	}
@@ -113,8 +115,8 @@ public class Update_component {
 		ItemMeta meta = component_item.getItemMeta();
 		meta.setDisplayName(Update_component.overload_name);
 		ArrayList<String> lore = new ArrayList<String>();
-		lore.add("§r升级等级: 0");
-		lore.add("§r升级进度: 0%");
+		lore.add("§7升级等级: 1");
+		lore.add("§7升级进度: 0%");
 		lore.add("");
 		lore.add("§7在高级熔炉中:");
 		lore.add("§9+" + Advanced_furnace_manager.instance.get_power_add_per_overload_upgrade() + "% 燃烧功率");
@@ -123,11 +125,10 @@ public class Update_component {
 		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 		component_item.setItemMeta(meta);
 		Update_component.set_process(component_item, 0);
-		component_item = NMS_manager.ext_id_provider.set_ext_id(component_item,
-				Update_component.overload_id_name);
-		for (int level = 0; level < Update_component.component_item.length; level++) {
+		component_item = NMS_manager.ext_id_provider.set_ext_id(component_item, Update_component.overload_id_name);
+		for (int level = 0; level < Update_component.overload_component_item.length; level++) {
 			Update_component.overload_component_item[level] = component_item.clone();
-			Update_component.set_level(Update_component.overload_component_item[level], level);
+			Update_component.set_level(Update_component.overload_component_item[level], level + 1);
 		}
 	}
 
@@ -137,8 +138,8 @@ public class Update_component {
 		ItemMeta meta = component_item.getItemMeta();
 		meta.setDisplayName(Update_component.time_name);
 		ArrayList<String> lore = new ArrayList<String>();
-		lore.add("§r升级等级: 0");
-		lore.add("§r升级进度: 0%");
+		lore.add("§7升级等级: 1");
+		lore.add("§7升级进度: 0%");
 		lore.add("");
 		lore.add("§7在高级熔炉中:");
 		lore.add("§9+" + Advanced_furnace_manager.instance.get_time_add_per_time_upgrade() + "% 燃烧时间");
@@ -147,11 +148,10 @@ public class Update_component {
 		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 		component_item.setItemMeta(meta);
 		Update_component.set_process(component_item, 0);
-		component_item = NMS_manager.ext_id_provider.set_ext_id(component_item,
-				Update_component.time_id_name);
-		for (int level = 0; level < Update_component.component_item.length; level++) {
+		component_item = NMS_manager.ext_id_provider.set_ext_id(component_item, Update_component.time_id_name);
+		for (int level = 0; level < Update_component.time_component_item.length; level++) {
 			Update_component.time_component_item[level] = component_item.clone();
-			Update_component.set_level(Update_component.time_component_item[level], level);
+			Update_component.set_level(Update_component.time_component_item[level], level + 1);
 		}
 	}
 
@@ -169,7 +169,7 @@ public class Update_component {
 		sr0.setIngredient('i', Material.IRON_BLOCK);
 		Dropper_shop_plugin.instance.getServer().addRecipe(sr0);
 		Dropper_shop_plugin.instance.get_sr().add(sr0);
-		Dropper_shop_plugin.instance.getLogger().info("存储器升级模块合成表已经添加");
+		Dropper_shop_plugin.instance.getLogger().info("存储器1级升级模块合成表已经添加");
 
 		ShapedRecipe sr1 = new ShapedRecipe(depository_upgrade1, Update_component.component_item[1]);
 		sr1.shape("bcb", "cpc", "bcb");
@@ -178,7 +178,7 @@ public class Update_component {
 		sr1.setIngredient('b', Material.QUARTZ_BLOCK);
 		Dropper_shop_plugin.instance.getServer().addRecipe(sr1);
 		Dropper_shop_plugin.instance.get_sr().add(sr1);
-		Dropper_shop_plugin.instance.getLogger().info("存储器1级升级模块合成表已经添加");
+		Dropper_shop_plugin.instance.getLogger().info("存储器2级升级模块合成表已经添加");
 
 		ShapedRecipe sr2 = new ShapedRecipe(depository_upgrade2, Update_component.component_item[2]);
 		sr2.shape("bcb", "cpc", "bcb");
@@ -187,7 +187,7 @@ public class Update_component {
 		sr2.setIngredient('b', Material.GOLD_BLOCK);
 		Dropper_shop_plugin.instance.getServer().addRecipe(sr2);
 		Dropper_shop_plugin.instance.get_sr().add(sr2);
-		Dropper_shop_plugin.instance.getLogger().info("存储器2级升级模块合成表已经添加");
+		Dropper_shop_plugin.instance.getLogger().info("存储器3级升级模块合成表已经添加");
 
 		ShapedRecipe sr3 = new ShapedRecipe(depository_upgrade3, Update_component.component_item[3]);
 		sr3.shape("bcb", "cpc", "bcb");
@@ -196,7 +196,7 @@ public class Update_component {
 		sr3.setIngredient('b', Material.EMERALD_BLOCK);
 		Dropper_shop_plugin.instance.getServer().addRecipe(sr3);
 		Dropper_shop_plugin.instance.get_sr().add(sr3);
-		Dropper_shop_plugin.instance.getLogger().info("存储器3级升级模块合成表已经添加");
+		Dropper_shop_plugin.instance.getLogger().info("存储器4级升级模块合成表已经添加");
 
 		ShapedRecipe sr4 = new ShapedRecipe(depository_upgrade4, Update_component.component_item[4]);
 		sr4.shape("bcb", "cpc", "bcb");
@@ -205,7 +205,7 @@ public class Update_component {
 		sr4.setIngredient('b', Material.DIAMOND_BLOCK);
 		Dropper_shop_plugin.instance.getServer().addRecipe(sr4);
 		Dropper_shop_plugin.instance.get_sr().add(sr4);
-		Dropper_shop_plugin.instance.getLogger().info("存储器4级升级模块合成表已经添加");
+		Dropper_shop_plugin.instance.getLogger().info("存储器5级升级模块合成表已经添加");
 	}
 
 	private static void set_overload_recipe() {
@@ -222,7 +222,7 @@ public class Update_component {
 		sr0.setIngredient('i', Material.IRON_BLOCK);
 		Dropper_shop_plugin.instance.getServer().addRecipe(sr0);
 		Dropper_shop_plugin.instance.get_sr().add(sr0);
-		Dropper_shop_plugin.instance.getLogger().info("高级熔炉高速升级1->2模块合成表已经添加");
+		Dropper_shop_plugin.instance.getLogger().info("高级熔炉高速升级0->1模块合成表已经添加");
 
 		ShapedRecipe sr1 = new ShapedRecipe(overload1, Update_component.overload_component_item[1]);
 		sr1.shape("bgb", "gpg", "gcg");
@@ -275,7 +275,7 @@ public class Update_component {
 		sr0.setIngredient('i', Material.IRON_BLOCK);
 		Dropper_shop_plugin.instance.getServer().addRecipe(sr0);
 		Dropper_shop_plugin.instance.get_sr().add(sr0);
-		Dropper_shop_plugin.instance.getLogger().info("高级熔炉长时升级1->2模块合成表已经添加");
+		Dropper_shop_plugin.instance.getLogger().info("高级熔炉长时升级0->1模块合成表已经添加");
 
 		ShapedRecipe sr1 = new ShapedRecipe(time1, Update_component.time_component_item[1]);
 		sr1.shape("brb", "rhr", "brb");
@@ -325,7 +325,7 @@ public class Update_component {
 		List<String> lore = meta.getLore();
 		int level;
 		String line = lore.get(0);
-		String pattern = "§r升级等级: ([1-9]\\d*|0)";
+		String pattern = "§7升级等级: ([1-9]\\d*|0)";
 		Pattern r = Pattern.compile(pattern);
 		Matcher m = r.matcher(line);
 		if (m.find()) {
@@ -340,7 +340,7 @@ public class Update_component {
 		List<String> lore = meta.getLore();
 		int num;
 		String line = lore.get(1);
-		String pattern = "§r升级进度: ([1-9]\\d*|0)%";
+		String pattern = "§7升级进度: ([1-9]\\d*|0)%";
 		Pattern r = Pattern.compile(pattern);
 		Matcher m = r.matcher(line);
 		if (m.find()) {
@@ -358,8 +358,8 @@ public class Update_component {
 
 	public static boolean is_component(ItemStack item) {
 		return Update_component.is_depository_upgrade_component(item)
-				&& Update_component.is_overload_upgrade_component(item)
-				&& Update_component.is_time_upgrade_component(item);
+				|| Update_component.is_overload_upgrade_component(item)
+				|| Update_component.is_time_upgrade_component(item);
 	}
 
 }
