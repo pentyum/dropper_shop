@@ -22,7 +22,7 @@ public class Update_component_listener implements Listener {
 			}
 		}
 		ItemStack item = event.getRecipe().getResult();
-		if (Update_component.is_depository_upgrade_component(item)) {
+		if (Update_component.is_component(item)) {  //是升级组件
 			int level = Update_component.get_level(item);
 			if (level == 0) {
 				return;
