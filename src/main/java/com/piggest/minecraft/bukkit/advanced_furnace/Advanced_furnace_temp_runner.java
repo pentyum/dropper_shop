@@ -51,7 +51,7 @@ public class Advanced_furnace_temp_runner extends Structure_runner {
 	}
 
 	private void get_fuel() {
-		ItemStack fuel_item = adv_furnace.get_gui_item(adv_furnace.get_fuel_slot());
+		ItemStack fuel_item = adv_furnace.get_gui_item(Advanced_furnace.fuel_slot);
 		if (!Grinder.is_empty(fuel_item)) {
 			Fuel fuel = Fuel.get_fuel(fuel_item);
 			if (fuel != null) {
