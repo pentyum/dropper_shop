@@ -578,7 +578,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		return this.time_upgrade;
 	}
 
-	public double get_overload_upgrade() {
+	public int get_overload_upgrade() {
 		return this.overload_upgrade;
 	}
 

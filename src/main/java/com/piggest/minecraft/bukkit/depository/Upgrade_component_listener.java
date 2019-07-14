@@ -6,7 +6,7 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
 
-public class Update_component_listener implements Listener {
+public class Upgrade_component_listener implements Listener {
 	@EventHandler
 	public void on_update(CraftItemEvent event) {
 		if (event.isCancelled() == true) {
@@ -22,18 +22,18 @@ public class Update_component_listener implements Listener {
 			}
 		}
 		ItemStack item = event.getRecipe().getResult();
-		if (Update_component.is_component(item)) {  //是升级组件
-			int level = Update_component.get_level(item);
+		if (Upgrade_component.is_component(item)) {  //是升级组件
+			int level = Upgrade_component.get_level(item);
 			if (level == 1) {
 				return;
 			}
 			ItemStack basis = res_list[5];
-			if (!Update_component.is_component(basis)) {
+			if (!Upgrade_component.is_component(basis)) {
 				event.getWhoClicked().sendMessage("必须使用升级组件合成，而你使用的是" + basis.getType().name());
 				event.setCancelled(true);
 				return;
 			}
-			if (Update_component.get_level(basis) != level - 1) {
+			if (Upgrade_component.get_level(basis) != level - 1) {
 				event.getWhoClicked().sendMessage("必须使用" + (level - 1) + "级升级组件合成" + level + "级升级组件");
 				event.setCancelled(true);
 				return;

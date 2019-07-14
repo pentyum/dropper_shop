@@ -47,9 +47,9 @@ public class Depository_item_importer extends Structure_runner {
 		if (this.times == 15) {
 			ItemStack components[] = depository.getInventory().getContents();
 			for (ItemStack component : components) {
-				if (Update_component.is_depository_upgrade_component(component)) {
-					if (Update_component.get_process(component) < 100) {
-						Update_component.set_process(component, Update_component.get_process(component) + 1);
+				if (Upgrade_component.get_type(component) == Upgrade_component_type.depository_upgrade) {
+					if (Upgrade_component.get_process(component) < 100) {
+						Upgrade_component.set_process(component, Upgrade_component.get_process(component) + 1);
 					}
 				}
 			}

@@ -38,8 +38,8 @@ import com.piggest.minecraft.bukkit.depository.Depository_command_executor;
 import com.piggest.minecraft.bukkit.depository.Depository_listener;
 import com.piggest.minecraft.bukkit.depository.Depository_manager;
 import com.piggest.minecraft.bukkit.depository.Reader;
-import com.piggest.minecraft.bukkit.depository.Update_component;
-import com.piggest.minecraft.bukkit.depository.Update_component_listener;
+import com.piggest.minecraft.bukkit.depository.Upgrade_component;
+import com.piggest.minecraft.bukkit.depository.Upgrade_component_listener;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver_command_executor;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver_listener;
@@ -105,7 +105,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private final Structure_listener Structure_listener = new Structure_listener();
 
 	private Listener[] structure_listeners = { new Depository_listener(), new Dropper_shop_listener(),
-			new Update_component_listener(), new Grinder_listener(), new Advanced_furnace_listener(),
+			new Upgrade_component_listener(), new Grinder_listener(), new Advanced_furnace_listener(),
 			new Exp_saver_listener(), new Pigman_spawn_listener(), new Anti_thunder_listener() };
 	// private HashMap<String, Gui_config> gui_config = new HashMap<String,
 	// Gui_config>();
@@ -271,8 +271,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		Powder.init_powder();
 		Reader.init_reader_item();
 		Reader.set_recipe();
-		Update_component.init_component();
-		Update_component.set_recipe();
+		Upgrade_component.init_component();
+		Upgrade_component.set_recipe();
 		grinder_manager.init_recipe();
 		Gas_bottle.init_gas_bottle();
 		Gas_bottle.set_recipe();
