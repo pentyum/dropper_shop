@@ -57,18 +57,20 @@ public class Note_stick_listener implements Listener {
 		Player player = event.getPlayer();
 		ItemStack item = player.getInventory().getItemInMainHand();
 		Block block = player.getTargetBlockExact(5);
-		if (item.getType() == Material.STICK && block.getType() == Material.NOTE_BLOCK) {
-			NoteBlock note_block = (NoteBlock) block.getBlockData();
-			int id = get_id(event.getMessage());
-			if (id == -1) {
-				player.sendMessage("你输入的音调不正确");
-			} else {
-				note_block.setNote(new Note(id));
-				Note_setting setting = new Note_setting(block, note_block);
-				runner.queue.add(setting);
-				player.sendMessage("已设置音调为" + event.getMessage());
+		if (item.getType() == Material.STICK && block != null) {
+			if (block.getType() == Material.NOTE_BLOCK) {
+				NoteBlock note_block = (NoteBlock) block.getBlockData();
+				int id = get_id(event.getMessage());
+				if (id == -1) {
+					player.sendMessage("你输入的音调不正确");
+				} else {
+					note_block.setNote(new Note(id));
+					Note_setting setting = new Note_setting(block, note_block);
+					runner.queue.add(setting);
+					player.sendMessage("已设置音调为" + event.getMessage());
+				}
+				event.setCancelled(true);
 			}
-			event.setCancelled(true);
 		}
 	}
 }
