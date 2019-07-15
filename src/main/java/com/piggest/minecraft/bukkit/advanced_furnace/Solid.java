@@ -49,6 +49,9 @@ public enum Solid implements Chemical {
 	}
 
 	public ItemStack get_item_stack() {
+		if (this == log) {
+			return new ItemStack(Material.OAK_LOG);
+		}
 		return Material_ext.new_item(this.name(), 1);
 	}
 

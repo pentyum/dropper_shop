@@ -11,11 +11,11 @@ public interface Chemical {
 	public NamespacedKey get_namespacedkey();
 	
 	public static Chemical get_chemical(String name) {
-		if (name.contains("_LOG")) {
-			name = "LOG";
+		if (name.contains("_log")) {
+			name = "log";
 		}
-		if (name.contains("WATER")) {
-			name = "WATER";
+		if (name.contains("water")) {
+			name = "water";
 		}
 		Solid solid = Solid.get_solid(name);
 		if (solid != null) {

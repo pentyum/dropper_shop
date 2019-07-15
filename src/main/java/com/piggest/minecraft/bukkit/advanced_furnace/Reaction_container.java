@@ -129,7 +129,7 @@ public class Reaction_container {
 		get_smooth_quartz.set_products_coef(1);
 		reactions.put("get_smooth_quartz", get_smooth_quartz);
 
-		Reaction get_smooth_stone = new Reaction(false, 120, 1400, 1, 1000);
+		Reaction get_smooth_stone = new Reaction(false, 120, 2000, 1, 1000);
 		get_smooth_stone.set_reactants(Solid.stone);
 		get_smooth_stone.set_products(Solid.smooth_stone);
 		get_smooth_stone.set_reactants_coef(1);

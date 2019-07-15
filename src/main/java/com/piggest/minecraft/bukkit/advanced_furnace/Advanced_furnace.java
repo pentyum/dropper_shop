@@ -131,14 +131,10 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 			this.set_fuel_slot(fuel_slot_item);
 		}
 		if (shop_save.get("solid-product-slot") != null) {
-			ItemStack solid_product_slot_item = Material_ext.new_item((String) shop_save.get("solid-product-slot"),
-					(Integer) shop_save.get("solid-product-slot-num"));
-			this.gui.setItem(Advanced_furnace.solid_product_slot, solid_product_slot_item);
+			this.set_fuel_product_slot((ItemStack) shop_save.get("solid-product-slot"));
 		}
 		if (shop_save.get("solid-reactant-slot") != null) {
-			ItemStack solid_reactant_slot_item = Material_ext.new_item((String) shop_save.get("solid-reactant-slot"),
-					(Integer) shop_save.get("solid-reactant-slot-num"));
-			this.set_solid_reactant_slot(solid_reactant_slot_item);
+			this.set_fuel_product_slot((ItemStack) shop_save.get("solid-reactant-slot"));
 		}
 		if (shop_save.get("fuel-product-slot") != null) {
 			this.set_fuel_product_slot((ItemStack) shop_save.get("fuel-product-slot"));
@@ -195,12 +191,10 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 			save.put("fuel-slot-num", fuel_slot.getAmount());
 		}
 		if (!Grinder.is_empty(solid_product_slot)) {
-			save.put("solid-product-slot", Material_ext.get_id_name(solid_product_slot));
-			save.put("solid-product-slot-num", solid_product_slot.getAmount());
+			save.put("solid-product-slot", solid_product_slot);
 		}
 		if (!Grinder.is_empty(solid_reactant_slot)) {
-			save.put("solid-reactant-slot", Material_ext.get_id_name(solid_reactant_slot));
-			save.put("solid-reactant-slot-num", solid_reactant_slot.getAmount());
+			save.put("solid-reactant-slot", solid_reactant_slot);
 		}
 		if (!Grinder.is_empty(fuel_product_slot)) {
 			save.put("fuel-product-slot", fuel_product_slot);
