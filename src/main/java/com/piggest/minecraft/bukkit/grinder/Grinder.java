@@ -12,7 +12,6 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Hopper;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -26,7 +25,10 @@ import com.piggest.minecraft.bukkit.structure.Structure_runner;
 public class Grinder extends Multi_block_with_gui implements HasRunner {
 	private Grinder_runner runner = new Grinder_runner(this);
 	private Grinder_io_runner io_runner = new Grinder_io_runner(this);
-
+	public static final int raw_slot = 9;
+	public static final int flint_slot = 11;
+	public static final int product_slot = 13;
+	
 	public Grinder() {
 		/*
 		ItemStack white = new ItemStack(Material.WHITE_STAINED_GLASS_PANE);
@@ -76,37 +78,29 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 		flint_info_meta.setLore(lore);
 		flint_info.setItemMeta(flint_info_meta);
 	}
-
-	public Inventory get_gui() {
-		return this.gui;
-	}
-
+	
 	public ItemStack get_raw() {
-		return this.gui.getContents()[9];
+		return this.gui.getItem(raw_slot);
 	}
 
 	public ItemStack get_flint() {
-		return this.gui.getContents()[11];
+		return this.gui.getItem(flint_slot);
 	}
 
 	public ItemStack get_product() {
-		return this.gui.getContents()[13];
+		return this.gui.getItem(product_slot);
 	}
-
-	public ItemStack get_product_2() {
-		return this.gui.getContents()[15];
-	}
-
+	
 	public void set_product(ItemStack product_item) {
-		this.gui.setItem(13, product_item);
+		this.gui.setItem(product_slot, product_item);
 	}
 
 	public void set_raw(ItemStack raw_item) {
-		this.gui.setItem(9, raw_item);
+		this.gui.setItem(raw_slot, raw_item);
 	}
 
 	public void set_flint(ItemStack flint_item) {
-		this.gui.setItem(11, flint_item);
+		this.gui.setItem(flint_slot, flint_item);
 	}
 
 	public static boolean is_empty(ItemStack item) {

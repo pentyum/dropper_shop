@@ -1,7 +1,5 @@
 package com.piggest.minecraft.bukkit.grinder;
 
-import java.util.HashMap;
-
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Hopper;
@@ -9,6 +7,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.utils.Inventory_io;
 
 public class Grinder_io_runner extends Structure_runner {
 	private Grinder grinder;
@@ -48,14 +47,7 @@ public class Grinder_io_runner extends Structure_runner {
 			}
 		}
 		if (chest != null) {
-			if (!Grinder.is_empty(grinder.get_product())) {
-				ItemStack move_item = grinder.get_product().clone();
-				move_item.setAmount(1);
-				HashMap<Integer, ItemStack> unaddable = chest.getInventory().addItem(move_item);
-				if (unaddable.size() == 0) {
-					grinder.get_product().setAmount(grinder.get_product().getAmount() - 1);
-				}
-			}
+			Inventory_io.move_item_to_inventoryholder(grinder.getInventory(), 13, chest);
 		}
 	}
 

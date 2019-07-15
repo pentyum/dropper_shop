@@ -1,4 +1,4 @@
-package com.piggest.minecraft.bukkit.nms;
+package com.piggest.minecraft.bukkit.nms.nbt;
 
 import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;

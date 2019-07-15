@@ -1,4 +1,4 @@
-package com.piggest.minecraft.bukkit.nms;
+package com.piggest.minecraft.bukkit.nms.nbt;
 
 import org.bukkit.inventory.ItemStack;
 

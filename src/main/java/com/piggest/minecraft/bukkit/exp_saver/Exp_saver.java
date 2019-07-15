@@ -13,11 +13,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.config.Price_config;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.structure.Capacity_upgradable;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
-import com.piggest.minecraft.bukkit.utils.Repair_cost;
 
 public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capacity_upgradable {
 	private int saved_exp = 0;
@@ -199,7 +199,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 		if (edit_type == 0) { // 修理
 			mending.setDurability((short) (mending.getDurability() - this.remove_exp(1)));
 		} else if (edit_type == 1) { // 移除tag
-			ItemStack new_item = Repair_cost.setRepairCost(mending, null);
+			ItemStack new_item = NMS_manager.repair_cost_provider.setRepairCost(mending, null);
 			this.set_mending(new_item);
 		}
 	}
@@ -218,7 +218,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 			player.sendMessage("物品为空");
 			return;
 		}
-		Integer repaircost = Repair_cost.getRepairCost(item);
+		Integer repaircost = NMS_manager.repair_cost_provider.getRepairCost(item);
 		if (repaircost == null) {
 			player.sendMessage("该物品没有铁砧惩罚标签");
 			return;
@@ -251,7 +251,8 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 		ItemMeta meta = upgrade_button.getItemMeta();
 		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 		ArrayList<String> lore = new ArrayList<String>();
-		lore.add("§r当前等级: " + structure_level + " / " + Dropper_shop_plugin.instance.get_exp_saver_max_structure_level());
+		lore.add("§r当前等级: " + structure_level + " / "
+				+ Dropper_shop_plugin.instance.get_exp_saver_max_structure_level());
 		lore.add("§7升级所需金币: " + Exp_saver.get_upgrade_price(structure_level));
 		lore.add("§7点击即可升级");
 		meta.setLore(lore);
