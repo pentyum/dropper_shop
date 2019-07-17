@@ -290,7 +290,9 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	}
 
 	public double get_power_loss() {
-		return this.get_k() * (this.reaction_container.get_temperature() - this.get_base_temperature());
+		double temp = this.get_temperature();
+		double base_temp = this.get_base_temperature();
+		return 1e-14 * (Math.pow(temp, 4) - Math.pow(base_temp, 4)) + this.get_k() * (temp - base_temp);
 	}
 
 	public Structure_runner[] get_runner() {
@@ -393,7 +395,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	public void set_gas_product_slot(ItemStack item) {
 		this.gui.setItem(20, item);
 	}
-	
+
 	public int get_make_money_rate() { // 生产金币的速率(30秒)
 		int rate = 0;
 		double current_temp = this.get_temperature();
