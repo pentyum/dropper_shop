@@ -57,6 +57,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	private boolean heat_keeping_upgrade = false;
 	private int overload_upgrade = 0;
 	private int time_upgrade = 0;
+	private double e = 1;
 
 	public static double get_block_temperature(Block block) {
 		double base_temp = block.getTemperature() * 20 + 270;
@@ -289,10 +290,14 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		return 0.0015 * (1 - 0.01 * this.get_heat_keeping_value());
 	}
 
+	public double get_e() { // 辐射系数
+		return this.e ;
+	}
+
 	public double get_power_loss() {
 		double temp = this.get_temperature();
 		double base_temp = this.get_base_temperature();
-		return 1e-14 * (Math.pow(temp, 4) - Math.pow(base_temp, 4)) + this.get_k() * (temp - base_temp);
+		return this.get_e() * 1e-14 * (Math.pow(temp, 4) - Math.pow(base_temp, 4)) + this.get_k() * (temp - base_temp);
 	}
 
 	public Structure_runner[] get_runner() {
