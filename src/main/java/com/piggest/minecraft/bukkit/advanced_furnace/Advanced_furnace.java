@@ -10,11 +10,14 @@ import java.util.Map.Entry;
 import org.bukkit.ChatColor;
 import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Furnace;
+import org.bukkit.block.Hopper;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.Vector;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver;
@@ -33,6 +36,10 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	public static final int solid_product_slot = 18;
 	public static final int gas_product_slot = 20;
 	public static final int upgrade_component_slot = 33;
+
+	private static final int solid_reactant_hopper_check_list[][] = { { 0, 1, 2 }, { 2, 1, 0 }, { 0, 1, -2 },
+			{ -2, 1, 0 } }; // 注入固体
+	private static final int fuel_hopper_check_list[][] = { { 0, -1, 2 }, { 2, -1, 0 }, { 0, -1, -2 }, { -2, -1, 0 } }; // 注入固体
 
 	private Reaction_container reaction_container = new Reaction_container();
 	private double power = 0;
@@ -611,5 +618,32 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	@Override
 	public Advanced_furnace_manager get_manager() {
 		return (Advanced_furnace_manager) super.get_manager();
+	}
+
+	private synchronized Hopper get_hopper(int[][] check_list) {
+		for (int[] relative_coord : check_list) {
+			BlockState block = this.get_block(relative_coord[0], relative_coord[1], relative_coord[2]).getState();
+			if (block instanceof Hopper) {
+				org.bukkit.block.data.type.Hopper hopper_data = (org.bukkit.block.data.type.Hopper) block
+						.getBlockData();
+				Vector vec = hopper_data.getFacing().getDirection().multiply(2)
+						.add(new Vector(relative_coord[0], relative_coord[1], relative_coord[2]));
+				if (vec.getBlockX() == 0 && vec.getBlockZ() == 0) {
+					if (block.getBlock().isBlockPowered()) {
+						continue;
+					}
+					return (Hopper) block;
+				}
+			}
+		}
+		return null;
+	}
+
+	public synchronized Hopper get_solid_reactant_hopper() {
+		return this.get_hopper(solid_reactant_hopper_check_list);
+	}
+
+	public synchronized Hopper get_fuel_hopper() {
+		return this.get_hopper(fuel_hopper_check_list);
 	}
 }

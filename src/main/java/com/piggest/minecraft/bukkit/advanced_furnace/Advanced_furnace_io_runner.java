@@ -7,8 +7,6 @@ import org.bukkit.block.Chest;
 import org.bukkit.block.Hopper;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
-
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 import com.piggest.minecraft.bukkit.utils.Inventory_io;
 
@@ -24,47 +22,19 @@ public class Advanced_furnace_io_runner extends Structure_runner {
 		if (this.adv_furnace.is_loaded() == false) {
 			return;
 		}
-		int solid_check_list[][] = { { 0, 1, 2 }, { 2, 1, 0 }, { 0, 1, -2 }, { -2, 1, 0 } }; // 注入固体
-		for (int[] relative_coord : solid_check_list) {
-			BlockState block = this.adv_furnace.get_block(relative_coord[0], relative_coord[1], relative_coord[2])
-					.getState();
-			if (block instanceof Hopper) {
-				org.bukkit.block.data.type.Hopper hopper_data = (org.bukkit.block.data.type.Hopper) block
-						.getBlockData();
-				Vector vec = hopper_data.getFacing().getDirection().multiply(2)
-						.add(new Vector(relative_coord[0], relative_coord[1], relative_coord[2]));
-				if (vec.getBlockX() == 0 && vec.getBlockZ() == 0) {
-					Hopper hopper = (Hopper) block;
-					if (hopper.getBlock().isBlockPowered()) {
-						continue;
-					}
-					for (ItemStack item : hopper.getInventory().getContents()) {
-						if (item != null && item.getType() != Material.AIR) {
-							this.adv_furnace.add_a_solid(item);
-						}
-					}
+		Hopper solid_hopper = this.adv_furnace.get_solid_reactant_hopper();
+		if (solid_hopper != null) {
+			for (ItemStack item : solid_hopper.getInventory().getContents()) {
+				if (item != null && item.getType() != Material.AIR) {
+					this.adv_furnace.add_a_solid(item);
 				}
 			}
 		}
-		int[][] fuel_check_list = { { 0, -1, 2 }, { 2, -1, 0 }, { 0, -1, -2 }, { -2, -1, 0 } }; // 注入燃料
-		for (int[] relative_coord : fuel_check_list) {
-			BlockState block = this.adv_furnace.get_block(relative_coord[0], relative_coord[1], relative_coord[2])
-					.getState();
-			if (block instanceof Hopper) {
-				org.bukkit.block.data.type.Hopper hopper_data = (org.bukkit.block.data.type.Hopper) block
-						.getBlockData();
-				Vector vec = hopper_data.getFacing().getDirection().multiply(2)
-						.add(new Vector(relative_coord[0], relative_coord[1], relative_coord[2]));
-				if (vec.getBlockX() == 0 && vec.getBlockZ() == 0) {
-					Hopper hopper = (Hopper) block;
-					if (hopper.getBlock().isBlockPowered()) {
-						continue;
-					}
-					for (ItemStack item : hopper.getInventory().getContents()) {
-						if (item != null && item.getType() != Material.AIR) {
-							this.adv_furnace.add_a_fuel(item);
-						}
-					}
+		Hopper fuel_hopper = this.adv_furnace.get_fuel_hopper();
+		if (fuel_hopper != null) {
+			for (ItemStack item : fuel_hopper.getInventory().getContents()) {
+				if (item != null && item.getType() != Material.AIR) {
+					this.adv_furnace.add_a_fuel(item);
 				}
 			}
 		}
