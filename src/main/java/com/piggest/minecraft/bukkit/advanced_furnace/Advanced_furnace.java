@@ -393,12 +393,15 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	public void set_gas_product_slot(ItemStack item) {
 		this.gui.setItem(20, item);
 	}
-
+	
 	public int get_make_money_rate() { // 生产金币的速率(30秒)
 		int rate = 0;
+		double current_temp = this.get_temperature();
+		double base_temp = this.get_base_temperature();
 		if (this.get_temperature() > 1200) {
 			double d_temp = this.get_temperature() - this.get_base_temperature();
-			rate = (int) (d_temp / 120);
+			double eta = 1 - current_temp / base_temp;
+			rate = (int) (d_temp / 120 * eta);
 		}
 		return rate;
 	}
