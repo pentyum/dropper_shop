@@ -401,7 +401,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		if (this.get_temperature() > 1200) {
 			double d_temp = this.get_temperature() - this.get_base_temperature();
 			double eta = 1 - current_temp / base_temp;
-			rate = (int) (d_temp / 120 * eta);
+			rate = (int) (d_temp / 100 * eta);
 		}
 		return rate;
 	}
