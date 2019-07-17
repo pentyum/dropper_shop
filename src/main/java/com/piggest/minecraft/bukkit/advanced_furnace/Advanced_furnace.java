@@ -290,7 +290,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	}
 
 	public double get_e() { // 辐射系数
-		return this.e ;
+		return this.e;
 	}
 
 	public double get_power_loss() {
@@ -406,7 +406,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		double base_temp = this.get_base_temperature();
 		if (this.get_temperature() > 1200) {
 			double d_temp = current_temp - base_temp;
-			double eta = 1 - current_temp / base_temp;
+			double eta = 1 - base_temp / current_temp;
 			rate = (int) (d_temp / 100 * eta);
 		}
 		return rate;

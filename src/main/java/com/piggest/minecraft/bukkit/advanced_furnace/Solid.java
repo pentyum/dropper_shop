@@ -68,7 +68,6 @@ public enum Solid implements Chemical {
 
 	public static Solid get_solid(String name) {
 		Solid solid = null;
-		Solid.valueOf(name);
 		try {
 			solid = Solid.valueOf(name);
 		} catch (Exception e) {
