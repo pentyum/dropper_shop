@@ -73,6 +73,7 @@ public class Advanced_furnace_manager extends Gui_structure_manager {
 							adv_furnace = new Advanced_furnace();
 							adv_furnace.set_location(check_loc);
 							adv_furnace.set_temperature(adv_furnace.get_base_temperature());
+							adv_furnace.set_money(0);
 							if (adv_furnace.completed() == true) {
 								return adv_furnace;
 							}

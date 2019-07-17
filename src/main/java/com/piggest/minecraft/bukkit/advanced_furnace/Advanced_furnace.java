@@ -89,7 +89,6 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		this.set_auto_product(true);
 		this.set_open(false);
 		this.set_make_money(false);
-		this.set_money(0);
 		this.set_capacity_level(1);
 		this.set_heat_keeping_upgrade(false);
 		this.set_overload_upgrade(0);
@@ -406,7 +405,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		double current_temp = this.get_temperature();
 		double base_temp = this.get_base_temperature();
 		if (this.get_temperature() > 1200) {
-			double d_temp = this.get_temperature() - this.get_base_temperature();
+			double d_temp = current_temp - base_temp;
 			double eta = 1 - current_temp / base_temp;
 			rate = (int) (d_temp / 100 * eta);
 		}
