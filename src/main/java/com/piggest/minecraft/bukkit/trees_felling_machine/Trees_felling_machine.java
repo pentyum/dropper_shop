@@ -112,12 +112,17 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 			}
 		}
 		if (check_block != null) {
-			if (check_block.getType().name().contains("_LEAVES")) { // 第一个非空气方块是树叶，则判定为树
+			if (Tag.LEAVES.isTagged(check_block.getType())) {// 第一个非空气方块是树叶，则判定为树
 				Stack<Block> tree_stack = new Stack<Block>();
-				for (; y >= 40; y--) { // 继续往下检测，找到原木方块
+				for (; y >= 50; y--) { // 继续往下检测，找到原木方块
 					Block block = this.get_location().getWorld().getBlockAt(this.current_x, y, this.current_z);
-					if (Tag.LOGS.isTagged(block.getType()) || Tag.LEAVES.isTagged(block.getType())) {
+					Material type = block.getType();
+					if (Tag.LOGS.isTagged(type) || Tag.LEAVES.isTagged(type)) {
 						tree_stack.push(block);
+					} else {
+						if (type != Material.AIR) {
+							break;
+						}
 					}
 				}
 				while (!tree_stack.isEmpty()) {
