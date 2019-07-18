@@ -1,13 +1,12 @@
 package com.piggest.minecraft.bukkit.exp_saver;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 
 import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 
-public class Exp_saver_manager extends Gui_structure_manager {
+public class Exp_saver_manager extends Gui_structure_manager<Exp_saver> {
 	public static Exp_saver_manager instance = null;
 
 	private int[] buttons = new int[] { 9, 10, 11, 15, 16, 17 };
@@ -36,7 +35,8 @@ public class Exp_saver_manager extends Gui_structure_manager {
 		this.set_gui(19, Material.ANVIL, "§e铁砧升级未完成", Gui_slot_type.Indicator);
 		this.set_gui(20, Material.NAME_TAG, "§e移除铁砧惩罚标签", Gui_slot_type.Button);
 	}
-
+	
+	/*
 	@Override
 	public Exp_saver find(String player_name, Location loc, boolean new_structure) {
 		return this.find(loc, new_structure);
@@ -71,7 +71,8 @@ public class Exp_saver_manager extends Gui_structure_manager {
 		}
 		return null;
 	}
-
+	*/
+	
 	@Override
 	public String get_gui_name() {
 		return "经验存储器";

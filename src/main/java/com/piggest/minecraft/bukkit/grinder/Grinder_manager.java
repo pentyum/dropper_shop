@@ -2,7 +2,6 @@ package com.piggest.minecraft.bukkit.grinder;
 
 import java.util.HashMap;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
@@ -10,9 +9,8 @@ import org.bukkit.inventory.ItemStack;
 import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
-import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
 
-public class Grinder_manager extends Gui_structure_manager {
+public class Grinder_manager extends Gui_structure_manager<Grinder> {
 	public HashMap<Material, ItemStack> recipe = new HashMap<Material, ItemStack>();
 	public HashMap<Material, Integer> recipe_time = new HashMap<Material, Integer>();
 	private String gui_name = "磨粉机";
@@ -40,9 +38,9 @@ public class Grinder_manager extends Gui_structure_manager {
 		this.set_gui(16, Material.BLUE_STAINED_GLASS_PANE, "§r右边为燧石单元储量", Gui_slot_type.Indicator);
 		this.set_gui(17, Material.FLINT, "§e燧石单元", Gui_slot_type.Indicator);
 	}
-
+	/*
 	@Override
-	public Multi_block_structure find(String player_name, Location loc, boolean new_structure) {
+	public Grinder find(String player_name, Location loc, boolean new_structure) {
 		if (new_structure == false) {
 			return this.get(loc);
 		} else {
@@ -55,10 +53,7 @@ public class Grinder_manager extends Gui_structure_manager {
 			}
 		}
 	}
-
-	public Grinder get(Location location) {
-		return (Grinder) super.get(location);
-	}
+	*/
 
 	public String get_gui_name() {
 		return this.gui_name;

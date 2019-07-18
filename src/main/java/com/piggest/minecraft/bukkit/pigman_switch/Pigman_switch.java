@@ -29,4 +29,9 @@ public class Pigman_switch extends Multi_block_structure {
 	public boolean activated() {
 		return this.get_location().getBlock().isBlockPowered();
 	}
+
+	@Override
+	public void init_after_set_location() {
+		return;
+	}
 }

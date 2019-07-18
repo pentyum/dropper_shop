@@ -17,10 +17,8 @@ public abstract class Structure {
 	protected int z;
 
 	public void set_from_save(Map<?, ?> save) {
-		this.x = (int) save.get("x");
-		this.y = (int) save.get("y");
-		this.z = (int) save.get("z");
-		this.world_name = (String) save.get("world");
+		this.set_location((String) save.get("world"), (int) save.get("x"), (int) save.get("y"), (int) save.get("z"));
+		this.init_after_set_location();
 		if (this instanceof Ownable) {
 			Ownable ownable = (Ownable) this;
 			ownable.set_owner((String) save.get("owner"));
@@ -82,7 +80,7 @@ public abstract class Structure {
 		return save;
 	}
 
-	public Structure_manager get_manager() {
+	public Structure_manager<? extends Structure> get_manager() {
 		return Dropper_shop_plugin.instance.get_structure_manager().get(this.getClass());
 	}
 
@@ -90,6 +88,11 @@ public abstract class Structure {
 	 * 创建前调用的函数，返回true表明创建成功。
 	 */
 	public abstract boolean create_condition(Player player);
+
+	/**
+	 * 在设定好位置后、读取存档之前进行的初始化操作。
+	 */
+	public abstract void init_after_set_location();
 
 	public void remove() {
 		this.get_manager().remove(this);
@@ -103,5 +106,11 @@ public abstract class Structure {
 	@Override
 	public String toString() {
 		return this.getClass().getName() + "(" + this.world_name + "," + this.x + "," + this.y + "," + this.z + ")";
+	}
+
+	protected abstract boolean completed();
+
+	public String get_display_name() {
+		return this.getClass().getSimpleName();
 	}
 }

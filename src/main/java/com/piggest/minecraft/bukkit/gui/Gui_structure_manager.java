@@ -8,11 +8,11 @@ import org.bukkit.event.inventory.InventoryType;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_manager;
 
-public abstract class Gui_structure_manager extends Structure_manager {
+public abstract class Gui_structure_manager<T extends Multi_block_with_gui> extends Structure_manager<T> {
 	private HashMap<Integer, Slot_config> locked_slots = new HashMap<Integer, Slot_config>();
 	public static final int[] NO_BAR = new int[0];
 
-	public Gui_structure_manager(Class<? extends Multi_block_with_gui> structure_class) {
+	public Gui_structure_manager(Class<T> structure_class) {
 		super(structure_class);
 	}
 

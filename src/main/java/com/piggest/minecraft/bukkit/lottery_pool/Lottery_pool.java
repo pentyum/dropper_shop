@@ -199,4 +199,9 @@ public class Lottery_pool extends Multi_block_structure {
 		}
 		this.running = false;
 	}
+
+	@Override
+	public void init_after_set_location() {
+		return;
+	}
 }

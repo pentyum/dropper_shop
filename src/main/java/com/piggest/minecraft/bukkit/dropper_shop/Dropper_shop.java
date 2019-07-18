@@ -76,11 +76,11 @@ public class Dropper_shop extends Single_block_structure implements Ownable {
 		return this.owner;
 	}
 
-	public int completed() {
+	public boolean completed() {
 		if (this.dropper_block.getBlock().getType() == Material.DROPPER) {
-			return 1;
+			return true;
 		} else {
-			return 0;
+			return false;
 		}
 	}
 
@@ -145,5 +145,10 @@ public class Dropper_shop extends Single_block_structure implements Ownable {
 				return false;
 			}
 		}
+	}
+
+	@Override
+	public void init_after_set_location() {
+		return;
 	}
 }

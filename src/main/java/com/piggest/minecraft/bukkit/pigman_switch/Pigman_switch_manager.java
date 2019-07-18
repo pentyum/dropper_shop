@@ -1,11 +1,10 @@
 package com.piggest.minecraft.bukkit.pigman_switch;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 
 import com.piggest.minecraft.bukkit.structure.Structure_manager;
 
-public class Pigman_switch_manager extends Structure_manager {
+public class Pigman_switch_manager extends Structure_manager<Pigman_switch> {
 	private Material[][][] model = {
 			{ { Material.SANDSTONE, Material.SANDSTONE, Material.SANDSTONE },
 					{ Material.SANDSTONE, Material.SANDSTONE, Material.SANDSTONE },
@@ -20,7 +19,7 @@ public class Pigman_switch_manager extends Structure_manager {
 		super(Pigman_switch.class);
 		instance = this;
 	}
-
+	/*
 	@Override
 	public Pigman_switch find(String player_name, Location loc, boolean new_structure) {
 		int x;
@@ -52,7 +51,8 @@ public class Pigman_switch_manager extends Structure_manager {
 		}
 		return null;
 	}
-
+	*/
+	
 	@Override
 	public String get_permission_head() {
 		return "pigman_switch";

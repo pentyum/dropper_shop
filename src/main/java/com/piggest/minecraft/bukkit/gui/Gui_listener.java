@@ -29,7 +29,7 @@ public class Gui_listener implements Listener {
 		if (holder == null) {
 			return;
 		}
-		Structure_manager structure_manager = Dropper_shop_plugin.instance.get_structure_manager()
+		Structure_manager<?> structure_manager = Dropper_shop_plugin.instance.get_structure_manager()
 				.get(holder.getClass());
 		if (structure_manager == null) {
 			return;
@@ -37,7 +37,7 @@ public class Gui_listener implements Listener {
 		if (!(structure_manager instanceof Gui_structure_manager)) {
 			return;
 		}
-		Gui_structure_manager gui_structure_manager = (Gui_structure_manager) structure_manager;
+		Gui_structure_manager<?> gui_structure_manager = (Gui_structure_manager<?>) structure_manager;
 		Multi_block_with_gui structure = (Multi_block_with_gui) holder;
 		int slot = event.getSlot();
 		Slot_config slot_config = gui_structure_manager.get_locked_slots().get(slot);

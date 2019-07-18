@@ -290,4 +290,9 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 	public boolean on_switch_pressed(Player player, int slot, boolean on) {
 		return true;
 	}
+
+	@Override
+	public void init_after_set_location() {
+		return;
+	}
 }

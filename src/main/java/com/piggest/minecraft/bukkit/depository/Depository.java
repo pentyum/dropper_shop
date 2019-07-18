@@ -231,4 +231,16 @@ public class Depository extends Multi_block_with_gui implements Ownable, HasRunn
 	public boolean on_switch_pressed(Player player, int slot, boolean on) {
 		return true;
 	}
+
+	@Override
+	public void init_after_set_location() {
+		return;
+	}
+
+	@Override
+	public void on_right_click(Player player) {
+		if (this.get_owner_name().equalsIgnoreCase(player.getName())) {
+			super.on_right_click(player);
+		}
+	}
 }

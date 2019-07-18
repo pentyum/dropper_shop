@@ -50,7 +50,6 @@ import com.piggest.minecraft.bukkit.grinder.Grinder_listener;
 import com.piggest.minecraft.bukkit.grinder.Grinder_manager;
 import com.piggest.minecraft.bukkit.grinder.Powder;
 import com.piggest.minecraft.bukkit.gui.Gui_listener;
-import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool;
 import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_command_executor;
 import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_manager;
@@ -93,7 +92,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private Pigman_switch_manager pigman_switch_manager;
 	private Anti_thunder_manager anti_thunder_manager;
 
-	private HashMap<Class<? extends Structure>, Structure_manager> structure_manager_map = new HashMap<Class<? extends Structure>, Structure_manager>();
+	private HashMap<Class<? extends Structure>, Structure_manager<? extends Structure>> structure_manager_map = new HashMap<Class<? extends Structure>, Structure_manager<? extends Structure>>();
 
 	private HashMap<String, Integer> price_map = new HashMap<String, Integer>();
 	private HashMap<String, Integer> unit_map = new HashMap<String, Integer>();
@@ -279,8 +278,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		Reaction_container.init_reaction();
 		wrench.init();
 
-		for (Entry<Class<? extends Structure>, Structure_manager> entry : this.structure_manager_map.entrySet()) {
-			Structure_manager manager = entry.getValue();
+		for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : this.structure_manager_map.entrySet()) {
+			Structure_manager<? extends Structure> manager = entry.getValue();
 			manager.load_structures();
 		}
 
@@ -299,8 +298,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		for (Entry<Class<? extends Structure>, Structure_manager> entry : this.structure_manager_map.entrySet()) {
-			Structure_manager manager = entry.getValue();
+		for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : this.structure_manager_map.entrySet()) {
+			Structure_manager<? extends Structure> manager = entry.getValue();
 			manager.save_structures();
 		}
 		try {
@@ -343,7 +342,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		return this.trees_felling_machine_manager;
 	}
 
-	public HashMap<Class<? extends Structure>, Structure_manager> get_structure_manager() {
+	public HashMap<Class<? extends Structure>, Structure_manager<? extends Structure>> get_structure_manager() {
 		return this.structure_manager_map;
 	}
 
@@ -372,12 +371,12 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public Exp_saver_manager get_exp_saver_manager() {
 		return this.exp_saver_manager;
 	}
-
-	public Gui_structure_manager get_gui_structure_manager(String gui_name) {
-		for (Entry<Class<? extends Structure>, Structure_manager> entry : this.structure_manager_map.entrySet()) {
-			Structure_manager manager = entry.getValue();
+	/*
+	public Gui_structure_manager<? extends Multi_block_with_gui> get_gui_structure_manager(String gui_name) {
+		for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : this.structure_manager_map.entrySet()) {
+			Structure_manager<? extends Structure> manager = entry.getValue();
 			if (manager instanceof Gui_structure_manager) {
-				Gui_structure_manager gui_structure_manager = (Gui_structure_manager) manager;
+				Gui_structure_manager<? extends Multi_block_with_gui> gui_structure_manager = (Gui_structure_manager<? extends Multi_block_with_gui>) manager;
 				if (gui_structure_manager.get_gui_name().equals(gui_name)) {
 					return gui_structure_manager;
 				}
@@ -385,7 +384,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		}
 		return null;
 	}
-
+	*/
 	public int get_exp_saver_max_structure_level() {
 		return this.exp_saver_max_structure_level;
 	}

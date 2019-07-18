@@ -44,7 +44,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 		if (slot == 10) {
 			player.sendMessage("已复位");
 			this.scanned_blocks = 0;
-			this.init();
+			this.init_after_set_location();
 		}
 	}
 
@@ -290,7 +290,6 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	@Override
 	public void set_from_save(Map<?, ?> shop_save) {
 		super.set_from_save(shop_save);
-		this.init();
 		this.current_x = ((int) shop_save.get("current-x"));
 		this.current_z = ((int) shop_save.get("current-z"));
 		this.scanned_blocks = ((int) shop_save.get("scanned-blocks"));
@@ -316,20 +315,6 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 
 	public void set_working(boolean working) {
 		this.set_switch(9, working);
-	}
-
-	public void init() {
-		this.start_x = this.get_location().getBlockX() - this.r;
-		this.start_z = this.get_location().getBlockZ() - this.r;
-
-		this.end_x = this.get_location().getBlockX() + this.r;
-		this.end_z = this.get_location().getBlockZ() + this.r;
-
-		this.current_x = this.start_x;
-		this.current_z = this.start_z;
-		this.total_blocks = (this.end_x - this.start_x + 1) * (this.end_z - this.start_z + 1);
-		this.set_working(false);
-		this.update_process();
 	}
 
 	public void update_process() {
@@ -392,5 +377,20 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	
 	public synchronized Hopper get_axe_hopper() {
 		return this.get_hopper(axe_hopper_check_list);
+	}
+
+	@Override
+	public void init_after_set_location() {
+		this.start_x = this.get_location().getBlockX() - this.r;
+		this.start_z = this.get_location().getBlockZ() - this.r;
+
+		this.end_x = this.get_location().getBlockX() + this.r;
+		this.end_z = this.get_location().getBlockZ() + this.r;
+
+		this.current_x = this.start_x;
+		this.current_z = this.start_z;
+		this.total_blocks = (this.end_x - this.start_x + 1) * (this.end_z - this.start_z + 1);
+		this.set_working(false);
+		this.update_process();
 	}
 }

@@ -74,26 +74,29 @@ public class Use_wrench_listener implements Listener {
 						}
 						event.setCancelled(true);
 					} else {
-						HashMap<Class<? extends Structure>, Structure_manager> structure_manager = Dropper_shop_plugin.instance
+						HashMap<Class<? extends Structure>, Structure_manager<? extends Structure>> structure_manager = Dropper_shop_plugin.instance
 								.get_structure_manager();
-						for (Entry<Class<? extends Structure>, Structure_manager> entry : structure_manager
+						for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : structure_manager
 								.entrySet()) {
-							Structure_manager manager = entry.getValue();
-							Structure structure = manager.find(null, block.getLocation(), false);
+							Structure_manager<? extends Structure> manager = entry.getValue();
+							Structure structure = manager.find_existed(block.getLocation());
+							// Structure structure = manager.find(null, block.getLocation(), false);
 							if (structure != null && player.isSneaking() == false) {
 								player.sendMessage("这里已经有结构了");
 								event.setCancelled(true);
 								return;
 							}
 						}
-						for (Entry<Class<? extends Structure>, Structure_manager> entry : structure_manager
+						for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : structure_manager
 								.entrySet()) {
-							Structure_manager manager = entry.getValue();
-							Structure structure = manager.find(player.getName(), block.getLocation(), true);
+							Structure_manager<? extends Structure> manager = entry.getValue();
+							Structure structure = manager.find_and_make(player, block.getLocation());
+							// Structure structure = manager.find(player.getName(), block.getLocation(),
+							// true);
 							if (structure != null && player.isSneaking() == false) {
 								if (structure instanceof Multi_block_structure && structure.create_condition(player)) {
 									manager.add(structure);
-									player.sendMessage(structure.getClass().getSimpleName() + "结构建立完成");
+									player.sendMessage(structure.get_display_name() + "结构建立完成");
 									event.setCancelled(true);
 									return;
 								}

@@ -1,6 +1,5 @@
 package com.piggest.minecraft.bukkit.trees_felling_machine;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 
@@ -8,7 +7,7 @@ import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 
-public class Trees_felling_machine_manager extends Gui_structure_manager {
+public class Trees_felling_machine_manager extends Gui_structure_manager<Trees_felling_machine> {
 	private Material[][][] model = {
 			{ { Material.CHISELED_QUARTZ_BLOCK, Material.QUARTZ_PILLAR, Material.CHISELED_QUARTZ_BLOCK },
 				{ Material.QUARTZ_PILLAR, null, Material.QUARTZ_PILLAR },
@@ -32,7 +31,7 @@ public class Trees_felling_machine_manager extends Gui_structure_manager {
 		this.set_gui(12, Material.BLUE_STAINED_GLASS_PANE, "§r右边放入伐木斧头", Gui_slot_type.Indicator);
 		this.set_gui(14, Material.BLUE_STAINED_GLASS_PANE, "§r耐久附魔能减少耐久损耗", Gui_slot_type.Indicator);
 	}
-
+	/*
 	@Override
 	public Trees_felling_machine find(String player_name, Location loc, boolean new_structure) {
 		return this.find(loc, new_structure);
@@ -53,7 +52,7 @@ public class Trees_felling_machine_manager extends Gui_structure_manager {
 							machine = new Trees_felling_machine();
 							machine.set_location(check_loc);
 							if (machine.completed() == true) {
-								machine.init();
+								machine.init_after_set_location();
 								return machine;
 							}
 						} else {
@@ -68,10 +67,7 @@ public class Trees_felling_machine_manager extends Gui_structure_manager {
 		}
 		return null;
 	}
-
-	public Trees_felling_machine get(Location loc) {
-		return (Trees_felling_machine) super.get(loc);
-	}
+	*/
 
 	@Override
 	public String get_gui_name() {

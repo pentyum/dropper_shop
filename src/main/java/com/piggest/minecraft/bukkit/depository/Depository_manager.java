@@ -6,7 +6,7 @@ import org.bukkit.event.inventory.InventoryType;
 
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 
-public class Depository_manager extends Gui_structure_manager {
+public class Depository_manager extends Gui_structure_manager<Depository> {
 	public static Depository_manager instance = null;
 	private Material[][][] model = {
 			{ { Material.LAPIS_BLOCK, Material.IRON_BLOCK, Material.LAPIS_BLOCK },
@@ -64,10 +64,6 @@ public class Depository_manager extends Gui_structure_manager {
 			}
 		}
 		return null;
-	}
-
-	public Depository get(Location location) {
-		return (Depository) super.get(location);
 	}
 
 	@Override

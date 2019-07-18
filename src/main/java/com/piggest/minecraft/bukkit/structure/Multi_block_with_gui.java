@@ -29,6 +29,7 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 			this.gui = Bukkit.createInventory(this, this.get_manager().get_inventory_type(),
 					this.get_manager().get_gui_name());
 		}
+
 		for (Entry<Integer, Slot_config> entry : this.get_manager().get_locked_slots().entrySet()) {
 			int slot = entry.getKey();
 			Slot_config slot_config = entry.getValue();
@@ -132,8 +133,12 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 	}
 
 	@Override
-	public Gui_structure_manager get_manager() {
-		return (Gui_structure_manager) super.get_manager();
+	public Gui_structure_manager<? extends Multi_block_with_gui> get_manager() {
+		return (Gui_structure_manager<?>) super.get_manager();
 	}
-
+	
+	@Override
+	public String get_display_name() {
+		return this.get_manager().get_gui_name();
+	}
 }

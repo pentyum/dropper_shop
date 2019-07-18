@@ -40,8 +40,7 @@ public class Exp_saver_command_executor implements TabExecutor {
 				player.sendMessage("请指向方块");
 				return true;
 			}
-			Exp_saver exp_saver = Dropper_shop_plugin.instance.get_exp_saver_manager().find(look_block.getLocation(),
-					false);
+			Exp_saver exp_saver = Dropper_shop_plugin.instance.get_exp_saver_manager().find_existed(look_block.getLocation());
 			if (args[0].equalsIgnoreCase("remove")) {
 				if (exp_saver == null) {
 					player.sendMessage("没有检测到完整的经验存储器结构");

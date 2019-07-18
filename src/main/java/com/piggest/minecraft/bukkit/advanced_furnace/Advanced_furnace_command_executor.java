@@ -48,7 +48,7 @@ public class Advanced_furnace_command_executor implements TabExecutor {
 			}
 			if (args[0].equalsIgnoreCase("remove")) {
 				Advanced_furnace adv_furnace = Dropper_shop_plugin.instance.get_adv_furnace_manager()
-						.find(look_block.getLocation(), false);
+						.find_existed(look_block.getLocation());
 				if (adv_furnace == null) {
 					player.sendMessage("没有检测到完整的高级熔炉结构");
 					return true;
@@ -58,7 +58,7 @@ public class Advanced_furnace_command_executor implements TabExecutor {
 				return true;
 			} else if (args[0].equalsIgnoreCase("getmoney")) {
 				Advanced_furnace adv_furnace = Dropper_shop_plugin.instance.get_adv_furnace_manager()
-						.find(look_block.getLocation(), false);
+						.find_existed(look_block.getLocation());
 				if (adv_furnace == null) {
 					player.sendMessage("没有检测到完整的高级熔炉结构");
 					return true;
@@ -74,7 +74,7 @@ public class Advanced_furnace_command_executor implements TabExecutor {
 					return true;
 				}
 				Advanced_furnace adv_furnace = Dropper_shop_plugin.instance.get_adv_furnace_manager()
-						.find(look_block.getLocation(), false);
+						.find_existed(look_block.getLocation());
 				if (adv_furnace == null) {
 					player.sendMessage("没有检测到完整的高级熔炉结构");
 					return true;

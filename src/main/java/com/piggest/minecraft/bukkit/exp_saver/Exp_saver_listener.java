@@ -1,6 +1,5 @@
 package com.piggest.minecraft.bukkit.exp_saver;
 
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,21 +19,21 @@ public class Exp_saver_listener implements Listener {
 	public void onPrepareAnvil(PrepareAnvilEvent event) {
 		AnvilInventory inventory = event.getInventory();
 		int raw_repair_cost = inventory.getRepairCost();
-		Bukkit.getLogger().info("修理需要等级:" + raw_repair_cost);
+		//Bukkit.getLogger().info("修理需要等级:" + raw_repair_cost);
 		Location loc = inventory.getLocation();
-		Exp_saver exp_saver = Dropper_shop_plugin.instance.get_exp_saver_manager().find(loc, false);
+		Exp_saver exp_saver = Dropper_shop_plugin.instance.get_exp_saver_manager().find_existed(loc);
 		if (exp_saver != null) {
-			Bukkit.getLogger().info("找到了经验存储器");
+			//Bukkit.getLogger().info("找到了经验存储器");
 			if (exp_saver.has_anvil()) {
-				Bukkit.getLogger().info("经验存储器已开启铁砧升级");
+				//Bukkit.getLogger().info("经验存储器已开启铁砧升级");
 				int current_level = exp_saver.get_level();
 				int target_level = current_level - raw_repair_cost + 1;
 				int need_exp = SetExpFix.getExpToLevel(current_level) - SetExpFix.getExpToLevel(target_level);
-				Bukkit.getLogger().info("需要" + need_exp + "点经验");
-				Bukkit.getLogger().info("经验存储器有" + exp_saver.get_saved_exp() + "点经验");
-				Bukkit.getLogger().info("经验存储器将从" + current_level + "降到" + target_level);
+				//Bukkit.getLogger().info("需要" + need_exp + "点经验");
+				//Bukkit.getLogger().info("经验存储器有" + exp_saver.get_saved_exp() + "点经验");
+				//Bukkit.getLogger().info("经验存储器将从" + current_level + "降到" + target_level);
 				if (raw_repair_cost < 255 && target_level >= 0 && exp_saver.get_saved_exp() >= need_exp) {
-					Bukkit.getLogger().info("经验存储器经验足够，启动经验转移机制");
+					//Bukkit.getLogger().info("经验存储器经验足够，启动经验转移机制");
 					inventory.setMaximumRepairCost(255);
 					exp_saver.set_remove_exp_next(need_exp);
 					inventory.setRepairCost(1);
@@ -50,9 +49,9 @@ public class Exp_saver_listener implements Listener {
 			if (event.getSlot() == 2) {
 				if (event.getCurrentItem() != null) {
 					if (event.getCurrentItem().getType() != Material.AIR) {
-						Bukkit.getLogger().info("铁砧修理物品准备取出");
+						//Bukkit.getLogger().info("铁砧修理物品准备取出");
 						Location loc = inventory.getLocation();
-						Exp_saver exp_saver = Dropper_shop_plugin.instance.get_exp_saver_manager().find(loc, false);
+						Exp_saver exp_saver = Dropper_shop_plugin.instance.get_exp_saver_manager().find_existed(loc);
 						if (exp_saver != null) {
 							if (exp_saver.has_anvil()) {
 								Player player = (Player) event.getWhoClicked();

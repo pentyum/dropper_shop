@@ -346,4 +346,9 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 	public int get_damaged_anvil_count() {
 		return this.damaged_anvil_count;
 	}
+
+	@Override
+	public void init_after_set_location() {
+		return;
+	}
 }

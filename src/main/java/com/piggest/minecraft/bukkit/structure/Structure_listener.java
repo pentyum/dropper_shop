@@ -21,11 +21,11 @@ public class Structure_listener implements Listener {
 		}
 		Player player = event.getPlayer();
 		Block block = event.getBlock();
-		HashMap<Class<? extends Structure>, Structure_manager> structure_manager = Dropper_shop_plugin.instance
+		HashMap<Class<? extends Structure>, Structure_manager<? extends Structure>> structure_manager = Dropper_shop_plugin.instance
 				.get_structure_manager();
-		for (Entry<Class<? extends Structure>, Structure_manager> entry : structure_manager.entrySet()) {
-			Structure_manager manager = entry.getValue();
-			Structure structure = manager.find(null, block.getLocation(), false);
+		for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : structure_manager.entrySet()) {
+			Structure_manager<? extends Structure> manager = entry.getValue();
+			Structure structure = manager.find_existed(block.getLocation());
 			if (structure != null) { // 附近有结构
 				if (structure instanceof Multi_block_structure) {
 					Multi_block_structure multi_block_structure = (Multi_block_structure) structure;
@@ -51,11 +51,11 @@ public class Structure_listener implements Listener {
 		Player player = event.getPlayer();
 		if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			Block block = event.getClickedBlock();
-			HashMap<Class<? extends Structure>, Structure_manager> structure_manager = Dropper_shop_plugin.instance
+			HashMap<Class<? extends Structure>, Structure_manager<? extends Structure>> structure_manager = Dropper_shop_plugin.instance
 					.get_structure_manager();
-			for (Entry<Class<? extends Structure>, Structure_manager> entry : structure_manager.entrySet()) {
-				Structure_manager manager = entry.getValue();
-				Structure structure = manager.find(player.getName(), block.getLocation(), false);
+			for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : structure_manager.entrySet()) {
+				Structure_manager<? extends Structure> manager = entry.getValue();
+				Structure structure = manager.find_existed(block.getLocation());
 				if (structure != null && player.isSneaking() == false) {
 					if (structure instanceof Multi_block_structure) {
 						Multi_block_structure multi_block_structure = (Multi_block_structure) structure;

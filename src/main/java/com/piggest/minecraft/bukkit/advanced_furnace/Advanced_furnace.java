@@ -655,4 +655,10 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	public synchronized Hopper get_fuel_hopper() {
 		return this.get_hopper(fuel_hopper_check_list);
 	}
+
+	@Override
+	public void init_after_set_location() {
+		this.set_temperature(this.get_base_temperature());
+		this.set_money(0);
+	}
 }

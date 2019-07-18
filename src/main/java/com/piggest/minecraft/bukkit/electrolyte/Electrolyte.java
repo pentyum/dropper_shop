@@ -45,4 +45,10 @@ public class Electrolyte extends Multi_block_with_gui implements HasRunner {
 		return false;
 	}
 
+	@Override
+	public void init_after_set_location() {
+		// TODO 自动生成的方法存根
+		
+	}
+
 }

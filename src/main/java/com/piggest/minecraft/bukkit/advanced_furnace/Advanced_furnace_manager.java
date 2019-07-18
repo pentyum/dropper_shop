@@ -1,13 +1,12 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 
 import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 
-public class Advanced_furnace_manager extends Gui_structure_manager {
+public class Advanced_furnace_manager extends Gui_structure_manager<Advanced_furnace> {
 	public static Advanced_furnace_manager instance = null;
 	private Material[][][] model = {
 			{ { Material.GOLD_BLOCK, Material.IRON_BLOCK, Material.GOLD_BLOCK },
@@ -55,7 +54,8 @@ public class Advanced_furnace_manager extends Gui_structure_manager {
 				new String[] { "§7读条完成后即升级成功", "§7读条期间取出将重置进度" }, Gui_slot_type.Indicator);
 		this.set_gui(34, Material.BLUE_STAINED_GLASS_PANE, "§r右边为燃料燃烧产品", Gui_slot_type.Indicator);
 	}
-
+	
+	/*
 	public Advanced_furnace find(Location loc, boolean new_deop) {
 		int x;
 		int y;
@@ -72,9 +72,8 @@ public class Advanced_furnace_manager extends Gui_structure_manager {
 						if (new_deop == true) {
 							adv_furnace = new Advanced_furnace();
 							adv_furnace.set_location(check_loc);
-							adv_furnace.set_temperature(adv_furnace.get_base_temperature());
-							adv_furnace.set_money(0);
 							if (adv_furnace.completed() == true) {
+								adv_furnace.init_after_set_location();
 								return adv_furnace;
 							}
 						} else {
@@ -89,15 +88,12 @@ public class Advanced_furnace_manager extends Gui_structure_manager {
 		}
 		return null;
 	}
-
+	
 	@Override
 	public Advanced_furnace find(String player_name, Location loc, boolean new_structure) {
 		return this.find(loc, new_structure);
 	}
-
-	public Advanced_furnace get(Location location) {
-		return (Advanced_furnace) super.get(location);
-	}
+	*/
 
 	@Override
 	public String get_gui_name() {

@@ -154,4 +154,9 @@ public class Anti_thunder extends Multi_block_structure implements Ownable {
 	public Anti_thunder_manager get_manager() {
 		return (Anti_thunder_manager) super.get_manager();
 	}
+
+	@Override
+	public void init_after_set_location() {
+		return;
+	}
 }

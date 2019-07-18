@@ -1,13 +1,11 @@
 package com.piggest.minecraft.bukkit.anti_thunder;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.structure.Structure;
 import com.piggest.minecraft.bukkit.structure.Structure_manager;
 
-public class Anti_thunder_manager extends Structure_manager {
+public class Anti_thunder_manager extends Structure_manager<Anti_thunder> {
 	public static Anti_thunder_manager instance;
 	private Material[][][] model = {
 			{ { Material.IRON_BLOCK, Material.IRON_BLOCK, Material.IRON_BLOCK },
@@ -22,9 +20,9 @@ public class Anti_thunder_manager extends Structure_manager {
 		super(Anti_thunder.class);
 		instance = this;
 	}
-
+	/*
 	@Override
-	public Structure find(String player_name, Location loc, boolean new_structure) {
+	public Anti_thunder find(String player_name, Location loc, boolean new_structure) {
 		int x;
 		int y;
 		int z;
@@ -56,7 +54,8 @@ public class Anti_thunder_manager extends Structure_manager {
 		}
 		return null;
 	}
-
+	*/
+	
 	@Override
 	public String get_permission_head() {
 		return "anti_thunder";
@@ -80,8 +79,4 @@ public class Anti_thunder_manager extends Structure_manager {
 		return Dropper_shop_plugin.instance.get_price_config().get_anti_thunder_price();
 	}
 
-	@Override
-	public Anti_thunder get(Location loc) {
-		return (Anti_thunder) super.get(loc);
-	}
 }

@@ -12,7 +12,6 @@ import org.bukkit.event.weather.LightningStrikeEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.structure.Structure;
 import com.piggest.minecraft.bukkit.utils.Chunk_location;
 
 class Fire_remover extends BukkitRunnable {
@@ -50,10 +49,9 @@ public class Anti_thunder_listener implements Listener {
 		Location location = event.getLightning().getLocation();
 		Chunk_location chunk_loc = new Chunk_location(location.getChunk());
 		Dropper_shop_plugin.instance.getLogger().info("区块" + chunk_loc + "发生雷击");
-		HashSet<Structure> find = Anti_thunder_manager.instance.get_all_structures_around_chunk(chunk_loc, 1);
+		HashSet<Anti_thunder> find = Anti_thunder_manager.instance.get_all_structures_around_chunk(chunk_loc, 1);
 		if (find != null) {
-			for (Structure structure : find) {
-				Anti_thunder anti_thunder = (Anti_thunder) structure;
+			for (Anti_thunder anti_thunder : find) {
 				Dropper_shop_plugin.instance.getLogger().info("在雷击周围的3*3区块发现防雷器");
 				if (anti_thunder.completed() == false) {
 					Dropper_shop_plugin.instance.getLogger()
