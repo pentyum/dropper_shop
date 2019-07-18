@@ -81,7 +81,7 @@ public class Lottery_pool extends Multi_block_structure {
 			}
 		};
 		Collection<Entity> crystals = world.getNearbyEntities(this.get_location(), 6, 2, 6, predicate);
-		Dropper_shop_plugin.instance.getLogger().info("末影水晶数量" + crystals.size());
+		//Dropper_shop_plugin.instance.getLogger().info("末影水晶数量" + crystals.size());
 		if (crystals.size() != 8) {
 			return false;
 		} else {
@@ -91,7 +91,7 @@ public class Lottery_pool extends Multi_block_structure {
 				i++;
 			}
 		}
-		Dropper_shop_plugin.instance.getLogger().info("检测通过");
+		//Dropper_shop_plugin.instance.getLogger().info("检测通过");
 		return true;
 	}
 
@@ -146,10 +146,10 @@ public class Lottery_pool extends Multi_block_structure {
 			}
 		}
 		if (this.running == true) {
+			player.sendMessage("抽奖机已经在运行了");
 			return;
 		}
 		if (!this.use_condition(player)) {
-			player.sendMessage("抽奖机已经在运行了");
 			return;
 		}
 		for (EnderCrystal ender_crystal : ender_crystal_list) { // 设置特效光柱
