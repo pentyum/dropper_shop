@@ -23,14 +23,14 @@ public class Material_ext {
 	/*
 	 * 获得显示名称
 	 */
-	public static String get_display_name(ItemStack itemstack) {
-		if (itemstack.hasItemMeta() == true) {
-			ItemMeta meta = itemstack.getItemMeta();
+	public static String get_display_name(ItemStack item) {
+		if (item.hasItemMeta() == true) {
+			ItemMeta meta = item.getItemMeta();
 			if (meta.hasDisplayName() == true) {
 				return meta.getDisplayName().substring(2, meta.getDisplayName().length());
 			}
 		}
-		return itemstack.getType().name();
+		return get_full_name(item);
 	}
 
 	/*

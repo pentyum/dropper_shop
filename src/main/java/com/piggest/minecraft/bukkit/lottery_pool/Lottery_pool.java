@@ -111,25 +111,19 @@ public class Lottery_pool extends Multi_block_structure {
 
 	@Override
 	public boolean create_condition(Player player) {
-		if (!player.hasPermission("lottery.make")) {
-			player.sendMessage("你没有建立抽奖机的权限");
-			return false;
-		}
 		int price = Dropper_shop_plugin.instance.get_price_config().get_make_lottery_pool_price();
-		if (Dropper_shop_plugin.instance.get_economy().has(player, price)) {
-			Dropper_shop_plugin.instance.get_economy().withdrawPlayer(player, price);
+		if (Dropper_shop_plugin.instance.cost_player_money(price, player)) {
 			player.sendMessage("已扣除" + price);
 			return true;
 		} else {
-			player.sendMessage("建立抽奖机的钱不够，需要" + price);
+			player.sendMessage("建立抽奖机所需的钱不够，需要" + price);
 			return false;
 		}
 	}
 
 	public boolean use_condition(Player player) {
 		int price = Dropper_shop_plugin.instance.get_price_config().get_lottery_price();
-		if (Dropper_shop_plugin.instance.get_economy().has(player, price)) {
-			Dropper_shop_plugin.instance.get_economy().withdrawPlayer(player, price);
+		if (Dropper_shop_plugin.instance.cost_player_money(price, player)) {
 			player.sendMessage("已扣除" + price);
 			return true;
 		} else {

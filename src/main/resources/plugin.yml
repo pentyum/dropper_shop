@@ -127,4 +127,16 @@ permissions:
   trees_felling_machine.use:
     description: Use trees felling machine.
     default: true
+  pigman_switch.use:
+    description: Use pigman switch.
+    default: true
+  pigman_switch.make:
+    description: Make pigman switch.
+    default: true
+  anti_thunder.use:
+    description: Use anti thunder.
+    default: true
+  anti_thunder.make:
+    description: Make anti thunder.
+    default: true
 softdepend: [Vault]

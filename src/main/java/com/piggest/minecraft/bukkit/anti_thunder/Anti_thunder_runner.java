@@ -4,29 +4,26 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import net.milkbowl.vault.economy.Economy;
 
 public class Anti_thunder_runner extends BukkitRunnable {
 	private Anti_thunder anti_thunder = null;
 	private boolean started = false;
-	
+
 	public Anti_thunder_runner(Anti_thunder anti_thunder) {
 		this.anti_thunder = anti_thunder;
 	}
-	
+
 	public void start() {
 		this.started = true;
 	}
-	
+
 	@Override
 	public void run() {
 		OfflinePlayer owner = anti_thunder.get_owner();
 		if (anti_thunder.completed() == true) {
 			if (anti_thunder.is_active() == true) {
-				Economy economy = Dropper_shop_plugin.instance.get_economy();
 				int price = anti_thunder.get_manager().get_price();
-				if (economy.has(owner, price)) {
-					economy.withdrawPlayer(owner, price);
+				if (Dropper_shop_plugin.instance.cost_player_money(price, owner)) {
 					anti_thunder.send_msg_to_owner("已扣除" + price);
 				} else {
 					anti_thunder.send_msg_to_owner("金钱不够，防雷器已经暂停");
@@ -39,7 +36,6 @@ public class Anti_thunder_runner extends BukkitRunnable {
 		}
 	}
 
-	
 	public boolean started() {
 		return this.started;
 	}

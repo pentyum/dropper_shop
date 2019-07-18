@@ -51,12 +51,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	@Override
 	public boolean create_condition(Player player) {
 		int price = Dropper_shop_plugin.instance.get_price_config().get_make_trees_felling_machine_price();
-		if (!player.hasPermission("trees_felling_machine.make")) {
-			player.sendMessage("你没有建立伐木机的权限");
-			return false;
-		}
-		if (Dropper_shop_plugin.instance.get_economy().has(player, price)) {
-			Dropper_shop_plugin.instance.get_economy().withdrawPlayer(player, price);
+		if (Dropper_shop_plugin.instance.cost_player_money(price, player)) {
 			player.sendMessage("已扣除" + price);
 			return true;
 		} else {

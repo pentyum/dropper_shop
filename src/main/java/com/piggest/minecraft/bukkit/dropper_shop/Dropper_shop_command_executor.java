@@ -15,16 +15,8 @@ public class Dropper_shop_command_executor implements CommandExecutor {
 
 		if (cmd.getName().equalsIgnoreCase("dropper_shop")) {
 			if (args[0].equalsIgnoreCase("list_structure")) {
-				String str = "结构价格一览表\n";
 				Price_config price_config = Dropper_shop_plugin.instance.get_price_config();
-				str += "磨粉机建立:" + price_config.get_make_grinder_price() + "金币\n";
-				str += "经验存储器升级:" + price_config.get_exp_saver_upgrade_base_price() + "金币+"
-						+ price_config.get_exp_saver_upgrade_level_price() + "金币/级\n";
-				str += "抽奖机建立:" + price_config.get_make_lottery_pool_price() + "金币\n";
-				str += "抽奖机使用:" + price_config.get_lottery_price() + "金币/次\n";
-				str += "砍树机建立:" + price_config.get_make_trees_felling_machine_price() + "金币\n";
-				str += "砍树机启动:" + price_config.get_start_trees_felling_machine_price() + "金币/次\n";
-				sender.sendMessage(str);
+				sender.sendMessage(price_config.get_info());
 			}
 			if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
 				sender.sendMessage("必须由玩家执行该命令");

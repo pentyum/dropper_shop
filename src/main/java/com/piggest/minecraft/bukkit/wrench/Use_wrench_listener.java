@@ -52,54 +52,59 @@ public class Use_wrench_listener implements Listener {
 				&& event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			if (event.hasItem() == true && event.getBlockFace() != null) {
 				ItemStack wrench_item = event.getItem();
-				if (wrench_plugin.is_wrench(wrench_item)) {
-					Player player = event.getPlayer();
-					if (!player.hasPermission("wrench.use")) {
-						player.sendMessage("你没有使用扳手的权限!");
-						return;
+				if (!wrench_plugin.is_wrench(wrench_item)) {
+					return;
+				}
+				Player player = event.getPlayer();
+				if (!player.hasPermission("wrench.use")) {
+					player.sendMessage("你没有使用扳手的权限!");
+					return;
+				}
+				Block block = event.getClickedBlock();
+				if (direction_changeable(block)) {
+					Directional directional_data = (Directional) block.getBlockData();
+					Set<BlockFace> available_faces = directional_data.getFaces();
+					BlockFace clicked_face = event.getBlockFace();
+					if (available_faces.contains(clicked_face.getOppositeFace()) && player.isSneaking() == true) {
+						directional_data.setFacing(clicked_face.getOppositeFace());
+					} else if (available_faces.contains(clicked_face)) {
+						directional_data.setFacing(clicked_face);
 					}
-					Block block = event.getClickedBlock();
-					if (direction_changeable(block)) {
-						Directional directional_data = (Directional) block.getBlockData();
-						Set<BlockFace> available_faces = directional_data.getFaces();
-						BlockFace clicked_face = event.getBlockFace();
-						if (available_faces.contains(clicked_face.getOppositeFace()) && player.isSneaking() == true) {
-							directional_data.setFacing(clicked_face.getOppositeFace());
-						} else if (available_faces.contains(clicked_face)) {
-							directional_data.setFacing(clicked_face);
+					player.sendMessage("已使用扳手");
+					if (wrench_plugin.use_eco(player) == true) {
+						block.setBlockData(directional_data);
+					}
+					event.setCancelled(true);
+				} else {
+					HashMap<Class<? extends Structure>, Structure_manager<? extends Structure>> structure_manager = Dropper_shop_plugin.instance
+							.get_structure_manager();
+					for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : structure_manager
+							.entrySet()) {
+						Structure_manager<? extends Structure> manager = entry.getValue();
+						Structure structure = manager.find_existed(block.getLocation());
+						// Structure structure = manager.find(null, block.getLocation(), false);
+						if (structure != null && player.isSneaking() == false) {
+							player.sendMessage("这里已经有结构了");
+							event.setCancelled(true);
+							return;
 						}
-						player.sendMessage("已使用扳手");
-						if (wrench_plugin.use_eco(player) == true) {
-							block.setBlockData(directional_data);
-						}
-						event.setCancelled(true);
-					} else {
-						HashMap<Class<? extends Structure>, Structure_manager<? extends Structure>> structure_manager = Dropper_shop_plugin.instance
-								.get_structure_manager();
-						for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : structure_manager
-								.entrySet()) {
-							Structure_manager<? extends Structure> manager = entry.getValue();
-							Structure structure = manager.find_existed(block.getLocation());
-							// Structure structure = manager.find(null, block.getLocation(), false);
-							if (structure != null && player.isSneaking() == false) {
-								player.sendMessage("这里已经有结构了");
+					}
+					for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : structure_manager
+							.entrySet()) {
+						Structure_manager<? extends Structure> manager = entry.getValue();
+						Structure structure = manager.find_and_make(player, block.getLocation());
+						if (structure != null && player.isSneaking() == false) {
+							String permission = manager.get_permission_head() + ".make";
+							if (!player.hasPermission(permission)) {
+								player.sendMessage("你没有建立" + structure.get_display_name() + "结构的权限!");
 								event.setCancelled(true);
 								return;
 							}
-						}
-						for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : structure_manager
-								.entrySet()) {
-							Structure_manager<? extends Structure> manager = entry.getValue();
-							Structure structure = manager.find_and_make(player, block.getLocation());
-							// Structure structure = manager.find(player.getName(), block.getLocation(),
-							// true);
-							if (structure != null && player.isSneaking() == false) {
-								if (structure instanceof Multi_block_structure && structure.create_condition(player)) {
-									manager.add(structure);
-									player.sendMessage(structure.get_display_name() + "结构建立完成");
-									event.setCancelled(true);
-									return;
-								}
+							if (structure instanceof Multi_block_structure && structure.create_condition(player)) {
+								manager.add(structure);
+								player.sendMessage(structure.get_display_name() + "结构建立完成");
+								event.setCancelled(true);
+								return;
 							}
 						}
 					}

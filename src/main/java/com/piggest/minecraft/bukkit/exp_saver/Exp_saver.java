@@ -70,12 +70,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 
 	@Override
 	public boolean create_condition(Player player) {
-		if (!player.hasPermission("exp_saver.make")) {
-			player.sendMessage("你没有建立经验存储器的权限");
-			return false;
-		} else {
-			return true;
-		}
+		return true;
 	}
 
 	@Override
@@ -149,24 +144,6 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 		player.sendMessage("存入了" + remove_exp + "点经验");
 		player.giveExp(-remove_exp);
 	}
-	/*
-	 * public static int get_exp_to_level(int level) { if (level <= 16) { return
-	 * level * level + 6 * level; } else if (level <= 31) { return (int) (2.5 *
-	 * level * level + 40.5 * level + 360); } else { return (int) (4.5 * level *
-	 * level + 162.5 * level + 2220); } }
-	 * 
-	 * public static int get_upgrade_exp(int level) { if (level <= 15) { return 2 *
-	 * level + 7; } else if (level <= 30) { return 5 * level - 38; } else { return 9
-	 * * level - 158; } }
-	 * 
-	 * 
-	 * public static int get_excess_exp(Player player) { return
-	 * player.getTotalExperience() - get_exp_to_level(player.getLevel()); }
-	 * 
-	 * public static int get_all_exp(Player player) { return
-	 * Math.round(get_exp_to_level(player.getLevel()) + player.getExp() *
-	 * player.getExpToLevel()); }
-	 */
 
 	public void set_process(int process) {
 		this.set_process(0, process, "§e当前经验: %d/%d (%d级)", this.saved_exp, this.get_max_saved_exp(), this.get_level());

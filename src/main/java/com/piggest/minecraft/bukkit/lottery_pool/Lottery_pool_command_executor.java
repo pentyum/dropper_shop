@@ -17,9 +17,10 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.utils.language.Enchantments_zh_cn;
 
 enum Lottery_sub_cmd {
-	add, set, del, list, setprice,reload;
+	add, set, del, list, setprice, reload;
 	public static ArrayList<String> get_list(CommandSender sender) {
 		ArrayList<String> list = new ArrayList<String>();
 		for (Lottery_sub_cmd cmd : Lottery_sub_cmd.values()) {
@@ -67,7 +68,7 @@ public class Lottery_pool_command_executor implements TabExecutor {
 						if (enchantments != null && !enchantments.isEmpty()) {
 							enchantment_str += " 附魔:";
 							for (Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-								String enchantment_name = Dropper_shop_plugin.instance.get_enchantment_name(entry.getKey());
+								String enchantment_name = Enchantments_zh_cn.get_enchantment_name(entry.getKey());
 								enchantment_str += enchantment_name + entry.getValue() + ",";
 							}
 							enchantment_str = enchantment_str.substring(0, enchantment_str.length() - 1);
@@ -78,7 +79,7 @@ public class Lottery_pool_command_executor implements TabExecutor {
 							if (enchantments != null && !enchantments.isEmpty()) {
 								enchantment_str += " 存储附魔:";
 								for (Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-									String enchantment_name = Dropper_shop_plugin.instance.get_enchantment_name(entry.getKey());
+									String enchantment_name = Enchantments_zh_cn.get_enchantment_name(entry.getKey());
 									enchantment_str += enchantment_name + entry.getValue() + ",";
 								}
 								enchantment_str = enchantment_str.substring(0, enchantment_str.length() - 1);

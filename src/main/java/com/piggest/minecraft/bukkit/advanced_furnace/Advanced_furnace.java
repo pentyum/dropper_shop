@@ -452,11 +452,13 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 
 	@Override
 	public boolean create_condition(Player player) {
-		if (!player.hasPermission("adv_furnace.make")) {
-			player.sendMessage("你没有建立高级熔炉的权限");
-			return false;
-		} else {
+		int price = Dropper_shop_plugin.instance.get_price_config().get_make_adv_furnace_price();
+		if (Dropper_shop_plugin.instance.cost_player_money(price, player)) {
+			player.sendMessage("已扣除" + price);
 			return true;
+		} else {
+			player.sendMessage("建立高级熔炉所需的钱不够，需要" + price);
+			return false;
 		}
 	}
 

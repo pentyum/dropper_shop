@@ -14,6 +14,8 @@ public class Price_config {
 	private int make_trees_felling_machine_price = 0;
 	private int start_trees_felling_machine_price = 0;
 	private int anti_thunder_price = 0;
+	private int adv_furnace_price = 0;
+	private int exp_saver_remove_repaircost_price = 0;
 	
 	public Price_config(Dropper_shop_plugin dropper_shop_plugin) {
 		this.plugin = dropper_shop_plugin;
@@ -29,6 +31,8 @@ public class Price_config {
 		this.lottery_price = this.plugin.get_config().getInt("lottery-price");
 		this.start_trees_felling_machine_price = this.plugin.get_config().getInt("start-trees-felling-machine-price");
 		this.anti_thunder_price = this.plugin.get_config().getInt("anti-thunder-price");
+		this.adv_furnace_price = this.plugin.get_config().getInt("adv-furnace-price");
+		this.exp_saver_remove_repaircost_price = this.plugin.get_config().getInt("exp-saver-remove-repaircost-price");
 	}
 
 	public int get_make_shop_price() {
@@ -86,5 +90,26 @@ public class Price_config {
 	public void reload_price() {
 		this.plugin.reloadConfig();
 		this.load_price();
+	}
+	
+	public String get_info() {
+		String str = "结构价格一览表\n";
+		str += "磨粉机建立:" + this.make_grinder_price + "金币\n";
+		str += "经验存储器容量升级:" + this.exp_saver_upgrade_base_price + "金币+"
+				+ this.exp_saver_upgrade_level_price + "金币/级\n";
+		str += "经验存储器移除铁砧惩罚:" + this.exp_saver_remove_repaircost_price + "金币";
+		str += "抽奖机建立:" + this.make_lottery_pool_price + "金币\n";
+		str += "抽奖机使用:" + this.lottery_price + "金币/次\n";
+		str += "砍树机建立:" + this.make_trees_felling_machine_price + "金币\n";
+		str += "砍树机启动:" + this.start_trees_felling_machine_price + "金币/次\n";
+		str += "避雷针:" + this.anti_thunder_price + "金币/小时\n";
+		str += "高级熔炉建立:" + this.adv_furnace_price + "金币\n";
+		str += "高级熔炉金币容量升级:" + this.exp_saver_upgrade_base_price + "金币+"
+				+ this.exp_saver_upgrade_level_price + "金币/级\n";
+		return str;
+	}
+
+	public int get_make_adv_furnace_price() {
+		return this.adv_furnace_price;
 	}
 }

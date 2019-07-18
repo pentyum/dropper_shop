@@ -28,17 +28,14 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 	public static final int raw_slot = 9;
 	public static final int flint_slot = 11;
 	public static final int product_slot = 13;
-	
+
 	public Grinder() {
 		/*
-		ItemStack white = new ItemStack(Material.WHITE_STAINED_GLASS_PANE);
-		ItemMeta meta = white.getItemMeta();
-		meta.setDisplayName("§e磨粉机工作进度: 0 %");
-		white.setItemMeta(meta);
-		for (int i = 0; i < 9; i++) {
-			this.gui.setItem(i, white.clone());
-		}
-		*/
+		 * ItemStack white = new ItemStack(Material.WHITE_STAINED_GLASS_PANE); ItemMeta
+		 * meta = white.getItemMeta(); meta.setDisplayName("§e磨粉机工作进度: 0 %");
+		 * white.setItemMeta(meta); for (int i = 0; i < 9; i++) { this.gui.setItem(i,
+		 * white.clone()); }
+		 */
 		ItemStack flint_info = this.gui.getItem(17);
 		ItemMeta flint_info_meta = flint_info.getItemMeta();
 		ArrayList<String> lore = new ArrayList<String>();
@@ -78,7 +75,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 		flint_info_meta.setLore(lore);
 		flint_info.setItemMeta(flint_info_meta);
 	}
-	
+
 	public ItemStack get_raw() {
 		return this.gui.getItem(raw_slot);
 	}
@@ -90,7 +87,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 	public ItemStack get_product() {
 		return this.gui.getItem(product_slot);
 	}
-	
+
 	public void set_product(ItemStack product_item) {
 		this.gui.setItem(product_slot, product_item);
 	}
@@ -112,7 +109,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 		}
 		return false;
 	}
-	
+
 	public synchronized Hopper get_hopper() {
 		BlockState up_block = this.get_block(0, 1, 0).getState();
 		if (up_block instanceof Hopper) {
@@ -257,12 +254,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 	@Override
 	public boolean create_condition(Player player) {
 		int price = Dropper_shop_plugin.instance.get_price_config().get_make_grinder_price();
-		if (!player.hasPermission("grinder.make")) {
-			player.sendMessage("你没有建立磨粉机的权限");
-			return false;
-		}
-		if (Dropper_shop_plugin.instance.get_economy().has(player, price)) {
-			Dropper_shop_plugin.instance.get_economy().withdrawPlayer(player, price);
+		if (Dropper_shop_plugin.instance.cost_player_money(price, player)) {
 			player.sendMessage("已扣除" + price);
 			return true;
 		} else {
