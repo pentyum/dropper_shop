@@ -91,7 +91,7 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 							need_to_move.set(i, need_to_move.get(i) * 1000 / inside_gas_capacity);
 						}
 					}
-					ItemStack new_bottle = Gas_bottle.item.clone(); // 瓶子转移到产品槽
+					ItemStack new_bottle = Gas_bottle.get_new_empty_bottle(); // 瓶子转移到产品槽
 					for (int i = 0; i < gas_list.size(); i++) {
 						Gas gas = gas_list.get(i);
 						int move = need_to_move.get(i);
@@ -106,12 +106,12 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 				boolean flag = false;
 
 				if (Grinder.is_empty(gas_product_slot)) {
-					advanced_furnace.set_gas_product_slot(Gas_bottle.item.clone());
+					advanced_furnace.set_gas_product_slot(Gas_bottle.get_new_empty_bottle());
 					flag = true;
 				} else {
-					if (gas_product_slot.isSimilar(Gas_bottle.item)) {
+					if (gas_product_slot.isSimilar(Gas_bottle.get_new_empty_bottle())) {
 						int new_num = gas_product_slot.getAmount() + 1;
-						if (new_num <= Gas_bottle.item.getMaxStackSize()) {
+						if (new_num <= Gas_bottle.get_new_empty_bottle().getMaxStackSize()) {
 							gas_product_slot.setAmount(new_num);
 							flag = true;
 						}

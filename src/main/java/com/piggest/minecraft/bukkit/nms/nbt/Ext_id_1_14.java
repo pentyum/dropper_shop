@@ -17,8 +17,11 @@ public class Ext_id_1_14 implements Ext_id {
 			return null;
 		}
 		NBTTagCompound tag = nms_item.getTag();
-		String id_name = tag.getString("ext_id");
-		return id_name;
+		String full_name = tag.getString("ext_id");
+		if (full_name.length() == 0) {
+			return null;
+		}
+		return full_name;
 	}
 
 	/*

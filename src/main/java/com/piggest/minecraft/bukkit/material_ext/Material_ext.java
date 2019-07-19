@@ -109,17 +109,17 @@ public class Material_ext {
 	/*
 	 * 以namespacedkey注册物品
 	 */
-	private static ItemStack register(NamespacedKey namespacedkey, ItemStack item) {
+	private static void register(NamespacedKey namespacedkey, ItemStack item) {
 		item = NMS_manager.ext_id_provider.set_ext_id(item, namespacedkey.toString());
-		return Material_ext.ext_material_map.put(namespacedkey, item.clone());
+		Material_ext.ext_material_map.put(namespacedkey, item.clone());
 	}
 
 	/*
 	 * 注册本插件命名空间下的物品
 	 */
-	public static ItemStack register(String id_name, ItemStack itemstack) {
+	public static void register(String id_name, ItemStack itemstack) {
 		NamespacedKey namespacedkey = Dropper_shop_plugin.instance.get_key(id_name);
-		return register(namespacedkey, itemstack);
+		register(namespacedkey, itemstack);
 	}
 
 	private static Material get_material(NamespacedKey namespacedkey) { // 根据内部ID获得材质

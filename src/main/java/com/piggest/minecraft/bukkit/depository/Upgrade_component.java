@@ -14,7 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_manager;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.nms.NMS_manager;
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
 public class Upgrade_component {
 	public static final String name = "§r存储升级组件";
@@ -34,7 +34,7 @@ public class Upgrade_component {
 		if (item == null) {
 			return Upgrade_component_type.NOT_UPGRADE_COMPONENT;
 		}
-		String ext_id = NMS_manager.ext_id_provider.get_ext_id(item);
+		String ext_id = Material_ext.get_id_name(item);
 		if (ext_id == null) {
 			return Upgrade_component_type.NOT_UPGRADE_COMPONENT;
 		}
@@ -88,7 +88,8 @@ public class Upgrade_component {
 		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 		component_item.setItemMeta(meta);
 		Upgrade_component.set_process(component_item, 0);
-		component_item = NMS_manager.ext_id_provider.set_ext_id(component_item, Upgrade_component.id_name);
+		Material_ext.register(Upgrade_component.id_name, component_item);
+		component_item = Material_ext.new_item(id_name, 1);
 		for (int level = 0; level < Upgrade_component.component_item.length; level++) {
 			Upgrade_component.component_item[level] = component_item.clone();
 			Upgrade_component.set_level(Upgrade_component.component_item[level], level + 1);
@@ -112,7 +113,8 @@ public class Upgrade_component {
 		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 		component_item.setItemMeta(meta);
 		Upgrade_component.set_process(component_item, 0);
-		component_item = NMS_manager.ext_id_provider.set_ext_id(component_item, Upgrade_component.overload_id_name);
+		Material_ext.register(Upgrade_component.overload_id_name, component_item);
+		component_item = Material_ext.new_item(overload_id_name, 1);
 		for (int level = 0; level < Upgrade_component.overload_component_item.length; level++) {
 			Upgrade_component.overload_component_item[level] = component_item.clone();
 			Upgrade_component.set_level(Upgrade_component.overload_component_item[level], level + 1);
@@ -135,7 +137,8 @@ public class Upgrade_component {
 		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 		component_item.setItemMeta(meta);
 		Upgrade_component.set_process(component_item, 0);
-		component_item = NMS_manager.ext_id_provider.set_ext_id(component_item, Upgrade_component.time_id_name);
+		Material_ext.register(Upgrade_component.time_id_name, component_item);
+		component_item = Material_ext.new_item(time_id_name, 1);
 		for (int level = 0; level < Upgrade_component.time_component_item.length; level++) {
 			Upgrade_component.time_component_item[level] = component_item.clone();
 			Upgrade_component.set_level(Upgrade_component.time_component_item[level], level + 1);

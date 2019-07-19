@@ -14,10 +14,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
 public class Gas_bottle {
 	public static String name = "§r气体瓶";
-	public static ItemStack item = null;
 	public static int max_capacity = 1000;
 	public static NamespacedKey namespace = new NamespacedKey(Dropper_shop_plugin.instance, "gas_bottle");
 
@@ -25,17 +25,14 @@ public class Gas_bottle {
 		if (item == null) {
 			return false;
 		}
-		if (item.getItemMeta().hasDisplayName() == false) {
-			return false;
-		}
-		return item.getItemMeta().getDisplayName().equals(Gas_bottle.name);
+		return Material_ext.get_id_name(item).equals("gas_bottle");
 	}
 
-	public static ItemStack init_gas_bottle() {
-		item = new ItemStack(Material.GLASS_BOTTLE);
+	public static void init_gas_bottle() {
+		ItemStack item = new ItemStack(Material.GLASS_BOTTLE);
 		Grinder.set_item_name(item, name);
 		clean_contents(item);
-		return item;
+		Material_ext.register("gas_bottle", item);
 	}
 
 	public static int get_contents(ItemStack item, Gas gastype) {
@@ -128,7 +125,7 @@ public class Gas_bottle {
 	}
 
 	public static void set_recipe() {
-		ShapedRecipe sr1 = new ShapedRecipe(namespace, Gas_bottle.item);
+		ShapedRecipe sr1 = new ShapedRecipe(namespace, Material_ext.new_item("gas_bottle", 1));
 		sr1.shape("aia", "ibi", "aia");
 		sr1.setIngredient('a', Material.AIR);
 		sr1.setIngredient('b', Material.GLASS_BOTTLE);
@@ -156,5 +153,9 @@ public class Gas_bottle {
 			}
 		}
 		return gas_map;
+	}
+
+	public static ItemStack get_new_empty_bottle() {
+		return Material_ext.new_item("gas_bottle", 1);
 	}
 }

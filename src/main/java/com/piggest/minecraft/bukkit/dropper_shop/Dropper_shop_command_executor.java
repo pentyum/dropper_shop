@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.config.Price_config;
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
 public class Dropper_shop_command_executor implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -17,6 +18,7 @@ public class Dropper_shop_command_executor implements CommandExecutor {
 			if (args[0].equalsIgnoreCase("list_structure")) {
 				Price_config price_config = Dropper_shop_plugin.instance.get_price_config();
 				sender.sendMessage(price_config.get_info());
+				return true;
 			}
 			if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
 				sender.sendMessage("必须由玩家执行该命令");
@@ -107,6 +109,8 @@ public class Dropper_shop_command_executor implements CommandExecutor {
 					player.sendMessage("请输入整数");
 				}
 				return true;
+			} else if (args[0].equalsIgnoreCase("show_full_name")) {
+				player.sendMessage(Material_ext.get_full_name(player.getInventory().getItemInMainHand()));
 			} else {
 				return false;
 			}
