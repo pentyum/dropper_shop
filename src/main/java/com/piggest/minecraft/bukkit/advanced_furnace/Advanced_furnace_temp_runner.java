@@ -52,11 +52,13 @@ public class Advanced_furnace_temp_runner extends Structure_runner {
 		if (!Grinder.is_empty(fuel_item)) {
 			Fuel fuel = Fuel.get_fuel(fuel_item);
 			if (fuel != null) {
-				fuel_item.setAmount(fuel_item.getAmount() - 1);
 				if (fuel == Fuel.lava_bucket) {
 					ItemStack bucket = new ItemStack(Material.BUCKET);
-					this.adv_furnace.set_fuel_product_slot(bucket);
+					if(!this.adv_furnace.add_a_item_to_slot(bucket, Advanced_furnace.fuel_product_slot)) {
+						return;
+					}
 				}
+				fuel_item.setAmount(fuel_item.getAmount() - 1);
 				adv_furnace.set_fuel(fuel);
 			}
 		}

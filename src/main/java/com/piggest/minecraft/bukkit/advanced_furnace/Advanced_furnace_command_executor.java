@@ -95,6 +95,11 @@ public class Advanced_furnace_command_executor implements TabExecutor {
 				} else {
 					adv_furnace.set_time_upgrade(level);
 				}
+			} else if (args[0].equalsIgnoreCase("set_temp")){
+				if (!player.hasPermission("adv_furnace.admin")) {
+					player.sendMessage("你没有权限直接设置温度");
+					return true;
+				}
 			}
 		}
 		return false;

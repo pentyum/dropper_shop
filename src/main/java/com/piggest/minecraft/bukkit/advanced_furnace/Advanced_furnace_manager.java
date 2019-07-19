@@ -26,14 +26,16 @@ public class Advanced_furnace_manager extends Gui_structure_manager<Advanced_fur
 		super(Advanced_furnace.class);
 		Advanced_furnace_manager.instance = this;
 		this.set_gui(1, Material.BLUE_STAINED_GLASS_PANE, "§r说明",
-				new String[] { "§7层数为从下面往上数", "§7温度下降速率由傅里叶热传导定律决定", "§7熔炉反应速率由阿伦尼乌斯公式决定" }, Gui_slot_type.Indicator);
+				new String[] { "§7层数为从下面往上数", "§7温度下降速率由傅里叶热传导定律和普朗克黑体辐射定律决定", "§7熔炉反应速率由阿伦尼乌斯定律决定" },
+				Gui_slot_type.Indicator);
 		this.set_gui(10, Material.BLUE_STAINED_GLASS_PANE, "§r左边放固体原料", new String[] { "§7在第3层中间放置漏斗可以自动添加" },
 				Gui_slot_type.Indicator);
 		this.set_gui(12, Material.BLUE_STAINED_GLASS_PANE, "§r左边放气体原料", Gui_slot_type.Indicator);
 		this.set_gui(14, Material.BLUE_STAINED_GLASS_PANE, "§r左边放液体原料", Gui_slot_type.Indicator);
 		this.set_gui(16, Material.BLUE_STAINED_GLASS_PANE, "§r右边放燃料", new String[] { "§7在第1层中间放置漏斗可以自动添加" },
 				Gui_slot_type.Indicator);
-		this.set_gui(19, Material.BLUE_STAINED_GLASS_PANE, "§r左边为固体产品", Gui_slot_type.Indicator);
+		this.set_gui(19, Material.BLUE_STAINED_GLASS_PANE, "§r左边为固体产品", new String[] { "§7在第1层金块边上放置箱子可以自动输出" },
+				Gui_slot_type.Indicator);
 		this.set_gui(21, Material.BLUE_STAINED_GLASS_PANE, "§r左边为气体产品", Gui_slot_type.Indicator);
 		this.set_gui(23, Material.BLUE_STAINED_GLASS_PANE, "§r左边为液体产品", Gui_slot_type.Indicator);
 		this.set_gui(25, Material.BLUE_STAINED_GLASS_PANE, "§r右边为温度", Gui_slot_type.Indicator);
@@ -54,46 +56,23 @@ public class Advanced_furnace_manager extends Gui_structure_manager<Advanced_fur
 				new String[] { "§7读条完成后即升级成功", "§7读条期间取出将重置进度" }, Gui_slot_type.Indicator);
 		this.set_gui(34, Material.BLUE_STAINED_GLASS_PANE, "§r右边为燃料燃烧产品", Gui_slot_type.Indicator);
 	}
-	
+
 	/*
-	public Advanced_furnace find(Location loc, boolean new_deop) {
-		int x;
-		int y;
-		int z;
-		Advanced_furnace adv_furnace;
-		for (x = -1; x <= 1; x++) {
-			for (y = -1; y <= 1; y++) {
-				for (z = -1; z <= 1; z++) {
-					Location check_loc = loc.clone().add(x, y, z);
-					Material material = check_loc.getBlock().getType();
-					// Bukkit.getLogger().info("正在搜索"+check_loc.toString());
-					if (material == Material.FURNACE) {
-						// Bukkit.getLogger().info("在" + check_loc.toString() + "找到了末地烛");
-						if (new_deop == true) {
-							adv_furnace = new Advanced_furnace();
-							adv_furnace.set_location(check_loc);
-							if (adv_furnace.completed() == true) {
-								adv_furnace.init_after_set_location();
-								return adv_furnace;
-							}
-						} else {
-							adv_furnace = this.get(check_loc);
-							if (adv_furnace != null) {
-								return adv_furnace;
-							}
-						}
-					}
-				}
-			}
-		}
-		return null;
-	}
-	
-	@Override
-	public Advanced_furnace find(String player_name, Location loc, boolean new_structure) {
-		return this.find(loc, new_structure);
-	}
-	*/
+	 * public Advanced_furnace find(Location loc, boolean new_deop) { int x; int y;
+	 * int z; Advanced_furnace adv_furnace; for (x = -1; x <= 1; x++) { for (y = -1;
+	 * y <= 1; y++) { for (z = -1; z <= 1; z++) { Location check_loc =
+	 * loc.clone().add(x, y, z); Material material = check_loc.getBlock().getType();
+	 * // Bukkit.getLogger().info("正在搜索"+check_loc.toString()); if (material ==
+	 * Material.FURNACE) { // Bukkit.getLogger().info("在" + check_loc.toString() +
+	 * "找到了末地烛"); if (new_deop == true) { adv_furnace = new Advanced_furnace();
+	 * adv_furnace.set_location(check_loc); if (adv_furnace.completed() == true) {
+	 * adv_furnace.init_after_set_location(); return adv_furnace; } } else {
+	 * adv_furnace = this.get(check_loc); if (adv_furnace != null) { return
+	 * adv_furnace; } } } } } } return null; }
+	 * 
+	 * @Override public Advanced_furnace find(String player_name, Location loc,
+	 * boolean new_structure) { return this.find(loc, new_structure); }
+	 */
 
 	@Override
 	public String get_gui_name() {

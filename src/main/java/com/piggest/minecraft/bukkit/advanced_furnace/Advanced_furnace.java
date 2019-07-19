@@ -60,6 +60,8 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	private int overload_upgrade = 0;
 	private int time_upgrade = 0;
 	private double e = 1;
+	private boolean is_locked_temp = false;
+	private double locked_temp = 290;
 
 	public static double get_block_temperature(Block block) {
 		double base_temp = block.getTemperature() * 20 + 270;
@@ -102,6 +104,9 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	}
 
 	public void set_temperature(double temperature) {
+		if (this.is_locked_temp == true) {
+			temperature = this.locked_temp;
+		}
 		this.reaction_container.set_temperature(temperature);
 		ItemStack temp_info = this.gui.getItem(26);
 		ItemMeta temp_info_meta = temp_info.getItemMeta();
@@ -110,6 +115,16 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 			lore.set(0, "§r温度: " + String.format("%.1f", temperature) + " K");
 			temp_info_meta.setLore(lore);
 			temp_info.setItemMeta(temp_info_meta);
+		}
+	}
+
+	public void set_locked_temperature(double temp) {
+		if (temp < 0) {
+			this.is_locked_temp = false;
+		} else {
+			this.is_locked_temp = true;
+			this.locked_temp = temp;
+			this.set_temperature(temp);
 		}
 	}
 
@@ -134,7 +149,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		} else {
 			this.set_fuel(Fuel.valueOf(fuel_type));
 		}
-		
+
 		if (shop_save.get("fuel-slot") != null) {
 			ItemStack fuel_slot_item = Material_ext.new_item((String) shop_save.get("fuel-slot"),
 					(Integer) shop_save.get("fuel-slot-num"));
@@ -150,18 +165,18 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 			this.set_liquid_product_slot((ItemStack) shop_save.get("liquid-product-slot"));
 		}
 		if (shop_save.get("liquid-reactant-slot") != null) {
-			this.set_liquid_product_slot((ItemStack) shop_save.get("liquid-reactant-slot"));
+			this.set_liquid_reactant_slot((ItemStack) shop_save.get("liquid-reactant-slot"));
 		}
 		if (shop_save.get("gas-product-slot") != null) {
 			this.set_gas_product_slot((ItemStack) shop_save.get("gas-product-slot"));
 		}
 		if (shop_save.get("gas-reactant-slot") != null) {
-			this.set_gas_product_slot((ItemStack) shop_save.get("gas-reactant-slot"));
+			this.set_gas_reactant_slot((ItemStack) shop_save.get("gas-reactant-slot"));
 		}
 		if (shop_save.get("fuel-product-slot") != null) {
 			this.set_fuel_product_slot((ItemStack) shop_save.get("fuel-product-slot"));
 		}
-		
+
 		if (shop_save.get("upgrade-component-slot") != null) {
 			this.gui.setItem(Advanced_furnace.upgrade_component_slot,
 					(ItemStack) shop_save.get("upgrade-component-slot"));
@@ -179,31 +194,31 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		this.set_overload_upgrade((int) shop_save.get("overload-upgrade"));
 		this.set_time_upgrade((int) shop_save.get("time-upgrade"));
 	}
-	
+
 	public void set_solid_product_slot(ItemStack slot_item) {
 		this.gui.setItem(Advanced_furnace.solid_product_slot, slot_item);
 	}
-	
+
 	public void set_solid_reactant_slot(ItemStack slot_item) {
 		this.gui.setItem(Advanced_furnace.solid_reactant_slot, slot_item);
 	}
-	
+
 	public void set_liquid_product_slot(ItemStack slot_item) {
 		this.gui.setItem(Advanced_furnace.liquid_product_slot, slot_item);
 	}
-	
+
 	public void set_liquid_reactant_slot(ItemStack slot_item) {
 		this.gui.setItem(Advanced_furnace.liquid_reactant_slot, slot_item);
 	}
-	
+
 	public void set_gas_product_slot(ItemStack slot_item) {
 		this.gui.setItem(Advanced_furnace.gas_product_slot, slot_item);
 	}
-	
+
 	public void set_gas_reactant_slot(ItemStack slot_item) {
 		this.gui.setItem(Advanced_furnace.gas_reactant_slot, slot_item);
 	}
-	
+
 	public void set_fuel_slot(ItemStack slot_item) {
 		this.gui.setItem(Advanced_furnace.fuel_slot, slot_item);
 	}
@@ -237,7 +252,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 			save.put("fuel-slot", Material_ext.get_id_name(fuel_slot));
 			save.put("fuel-slot-num", fuel_slot.getAmount());
 		}
-		
+
 		if (!Grinder.is_empty(solid_product_slot)) {
 			save.put("solid-product-slot", solid_product_slot);
 		}
@@ -256,7 +271,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		if (!Grinder.is_empty(gas_reactant_slot)) {
 			save.put("gas-reactant-slot", gas_reactant_slot);
 		}
-		
+
 		if (!Grinder.is_empty(fuel_product_slot)) {
 			save.put("fuel-product-slot", fuel_product_slot);
 		}
@@ -423,7 +438,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		set_switch(5, open);
 	}
 
-	private boolean add_a_item_to_slot(ItemStack src_item, int i) {
+	public boolean add_a_item_to_slot(ItemStack src_item, int i) {
 		if (!Grinder.is_empty(src_item)) {
 			if (Grinder.is_empty(this.gui.getItem(i))) {
 				this.gui.setItem(i, src_item.clone());

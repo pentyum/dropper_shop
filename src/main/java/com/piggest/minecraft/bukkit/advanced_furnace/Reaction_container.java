@@ -11,7 +11,8 @@ public class Reaction_container {
 
 	public static void init_reaction() {
 		double ntop = 1;
-		
+		double pton = 1;
+
 		Reaction ammonia_synthesis = new Reaction(true, 100, 1200, 130, 1400);
 		ammonia_synthesis.set_reactants(Gas.nitrogen, Gas.hydrogen);
 		ammonia_synthesis.set_products(Gas.NH3);
@@ -19,29 +20,30 @@ public class Reaction_container {
 		ammonia_synthesis.set_products_coef(2);
 		reactions.put("ammonia_synthesis", ammonia_synthesis);
 
-		Reaction get_hydrogen = new Reaction(false, 100, 2100, 100, 800);
-		get_hydrogen.set_reactants(Solid.coal, Gas.water);
+		pton = 1e-16 * Math.exp(131500 / 8.314 / 293);
+		Reaction get_hydrogen = new Reaction(true, 80*pton, 221500, 80, 90000);
+		get_hydrogen.set_reactants(Solid.coal, Gas.water_vapor);
 		get_hydrogen.set_products(Gas.hydrogen, Gas.CO);
 		get_hydrogen.set_reactants_coef(1, 1);
 		get_hydrogen.set_products_coef(1, 1);
 		reactions.put("get_hydrogen", get_hydrogen);
-		
+
 		ntop = Math.exp(-44000 / 8.314 / 373);
-		Reaction get_water_vapor = new Reaction(true, 50000, 44000, ntop*50000, 0);
-		get_water_vapor.set_reactants(Solid.ice);
-		get_water_vapor.set_products(Liquid.water);
+		Reaction get_water_vapor = new Reaction(true, 8000000, 44000, ntop * 8000000, 0);
+		get_water_vapor.set_reactants(Liquid.water);
+		get_water_vapor.set_products(Gas.water_vapor);
 		get_water_vapor.set_reactants_coef(1);
 		get_water_vapor.set_products_coef(1);
 		reactions.put("get_water_vapor", get_water_vapor);
-		
+
 		ntop = Math.exp(-6000 / 8.314 / 273);
-		Reaction get_water = new Reaction(true, 1000, 6000, ntop*1000, 0);
+		Reaction get_water = new Reaction(true, 1000, 6000, ntop * 1000, 0);
 		get_water.set_reactants(Solid.ice);
 		get_water.set_products(Liquid.water);
 		get_water.set_reactants_coef(1);
 		get_water.set_products_coef(1);
 		reactions.put("get_water", get_water);
-		
+
 		Reaction burn_coal = new Reaction(false, 500, 1600, 100, 800);
 		burn_coal.set_reactants(Solid.coal, Gas.oxygen);
 		burn_coal.set_products(Gas.CO2);

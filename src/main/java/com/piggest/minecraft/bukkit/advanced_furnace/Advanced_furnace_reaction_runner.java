@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
@@ -25,12 +26,47 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 		}
 		ItemStack solid_reactant_slot = advanced_furnace.get_gui_item(Advanced_furnace.solid_reactant_slot);
 		ItemStack gas_reactant_slot = advanced_furnace.get_gui_item(Advanced_furnace.gas_reactant_slot);
+		ItemStack liquid_reactant_slot = advanced_furnace.get_gui_item(Advanced_furnace.liquid_reactant_slot);
+
 		Reaction_container reaction_container = this.advanced_furnace.get_reaction_container();
+
 		if (!Grinder.is_empty(solid_reactant_slot)) { // 固体进入反应器
 			Solid solid = Solid.get_solid(solid_reactant_slot);
 			if (solid != null) {
 				solid_reactant_slot.setAmount(solid_reactant_slot.getAmount() - 1);
 				reaction_container.set_unit(solid, reaction_container.get_unit(solid) + solid.get_unit());
+			}
+		}
+
+		if (!Grinder.is_empty(liquid_reactant_slot)) { // 液体进入反应器
+			if (liquid_reactant_slot.getType() == Material.BUCKET) { // 处理空桶
+				HashMap<Chemical, Integer> all_chemical = reaction_container.get_all_chemical();
+				for (Entry<Chemical, Integer> entry : all_chemical.entrySet()) {
+					Chemical chemical = entry.getKey();
+					if (chemical instanceof Liquid) {
+						Liquid liquid = (Liquid) chemical;
+						int unit = entry.getValue();
+						if (unit >= 1000) {
+							ItemStack filled = liquid.get_filled_bucket();
+							if (advanced_furnace.add_a_item_to_slot(filled, Advanced_furnace.liquid_product_slot)) {
+								reaction_container.set_unit(liquid, reaction_container.get_unit(liquid) - 1000);
+								liquid_reactant_slot.setAmount(liquid_reactant_slot.getAmount() - 1);
+							}
+							break;
+						}
+					}
+				}
+			} else { // 处理其他容器
+				Liquid liquid = Liquid.get_liquid(liquid_reactant_slot);
+				if (liquid != null) { // 检测到合法液体容器
+					ItemStack new_empty_bucket = new ItemStack(Material.BUCKET);
+					if (this.advanced_furnace.add_a_item_to_slot(new_empty_bucket,
+							Advanced_furnace.liquid_product_slot)) { // 产品槽允许空桶放入则添加进内部
+						reaction_container.set_unit(liquid,
+								reaction_container.get_unit(liquid) + Liquid.get_item_unit(liquid_reactant_slot));
+						liquid_reactant_slot.setAmount(liquid_reactant_slot.getAmount() - 1);
+					}
+				}
 			}
 		}
 
@@ -55,7 +91,7 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 							need_to_move.set(i, need_to_move.get(i) * 1000 / inside_gas_capacity);
 						}
 					}
-					ItemStack new_bottle = Gas_bottle.item.clone();
+					ItemStack new_bottle = Gas_bottle.item.clone(); // 瓶子转移到产品槽
 					for (int i = 0; i < gas_list.size(); i++) {
 						Gas gas = gas_list.get(i);
 						int move = need_to_move.get(i);
