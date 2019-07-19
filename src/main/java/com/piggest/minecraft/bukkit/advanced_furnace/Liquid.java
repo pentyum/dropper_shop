@@ -1,25 +1,31 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
-import org.bukkit.NamespacedKey;
+public enum Liquid implements Chemical {
+	water("水");
 
-public class Liquid implements Chemical {
+	private String display_name;
+
+	Liquid(String display_name) {
+		this.display_name = display_name;
+	}
 
 	@Override
 	public String get_displayname() {
-		// TODO 自动生成的方法存根
-		return null;
+		return this.display_name + "(l)";
 	}
 
 	@Override
 	public String get_name() {
-		// TODO 自动生成的方法存根
-		return null;
+		return this.name();
 	}
-
-	@Override
-	public NamespacedKey get_namespacedkey() {
-		// TODO 自动生成的方法存根
-		return null;
+	
+	public static Liquid get_liquid(String name) {
+		Liquid liquid = null;
+		try {
+			liquid = Liquid.valueOf(name);
+		} catch (Exception e) {
+		} finally {
+		}
+		return liquid;
 	}
-
 }

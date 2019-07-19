@@ -15,7 +15,7 @@ public enum Solid implements Chemical {
 	clay_ball(1000, "粘土"), brick(1000, "红砖"), netherrack(1000, "地狱岩"), nether_brick(1000, "地狱砖"),
 	copper_powder(1000, "铜粉"), sliver_powder(1000, "银粉"), gravel(1000, "砂砾"), flint(1000, "燧石"), quartz(1000, "石英"),
 	obsidian(1000, "黑曜石"), redstone(1000, "红石"), aluminium_oxide(1000, "三氧化二铝"), granite(1000, "花岗岩"), water(1000, "水"),
-	quartz_block(1000, "石英块"), smooth_quartz(1000, "平滑石英"), smooth_stone(1000, "平滑石头");
+	quartz_block(1000, "石英块"), smooth_quartz(1000, "平滑石英"), smooth_stone(1000, "平滑石头"), ice(1000, "冰");
 
 	private int unit;
 	private String display_name;
@@ -38,9 +38,6 @@ public enum Solid implements Chemical {
 		if (name.contains("_log")) {
 			return log;
 		}
-		if (name.contains("water")) {
-			return water;
-		}
 		return Solid.get_solid(name);
 	}
 
@@ -56,9 +53,6 @@ public enum Solid implements Chemical {
 	}
 
 	public String get_displayname() { // 获取显示名称
-		if (this == water) {
-			return this.display_name + "(l)";
-		}
 		return this.display_name + "(s)";
 	}
 

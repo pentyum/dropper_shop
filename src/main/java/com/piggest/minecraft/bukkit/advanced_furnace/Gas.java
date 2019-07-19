@@ -1,9 +1,5 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
-import org.bukkit.NamespacedKey;
-
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-
 public enum Gas implements Chemical {
 	hydrogen("氢气"), oxygen("氧气"), nitrogen("氮气"), chlorine("氯气"), CO("一氧化碳"), CO2("二氧化碳"), CH4("甲烷"), NH3("氨气"),
 	NO("一氧化氮"), NO2("二氧化氮"), SO2("二氧化硫"), H2S("硫化氢"), HCl("氯化氢"), HCN("氰化氢"), HF("氟化氢"), water("水蒸气"), Ar("氩气");
@@ -33,11 +29,6 @@ public enum Gas implements Chemical {
 		} finally {
 		}
 		return gas;
-	}
-
-	@Override
-	public NamespacedKey get_namespacedkey() {
-		return new NamespacedKey(Dropper_shop_plugin.instance, this.name());
 	}
 
 }

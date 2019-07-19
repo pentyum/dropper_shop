@@ -10,6 +10,8 @@ public class Reaction_container {
 	private HashMap<Chemical, Integer> rate_map = new HashMap<Chemical, Integer>();
 
 	public static void init_reaction() {
+		double ntop = 1;
+		
 		Reaction ammonia_synthesis = new Reaction(true, 100, 1200, 130, 1400);
 		ammonia_synthesis.set_reactants(Gas.nitrogen, Gas.hydrogen);
 		ammonia_synthesis.set_products(Gas.NH3);
@@ -23,14 +25,23 @@ public class Reaction_container {
 		get_hydrogen.set_reactants_coef(1, 1);
 		get_hydrogen.set_products_coef(1, 1);
 		reactions.put("get_hydrogen", get_hydrogen);
-
-		Reaction get_water_vapor = new Reaction(true, 93973313, 6130, 100, 1000);
-		get_water_vapor.set_reactants(Solid.water);
-		get_water_vapor.set_products(Gas.water);
+		
+		ntop = Math.exp(-44000 / 8.314 / 373);
+		Reaction get_water_vapor = new Reaction(true, 50000, 44000, ntop*50000, 0);
+		get_water_vapor.set_reactants(Solid.ice);
+		get_water_vapor.set_products(Liquid.water);
 		get_water_vapor.set_reactants_coef(1);
 		get_water_vapor.set_products_coef(1);
 		reactions.put("get_water_vapor", get_water_vapor);
-
+		
+		ntop = Math.exp(-6000 / 8.314 / 273);
+		Reaction get_water = new Reaction(true, 1000, 6000, ntop*1000, 0);
+		get_water.set_reactants(Solid.ice);
+		get_water.set_products(Liquid.water);
+		get_water.set_reactants_coef(1);
+		get_water.set_products_coef(1);
+		reactions.put("get_water", get_water);
+		
 		Reaction burn_coal = new Reaction(false, 500, 1600, 100, 800);
 		burn_coal.set_reactants(Solid.coal, Gas.oxygen);
 		burn_coal.set_products(Gas.CO2);

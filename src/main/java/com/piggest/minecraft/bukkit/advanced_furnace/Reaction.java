@@ -11,10 +11,26 @@ public class Reaction {
 	private double ea_p;
 	private double ea_n;
 
+	/*
+	 * 新建反应，reversible表示是否可逆，positive_rate为正反应速率系数，ea_p为正反应活化能(J/mol)，
+	 * negative_rate为逆反应速率系数，ea_n为逆反应活化能(J/mol)
+	 */
 	public Reaction(boolean reversible, double positive_rate, double ea_p, double negative_rate, double ea_n) {
 		this.reversible = reversible;
 		this.positive_rate = positive_rate;
 		this.negative_rate = negative_rate;
+		this.ea_n = ea_n;
+		this.ea_p = ea_p;
+	}
+
+	/*
+	 * 新建不可逆反应，positive_rate为正反应速率系数，positive_rate为正反应速率系数，ea_p为正反应活化能(J/mol)，
+	 * ea_n为逆反应活化能(J/mol)
+	 */
+	public Reaction(double positive_rate, double ea_p, double ea_n) {
+		this.reversible = false;
+		this.positive_rate = positive_rate;
+		this.negative_rate = 0;
 		this.ea_n = ea_n;
 		this.ea_p = ea_p;
 	}
@@ -50,12 +66,15 @@ public class Reaction {
 	public int[] get_products_coef() {
 		return this.products_coefficients;
 	}
-
+	
+	/*
+	 * 反应速率：每单位每0.25秒
+	 */
 	public int get_current_positive_rate(double[] c, double temp) {
 		if (c.length != reactants_chemicals.length) {
 			return 0;
 		}
-		double k = this.positive_rate * Math.exp(-ea_p / temp);
+		double k = this.positive_rate * Math.exp(-ea_p / 8.314 / temp);
 		for (int i = 0; i < this.reactants_chemicals.length; i++) {
 			if (this.reactants_chemicals[i] instanceof Gas) {
 				k *= Math.pow(c[i], this.reactants_coefficients[i]);
@@ -72,7 +91,7 @@ public class Reaction {
 			if (c.length != products_chemicals.length) {
 				return 0;
 			}
-			double k = this.negative_rate * Math.exp(-ea_n / temp);
+			double k = this.negative_rate * Math.exp(-ea_n / 8.314 / temp);
 			for (int i = 0; i < this.products_chemicals.length; i++) {
 				if (this.products_chemicals[i] instanceof Gas) {
 					k *= Math.pow(c[i], this.products_coefficients[i]);

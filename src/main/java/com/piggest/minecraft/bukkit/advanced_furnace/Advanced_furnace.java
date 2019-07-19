@@ -30,10 +30,12 @@ import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
 public class Advanced_furnace extends Multi_block_with_gui implements HasRunner, Capacity_upgradable {
 	public static final int solid_reactant_slot = 9;
+	public static final int liquid_reactant_slot = 13;
 	public static final int gas_reactant_slot = 11;
 	public static final int fuel_slot = 17;
 	public static final int fuel_product_slot = 35;
 	public static final int solid_product_slot = 18;
+	public static final int liquid_product_slot = 22;
 	public static final int gas_product_slot = 20;
 	public static final int upgrade_component_slot = 33;
 
@@ -132,20 +134,34 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		} else {
 			this.set_fuel(Fuel.valueOf(fuel_type));
 		}
+		
 		if (shop_save.get("fuel-slot") != null) {
 			ItemStack fuel_slot_item = Material_ext.new_item((String) shop_save.get("fuel-slot"),
 					(Integer) shop_save.get("fuel-slot-num"));
 			this.set_fuel_slot(fuel_slot_item);
 		}
 		if (shop_save.get("solid-product-slot") != null) {
-			this.set_fuel_product_slot((ItemStack) shop_save.get("solid-product-slot"));
+			this.set_solid_product_slot((ItemStack) shop_save.get("solid-product-slot"));
 		}
 		if (shop_save.get("solid-reactant-slot") != null) {
-			this.set_fuel_product_slot((ItemStack) shop_save.get("solid-reactant-slot"));
+			this.set_solid_reactant_slot((ItemStack) shop_save.get("solid-reactant-slot"));
+		}
+		if (shop_save.get("liquid-product-slot") != null) {
+			this.set_liquid_product_slot((ItemStack) shop_save.get("liquid-product-slot"));
+		}
+		if (shop_save.get("liquid-reactant-slot") != null) {
+			this.set_liquid_product_slot((ItemStack) shop_save.get("liquid-reactant-slot"));
+		}
+		if (shop_save.get("gas-product-slot") != null) {
+			this.set_gas_product_slot((ItemStack) shop_save.get("gas-product-slot"));
+		}
+		if (shop_save.get("gas-reactant-slot") != null) {
+			this.set_gas_product_slot((ItemStack) shop_save.get("gas-reactant-slot"));
 		}
 		if (shop_save.get("fuel-product-slot") != null) {
 			this.set_fuel_product_slot((ItemStack) shop_save.get("fuel-product-slot"));
 		}
+		
 		if (shop_save.get("upgrade-component-slot") != null) {
 			this.gui.setItem(Advanced_furnace.upgrade_component_slot,
 					(ItemStack) shop_save.get("upgrade-component-slot"));
@@ -163,11 +179,31 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		this.set_overload_upgrade((int) shop_save.get("overload-upgrade"));
 		this.set_time_upgrade((int) shop_save.get("time-upgrade"));
 	}
-
+	
+	public void set_solid_product_slot(ItemStack slot_item) {
+		this.gui.setItem(Advanced_furnace.solid_product_slot, slot_item);
+	}
+	
 	public void set_solid_reactant_slot(ItemStack slot_item) {
 		this.gui.setItem(Advanced_furnace.solid_reactant_slot, slot_item);
 	}
-
+	
+	public void set_liquid_product_slot(ItemStack slot_item) {
+		this.gui.setItem(Advanced_furnace.liquid_product_slot, slot_item);
+	}
+	
+	public void set_liquid_reactant_slot(ItemStack slot_item) {
+		this.gui.setItem(Advanced_furnace.liquid_reactant_slot, slot_item);
+	}
+	
+	public void set_gas_product_slot(ItemStack slot_item) {
+		this.gui.setItem(Advanced_furnace.gas_product_slot, slot_item);
+	}
+	
+	public void set_gas_reactant_slot(ItemStack slot_item) {
+		this.gui.setItem(Advanced_furnace.gas_reactant_slot, slot_item);
+	}
+	
 	public void set_fuel_slot(ItemStack slot_item) {
 		this.gui.setItem(Advanced_furnace.fuel_slot, slot_item);
 	}
@@ -190,6 +226,10 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		ItemStack fuel_slot = this.gui.getItem(Advanced_furnace.fuel_slot);
 		ItemStack solid_product_slot = this.gui.getItem(Advanced_furnace.solid_product_slot);
 		ItemStack solid_reactant_slot = this.gui.getItem(Advanced_furnace.solid_reactant_slot);
+		ItemStack liquid_product_slot = this.gui.getItem(Advanced_furnace.liquid_product_slot);
+		ItemStack liquid_reactant_slot = this.gui.getItem(Advanced_furnace.liquid_reactant_slot);
+		ItemStack gas_product_slot = this.gui.getItem(Advanced_furnace.gas_product_slot);
+		ItemStack gas_reactant_slot = this.gui.getItem(Advanced_furnace.gas_reactant_slot);
 		ItemStack fuel_product_slot = this.gui.getItem(Advanced_furnace.fuel_product_slot);
 		ItemStack upgrade_component_slot = this.gui.getItem(Advanced_furnace.upgrade_component_slot);
 
@@ -197,12 +237,26 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 			save.put("fuel-slot", Material_ext.get_id_name(fuel_slot));
 			save.put("fuel-slot-num", fuel_slot.getAmount());
 		}
+		
 		if (!Grinder.is_empty(solid_product_slot)) {
 			save.put("solid-product-slot", solid_product_slot);
 		}
 		if (!Grinder.is_empty(solid_reactant_slot)) {
 			save.put("solid-reactant-slot", solid_reactant_slot);
 		}
+		if (!Grinder.is_empty(liquid_product_slot)) {
+			save.put("liquid-product-slot", liquid_product_slot);
+		}
+		if (!Grinder.is_empty(liquid_reactant_slot)) {
+			save.put("liquid-reactant-slot", liquid_reactant_slot);
+		}
+		if (!Grinder.is_empty(gas_product_slot)) {
+			save.put("gas-product-slot", gas_product_slot);
+		}
+		if (!Grinder.is_empty(gas_reactant_slot)) {
+			save.put("gas-reactant-slot", gas_reactant_slot);
+		}
+		
 		if (!Grinder.is_empty(fuel_product_slot)) {
 			save.put("fuel-product-slot", fuel_product_slot);
 		}
@@ -394,10 +448,6 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 
 	public boolean add_a_fuel(ItemStack src_item) {
 		return this.add_a_item_to_slot(src_item, Advanced_furnace.fuel_slot);
-	}
-
-	public void set_gas_product_slot(ItemStack item) {
-		this.gui.setItem(20, item);
 	}
 
 	public int get_make_money_rate() { // 生产金币的速率(30秒)
