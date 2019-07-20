@@ -35,8 +35,7 @@ public class Advanced_furnace_temp_runner extends Structure_runner {
 	}
 
 	private void run_fuel() {
-		int max_ticks = (int) (adv_furnace.get_fuel().get_ticks()
-				*adv_furnace.get_time_modify());
+		int max_ticks = (int) (adv_furnace.get_fuel().ticks * adv_furnace.get_time_modify());
 		int last_sec = (max_ticks - adv_furnace.fuel_ticks) / 20;
 		adv_furnace.set_last_sec(last_sec);
 		if (adv_furnace.fuel_ticks >= max_ticks) {
@@ -54,7 +53,7 @@ public class Advanced_furnace_temp_runner extends Structure_runner {
 			if (fuel != null) {
 				if (fuel == Fuel.lava_bucket) {
 					ItemStack bucket = new ItemStack(Material.BUCKET);
-					if(!this.adv_furnace.add_a_item_to_slot(bucket, Advanced_furnace.fuel_product_slot)) {
+					if (!this.adv_furnace.add_a_item_to_slot(bucket, Advanced_furnace.fuel_product_slot)) {
 						return;
 					}
 				}

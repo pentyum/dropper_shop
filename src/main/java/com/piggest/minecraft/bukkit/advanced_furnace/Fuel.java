@@ -1,6 +1,7 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.grinder.Powder;
@@ -12,26 +13,14 @@ public enum Fuel {
 	carpet(1.1, Status.solid, 67), planks(1.38, Status.solid, 300), wheat_powder(9, Status.solid, 40),
 	stick(2.1, Status.solid, 100);
 
-	private Status status;
-	private double power;
-	private int ticks;
+	public final Status status;
+	public final double power;
+	public final int ticks;
 
 	private Fuel(double power, Status status, int ticks) {
 		this.power = power;
 		this.ticks = ticks;
 		this.status = status;
-	}
-
-	public double get_power() {
-		return this.power;
-	}
-
-	public Status get_status() {
-		return this.status;
-	}
-
-	public int get_ticks() {
-		return this.ticks;
 	}
 
 	public static Fuel get_fuel(ItemStack item) {
@@ -64,11 +53,11 @@ public enum Fuel {
 				return suger;
 			}
 		default:
-			if (type.name().contains("WOOL")) {
+			if (Tag.WOOL.isTagged(type)) {
 				return Fuel.wool;
-			} else if (type.name().contains("CARPET")) {
+			} else if (Tag.CARPETS.isTagged(type)) {
 				return Fuel.carpet;
-			} else if (type.name().contains("PLANKS")) {
+			} else if (Tag.PLANKS.isTagged(type)) {
 				return Fuel.planks;
 			}
 			return null;

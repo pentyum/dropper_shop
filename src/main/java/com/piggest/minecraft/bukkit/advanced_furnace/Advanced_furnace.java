@@ -345,7 +345,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		double power = 0;
 		if (fuel != null) {
 			lore.set(1, "§r燃料: " + fuel.name());
-			power = fuel.get_power();
+			power = fuel.power;
 		} else {
 			lore.set(1, "§r燃料: 无");
 		}
