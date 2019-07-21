@@ -1,6 +1,6 @@
 package com.piggest.minecraft.bukkit.teleport_machine;
 
-public enum Element {
+public enum Element implements Has_composition {
 	Magic(0, 0),
 	H(1, 1, 1),
 	Be(4, 9, 2),
@@ -53,5 +53,10 @@ public enum Element {
 		this.relative_atomic_mass = relative_atomic_mass;
 		this.valence = valence;
 		this.valence_2 = valence_2;
+	}
+
+	@Override
+	public Elements_composition get_elements_composition() {
+		return new Elements_composition(this,1);
 	}
 }
