@@ -97,7 +97,7 @@ public class Price_config {
 		str += "磨粉机建立:" + this.make_grinder_price + "金币\n";
 		str += "经验存储器容量升级:" + this.exp_saver_upgrade_base_price + "金币+"
 				+ this.exp_saver_upgrade_level_price + "金币/级\n";
-		str += "经验存储器移除铁砧惩罚:" + this.exp_saver_remove_repaircost_price + "金币";
+		str += "经验存储器移除铁砧惩罚:" + this.exp_saver_remove_repaircost_price + "金币\n";
 		str += "抽奖机建立:" + this.make_lottery_pool_price + "金币\n";
 		str += "抽奖机使用:" + this.lottery_price + "金币/次\n";
 		str += "砍树机建立:" + this.make_trees_felling_machine_price + "金币\n";

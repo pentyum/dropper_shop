@@ -12,12 +12,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.structure.Auto_io;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Ownable;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
-public class Depository extends Multi_block_with_gui implements Ownable, HasRunner {
+public class Depository extends Multi_block_with_gui implements Ownable, HasRunner,Auto_io {
 	public static int[] price_level = { 5, 10, 20, 30, 40 };
 	public static int[] capacity_level = { 5000, 10000, 20000, 30000, 50000 };
 	private Depository_runner runner = new Depository_runner(this);

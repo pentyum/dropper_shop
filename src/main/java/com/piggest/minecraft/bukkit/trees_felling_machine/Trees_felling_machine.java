@@ -16,15 +16,14 @@ import org.bukkit.block.data.type.Leaves;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
-
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
+import com.piggest.minecraft.bukkit.structure.Auto_io;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
-public class Trees_felling_machine extends Multi_block_with_gui implements HasRunner {
+public class Trees_felling_machine extends Multi_block_with_gui implements HasRunner,Auto_io {
 	private int current_x;
 	private int current_z;
 	private int start_x;
@@ -349,25 +348,6 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 			}
 		}
 		return true;
-	}
-	
-	private synchronized Hopper get_hopper(int[][] check_list) {
-		for (int[] relative_coord : check_list) {
-			BlockState block = this.get_block(relative_coord[0], relative_coord[1], relative_coord[2]).getState();
-			if (block instanceof Hopper) {
-				org.bukkit.block.data.type.Hopper hopper_data = (org.bukkit.block.data.type.Hopper) block
-						.getBlockData();
-				Vector vec = hopper_data.getFacing().getDirection().multiply(2)
-						.add(new Vector(relative_coord[0], relative_coord[1], relative_coord[2]));
-				if (vec.getBlockX() == 0 && vec.getBlockZ() == 0) {
-					if (block.getBlock().isBlockPowered()) {
-						continue;
-					}
-					return (Hopper) block;
-				}
-			}
-		}
-		return null;
 	}
 	
 	public synchronized Hopper get_axe_hopper() {

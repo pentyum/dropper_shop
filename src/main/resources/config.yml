@@ -11,7 +11,7 @@ exp-saver-max-structure-level: 50
 exp-saver-anvil-upgrade-need: 20
 exp-saver-remove-repaircost-exp: 8000
 exp-saver-remove-repaircost-price: 10000
-anti-thunder-price: 20
+anti-thunder-price: 50
 anti-thunder-cycle: 3600
 adv-furnace-price: 1000
 

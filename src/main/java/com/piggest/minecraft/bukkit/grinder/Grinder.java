@@ -8,7 +8,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.Material;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Hopper;
 import org.bukkit.entity.Player;
@@ -18,11 +17,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.structure.Auto_io;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
-public class Grinder extends Multi_block_with_gui implements HasRunner {
+public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io {
 	private Grinder_runner runner = new Grinder_runner(this);
 	private Grinder_io_runner io_runner = new Grinder_io_runner(this);
 	public static final int raw_slot = 9;
@@ -110,33 +110,12 @@ public class Grinder extends Multi_block_with_gui implements HasRunner {
 		return false;
 	}
 
-	public synchronized Hopper get_hopper() {
-		BlockState up_block = this.get_block(0, 1, 0).getState();
-		if (up_block instanceof Hopper) {
-			Hopper up_hopper = (Hopper) up_block;
-			return up_hopper;
-		}
-		return null;
+	public Hopper get_hopper() {
+		return this.get_hopper(new int[][] { { 0, 1, 0 } });
 	}
 
-	public synchronized Chest get_chest() {
-		BlockState chest = this.get_block(1, -2, 0).getState();
-		if (chest instanceof Chest) {
-			return (Chest) chest;
-		}
-		chest = this.get_block(-1, -2, 0).getState();
-		if (chest instanceof Chest) {
-			return (Chest) chest;
-		}
-		chest = this.get_block(0, -2, 1).getState();
-		if (chest instanceof Chest) {
-			return (Chest) chest;
-		}
-		chest = this.get_block(0, -2, -1).getState();
-		if (chest instanceof Chest) {
-			return (Chest) chest;
-		}
-		return null;
+	public Chest get_chest() {
+		return this.get_chest(new int[][] { { 1, -2, 0 }, { -1, -2, 0 }, { 0, -2, 1 }, { 0, -2, -1 } });
 	}
 
 	public Structure_runner[] get_runner() {
