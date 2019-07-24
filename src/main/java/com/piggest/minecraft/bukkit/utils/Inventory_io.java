@@ -26,4 +26,23 @@ public class Inventory_io {
 			}
 		}
 	}
+	
+	public static boolean move_a_item_to_slot(ItemStack src_item,Inventory inventory, int slot) {
+		if (!Grinder.is_empty(src_item)) {
+			if (Grinder.is_empty(inventory.getItem(slot))) {
+				inventory.setItem(slot, src_item.clone());
+				inventory.getItem(slot).setAmount(1);
+				src_item.setAmount(src_item.getAmount() - 1);
+				return true;
+			} else if (src_item.isSimilar(inventory.getItem(slot))) {
+				int new_num = 1 + inventory.getItem(slot).getAmount();
+				if (new_num <= src_item.getMaxStackSize()) {
+					inventory.getItem(slot).setAmount(new_num);
+					src_item.setAmount(src_item.getAmount() - 1);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

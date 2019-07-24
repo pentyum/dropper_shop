@@ -26,6 +26,7 @@ import com.piggest.minecraft.bukkit.structure.Capacity_upgradable;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.utils.Inventory_io;
 
 public class Advanced_furnace extends Multi_block_with_gui implements HasRunner, Capacity_upgradable, Auto_io {
 	public static final int solid_reactant_slot = 9;
@@ -41,9 +42,9 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	private static final int[][] solid_reactant_hopper_check_list = { { 0, 1, 2 }, { 2, 1, 0 }, { 0, 1, -2 },
 			{ -2, 1, 0 } }; // 注入固体
 	private static final int[][] fuel_hopper_check_list = { { 0, -1, 2 }, { 2, -1, 0 }, { 0, -1, -2 }, { -2, -1, 0 } }; // 注入固体
-	private static final int[][] solid_product_check_list = { { 1, -1, 2 }, { 2, -1, 1 }, { -1, -1, 2 }, { 2, -1, -1 }, { 1, -1, -2 },
-			{ -2, -1, 1 }, { -2, -1, -1 }, { -1, -1, -2 } };
-	
+	private static final int[][] solid_product_check_list = { { 1, -1, 2 }, { 2, -1, 1 }, { -1, -1, 2 }, { 2, -1, -1 },
+			{ 1, -1, -2 }, { -2, -1, 1 }, { -2, -1, -1 }, { -1, -1, -2 } };
+
 	private Reaction_container reaction_container = new Reaction_container();
 	private double power = 0;
 	private Advanced_furnace_temp_runner temp_runner = new Advanced_furnace_temp_runner(this);
@@ -439,31 +440,12 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		set_switch(5, open);
 	}
 
-	public boolean add_a_item_to_slot(ItemStack src_item, int i) {
-		if (!Grinder.is_empty(src_item)) {
-			if (Grinder.is_empty(this.gui.getItem(i))) {
-				this.gui.setItem(i, src_item.clone());
-				this.gui.getItem(i).setAmount(1);
-				src_item.setAmount(src_item.getAmount() - 1);
-				return true;
-			} else if (src_item.isSimilar(this.gui.getItem(i))) {
-				int new_num = 1 + this.gui.getItem(i).getAmount();
-				if (new_num <= src_item.getMaxStackSize()) {
-					this.gui.getItem(i).setAmount(new_num);
-					src_item.setAmount(src_item.getAmount() - 1);
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
 	public boolean add_a_solid(ItemStack src_item) {
-		return this.add_a_item_to_slot(src_item, Advanced_furnace.solid_reactant_slot);
+		return Inventory_io.move_a_item_to_slot(src_item, this.gui, Advanced_furnace.solid_reactant_slot);
 	}
 
 	public boolean add_a_fuel(ItemStack src_item) {
-		return this.add_a_item_to_slot(src_item, Advanced_furnace.fuel_slot);
+		return Inventory_io.move_a_item_to_slot(src_item, this.gui, Advanced_furnace.fuel_slot);
 	}
 
 	public int get_make_money_rate() { // 生产金币的速率(30秒)
@@ -698,17 +680,17 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	}
 
 	public Hopper get_solid_reactant_hopper() {
-		return this.get_hopper(solid_reactant_hopper_check_list);
+		return this.get_hopper(solid_reactant_hopper_check_list, true);
 	}
 
 	public Hopper get_fuel_hopper() {
-		return this.get_hopper(fuel_hopper_check_list);
+		return this.get_hopper(fuel_hopper_check_list, true);
 	}
-	
+
 	public Chest get_chest() {
 		return this.get_chest(solid_product_check_list);
 	}
-	
+
 	@Override
 	public void init_after_set_location() {
 		this.set_temperature(this.get_base_temperature());

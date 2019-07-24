@@ -113,7 +113,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 	}
 
 	public Hopper get_hopper() {
-		return this.get_hopper(raw_hopper_check_list);
+		return this.get_hopper(raw_hopper_check_list,false);
 	}
 
 	public Chest get_chest() {

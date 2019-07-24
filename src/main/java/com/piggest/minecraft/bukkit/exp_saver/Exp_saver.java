@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 
 import org.bukkit.Material;
+import org.bukkit.block.Hopper;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -14,21 +15,25 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.piggest.minecraft.bukkit.config.Price_config;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
+import com.piggest.minecraft.bukkit.structure.Auto_io;
 import com.piggest.minecraft.bukkit.structure.Capacity_upgradable;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
-public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capacity_upgradable {
+public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capacity_upgradable, Auto_io {
 	private int saved_exp = 0;
 	private int max_saved_exp = 6000;
 	private int structure_level = 1;
 	private Exp_saver_runner exp_saver_runner = new Exp_saver_runner(this);
+	private Exp_saver_io_runner exp_saver_io_runner = new Exp_saver_io_runner(this);
 	private int anvil_count = 0;
 	private int chipped_anvil_count = 0;
 	private int damaged_anvil_count = 0;
 
 	private int remove_next = 0;
+	private static final int[][] hopper_check_list = { { 0, 3, 0 } };
+	public static final int mending_slot = 13;
 
 	public Exp_saver() {
 		this.set_process(0);
@@ -75,7 +80,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 
 	@Override
 	public Structure_runner[] get_runner() {
-		return new Structure_runner[] { this.exp_saver_runner };
+		return new Structure_runner[] { this.exp_saver_runner, this.exp_saver_io_runner };
 	}
 
 	@Override
@@ -91,7 +96,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 	}
 
 	private void set_mending(ItemStack item) {
-		this.gui.setItem(13, item);
+		this.gui.setItem(mending_slot, item);
 	}
 
 	@Override
@@ -211,7 +216,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 	}
 
 	public ItemStack get_mending() {
-		return this.gui.getItem(13);
+		return this.gui.getItem(mending_slot);
 	}
 
 	public int get_max_saved_exp() {
@@ -327,5 +332,9 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 	@Override
 	public void init_after_set_location() {
 		return;
+	}
+
+	public Hopper get_hopper() {
+		return this.get_hopper(hopper_check_list,false);
 	}
 }

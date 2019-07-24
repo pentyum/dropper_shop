@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.utils.Inventory_io;
 
 public class Advanced_furnace_reaction_runner extends Structure_runner {
 	private Advanced_furnace advanced_furnace;
@@ -48,7 +49,8 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 						int unit = entry.getValue();
 						if (unit >= 1000) {
 							ItemStack filled = liquid.get_filled_bucket();
-							if (advanced_furnace.add_a_item_to_slot(filled, Advanced_furnace.liquid_product_slot)) {
+							if (Inventory_io.move_a_item_to_slot(filled, this.advanced_furnace.getInventory(),
+									Advanced_furnace.liquid_product_slot)) {
 								reaction_container.set_unit(liquid, reaction_container.get_unit(liquid) - 1000);
 								liquid_reactant_slot.setAmount(liquid_reactant_slot.getAmount() - 1);
 							}
@@ -60,7 +62,7 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 				Liquid liquid = Liquid.get_liquid(liquid_reactant_slot);
 				if (liquid != null) { // 检测到合法液体容器
 					ItemStack new_empty_bucket = new ItemStack(Material.BUCKET);
-					if (this.advanced_furnace.add_a_item_to_slot(new_empty_bucket,
+					if (Inventory_io.move_a_item_to_slot(new_empty_bucket, this.advanced_furnace.getInventory(),
 							Advanced_furnace.liquid_product_slot)) { // 产品槽允许空桶放入则添加进内部
 						reaction_container.set_unit(liquid,
 								reaction_container.get_unit(liquid) + Liquid.get_item_unit(liquid_reactant_slot));

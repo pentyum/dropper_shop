@@ -22,7 +22,7 @@ import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
-public class Trees_felling_machine extends Multi_block_with_gui implements HasRunner,Auto_io {
+public class Trees_felling_machine extends Multi_block_with_gui implements HasRunner, Auto_io {
 	private int current_x;
 	private int current_z;
 	private int start_x;
@@ -31,11 +31,10 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	private int end_z;
 	private int total_blocks;
 	private int scanned_blocks = 0;
-	private static final int[][] axe_hopper_check_list = { { 0, 1, 2 }, { 2, 1, 0 }, { 0, 1, -2 },
-			{ -2, 1, 0 } }; // 注入斧头
+	private static final int[][] axe_hopper_check_list = { { 0, 1, 2 }, { 2, 1, 0 }, { 0, 1, -2 }, { -2, 1, 0 } }; // 注入斧头
 	private static final int[][] product_chest_check_list = { { 0, -1, 2 }, { 2, -1, 0 }, { 0, -1, -2 },
 			{ -2, -1, 0 } };
-	
+
 	private int r = 32;
 	private Trees_felling_machine_runner runner = new Trees_felling_machine_runner(this);
 
@@ -334,9 +333,9 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 		}
 		return true;
 	}
-	
+
 	public Hopper get_axe_hopper() {
-		return this.get_hopper(axe_hopper_check_list);
+		return this.get_hopper(axe_hopper_check_list, true);
 	}
 
 	@Override

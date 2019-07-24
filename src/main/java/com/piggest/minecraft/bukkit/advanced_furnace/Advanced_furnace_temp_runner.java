@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.utils.Inventory_io;
 
 public class Advanced_furnace_temp_runner extends Structure_runner {
 	private Advanced_furnace adv_furnace;
@@ -53,7 +54,8 @@ public class Advanced_furnace_temp_runner extends Structure_runner {
 			if (fuel != null) {
 				if (fuel == Fuel.lava_bucket) {
 					ItemStack bucket = new ItemStack(Material.BUCKET);
-					if (!this.adv_furnace.add_a_item_to_slot(bucket, Advanced_furnace.fuel_product_slot)) {
+					if (!Inventory_io.move_a_item_to_slot(bucket, this.adv_furnace.getInventory(),
+							Advanced_furnace.fuel_product_slot)) {
 						return;
 					}
 				}
