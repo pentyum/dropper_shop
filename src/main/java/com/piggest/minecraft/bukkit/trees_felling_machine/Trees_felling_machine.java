@@ -8,7 +8,6 @@ import java.util.Stack;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Hopper;
 import org.bukkit.block.data.BlockData;
@@ -32,8 +31,10 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	private int end_z;
 	private int total_blocks;
 	private int scanned_blocks = 0;
-	private static final int axe_hopper_check_list[][] = { { 0, 1, 2 }, { 2, 1, 0 }, { 0, 1, -2 },
+	private static final int[][] axe_hopper_check_list = { { 0, 1, 2 }, { 2, 1, 0 }, { 0, 1, -2 },
 			{ -2, 1, 0 } }; // 注入斧头
+	private static final int[][] product_chest_check_list = { { 0, -1, 2 }, { 2, -1, 0 }, { 0, -1, -2 },
+			{ -2, -1, 0 } };
 	
 	private int r = 32;
 	private Trees_felling_machine_runner runner = new Trees_felling_machine_runner(this);
@@ -201,24 +202,8 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 		this.pointer_move_to_next();
 	}
 
-	public synchronized Chest get_chest() {
-		BlockState chest = this.get_block(2, -1, 0).getState();
-		if (chest instanceof Chest) {
-			return (Chest) chest;
-		}
-		chest = this.get_block(-2, -1, 0).getState();
-		if (chest instanceof Chest) {
-			return (Chest) chest;
-		}
-		chest = this.get_block(0, -1, 2).getState();
-		if (chest instanceof Chest) {
-			return (Chest) chest;
-		}
-		chest = this.get_block(0, -1, -2).getState();
-		if (chest instanceof Chest) {
-			return (Chest) chest;
-		}
-		return null;
+	public Chest get_chest() {
+		return this.get_chest(product_chest_check_list);
 	}
 
 	public ItemStack get_axe() {
@@ -350,7 +335,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 		return true;
 	}
 	
-	public synchronized Hopper get_axe_hopper() {
+	public Hopper get_axe_hopper() {
 		return this.get_hopper(axe_hopper_check_list);
 	}
 

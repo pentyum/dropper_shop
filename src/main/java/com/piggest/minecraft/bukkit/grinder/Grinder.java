@@ -28,7 +28,9 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 	public static final int raw_slot = 9;
 	public static final int flint_slot = 11;
 	public static final int product_slot = 13;
-
+	private static final int[][] product_chest_check_list = new int[][] { { 1, -2, 0 }, { -1, -2, 0 }, { 0, -2, 1 }, { 0, -2, -1 } };
+	private static final int[][] raw_hopper_check_list = new int [][] { { 0, 1, 0 } };
+	
 	public Grinder() {
 		/*
 		 * ItemStack white = new ItemStack(Material.WHITE_STAINED_GLASS_PANE); ItemMeta
@@ -111,11 +113,11 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 	}
 
 	public Hopper get_hopper() {
-		return this.get_hopper(new int[][] { { 0, 1, 0 } });
+		return this.get_hopper(raw_hopper_check_list);
 	}
 
 	public Chest get_chest() {
-		return this.get_chest(new int[][] { { 1, -2, 0 }, { -1, -2, 0 }, { 0, -2, 1 }, { 0, -2, -1 } });
+		return this.get_chest(product_chest_check_list);
 	}
 
 	public Structure_runner[] get_runner() {

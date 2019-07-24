@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import org.bukkit.ChatColor;
 import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
 import org.bukkit.block.Furnace;
 import org.bukkit.block.Hopper;
 import org.bukkit.entity.Player;
@@ -37,10 +38,12 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	public static final int gas_product_slot = 20;
 	public static final int upgrade_component_slot = 33;
 
-	private static final int solid_reactant_hopper_check_list[][] = { { 0, 1, 2 }, { 2, 1, 0 }, { 0, 1, -2 },
+	private static final int[][] solid_reactant_hopper_check_list = { { 0, 1, 2 }, { 2, 1, 0 }, { 0, 1, -2 },
 			{ -2, 1, 0 } }; // 注入固体
-	private static final int fuel_hopper_check_list[][] = { { 0, -1, 2 }, { 2, -1, 0 }, { 0, -1, -2 }, { -2, -1, 0 } }; // 注入固体
-
+	private static final int[][] fuel_hopper_check_list = { { 0, -1, 2 }, { 2, -1, 0 }, { 0, -1, -2 }, { -2, -1, 0 } }; // 注入固体
+	private static final int[][] solid_product_check_list = { { 1, -1, 2 }, { 2, -1, 1 }, { -1, -1, 2 }, { 2, -1, -1 }, { 1, -1, -2 },
+			{ -2, -1, 1 }, { -2, -1, -1 }, { -1, -1, -2 } };
+	
 	private Reaction_container reaction_container = new Reaction_container();
 	private double power = 0;
 	private Advanced_furnace_temp_runner temp_runner = new Advanced_furnace_temp_runner(this);
@@ -701,7 +704,11 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	public Hopper get_fuel_hopper() {
 		return this.get_hopper(fuel_hopper_check_list);
 	}
-
+	
+	public Chest get_chest() {
+		return this.get_chest(solid_product_check_list);
+	}
+	
 	@Override
 	public void init_after_set_location() {
 		this.set_temperature(this.get_base_temperature());
