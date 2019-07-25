@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 import com.piggest.minecraft.bukkit.utils.Inventory_io;
 
@@ -40,18 +40,19 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 		}
 
 		if (!Grinder.is_empty(liquid_reactant_slot)) { // 液体进入反应器
-			if (liquid_reactant_slot.getType() == Material.BUCKET) { // 处理空桶
+			if(Liquid.is_empty_liquid_container(liquid_reactant_slot)) {// 处理空容器
+				int capacity = Liquid.get_container_max_unit(liquid_reactant_slot);
 				HashMap<Chemical, Integer> all_chemical = reaction_container.get_all_chemical();
 				for (Entry<Chemical, Integer> entry : all_chemical.entrySet()) {
 					Chemical chemical = entry.getKey();
 					if (chemical instanceof Liquid) {
 						Liquid liquid = (Liquid) chemical;
 						int unit = entry.getValue();
-						if (unit >= 1000) {
-							ItemStack filled = liquid.get_filled_bucket();
+						if (unit >= capacity) {
+							ItemStack filled = Liquid.get_fill_container(liquid,liquid_reactant_slot);
 							if (Inventory_io.move_a_item_to_slot(filled, this.advanced_furnace.getInventory(),
 									Advanced_furnace.liquid_product_slot)) {
-								reaction_container.set_unit(liquid, reaction_container.get_unit(liquid) - 1000);
+								reaction_container.set_unit(liquid, reaction_container.get_unit(liquid) - capacity);
 								liquid_reactant_slot.setAmount(liquid_reactant_slot.getAmount() - 1);
 							}
 							break;
@@ -61,7 +62,7 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 			} else { // 处理其他容器
 				Liquid liquid = Liquid.get_liquid(liquid_reactant_slot);
 				if (liquid != null) { // 检测到合法液体容器
-					ItemStack new_empty_bucket = new ItemStack(Material.BUCKET);
+					ItemStack new_empty_bucket = Material_ext.get_empty_container(liquid_reactant_slot);
 					if (Inventory_io.move_a_item_to_slot(new_empty_bucket, this.advanced_furnace.getInventory(),
 							Advanced_furnace.liquid_product_slot)) { // 产品槽允许空桶放入则添加进内部
 						reaction_container.set_unit(liquid,

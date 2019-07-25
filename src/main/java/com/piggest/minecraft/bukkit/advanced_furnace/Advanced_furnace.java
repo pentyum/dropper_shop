@@ -87,6 +87,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		ArrayList<String> lore = new ArrayList<String>();
 		lore.add("§r温度: 0 K");
 		lore.add("§r燃料: 无");
+		lore.add("§r燃料类型: 气态");
 		lore.add("§r燃料功率: " + 0 + " K/tick");
 		lore.add("§r剩余燃烧时间: " + 0 + " s");
 		temp_info_meta.setLore(lore);
@@ -305,7 +306,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		ItemMeta temp_info_meta = temp_info.getItemMeta();
 		if (temp_info_meta.hasLore()) {
 			List<String> lore = temp_info_meta.getLore();
-			lore.set(3, "§r剩余燃烧时间: " + last_sec + " s");
+			lore.set(4, "§r剩余燃烧时间: " + last_sec + " s");
 			temp_info_meta.setLore(lore);
 			temp_info.setItemMeta(temp_info_meta);
 		}
@@ -316,7 +317,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		ItemStack temp_info = this.gui.getItem(26);
 		ItemMeta temp_info_meta = temp_info.getItemMeta();
 		List<String> lore = temp_info_meta.getLore();
-		lore.set(2, "§r燃料功率: " + String.format("%.2f", this.get_power()) + " K/tick");
+		lore.set(3, "§r燃料功率: " + String.format("%.2f", this.get_power()) + " K/tick");
 		temp_info_meta.setLore(lore);
 		temp_info.setItemMeta(temp_info_meta);
 	}
@@ -347,9 +348,11 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		double power = 0;
 		if (fuel != null) {
 			lore.set(1, "§r燃料: " + fuel.name());
+			lore.set(2, "§r燃料类型: " + fuel.status.display_name);
 			power = fuel.power;
 		} else {
 			lore.set(1, "§r燃料: 无");
+			lore.set(2, "§r燃料类型: 气态");
 		}
 		temp_info_meta.setLore(lore);
 		temp_info.setItemMeta(temp_info_meta);

@@ -1,11 +1,12 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
 public enum Liquid implements Chemical {
-	water("水"),lava("熔岩");
+	water("水"), lava("熔岩"), milk("牛奶");
 
 	private String display_name;
 
@@ -22,6 +23,7 @@ public enum Liquid implements Chemical {
 	public String get_name() {
 		return this.name();
 	}
+
 	public static int get_item_unit(ItemStack item) {
 		String id_name = Material_ext.get_id_name(item);
 		switch (id_name) {
@@ -29,10 +31,27 @@ public enum Liquid implements Chemical {
 			return 1000;
 		case "lava_bucket":
 			return 1000;
+		case "milk_bucket":
+			return 1000;
+		case "potion":
+			return 200;
 		default:
 			return 0;
 		}
 	}
+
+	public static int get_container_max_unit(ItemStack item) {
+		String id_name = Material_ext.get_id_name(item);
+		switch (id_name) {
+		case "bucket":
+			return 1000;
+		case "glass_bottle":
+			return 200;
+		default:
+			return 0;
+		}
+	}
+
 	public static Liquid get_liquid(ItemStack item) {
 		String id_name = Material_ext.get_id_name(item);
 		switch (id_name) {
@@ -40,10 +59,19 @@ public enum Liquid implements Chemical {
 			return water;
 		case "lava_bucket":
 			return lava;
+		case "milk_bucket":
+			return milk;
+		case "potion":
+			return water;
 		default:
 			return null;
 		}
 	}
+
+	public static boolean is_empty_liquid_container(ItemStack item) {
+		return Material_ext.is_empty_container(item) == Status.liquid;
+	}
+
 	public static Liquid get_liquid(String name) {
 		Liquid liquid = null;
 		try {
@@ -53,8 +81,39 @@ public enum Liquid implements Chemical {
 		}
 		return liquid;
 	}
-	
+
 	public ItemStack get_filled_bucket() {
-		return Material_ext.new_item(this.name()+"_bucket", 1);
+		return Material_ext.new_item(this.name() + "_bucket", 1);
+	}
+
+	public static ItemStack get_fill_container(Liquid liquid, ItemStack container) {
+		String id_name = Material_ext.get_id_name(container);
+		switch (liquid) {
+		case lava:
+			switch (id_name) {
+			case "bucket":
+				return new ItemStack(Material.LAVA_BUCKET);
+			default:
+				return null;
+			}
+		case milk:
+			switch (id_name) {
+			case "bucket":
+				return new ItemStack(Material.MILK_BUCKET);
+			default:
+				return null;
+			}
+		case water:
+			switch (id_name) {
+			case "bucket":
+				return new ItemStack(Material.WATER_BUCKET);
+			case "glass_bottle":
+				return new ItemStack(Material.POTION);
+			default:
+				return null;
+			}
+		default:
+			return null;
+		}
 	}
 }

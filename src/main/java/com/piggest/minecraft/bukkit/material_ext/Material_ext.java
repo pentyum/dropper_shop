@@ -7,6 +7,9 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import com.piggest.minecraft.bukkit.advanced_furnace.Gas_bottle;
+import com.piggest.minecraft.bukkit.advanced_furnace.Status;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
 
@@ -138,5 +141,39 @@ public class Material_ext {
 	public static Material get_material(String id_name) {
 		NamespacedKey namespacedkey = Dropper_shop_plugin.instance.get_key(id_name);
 		return get_material(namespacedkey);
+	}
+
+	public static Status is_empty_container(ItemStack item) {
+		String id_name = Material_ext.get_id_name(item);
+		switch (id_name) {
+		case "bucket":
+			return Status.liquid;
+		case "glass_bottle":
+			return Status.liquid;
+		case "gas_bottle":
+			if (Gas_bottle.calc_capacity(item) == 0) {
+				return Status.gas;
+			}
+		default:
+			return null;
+		}
+	}
+
+	public static ItemStack get_empty_container(ItemStack item) {
+		String id_name = Material_ext.get_id_name(item);
+		switch (id_name) {
+		case "lava_bucket":
+			return new ItemStack(Material.BUCKET);
+		case "water_bucket":
+			return new ItemStack(Material.BUCKET);
+		case "milk_bucket":
+			return new ItemStack(Material.BUCKET);
+		case "potion":
+			return new ItemStack(Material.GLASS_BOTTLE);
+		case "gas_bottle":
+			return Material_ext.new_item("gas_bottle", 1);
+		default:
+			return null;
+		}
 	}
 }
