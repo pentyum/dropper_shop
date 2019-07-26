@@ -1,5 +1,7 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
+import java.util.Set;
+
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.inventory.ItemStack;
@@ -11,7 +13,7 @@ public enum Fuel {
 	blaze_rod(2.2, Status.solid, 2400), suger(1.05, Status.solid, 300), coal_powder(2.5, Status.solid, 1600),
 	lava(1.6, Status.liquid, 20), gun_powder(12, Status.solid, 40), wool(1.1, Status.solid, 100),
 	carpet(1.1, Status.solid, 67), planks(1.38, Status.solid, 300), wheat_powder(9, Status.solid, 40),
-	stick(2.1, Status.solid, 100);
+	stick(2.1, Status.solid, 100), hydrogen(2.5, Status.gas, 4), CO(1.9, Status.gas, 4), CH4(2.6, Status.gas, 4);
 
 	public final Status status;
 	public final double power;
@@ -68,6 +70,25 @@ public enum Fuel {
 				}
 			} else {
 				return suger;
+			}
+		case GLASS_BOTTLE:
+			if (Gas_bottle.is_gas_bottle(item)) {
+				Set<Gas> contents_type = Gas_bottle.get_gas_map(item).keySet();
+				for (Gas gas : contents_type) {
+					switch (gas) {
+					case hydrogen:
+						return Fuel.hydrogen;
+					case CO:
+						return Fuel.CO;
+					case CH4:
+						return Fuel.CH4;
+					default:
+						return null;
+					}
+				}
+				return null;
+			} else {
+				return null;
 			}
 		default:
 			if (Tag.WOOL.isTagged(type)) {
