@@ -11,10 +11,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.Repairable;
 
 import com.piggest.minecraft.bukkit.config.Price_config;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.structure.Auto_io;
 import com.piggest.minecraft.bukkit.structure.Capacity_upgradable;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
@@ -176,13 +176,13 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 	}
 
 	@SuppressWarnings("deprecation")
-	public synchronized void edit_mending_slot(int edit_type) { // 保障线程安全
+	public void repair_mending_slot() {
 		ItemStack mending = this.get_mending();
-		if (edit_type == 0) { // 修理
+		if (mending == null) {
+			return;
+		}
+		synchronized (mending) {
 			mending.setDurability((short) (mending.getDurability() - this.remove_exp(1)));
-		} else if (edit_type == 1) { // 移除tag
-			ItemStack new_item = NMS_manager.repair_cost_provider.setRepairCost(mending, null);
-			this.set_mending(new_item);
 		}
 	}
 
@@ -196,23 +196,31 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 			player.sendMessage("物品为空");
 			return;
 		}
-		if (item.getType() == Material.AIR) {
-			player.sendMessage("物品为空");
-			return;
+		synchronized (item) {
+			if (item.getType() == Material.AIR) {
+				player.sendMessage("物品为空");
+				return;
+			}
+			ItemMeta meta = item.getItemMeta();
+			if (!(meta instanceof Repairable)) {
+				player.sendMessage("该物品无法被修理");
+				return;
+			}
+			Repairable repairable_meta = (Repairable) meta;
+			if (!repairable_meta.hasRepairCost()) {
+				player.sendMessage("该物品没有铁砧惩罚标签");
+				return;
+			}
+			int need_exp = Dropper_shop_plugin.instance.get_exp_saver_remove_repaircost_exp();
+			if (this.get_saved_exp() < need_exp) {
+				player.sendMessage("存储器经验不足，需要" + need_exp + "点经验");
+				return;
+			}
+			this.remove_exp(need_exp);
+			repairable_meta.setRepairCost(0);
+			item.setItemMeta(meta);
+			player.sendMessage("已移除铁砧惩罚标签");
 		}
-		Integer repaircost = NMS_manager.repair_cost_provider.getRepairCost(item);
-		if (repaircost == null) {
-			player.sendMessage("该物品没有铁砧惩罚标签");
-			return;
-		}
-		int need_exp = Dropper_shop_plugin.instance.get_exp_saver_remove_repaircost_exp();
-		if (this.get_saved_exp() < need_exp) {
-			player.sendMessage("存储器经验不足，需要" + need_exp + "点经验");
-			return;
-		}
-		this.remove_exp(need_exp);
-		this.edit_mending_slot(1);
-		player.sendMessage("已移除铁砧惩罚标签");
 	}
 
 	public ItemStack get_mending() {
@@ -335,6 +343,6 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 	}
 
 	public Hopper get_hopper() {
-		return this.get_hopper(hopper_check_list,false);
+		return this.get_hopper(hopper_check_list, false);
 	}
 }

@@ -2,6 +2,9 @@ package com.piggest.minecraft.bukkit.advanced_furnace;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionType;
 
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
@@ -108,7 +111,12 @@ public enum Liquid implements Chemical {
 			case "bucket":
 				return new ItemStack(Material.WATER_BUCKET);
 			case "glass_bottle":
-				return new ItemStack(Material.POTION);
+				ItemStack water_bottle = new ItemStack(Material.POTION);
+				PotionMeta meta = (PotionMeta) water_bottle.getItemMeta();
+				PotionData data = new PotionData(PotionType.WATER);
+				meta.setBasePotionData(data);
+				water_bottle.setItemMeta(meta);
+				return water_bottle;
 			default:
 				return null;
 			}
