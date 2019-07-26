@@ -36,11 +36,23 @@ public class Advanced_furnace_temp_runner extends Structure_runner {
 	}
 
 	private void run_fuel() {
-		int max_ticks = (int) (adv_furnace.get_fuel().ticks * adv_furnace.get_time_modify());
+		Fuel fuel = adv_furnace.get_fuel();
+		int max_ticks = 0;
+		switch (fuel.status) {
+		case solid:
+			max_ticks = (int) (fuel.ticks * adv_furnace.get_time_modify());
+			break;
+		case liquid:
+		case gas:
+			max_ticks = (int) (fuel.ticks * adv_furnace.fuel_amount * adv_furnace.get_time_modify());
+			break;
+		default:
+			max_ticks = (int) (fuel.ticks * adv_furnace.get_time_modify());
+		}
 		int last_sec = (max_ticks - adv_furnace.fuel_ticks) / 20;
 		adv_furnace.set_last_sec(last_sec);
 		if (adv_furnace.fuel_ticks >= max_ticks) {
-			adv_furnace.set_fuel(null);
+			adv_furnace.set_fuel(null, 0);
 			adv_furnace.fuel_ticks = 0;
 			return;
 		}
@@ -52,15 +64,21 @@ public class Advanced_furnace_temp_runner extends Structure_runner {
 		if (!Grinder.is_empty(fuel_item)) {
 			Fuel fuel = Fuel.get_fuel(fuel_item);
 			if (fuel != null) {
+				int default_amount = 0;
 				if (fuel.status != Status.solid) {
 					ItemStack bucket = Material_ext.get_empty_container(fuel_item);
 					if (!Inventory_io.move_a_item_to_slot(bucket, this.adv_furnace.getInventory(),
 							Advanced_furnace.fuel_product_slot)) {
 						return;
 					}
+					if (fuel.status == Status.gas) {
+						default_amount = Gas.get_item_unit(fuel_item, (Gas) fuel.to_chemical());
+					} else if (fuel.status == Status.liquid) {
+						default_amount = Liquid.get_item_unit(fuel_item);
+					}
 				}
 				fuel_item.setAmount(fuel_item.getAmount() - 1);
-				adv_furnace.set_fuel(fuel);
+				adv_furnace.set_fuel(fuel, default_amount);
 			}
 		}
 	}

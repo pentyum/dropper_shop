@@ -27,6 +27,19 @@ public enum Fuel {
 		return this.ticks * Liquid.get_item_unit(item);
 	}
 
+	public Chemical to_chemical() {
+		if (this.status == Status.solid) {
+			return Solid.get_solid(this.name());
+		}
+		if (this.status == Status.liquid) {
+			return Liquid.get_liquid(this.name());
+		}
+		if (this.status == Status.gas) {
+			return Gas.get_gas(this.name());
+		}
+		return null;
+	}
+
 	public static Fuel get_fuel(ItemStack item) {
 		Material type = item.getType();
 		switch (type) {

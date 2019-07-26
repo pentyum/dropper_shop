@@ -55,6 +55,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	private int heat_keeping_value = 0;
 	private Fuel fuel;
 	public int fuel_ticks = 0;
+	public int fuel_amount = 0;
 	private int money = 0;
 	private int money_limit = 9000;
 	private int structure_level = 1;
@@ -142,15 +143,19 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	@Override
 	public void set_from_save(Map<?, ?> shop_save) {
 		super.set_from_save(shop_save);
-		this.set_temperature((Double) shop_save.get("temperature"));
-		this.fuel_ticks = ((Integer) shop_save.get("fuel-ticks"));
+		this.set_temperature((double) shop_save.get("temperature"));
+		this.fuel_ticks = ((int) shop_save.get("fuel-ticks"));
 		String fuel_type = (String) shop_save.get("fuel-type");
+		int fuel_amount = 0;
+		if (shop_save.get("fuel-amount") != null) {
+			fuel_amount = (int) shop_save.get("fuel-amount");
+		}
 		@SuppressWarnings("unchecked")
 		HashMap<String, Integer> contents = (HashMap<String, Integer>) shop_save.get("contents");
 		if (fuel_type.equals("null")) {
-			this.set_fuel(null);
+			this.set_fuel(null, 0);
 		} else {
-			this.set_fuel(Fuel.valueOf(fuel_type));
+			this.set_fuel(Fuel.valueOf(fuel_type), fuel_amount);
 		}
 
 		if (shop_save.get("fuel-slot") != null) {
@@ -236,6 +241,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		HashMap<String, Integer> contents = new HashMap<String, Integer>();
 		save.put("temperature", this.get_temperature());
 		save.put("fuel-ticks", this.fuel_ticks);
+		save.put("fuel-amount", this.fuel_amount);
 		if (this.fuel != null) {
 			save.put("fuel-type", this.fuel.name());
 		} else {
@@ -340,14 +346,19 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		return this.fuel;
 	}
 
-	public void set_fuel(Fuel fuel) {
+	public void set_fuel(Fuel fuel, int amount) {
 		this.fuel = fuel;
+		this.fuel_amount = amount;
 		ItemStack temp_info = this.gui.getItem(26);
 		ItemMeta temp_info_meta = temp_info.getItemMeta();
 		List<String> lore = temp_info_meta.getLore();
 		double power = 0;
+		String other_info = "";
+		if (amount > 0) {
+			other_info = " (" + amount + "单位)";
+		}
 		if (fuel != null) {
-			lore.set(1, "§r燃料: " + fuel.name());
+			lore.set(1, "§r燃料: " + fuel.name() + other_info);
 			lore.set(2, "§r燃料类型: " + fuel.status.display_name);
 			power = fuel.power;
 		} else {
