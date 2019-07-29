@@ -24,15 +24,15 @@ public class Anti_thunder_runner extends BukkitRunnable {
 			if (anti_thunder.is_active() == true) {
 				int price = anti_thunder.get_manager().get_price();
 				if (Dropper_shop_plugin.instance.cost_player_money(price, owner)) {
-					anti_thunder.send_msg_to_owner("已扣除" + price);
+					anti_thunder.send_msg_to_owner("[防雷器]已扣除" + price);
 				} else {
-					anti_thunder.send_msg_to_owner("金钱不够，防雷器已经暂停");
+					anti_thunder.send_msg_to_owner("[防雷器]金钱不够，防雷器已经暂停");
 					anti_thunder.activate(false);
 				}
 			}
 		} else {
 			anti_thunder.remove();
-			anti_thunder.send_msg_to_owner("区块" + anti_thunder.get_chunk_location() + "的防雷器结构不完整，已经移除");
+			anti_thunder.send_msg_to_owner("[防雷器]区块" + anti_thunder.get_chunk_location() + "的防雷器结构不完整，已经移除");
 		}
 	}
 

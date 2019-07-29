@@ -12,6 +12,7 @@ import com.piggest.minecraft.bukkit.advanced_furnace.Gas_bottle;
 import com.piggest.minecraft.bukkit.advanced_furnace.Status;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
+import com.piggest.minecraft.bukkit.utils.language.Item_zh_cn;
 
 public class Material_ext {
 	private static HashMap<NamespacedKey, ItemStack> ext_material_map = new HashMap<NamespacedKey, ItemStack>();
@@ -30,10 +31,10 @@ public class Material_ext {
 		if (item.hasItemMeta() == true) {
 			ItemMeta meta = item.getItemMeta();
 			if (meta.hasDisplayName() == true) {
-				return meta.getDisplayName().substring(2, meta.getDisplayName().length());
+				return meta.getDisplayName();
 			}
 		}
-		return get_full_name(item);
+		return Item_zh_cn.get_item_name(item);
 	}
 
 	/*

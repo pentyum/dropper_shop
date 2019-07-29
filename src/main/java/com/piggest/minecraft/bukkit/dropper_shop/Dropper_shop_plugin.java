@@ -64,6 +64,7 @@ import com.piggest.minecraft.bukkit.structure.Structure_manager;
 import com.piggest.minecraft.bukkit.trees_felling_machine.Trees_felling_machine;
 import com.piggest.minecraft.bukkit.trees_felling_machine.Trees_felling_machine_manager;
 import com.piggest.minecraft.bukkit.utils.language.Enchantments_zh_cn;
+import com.piggest.minecraft.bukkit.utils.language.Item_zh_cn;
 import com.piggest.minecraft.bukkit.wrench.Wrench_command_executor;
 
 import net.milkbowl.vault.economy.Economy;
@@ -141,6 +142,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.gen_air();
 
 		Enchantments_zh_cn.init();
+		Item_zh_cn.init();
 	}
 
 	public FileConfiguration get_shop_config() {
@@ -269,10 +271,10 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	}
 
 	public boolean save_structure() {
+		this.getLogger().info("正在保存结构数据");
 		for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : this.structure_manager_map
 				.entrySet()) {
 			Structure_manager<? extends Structure> manager = entry.getValue();
-			this.getLogger().info(manager.getClass().getSimpleName() + "正在保存结构");
 			manager.save_structures();
 		}
 		try {

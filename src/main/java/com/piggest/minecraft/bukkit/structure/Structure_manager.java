@@ -55,7 +55,7 @@ public abstract class Structure_manager<T extends Structure> {
 			HasRunner new_HasRunner = (HasRunner) new_structure;
 			Structure_runner[] runnable_list = new_HasRunner.get_runner();
 			for (Structure_runner runner : runnable_list) {
-				Dropper_shop_plugin.instance.getLogger().info("已启动" + runner.getClass().getName());
+				Dropper_shop_plugin.instance.getLogger().info("[结构管理器]已启动" + runner.getClass().getSimpleName());
 				if (runner.is_asynchronously() == true) {
 					runner.runTaskTimerAsynchronously(Dropper_shop_plugin.instance, runner.get_delay(),
 							runner.get_cycle());

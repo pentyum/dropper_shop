@@ -88,7 +88,7 @@ public class Anti_thunder extends Multi_block_structure implements Ownable {
 			if (this.completed() == true) {
 				if (runner.started() == false) {
 					runner.start();
-					Dropper_shop_plugin.instance.getLogger().info("10秒后启动扣钱线程");
+					Dropper_shop_plugin.instance.getLogger().info("[防雷器]10秒后启动扣钱线程");
 					runner.runTaskTimerAsynchronously(Dropper_shop_plugin.instance, 10 * 20,
 							this.get_manager().get_cycle() * 20);
 				} else {
@@ -96,14 +96,14 @@ public class Anti_thunder extends Multi_block_structure implements Ownable {
 					Economy economy = Dropper_shop_plugin.instance.get_economy();
 					int price = this.get_manager().get_price();
 					if (!economy.has(owner, price)) {
-						this.send_msg_to_owner("你的钱不够，不能启动防雷器");
+						this.send_msg_to_owner("[防雷器]你的钱不够，不能启动防雷器");
 						active = false;
 						return false;
 					}
 				}
 			} else {
 				this.remove();
-				this.send_msg_to_owner("区块" + get_chunk_location() + "的防雷器结构不完整，已经移除");
+				this.send_msg_to_owner("[防雷器]区块" + get_chunk_location() + "的防雷器结构不完整，已经移除");
 				return false;
 			}
 		}
@@ -130,7 +130,7 @@ public class Anti_thunder extends Multi_block_structure implements Ownable {
 	public void close() {
 		if (this.runner.started() == true) {
 			if (this.runner.isCancelled() == false) {
-				Dropper_shop_plugin.instance.getLogger().info("停止扣钱线程");
+				Dropper_shop_plugin.instance.getLogger().info("[防雷器]停止扣钱线程");
 				this.runner.cancel();
 			}
 		}
