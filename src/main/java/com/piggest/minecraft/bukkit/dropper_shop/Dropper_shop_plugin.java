@@ -210,6 +210,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 			getLogger().severe("原结构配置备份失败");
 			return false;
 		}
+		getLogger().info("原结构配置已保存至" + shop_file.getAbsolutePath() + ".bak");
 		return true;
 	}
 
@@ -217,7 +218,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public void onEnable() {
 		Dropper_shop_plugin.instance = this;
 		this.backup_old_shop_config_file();
-		
+
 		this.nms_manager = new NMS_manager(Bukkit.getBukkitVersion());
 		this.init_structure_manager();
 
@@ -271,6 +272,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : this.structure_manager_map
 				.entrySet()) {
 			Structure_manager<? extends Structure> manager = entry.getValue();
+			this.getLogger().info(manager.getClass().getSimpleName() + "正在保存结构");
 			manager.save_structures();
 		}
 		try {
