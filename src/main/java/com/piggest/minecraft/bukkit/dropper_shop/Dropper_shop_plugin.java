@@ -21,6 +21,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.google.common.io.Files;
 import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace;
 import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_command_executor;
 import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_listener;
@@ -106,8 +107,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private Listener[] structure_listeners = { new Depository_listener(), new Dropper_shop_listener(),
 			new Upgrade_component_listener(), new Grinder_listener(), new Advanced_furnace_listener(),
 			new Exp_saver_listener(), new Pigman_spawn_listener(), new Anti_thunder_listener() };
-	
+
 	private NMS_manager nms_manager = null;
+	private Config_auto_saver auto_saver = new Config_auto_saver(this);
 
 	public Dropper_shop_plugin() {
 		this.getLogger().info("加载配置中");
@@ -196,9 +198,26 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.structure_manager_map.put(Anti_thunder.class, anti_thunder_manager);
 	}
 
+	public boolean backup_old_shop_config_file() {
+		File shop_file_backup = new File(shop_file.getAbsolutePath() + ".bak");
+		try {
+			if (shop_file_backup.exists()) {
+				shop_file_backup.delete();
+				shop_file.createNewFile();
+			}
+			Files.copy(shop_file, shop_file_backup);
+		} catch (IOException e) {
+			getLogger().severe("原结构配置备份失败");
+			return false;
+		}
+		return true;
+	}
+
 	@Override
 	public void onEnable() {
 		Dropper_shop_plugin.instance = this;
+		this.backup_old_shop_config_file();
+		
 		this.nms_manager = new NMS_manager(Bukkit.getBukkitVersion());
 		this.init_structure_manager();
 
@@ -228,7 +247,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		Reaction_container.init_reaction();
 		wrench.init();
 
-		for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : this.structure_manager_map.entrySet()) {
+		for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : this.structure_manager_map
+				.entrySet()) {
 			Structure_manager<? extends Structure> manager = entry.getValue();
 			manager.load_structures();
 		}
@@ -244,11 +264,12 @@ public class Dropper_shop_plugin extends JavaPlugin {
 			pm.registerEvents(listener, this);
 		}
 		note_listener.runner.runTaskTimer(this, 10, 5);
+		this.auto_saver.runTaskTimerAsynchronously(this, 10, 6000);
 	}
 
-	@Override
-	public void onDisable() {
-		for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : this.structure_manager_map.entrySet()) {
+	public boolean save_structure() {
+		for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : this.structure_manager_map
+				.entrySet()) {
 			Structure_manager<? extends Structure> manager = entry.getValue();
 			manager.save_structures();
 		}
@@ -256,12 +277,12 @@ public class Dropper_shop_plugin extends JavaPlugin {
 			shop_config.save(this.shop_file);
 		} catch (IOException e) {
 			this.getLogger().severe("结构文件保存错误!");
+			return false;
 		}
-		try {
-			lottery_config.save(this.lottery_file);
-		} catch (IOException e) {
-			this.getLogger().severe("抽奖配置文件保存错误!");
-		}
+		return true;
+	}
+
+	public void remove_recipe() {
 		for (ShapedRecipe sr : this.sr) {
 			Iterator<Recipe> i = Bukkit.recipeIterator();
 			while (i.hasNext()) {
@@ -270,6 +291,19 @@ public class Dropper_shop_plugin extends JavaPlugin {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void onDisable() {
+		this.save_structure();
+
+		try {
+			lottery_config.save(this.lottery_file);
+		} catch (IOException e) {
+			this.getLogger().severe("抽奖配置文件保存错误!");
+		}
+
+		this.remove_recipe();
 	}
 
 	public Dropper_shop_manager get_shop_manager() {
@@ -321,7 +355,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public Exp_saver_manager get_exp_saver_manager() {
 		return this.exp_saver_manager;
 	}
-	
+
 	public int get_exp_saver_max_structure_level() {
 		return this.exp_saver_max_structure_level;
 	}
@@ -349,7 +383,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		}
 		return air;
 	}
-	
+
 	/*
 	 * 给某玩家扣钱，返回true表示扣钱成功，返回false表示扣钱失败。
 	 */

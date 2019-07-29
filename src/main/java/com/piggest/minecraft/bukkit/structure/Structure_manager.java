@@ -105,11 +105,14 @@ public abstract class Structure_manager<T extends Structure> {
 
 	public void save_structures() {
 		String structure_name = this.structure_class.getName().replace('.', '-');
-		ArrayList<HashMap<String, Object>> shop_list = new ArrayList<HashMap<String, Object>>();
+		ArrayList<HashMap<String, Object>> structure_list = new ArrayList<HashMap<String, Object>>();
 		for (Entry<Location, T> entry : structure_map.entrySet()) {
-			shop_list.add(entry.getValue().get_save());
+			Structure structure = entry.getValue();
+			synchronized (structure) {
+				structure_list.add(structure.get_save());
+			}
 		}
-		Dropper_shop_plugin.instance.get_shop_config().set(structure_name, shop_list);
+		Dropper_shop_plugin.instance.get_shop_config().set(structure_name, structure_list);
 	}
 
 	public T find_existed(Location loc) {
