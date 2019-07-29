@@ -3,7 +3,7 @@ make-grinder-price: 5000
 make-lottery-pool-price: 10000
 make-trees-felling-machine-price: 1000
 start-trees-felling-machine-price: 4000
-lottery-price: 500
+lottery-price: 800
 music-stick-price: 10
 exp-saver-upgrade-base-price: 5000
 exp-saver-upgrade-level-price: 1000
@@ -11,7 +11,7 @@ exp-saver-max-structure-level: 50
 exp-saver-anvil-upgrade-need: 20
 exp-saver-remove-repaircost-exp: 8000
 exp-saver-remove-repaircost-price: 10000
-anti-thunder-price: 50
+anti-thunder-price: 60
 anti-thunder-cycle: 3600
 adv-furnace-price: 1000
 
