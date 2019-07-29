@@ -44,105 +44,105 @@ public class Reaction_container {
 		get_water.set_products_coef(1);
 		reactions.put("get_water", get_water);
 
-		Reaction burn_coal = new Reaction(false, 80000, 80000, 100, 800);
+		Reaction burn_coal = new Reaction(false, 100000, 80000, 100, 800);
 		burn_coal.set_reactants(Solid.coal, Gas.oxygen);
 		burn_coal.set_products(Gas.CO2);
 		burn_coal.set_reactants_coef(1, 1);
 		burn_coal.set_products_coef(1);
 		reactions.put("burn_coal", burn_coal);
 
-		Reaction burn_stone = new Reaction(false, 80000, 80000, 100, 800);
+		Reaction burn_stone = new Reaction(false, 100000, 80000, 100, 800);
 		burn_stone.set_reactants(Solid.granite);
 		burn_stone.set_products(Gas.CO2, Solid.stone);
 		burn_stone.set_reactants_coef(2);
 		burn_stone.set_products_coef(1, 1);
 		reactions.put("burn_stone", burn_stone);
 
-		Reaction get_iron = new Reaction(false, 80000, 80000, 1, 1000);
+		Reaction get_iron = new Reaction(false, 100000, 80000, 1, 1000);
 		get_iron.set_reactants(Solid.iron_powder);
 		get_iron.set_products(Solid.iron_ingot);
 		get_iron.set_reactants_coef(1);
 		get_iron.set_products_coef(1);
 		reactions.put("get_iron", get_iron);
 
-		Reaction get_gold = new Reaction(false, 80000, 80000, 1, 1000);
+		Reaction get_gold = new Reaction(false, 100000, 80000, 1, 1000);
 		get_gold.set_reactants(Solid.gold_powder);
 		get_gold.set_products(Solid.gold_ingot);
 		get_gold.set_reactants_coef(1);
 		get_gold.set_products_coef(1);
 		reactions.put("get_gold", get_gold);
 
-		Reaction get_lapis = new Reaction(false, 80000, 80000, 1, 1000);
+		Reaction get_lapis = new Reaction(false, 100000, 80000, 1, 1000);
 		get_lapis.set_reactants(Solid.lapis_powder);
 		get_lapis.set_products(Solid.lapis_lazuli);
 		get_lapis.set_reactants_coef(1);
 		get_lapis.set_products_coef(1);
 		reactions.put("get_lapis", get_lapis);
 
-		Reaction get_glass = new Reaction(false, 60000, 60000, 1, 1000);
+		Reaction get_glass = new Reaction(false, 120000, 60000, 1, 1000);
 		get_glass.set_reactants(Solid.sand);
 		get_glass.set_products(Solid.glass);
 		get_glass.set_reactants_coef(1);
 		get_glass.set_products_coef(1);
 		reactions.put("get_glass", get_glass);
 
-		Reaction get_stone = new Reaction(false, 40000, 40000, 1, 1000);
+		Reaction get_stone = new Reaction(false, 30000, 40000, 1, 1000);
 		get_stone.set_reactants(Solid.cobblestone);
 		get_stone.set_products(Solid.stone);
 		get_stone.set_reactants_coef(1);
 		get_stone.set_products_coef(1);
 		reactions.put("get_stone", get_stone);
 
-		Reaction get_brick = new Reaction(false, 100000, 100000, 1, 1000);
+		Reaction get_brick = new Reaction(false, 400000, 100000, 1, 1000);
 		get_brick.set_reactants(Solid.clay_ball);
 		get_brick.set_products(Solid.brick);
 		get_brick.set_reactants_coef(1);
 		get_brick.set_products_coef(1);
 		reactions.put("get_brick", get_brick);
 
-		Reaction get_terracotta = new Reaction(false, 100000, 100000, 1, 1000);
+		Reaction get_terracotta = new Reaction(false, 400000, 100000, 1, 1000);
 		get_terracotta.set_reactants(Solid.clay);
 		get_terracotta.set_products(Solid.terracotta);
 		get_terracotta.set_reactants_coef(1);
 		get_terracotta.set_products_coef(1);
 		reactions.put("get_terracotta", get_terracotta);
 
-		Reaction get_nether_brick = new Reaction(false, 100000, 100000, 1, 1000);
+		Reaction get_nether_brick = new Reaction(false, 400000, 100000, 1, 1000);
 		get_nether_brick.set_reactants(Solid.netherrack);
 		get_nether_brick.set_products(Solid.nether_brick);
 		get_nether_brick.set_reactants_coef(1);
 		get_nether_brick.set_products_coef(1);
 		reactions.put("get_nether_brick", get_nether_brick);
 
-		Reaction get_charcoal = new Reaction(false, 100000, 100000, 1, 1000);
+		Reaction get_charcoal = new Reaction(false, 400000, 100000, 1, 1000);
 		get_charcoal.set_reactants(Solid.log);
 		get_charcoal.set_products(Solid.charcoal);
 		get_charcoal.set_reactants_coef(1);
 		get_charcoal.set_products_coef(1);
 		reactions.put("get_charcoal", get_charcoal);
 
-		Reaction get_flint = new Reaction(false, 100000, 100000, 1, 1000);
+		Reaction get_flint = new Reaction(false, 400000, 100000, 1, 1000);
 		get_flint.set_reactants(Solid.gravel);
 		get_flint.set_products(Solid.flint);
 		get_flint.set_reactants_coef(2);
 		get_flint.set_products_coef(1);
 		reactions.put("get_flint", get_flint);
 
-		Reaction get_obsidian = new Reaction(false, 100000, 100000, 1, 1000);
+		Reaction get_obsidian = new Reaction(false, 400000, 100000, 1, 1000);
 		get_obsidian.set_reactants(Solid.stone, Solid.quartz);
 		get_obsidian.set_products(Solid.obsidian);
 		get_obsidian.set_reactants_coef(1, 4);
 		get_obsidian.set_products_coef(1);
 		reactions.put("get_obsidian", get_obsidian);
 
-		Reaction get_smooth_quartz = new Reaction(false, 100000, 100000, 1, 1000);
+		Reaction get_smooth_quartz = new Reaction(false, 400000, 100000, 1, 1000);
 		get_smooth_quartz.set_reactants(Solid.quartz_block);
 		get_smooth_quartz.set_products(Solid.smooth_quartz);
 		get_smooth_quartz.set_reactants_coef(1);
 		get_smooth_quartz.set_products_coef(1);
 		reactions.put("get_smooth_quartz", get_smooth_quartz);
 
-		Reaction get_smooth_stone = new Reaction(false, 100000, 110000, 1, 1000);
+		Reaction get_smooth_stone = new Reaction(false, 400000, 120000, 1, 1000);
 		get_smooth_stone.set_reactants(Solid.stone);
 		get_smooth_stone.set_products(Solid.smooth_stone);
 		get_smooth_stone.set_reactants_coef(1);
