@@ -22,6 +22,7 @@ public class Item_zh_cn {
 		name.put("minecraft:cobblestone", "圆石");
 		name.put("minecraft:oak_planks", "橡木木板");
 		name.put("minecraft:glass", "玻璃");
+		name.put("minecraft:stone_bricks", "石砖");
 		name.put("minecraft:gold_block", "金块");
 		name.put("minecraft:iron_block", "铁块");
 		name.put("minecraft:diamond_block", "钻石块");
@@ -29,6 +30,9 @@ public class Item_zh_cn {
 		name.put("minecraft:blue_ice", "蓝冰");
 		name.put("minecraft:packed_ice", "浮冰");
 		name.put("minecraft:ice", "冰");
+		name.put("minecraft:magma_block", "岩浆块");
+		name.put("minecraft:clay_ball", "粘土");
+		name.put("minecraft:white_wool", "白色羊毛");
 		name.put("minecraft:tnt", "TNT");
 		name.put("minecraft:sponge", "海绵");
 		name.put("minecraft:glowstone", "萤石");
@@ -60,6 +64,8 @@ public class Item_zh_cn {
 		name.put("minecraft:fishing_rod", "钓鱼竿");
 		name.put("minecraft:flint_and_steel", "打火石");
 		name.put("minecraft:bucket", "铁桶");
+		name.put("minecraft:charcoal", "木炭");
+		name.put("minecraft:coal", "煤炭");
 		name.put("minecraft:iron_ingot", "铁锭");
 		name.put("minecraft:emerald", "绿宝石");
 		name.put("minecraft:slime_ball", "粘液球");
@@ -81,7 +87,7 @@ public class Item_zh_cn {
 		name.put("minecraft:sticky_piston", "粘性活塞");
 		name.put("minecraft:dispenser", "发射器");
 		name.put("minecraft:spider_eye", "蜘蛛眼");
-		name.put("minecraft:幻翼膜", "phantom_membrane");
+		name.put("minecraft:phantom_membrane", "幻翼膜");
 	}
 
 	public static String get_item_name(ItemStack item) {
