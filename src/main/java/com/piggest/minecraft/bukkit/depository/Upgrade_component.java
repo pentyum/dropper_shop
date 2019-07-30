@@ -215,7 +215,7 @@ public class Upgrade_component {
 		Dropper_shop_plugin.instance.getLogger().info("高级熔炉高速升级0->1模块合成表已经添加");
 
 		ShapedRecipe sr1 = new ShapedRecipe(overload1, Upgrade_component.overload_component_item[1]);
-		sr1.shape("bgb", "gpg", "gcg");
+		sr1.shape("bgb", "gpg", "bgb");
 		sr1.setIngredient('g', Material.GLOWSTONE);
 		sr1.setIngredient('p', Material.IRON_AXE);
 		sr1.setIngredient('b', Material.QUARTZ_BLOCK);
