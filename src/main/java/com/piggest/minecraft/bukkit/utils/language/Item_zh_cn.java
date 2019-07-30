@@ -73,6 +73,15 @@ public class Item_zh_cn {
 		name.put("minecraft:ink_sac", "墨囊");
 		name.put("minecraft:end_rod", "末地烛");
 		name.put("minecraft:name_tag", "命名牌");
+		name.put("minecraft:experience_bottle", "附魔之瓶");
+		name.put("minecraft:bookshelf", "书架");
+		name.put("minecraft:shulker_shell", "潜影壳");
+		name.put("minecraft:panda_spawn_egg", "熊猫刷怪蛋");
+		name.put("minecraft:turtle_helmet", "海龟壳");
+		name.put("minecraft:sticky_piston", "粘性活塞");
+		name.put("minecraft:dispenser", "发射器");
+		name.put("minecraft:spider_eye", "蜘蛛眼");
+		name.put("minecraft:幻翼膜", "phantom_membrane");
 	}
 
 	public static String get_item_name(ItemStack item) {

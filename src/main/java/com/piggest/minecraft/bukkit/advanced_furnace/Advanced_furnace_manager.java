@@ -110,18 +110,18 @@ public class Advanced_furnace_manager extends Gui_structure_manager<Advanced_fur
 	}
 
 	public int get_time_add_per_time_upgrade() {
-		return 8;
+		return 10;
 	}
 
 	public int get_time_loss_per_overload_upgrade() {
-		return 7;
+		return 9;
 	}
 
 	public int get_power_add_per_overload_upgrade() {
-		return 7;
+		return 9;
 	}
 
 	public int get_power_loss_per_time_upgrade() {
-		return 4;
+		return 5;
 	}
 }

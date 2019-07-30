@@ -114,7 +114,7 @@ public class Reaction_container {
 		get_nether_brick.set_products_coef(1);
 		reactions.put("get_nether_brick", get_nether_brick);
 
-		Reaction get_charcoal = new Reaction(false, 400000, 100000, 1, 1000);
+		Reaction get_charcoal = new Reaction(false, 420000, 100000, 1, 1000);
 		get_charcoal.set_reactants(Solid.log);
 		get_charcoal.set_products(Solid.charcoal);
 		get_charcoal.set_reactants_coef(1);
