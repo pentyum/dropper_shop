@@ -32,7 +32,7 @@ public class Depository_command_executor implements TabExecutor {
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
-			sender.sendMessage("必须由玩家执行该命令");
+			sender.sendMessage("[存储器]必须由玩家执行该命令");
 			return true;
 		}
 		Player player = (Player) sender;
@@ -44,7 +44,7 @@ public class Depository_command_executor implements TabExecutor {
 			}
 			Block look_block = player.getTargetBlockExact(4);
 			if (look_block == null) {
-				player.sendMessage("请指向方块");
+				player.sendMessage("[存储器]请指向方块");
 				return true;
 			}
 			if (args[0].equalsIgnoreCase(Depository_sub_cmd.info.name())) {
@@ -57,18 +57,18 @@ public class Depository_command_executor implements TabExecutor {
 				player.sendMessage(depository.get_info());
 			} else if (args[0].equalsIgnoreCase(Depository_sub_cmd.input.name())) {
 				if (!player.hasPermission("depository.input")) {
-					player.sendMessage("你没有添加物品的权限");
+					player.sendMessage("[存储器]你没有添加物品的权限");
 					return true;
 				}
 				Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(player.getName(),
 						look_block.getLocation(), false);
 				if (depository == null) {
-					player.sendMessage("没有检测到完整的存储器结构");
+					player.sendMessage("[存储器]没有检测到完整的存储器结构");
 					return true;
 				}
 				ItemStack item = player.getInventory().getItemInMainHand();
 				if (item == null || item.getType() == Material.AIR) {
-					player.sendMessage("你的手中没有物品");
+					player.sendMessage("[存储器]你的手中没有物品");
 					return true;
 				}
 				if (args.length == 2) {
@@ -94,16 +94,16 @@ public class Depository_command_executor implements TabExecutor {
 					return true;
 				}
 				depository.remove();
-				player.sendMessage("存储器结构已经移除");
+				player.sendMessage("[存储器]存储器结构已经移除");
 			} else if (args[0].equalsIgnoreCase(Depository_sub_cmd.output.name())) {
 				if (!player.hasPermission("depository.output")) {
-					player.sendMessage("你没有取出物品的权限");
+					player.sendMessage("[存储器]你没有取出物品的权限");
 					return true;
 				}
 				Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(player.getName(),
 						look_block.getLocation(), false);
 				if (depository == null) {
-					player.sendMessage("没有检测到完整的存储器结构");
+					player.sendMessage("[存储器]没有检测到完整的存储器结构");
 					return true;
 				}
 				if (args.length < 2) {
@@ -112,7 +112,7 @@ public class Depository_command_executor implements TabExecutor {
 				}
 				int current_num = depository.get_material_num(args[1]);
 				if (current_num == 0) {
-					player.sendMessage("该存储器中没有存放这种物品");
+					player.sendMessage("[存储器]该存储器中没有存放这种物品");
 					return true;
 				}
 				if (args.length == 2) {
@@ -127,12 +127,12 @@ public class Depository_command_executor implements TabExecutor {
 						try {
 							remove_number = Integer.parseInt(args[2]);
 						} catch (NumberFormatException e) {
-							player.sendMessage("输入的数字不对");
+							player.sendMessage("[存储器]输入的数字不对");
 							return true;
 						}
 						if (remove_number > total_number) {
 							remove_number = total_number;
-							player.sendMessage("数量不够，只取出了" + remove_number + "个物品");
+							player.sendMessage("[存储器]数量不够，只取出了" + remove_number + "个物品");
 						}
 					}
 					ItemStack item = depository.remove(args[1], remove_number);
@@ -143,13 +143,13 @@ public class Depository_command_executor implements TabExecutor {
 				}
 			} else if (args[0].equalsIgnoreCase(Depository_sub_cmd.connect.name())) {
 				if (!player.hasPermission("depository.connect")) {
-					player.sendMessage("你没有连接存储器的权限");
+					player.sendMessage("[存储器]你没有连接存储器的权限");
 					return true;
 				}
 				Depository depository = Dropper_shop_plugin.instance.get_depository_manager().find(player.getName(),
 						look_block.getLocation(), false);
 				if (depository == null) {
-					player.sendMessage("没有检测到完整的存储器结构");
+					player.sendMessage("[存储器]没有检测到完整的存储器结构");
 					return true;
 				}
 				if (args.length < 2) {
@@ -158,23 +158,23 @@ public class Depository_command_executor implements TabExecutor {
 				}
 				ItemStack item = player.getInventory().getItemInMainHand();
 				if (item == null || item.getType() == Material.AIR) {
-					player.sendMessage("你的手中没有物品");
+					player.sendMessage("[存储器]你的手中没有物品");
 					return true;
 				}
 				if (!Reader.is_reader(item)) {
-					player.sendMessage("你的手中没有连接器");
+					player.sendMessage("[存储器]你的手中没有连接器");
 					return true;
 				}
 				int current_num = depository.get_material_num(args[1]);
 				if (current_num == 0) {
-					player.sendMessage("该存储器中没有存放这种物品");
+					player.sendMessage("[存储器]该存储器中没有存放这种物品");
 					return true;
 				}
 				ItemMeta item_meta = item.getItemMeta();
 				item_meta.setLore(Reader.get_lore(depository.get_location(), args[1], current_num));
 				item.setItemMeta(item_meta);
 				item.setType(Material_ext.get_material(args[1]));
-				player.sendMessage("连接成功");
+				player.sendMessage("[存储器]连接成功");
 			}
 		}
 		return true;

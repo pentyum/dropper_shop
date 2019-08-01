@@ -1,7 +1,6 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
 import org.bukkit.inventory.ItemStack;
-import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 import com.piggest.minecraft.bukkit.utils.Inventory_io;
@@ -61,7 +60,7 @@ public class Advanced_furnace_temp_runner extends Structure_runner {
 
 	private void get_fuel() {
 		ItemStack fuel_item = adv_furnace.get_gui_item(Advanced_furnace.fuel_slot);
-		if (!Grinder.is_empty(fuel_item)) {
+		if (!Inventory_io.is_empty(fuel_item)) {
 			Fuel fuel = Fuel.get_fuel(fuel_item);
 			if (fuel != null) {
 				int default_amount = 0;
@@ -77,7 +76,7 @@ public class Advanced_furnace_temp_runner extends Structure_runner {
 						default_amount = Liquid.get_item_unit(fuel_item);
 					}
 				}
-				fuel_item.setAmount(fuel_item.getAmount() - 1);
+				Inventory_io.Item_remove_one(fuel_item);
 				adv_furnace.set_fuel(fuel, default_amount);
 			}
 		}

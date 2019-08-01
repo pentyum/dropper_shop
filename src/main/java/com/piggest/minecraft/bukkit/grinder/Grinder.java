@@ -21,6 +21,7 @@ import com.piggest.minecraft.bukkit.structure.Auto_io;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.utils.Inventory_io;
 
 public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io {
 	private Grinder_runner runner = new Grinder_runner(this);
@@ -28,9 +29,10 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 	public static final int raw_slot = 9;
 	public static final int flint_slot = 11;
 	public static final int product_slot = 13;
-	private static final int[][] product_chest_check_list = new int[][] { { 1, -2, 0 }, { -1, -2, 0 }, { 0, -2, 1 }, { 0, -2, -1 } };
-	private static final int[][] raw_hopper_check_list = new int [][] { { 0, 1, 0 } };
-	
+	private static final int[][] product_chest_check_list = new int[][] { { 1, -2, 0 }, { -1, -2, 0 }, { 0, -2, 1 },
+			{ 0, -2, -1 } };
+	private static final int[][] raw_hopper_check_list = new int[][] { { 0, 1, 0 } };
+
 	public Grinder() {
 		/*
 		 * ItemStack white = new ItemStack(Material.WHITE_STAINED_GLASS_PANE); ItemMeta
@@ -113,7 +115,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 	}
 
 	public Hopper get_hopper() {
-		return this.get_hopper(raw_hopper_check_list,false);
+		return this.get_hopper(raw_hopper_check_list, false);
 	}
 
 	public Chest get_chest() {
@@ -129,18 +131,18 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 	}
 
 	public synchronized boolean to_product() {
-		if (!Grinder.is_empty(this.get_raw())) {
+		if (!Inventory_io.is_empty(this.get_raw())) {
 			ItemStack product_item = this.get_manager().recipe.get(this.get_raw().getType());
 			if (product_item != null) {
 				if (Grinder.is_empty(this.get_product())) {
 					this.set_product(product_item.clone());
-					this.get_raw().setAmount(this.get_raw().getAmount() - 1);
+					Inventory_io.Item_remove_one(this.get_raw());
 					return true;
 				} else if (this.get_product().isSimilar(product_item)) {
 					int new_num = this.get_product().getAmount() + product_item.getAmount();
 					if (new_num <= product_item.getMaxStackSize()) {
 						this.get_product().setAmount(new_num);
-						this.get_raw().setAmount(this.get_raw().getAmount() - 1);
+						Inventory_io.Item_remove_one(this.get_raw());
 						return true;
 					}
 				}
@@ -150,41 +152,29 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 	}
 
 	public synchronized boolean add_a_raw(ItemStack src_item) {
-		if (!Grinder.is_empty(src_item)) {
-			if (Grinder.is_empty(this.get_raw())) {
-				this.set_raw(src_item.clone());
-				this.get_raw().setAmount(1);
-				src_item.setAmount(src_item.getAmount() - 1);
-				return true;
-			} else if (src_item.isSimilar(this.get_raw())) {
-				int new_num = 1 + this.get_raw().getAmount();
-				if (new_num <= src_item.getMaxStackSize()) {
-					this.get_raw().setAmount(new_num);
-					src_item.setAmount(src_item.getAmount() - 1);
-					return true;
-				}
-			}
-		}
-		return false;
+		return Inventory_io.move_a_item_to_slot(src_item, gui, Grinder.raw_slot);
+		/*
+		 * if (!Grinder.is_empty(src_item)) { if (Grinder.is_empty(this.get_raw())) {
+		 * this.set_raw(src_item.clone()); this.get_raw().setAmount(1);
+		 * src_item.setAmount(src_item.getAmount() - 1); return true; } else if
+		 * (src_item.isSimilar(this.get_raw())) { int new_num = 1 +
+		 * this.get_raw().getAmount(); if (new_num <= src_item.getMaxStackSize()) {
+		 * this.get_raw().setAmount(new_num); src_item.setAmount(src_item.getAmount() -
+		 * 1); return true; } } } return false;
+		 */
 	}
 
 	public synchronized boolean add_a_flint(ItemStack src_item) {
-		if (!Grinder.is_empty(src_item)) {
-			if (Grinder.is_empty(this.get_flint())) {
-				this.set_flint(src_item.clone());
-				this.get_flint().setAmount(1);
-				src_item.setAmount(src_item.getAmount() - 1);
-				return true;
-			} else if (src_item.isSimilar(this.get_flint())) {
-				int new_num = 1 + this.get_flint().getAmount();
-				if (new_num <= src_item.getMaxStackSize()) {
-					this.get_flint().setAmount(new_num);
-					src_item.setAmount(src_item.getAmount() - 1);
-					return true;
-				}
-			}
-		}
-		return false;
+		return Inventory_io.move_a_item_to_slot(src_item, gui, Grinder.flint_slot);
+		/*
+		 * if (!Grinder.is_empty(src_item)) { if (Grinder.is_empty(this.get_flint())) {
+		 * this.set_flint(src_item.clone()); this.get_flint().setAmount(1);
+		 * src_item.setAmount(src_item.getAmount() - 1); return true; } else if
+		 * (src_item.isSimilar(this.get_flint())) { int new_num = 1 +
+		 * this.get_flint().getAmount(); if (new_num <= src_item.getMaxStackSize()) {
+		 * this.get_flint().setAmount(new_num); src_item.setAmount(src_item.getAmount()
+		 * - 1); return true; } } } return false;
+		 */
 	}
 
 	public synchronized void set_process(int process) {

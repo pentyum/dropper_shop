@@ -6,6 +6,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.block.Action;
@@ -35,8 +36,11 @@ public class Depository_listener implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGH)
 	public void on_use_reader(PlayerInteractEvent event) {
+		if (event.useInteractedBlock() == Result.DENY || event.useItemInHand() == Result.DENY) {
+			return;
+		}
 		ItemStack item = event.getItem();
 		if (item == null) {
 			return;
@@ -64,6 +68,9 @@ public class Depository_listener implements Listener {
 					return;
 				}
 				Block block = event.getClickedBlock();
+				if (block == null) {
+					return;
+				}
 				if (block.getState() instanceof InventoryHolder) {
 					if (!event.getPlayer().isSneaking()) {
 						return;

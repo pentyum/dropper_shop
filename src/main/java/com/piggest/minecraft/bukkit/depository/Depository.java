@@ -95,7 +95,7 @@ public class Depository extends Multi_block_with_gui implements Ownable, HasRunn
 	}
 
 	public boolean add(ItemStack item) {
-		Integer current_num = this.contents.get(Material_ext.get_id_name(item));
+		Integer current_num = this.contents.get(Material_ext.get_full_name(item));
 		if (current_num == null) { // 存储器没有这种物品
 			if (this.get_max_type() == this.get_type()) { // 超出种类限制
 				return false;
@@ -108,7 +108,7 @@ public class Depository extends Multi_block_with_gui implements Ownable, HasRunn
 			add_num = this.get_max_capacity() - this.get_capacity();
 		}
 		if (current_num + add_num > 0) { // 大于0才添加内容
-			this.contents.put(Material_ext.get_id_name(item), current_num + add_num);
+			this.contents.put(Material_ext.get_full_name(item), current_num + add_num);
 			item.setAmount(item.getAmount() - add_num);
 			return true;
 		} else {
@@ -132,7 +132,7 @@ public class Depository extends Multi_block_with_gui implements Ownable, HasRunn
 			this.contents.put(name, current_num - num);
 		}
 		if (num > 0) {
-			ItemStack item = Material_ext.new_item(name, num);
+			ItemStack item = Material_ext.new_item_full_name(name, num);
 			return item;
 		} else {
 			return null;

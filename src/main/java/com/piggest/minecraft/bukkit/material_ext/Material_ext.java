@@ -10,6 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.advanced_furnace.Gas_bottle;
 import com.piggest.minecraft.bukkit.advanced_furnace.Status;
+import com.piggest.minecraft.bukkit.depository.Reader;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.utils.language.Item_zh_cn;
@@ -60,26 +61,19 @@ public class Material_ext {
 	}
 
 	/*
-	 * 获得namespacedkey
-	 */
-	@SuppressWarnings("deprecation")
-	public static NamespacedKey get_namespacedkey(ItemStack item) {
-		String full_name = get_full_name(item);
-		String[] namespace_and_key = full_name.split(":");
-		if (namespace_and_key.length == 2) {
-			NamespacedKey namespacedkey = new NamespacedKey(namespace_and_key[0], namespace_and_key[1]);
-			return namespacedkey;
-		}
-		return null;
-	}
-
-	/*
 	 * 根据内部ID生成ItemStack，等效于new ItemStack(Material)
 	 */
 	private static ItemStack new_item(NamespacedKey namespacedkey, int num) {
 		return new_item(namespacedkey, num, null);
 	}
-
+	
+	/*
+	 * 以名称新建物品，如果原版中没找到，则到本插件中寻找。
+	 */
+	public static ItemStack new_item_full_name(String full_name, int num) {
+		return new_item(get_namespacedkey(full_name), num);
+	}
+	
 	/*
 	 * 以名称新建物品，如果原版中没找到，则到本插件中寻找。
 	 */
@@ -139,13 +133,37 @@ public class Material_ext {
 		}
 	}
 
-	public static Material get_material(String id_name) {
-		NamespacedKey namespacedkey = Dropper_shop_plugin.instance.get_key(id_name);
+	public static Material get_material(String full_name) {
+		NamespacedKey namespacedkey = Material_ext.get_namespacedkey(full_name);
 		return get_material(namespacedkey);
 	}
-
+	
+	/*
+	 * 获得namespacedkey
+	 */
+	@SuppressWarnings("deprecation")
+	public static NamespacedKey get_namespacedkey(String full_name) {
+		String[] namespace_and_key = full_name.split(":");
+		if (namespace_and_key.length == 2) {
+			NamespacedKey namespacedkey = new NamespacedKey(namespace_and_key[0], namespace_and_key[1]);
+			return namespacedkey;
+		}
+		return null;
+	}
+	
+	/*
+	 * 获得namespacedkey
+	 */
+	public static NamespacedKey get_namespacedkey(ItemStack item) {
+		String full_name = get_full_name(item);
+		return get_namespacedkey(full_name);
+	}
+	
 	public static Status is_empty_container(ItemStack item) {
 		String id_name = Material_ext.get_id_name(item);
+		if (id_name.equals(Reader.id_name)) {
+			id_name = Reader.get_content_id_name(item);
+		}
 		switch (id_name) {
 		case "bucket":
 			return Status.liquid;
@@ -162,6 +180,9 @@ public class Material_ext {
 
 	public static ItemStack get_empty_container(ItemStack item) {
 		String id_name = Material_ext.get_id_name(item);
+		if (id_name.equals(Reader.id_name)) {
+			id_name = Reader.get_content_id_name(item);
+		}
 		switch (id_name) {
 		case "lava_bucket":
 			return new ItemStack(Material.BUCKET);

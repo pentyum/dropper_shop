@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 
+import com.piggest.minecraft.bukkit.depository.Reader;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
@@ -37,6 +38,9 @@ public enum Solid implements Chemical {
 		String name = Material_ext.get_id_name(itemstack);
 		if (name.contains("_log")) {
 			return log;
+		}
+		if (name.equals(Reader.id_name)) {
+			name = Reader.get_content_id_name(itemstack);
 		}
 		return Solid.get_solid(name);
 	}

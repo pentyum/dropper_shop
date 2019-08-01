@@ -14,15 +14,15 @@ public class Upgrade_component_listener implements Listener {
 		}
 		CraftingInventory inventory = event.getInventory();
 		ItemStack[] res_list = inventory.getContents();
-		for (ItemStack res : res_list) {
-			if (Reader.is_reader(res)) {
-				event.getWhoClicked().sendMessage("不允许使用读取器代替原物品合成");
+		for (int i = 1; i < 10; i++) {
+			if (Reader.is_reader(res_list[i])) {
+				event.getWhoClicked().sendMessage(i + ":不允许使用读取器代替原物品合成");
 				event.setCancelled(true);
 				return;
 			}
 		}
 		ItemStack item = event.getRecipe().getResult();
-		if (Upgrade_component.is_component(item)) {  //是升级组件
+		if (Upgrade_component.is_component(item)) { // 是升级组件
 			int level = Upgrade_component.get_level(item);
 			if (level == 1) {
 				return;

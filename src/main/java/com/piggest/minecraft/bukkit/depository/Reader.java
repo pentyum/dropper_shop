@@ -14,12 +14,11 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.nms.NMS_manager;
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
 public class Reader {
-	public static String name = "§r存储读取器";
+	public static String name = "§e存储读取器";
 	public static String id_name = "depository_remote_reader";
-	public static ItemStack reader_item = null;
 	private static NamespacedKey namespace = new NamespacedKey(Dropper_shop_plugin.instance,
 			"depository_remote_reader");
 
@@ -68,14 +67,6 @@ public class Reader {
 		return new Location(Bukkit.getWorld(world_name), x, y, z);
 	}
 
-	public static Material lore_parse_material(List<String> lore) {
-		String str = lore_parse_material_str(lore);
-		if (str != null) {
-			return Material.getMaterial(str);
-		}
-		return null;
-	}
-
 	public static String lore_parse_material_str(List<String> lore) {
 		String material_name;
 		String line = lore.get(4);
@@ -84,7 +75,7 @@ public class Reader {
 		Matcher m = r.matcher(line);
 		if (m.find()) {
 			material_name = m.group(1);
-			// Bukkit.getLogger().info(material_name);
+			//Bukkit.getLogger().info("("+material_name+")");
 			return material_name;
 		}
 		return null;
@@ -142,14 +133,14 @@ public class Reader {
 		if (item == null) {
 			return false;
 		}
-		String ext_id = NMS_manager.ext_id_provider.get_ext_id(item);
+		String ext_id = Material_ext.get_id_name(item);
 		if (ext_id == null) {
 			return false;
 		}
 		return ext_id.equals(Reader.id_name);
 	}
 
-	public static ItemStack init_reader_item() {
+	public static void init_reader_item() {
 		ItemStack reader_item = new ItemStack(Material.ENDER_CHEST);
 		ItemMeta meta = reader_item.getItemMeta();
 		meta.setDisplayName(Reader.name);
@@ -162,12 +153,11 @@ public class Reader {
 		lore.add("§r数量: 0");
 		meta.setLore(lore);
 		reader_item.setItemMeta(meta);
-		Reader.reader_item = NMS_manager.ext_id_provider.set_ext_id(reader_item, id_name);
-		return reader_item;
+		Material_ext.register(id_name, reader_item);
 	}
 
 	public static void set_recipe() {
-		ShapedRecipe sr1 = new ShapedRecipe(Reader.namespace, Reader.reader_item);
+		ShapedRecipe sr1 = new ShapedRecipe(Reader.namespace, Material_ext.new_item(id_name, 1));
 		sr1.shape("rsr", "scs", "rsr");
 		sr1.setIngredient('s', Material.NETHER_STAR);
 		sr1.setIngredient('c', Material.ENDER_CHEST);
@@ -175,5 +165,12 @@ public class Reader {
 		Dropper_shop_plugin.instance.getServer().addRecipe(sr1);
 		Dropper_shop_plugin.instance.get_sr().add(sr1);
 		Dropper_shop_plugin.instance.getLogger().info("存储读取器合成表已添加");
+	}
+
+	public static String get_content_id_name(ItemStack item) {
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = meta.getLore();
+		String full_name = Reader.lore_parse_material_str(lore);
+		return Material_ext.get_namespacedkey(full_name).getKey();
 	}
 }
