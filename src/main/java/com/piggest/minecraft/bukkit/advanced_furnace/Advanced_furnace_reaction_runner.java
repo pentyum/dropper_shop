@@ -34,13 +34,16 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 		if (!Grinder.is_empty(solid_reactant_slot)) { // 固体进入反应器
 			Solid solid = Solid.get_solid(solid_reactant_slot);
 			if (solid != null) {
-				solid_reactant_slot.setAmount(solid_reactant_slot.getAmount() - 1);
-				reaction_container.set_unit(solid, reaction_container.get_unit(solid) + solid.get_unit());
+				int current_unit = reaction_container.get_unit(solid);
+				if (current_unit < solid.get_unit() * 64) {
+					solid_reactant_slot.setAmount(solid_reactant_slot.getAmount() - 1);
+					reaction_container.set_unit(solid, current_unit + solid.get_unit());
+				}
 			}
 		}
 
 		if (!Grinder.is_empty(liquid_reactant_slot)) { // 液体进入反应器
-			if(Liquid.is_empty_liquid_container(liquid_reactant_slot)) {// 处理空容器
+			if (Liquid.is_empty_liquid_container(liquid_reactant_slot)) {// 处理空容器
 				int capacity = Liquid.get_container_max_unit(liquid_reactant_slot);
 				HashMap<Chemical, Integer> all_chemical = reaction_container.get_all_chemical();
 				for (Entry<Chemical, Integer> entry : all_chemical.entrySet()) {
@@ -49,7 +52,7 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 						Liquid liquid = (Liquid) chemical;
 						int unit = entry.getValue();
 						if (unit >= capacity) {
-							ItemStack filled = Liquid.get_fill_container(liquid,liquid_reactant_slot);
+							ItemStack filled = Liquid.get_fill_container(liquid, liquid_reactant_slot);
 							if (Inventory_io.move_a_item_to_slot(filled, this.advanced_furnace.getInventory(),
 									Advanced_furnace.liquid_product_slot)) {
 								reaction_container.set_unit(liquid, reaction_container.get_unit(liquid) - capacity);
