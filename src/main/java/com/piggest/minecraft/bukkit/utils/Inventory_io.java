@@ -20,15 +20,16 @@ public class Inventory_io {
 		synchronized (inventory) {
 			synchronized (holder) {
 				ItemStack item_to_move = inventory.getItem(slot);
-				ItemStack move_item = item_to_move.clone();
-				move_item.setAmount(1);
-				HashMap<Integer, ItemStack> unaddable = holder.getInventory().addItem(move_item);
-				if (unaddable.size() == 0) {
-					item_to_move.setAmount(item_to_move.getAmount() - 1);
-					return true;
-				} else {
-					return false;
+				if (!Grinder.is_empty(item_to_move)) {
+					ItemStack move_item = item_to_move.clone();
+					move_item.setAmount(1);
+					HashMap<Integer, ItemStack> unaddable = holder.getInventory().addItem(move_item);
+					if (unaddable.size() == 0) {
+						item_to_move.setAmount(item_to_move.getAmount() - 1);
+						return true;
+					}
 				}
+				return false;
 			}
 		}
 	}
