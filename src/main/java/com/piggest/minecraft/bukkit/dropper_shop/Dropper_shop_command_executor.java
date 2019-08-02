@@ -119,7 +119,7 @@ public class Dropper_shop_command_executor implements CommandExecutor {
 			} else if (args[0].equalsIgnoreCase("show_thread")) {
 				player.sendMessage("Thread:" + Thread.currentThread().getId());
 			} else if (args[0].equalsIgnoreCase("show_date")) {
-				player.sendMessage("Date:" + Server_date.get_world_date(player.getWorld()));
+				player.sendMessage("Date:" + Server_date.formatDate(Server_date.get_world_date(player.getWorld())));
 			} else {
 				return false;
 			}
