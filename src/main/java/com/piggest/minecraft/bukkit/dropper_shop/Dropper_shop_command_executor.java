@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.config.Price_config;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.utils.Server_date;
 
 public class Dropper_shop_command_executor implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -111,6 +112,14 @@ public class Dropper_shop_command_executor implements CommandExecutor {
 				return true;
 			} else if (args[0].equalsIgnoreCase("show_full_name")) {
 				player.sendMessage(Material_ext.get_full_name(player.getInventory().getItemInMainHand()));
+			} else if (args[0].equalsIgnoreCase("show_full_time")) {
+				player.sendMessage("Full time:" + player.getWorld().getFullTime());
+			} else if (args[0].equalsIgnoreCase("show_time")) {
+				player.sendMessage("Time:" + player.getWorld().getTime());
+			} else if (args[0].equalsIgnoreCase("show_thread")) {
+				player.sendMessage("Thread:" + Thread.currentThread().getId());
+			} else if (args[0].equalsIgnoreCase("show_date")) {
+				player.sendMessage("Date:" + Server_date.get_world_date(player.getWorld()));
 			} else {
 				return false;
 			}

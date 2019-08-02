@@ -34,6 +34,24 @@ public class Inventory_io {
 		}
 	}
 
+	public static boolean try_move_a_item_to_slot(ItemStack src_item, Inventory inventory, int slot) {
+		if (!Grinder.is_empty(src_item)) {
+			synchronized (src_item) {
+				synchronized (inventory) {
+					if (Grinder.is_empty(inventory.getItem(slot))) {
+						return true;
+					} else if (src_item.isSimilar(inventory.getItem(slot))) {
+						int new_num = 1 + inventory.getItem(slot).getAmount();
+						if (new_num <= src_item.getMaxStackSize()) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
 	public static boolean move_a_item_to_slot(ItemStack src_item, Inventory inventory, int slot) {
 		if (!Grinder.is_empty(src_item)) {
 			synchronized (src_item) {
@@ -79,14 +97,19 @@ public class Inventory_io {
 			ItemMeta meta = item.getItemMeta();
 			List<String> lore = meta.getLore();
 			Location loc = Reader.lore_parse_loction(lore);
-			String id_name = Reader.lore_parse_material_str(lore);
+			String full_name = Reader.lore_parse_material_str(lore);
 			Depository depository = Dropper_shop_plugin.instance.get_depository_manager().get(loc);
-			move_item = depository.remove(id_name);
+			if (depository == null) {
+				return null;
+			}
+			move_item = depository.remove(full_name);
 			Reader.item_lore_update(item);
 		} else {
-			move_item = item.clone();
-			move_item.setAmount(1);
-			item.setAmount(item.getAmount() - 1);
+			synchronized (item) {
+				move_item = item.clone();
+				move_item.setAmount(1);
+				item.setAmount(item.getAmount() - 1);
+			}
 		}
 		return move_item;
 	}
@@ -101,7 +124,13 @@ public class Inventory_io {
 		if (Reader.is_reader(item)) {
 			ItemMeta meta = item.getItemMeta();
 			List<String> lore = meta.getLore();
-			return Reader.lore_parse_num(lore) == 0;
+			Location loc = Reader.lore_parse_loction(lore);
+			Depository depository = Dropper_shop_plugin.instance.get_depository_manager().get(loc);
+			String full_name = Reader.lore_parse_material_str(lore);
+			if (depository == null) {
+				return true;
+			}
+			return depository.get_material_num(full_name) == 0;
 		}
 		return false;
 	}

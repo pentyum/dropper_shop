@@ -136,14 +136,16 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 			if (product_item != null) {
 				if (Grinder.is_empty(this.get_product())) {
 					this.set_product(product_item.clone());
-					Inventory_io.Item_remove_one(this.get_raw());
-					return true;
+					if (Inventory_io.Item_remove_one(this.get_raw()) != null) {
+						return true;
+					}
 				} else if (this.get_product().isSimilar(product_item)) {
 					int new_num = this.get_product().getAmount() + product_item.getAmount();
 					if (new_num <= product_item.getMaxStackSize()) {
-						this.get_product().setAmount(new_num);
-						Inventory_io.Item_remove_one(this.get_raw());
-						return true;
+						if (Inventory_io.Item_remove_one(this.get_raw()) != null) {
+							this.get_product().setAmount(new_num);
+							return true;
+						}
 					}
 				}
 			}

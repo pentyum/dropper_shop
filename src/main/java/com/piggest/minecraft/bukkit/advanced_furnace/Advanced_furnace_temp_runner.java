@@ -26,11 +26,14 @@ public class Advanced_furnace_temp_runner extends Structure_runner {
 		double loss = adv_furnace.get_power_loss();
 		double d_current_temp = p - loss;
 		adv_furnace.set_temperature(current_temp + cycle * d_current_temp);
-
-		if (adv_furnace.get_fuel() != null) {
-			this.run_fuel();
-		} else {
-			this.get_fuel();
+		synchronized (adv_furnace) {
+			if (adv_furnace.get_fuel() != null) {
+				//Bukkit.getLogger().info("当前燃料存在");
+				this.run_fuel();
+			} else {
+				//Bukkit.getLogger().info(Thread.currentThread().getId()+"当前燃料为null，准备吸取燃料");
+				this.get_fuel();
+			}
 		}
 	}
 
@@ -65,19 +68,29 @@ public class Advanced_furnace_temp_runner extends Structure_runner {
 			if (fuel != null) {
 				int default_amount = 0;
 				if (fuel.status != Status.solid) {
-					ItemStack bucket = Material_ext.get_empty_container(fuel_item);
-					if (!Inventory_io.move_a_item_to_slot(bucket, this.adv_furnace.getInventory(),
-							Advanced_furnace.fuel_product_slot)) {
-						return;
+					synchronized (adv_furnace.getInventory()) {
+						ItemStack bucket = Material_ext.get_empty_container(fuel_item);
+						if (!Inventory_io.try_move_a_item_to_slot(bucket, this.adv_furnace.getInventory(),
+								Advanced_furnace.fuel_product_slot)) {
+							return;
+						}
+						if (fuel.status == Status.gas) {
+							default_amount = Gas.get_item_unit(fuel_item, (Gas) fuel.to_chemical());
+						} else if (fuel.status == Status.liquid) {
+							default_amount = Liquid.get_item_unit(fuel_item);
+						}
+						if (Inventory_io.Item_remove_one(fuel_item) != null) {
+							adv_furnace.set_fuel(fuel, default_amount);
+							Inventory_io.move_a_item_to_slot(bucket, this.adv_furnace.getInventory(),
+									Advanced_furnace.fuel_product_slot);
+						}
 					}
-					if (fuel.status == Status.gas) {
-						default_amount = Gas.get_item_unit(fuel_item, (Gas) fuel.to_chemical());
-					} else if (fuel.status == Status.liquid) {
-						default_amount = Liquid.get_item_unit(fuel_item);
+				} else {
+					if (Inventory_io.Item_remove_one(fuel_item) != null) {
+						//Bukkit.getLogger().info(Thread.currentThread().getId()+"开始设置燃料为"+fuel.name());
+						adv_furnace.set_fuel(fuel, default_amount);
 					}
 				}
-				Inventory_io.Item_remove_one(fuel_item);
-				adv_furnace.set_fuel(fuel, default_amount);
 			}
 		}
 	}

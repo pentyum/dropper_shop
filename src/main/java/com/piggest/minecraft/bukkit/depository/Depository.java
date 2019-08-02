@@ -94,7 +94,7 @@ public class Depository extends Multi_block_with_gui implements Ownable, HasRunn
 		return capacity;
 	}
 
-	public boolean add(ItemStack item) {
+	public synchronized boolean add(ItemStack item) {
 		Integer current_num = this.contents.get(Material_ext.get_full_name(item));
 		if (current_num == null) { // 存储器没有这种物品
 			if (this.get_max_type() == this.get_type()) { // 超出种类限制
@@ -116,11 +116,11 @@ public class Depository extends Multi_block_with_gui implements Ownable, HasRunn
 		}
 	}
 
-	public ItemStack remove(String type) {
+	public synchronized ItemStack remove(String type) {
 		return this.remove(type, 1);
 	}
 
-	public ItemStack remove(String name, int num) {
+	public synchronized ItemStack remove(String name, int num) {
 		Integer current_num = this.contents.get(name);
 		if (current_num == null) {
 			return null;
@@ -193,7 +193,7 @@ public class Depository extends Multi_block_with_gui implements Ownable, HasRunn
 		return this.contents.entrySet();
 	}
 
-	public int get_material_num(String material_name) {
+	public synchronized int get_material_num(String material_name) {
 		Integer num = this.contents.get(material_name);
 		if (num == null) {
 			return 0;

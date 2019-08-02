@@ -53,7 +53,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	private Advanced_furnace_upgrade_runner upgrade_runner = new Advanced_furnace_upgrade_runner(this);
 
 	private int heat_keeping_value = 0;
-	private Fuel fuel;
+	private Fuel fuel = null;
 	public int fuel_ticks = 0;
 	public int fuel_amount = 0;
 	private int money = 0;
@@ -322,10 +322,12 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		this.power = power;
 		ItemStack temp_info = this.gui.getItem(26);
 		ItemMeta temp_info_meta = temp_info.getItemMeta();
-		List<String> lore = temp_info_meta.getLore();
-		lore.set(3, "§r燃料功率: " + String.format("%.2f", this.get_power()) + " K/tick");
-		temp_info_meta.setLore(lore);
-		temp_info.setItemMeta(temp_info_meta);
+		if (temp_info_meta.hasLore()) {
+			List<String> lore = temp_info_meta.getLore();
+			lore.set(3, "§r燃料功率: " + String.format("%.2f", this.get_power()) + " K/tick");
+			temp_info_meta.setLore(lore);
+			temp_info.setItemMeta(temp_info_meta);
+		}
 	}
 
 	public double get_power() { // 产热功率 K/tick
@@ -346,7 +348,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		return this.fuel;
 	}
 
-	public void set_fuel(Fuel fuel, int amount) {
+	public synchronized void set_fuel(Fuel fuel, int amount) {
 		this.fuel = fuel;
 		this.fuel_amount = amount;
 		ItemStack temp_info = this.gui.getItem(26);
@@ -606,7 +608,8 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 			player.sendMessage("[高级熔炉]消耗了" + need_price + "金币把高级熔炉升级至" + (current_level + 1) + "级");
 			return true;
 		} else {
-			player.sendMessage("[高级熔炉]你的钱不够，高级熔炉由" + current_level + "升级至" + (current_level + 1) + "级需要" + need_price + "金币");
+			player.sendMessage(
+					"[高级熔炉]你的钱不够，高级熔炉由" + current_level + "升级至" + (current_level + 1) + "级需要" + need_price + "金币");
 			return false;
 		}
 	}
