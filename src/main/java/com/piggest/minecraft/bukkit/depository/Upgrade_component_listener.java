@@ -14,7 +14,7 @@ public class Upgrade_component_listener implements Listener {
 		}
 		CraftingInventory inventory = event.getInventory();
 		ItemStack[] res_list = inventory.getContents();
-		for (int i = 1; i < 10; i++) {
+		for (int i = 1; i < res_list.length; i++) {
 			if (Reader.is_reader(res_list[i])) {
 				event.getWhoClicked().sendMessage(i + ":不允许使用读取器代替原物品合成");
 				event.setCancelled(true);
