@@ -15,6 +15,9 @@ anti-thunder-price: 60
 anti-thunder-cycle: 3600
 adv-furnace-price: 1000
 
+sync-realtime-worlds:
+- new_world
+
 wrench-price: 
   world: 200
   world_nether: 200

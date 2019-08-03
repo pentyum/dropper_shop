@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import org.bukkit.Bukkit;
@@ -61,6 +62,7 @@ import com.piggest.minecraft.bukkit.pigman_switch.Pigman_switch_manager;
 import com.piggest.minecraft.bukkit.structure.Structure;
 import com.piggest.minecraft.bukkit.structure.Structure_listener;
 import com.piggest.minecraft.bukkit.structure.Structure_manager;
+import com.piggest.minecraft.bukkit.sync_realtime.Sync_realtime;
 import com.piggest.minecraft.bukkit.trees_felling_machine.Trees_felling_machine;
 import com.piggest.minecraft.bukkit.trees_felling_machine.Trees_felling_machine_manager;
 import com.piggest.minecraft.bukkit.utils.language.Enchantments_zh_cn;
@@ -104,14 +106,16 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private final Note_stick_listener note_listener = new Note_stick_listener();
 	private final Gui_listener gui_listener = new Gui_listener();
 	private final Structure_listener Structure_listener = new Structure_listener();
-
+	private List<String> sync_realtime_worlds;
+	
 	private Listener[] structure_listeners = { new Depository_listener(), new Dropper_shop_listener(),
 			new Upgrade_component_listener(), new Grinder_listener(), new Advanced_furnace_listener(),
 			new Exp_saver_listener(), new Pigman_spawn_listener(), new Anti_thunder_listener() };
 
 	private NMS_manager nms_manager = null;
 	private Config_auto_saver auto_saver = new Config_auto_saver(this);
-
+	private Sync_realtime realtime_runner = null;
+	
 	public Dropper_shop_plugin() {
 		this.getLogger().info("加载配置中");
 		saveDefaultConfig();
@@ -123,7 +127,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.exp_saver_max_structure_level = this.config.getInt("exp-saver-max-structure-level");
 		this.exp_saver_anvil_upgrade_need = this.config.getInt("exp-saver-anvil-upgrade-need");
 		this.exp_saver_remove_repaircost_exp = this.config.getInt("exp-saver-remove-repaircost-exp");
-
+		this.sync_realtime_worlds = this.config.getStringList("sync-realtime-worlds");
+		this.realtime_runner = new Sync_realtime(this.sync_realtime_worlds);
+		
 		ConfigurationSection price_section = this.config.getConfigurationSection("material");
 		Set<String> price_keys = price_section.getKeys(false);
 		for (String material_name : price_keys) {
@@ -268,6 +274,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		}
 		note_listener.runner.runTaskTimer(this, 10, 5);
 		this.auto_saver.runTaskTimerAsynchronously(this, 10, 6000);
+		this.realtime_runner.runTaskTimerAsynchronously(this, 5, 2);
 	}
 
 	public boolean save_structure() {
@@ -426,5 +433,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	public NMS_manager get_nms_manager() {
 		return this.nms_manager;
+	}
+	
+	public List<String> get_sync_realtime_worlds(){
+		return this.sync_realtime_worlds;
 	}
 }

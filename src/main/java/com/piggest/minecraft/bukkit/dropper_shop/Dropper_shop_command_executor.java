@@ -113,13 +113,13 @@ public class Dropper_shop_command_executor implements CommandExecutor {
 			} else if (args[0].equalsIgnoreCase("show_full_name")) {
 				player.sendMessage(Material_ext.get_full_name(player.getInventory().getItemInMainHand()));
 			} else if (args[0].equalsIgnoreCase("show_full_time")) {
-				player.sendMessage("Full time:" + player.getWorld().getFullTime());
+				player.sendMessage("Full time: " + player.getWorld().getFullTime());
 			} else if (args[0].equalsIgnoreCase("show_time")) {
-				player.sendMessage("Time:" + player.getWorld().getTime());
+				player.sendMessage("Time: " + player.getWorld().getTime());
 			} else if (args[0].equalsIgnoreCase("show_thread")) {
-				player.sendMessage("Thread:" + Thread.currentThread().getId());
+				player.sendMessage("Thread: " + Thread.currentThread().getId());
 			} else if (args[0].equalsIgnoreCase("show_date")) {
-				player.sendMessage("Date:" + Server_date.formatDate(Server_date.get_world_date(player.getWorld())));
+				player.sendMessage("当前服务器日期: " + Server_date.formatDate(Server_date.get_world_date(player.getWorld())));
 			} else {
 				return false;
 			}
