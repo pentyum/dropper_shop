@@ -16,7 +16,7 @@ anti-thunder-cycle: 3600
 adv-furnace-price: 1000
 
 sync-realtime-worlds:
-- new_world
+  new_world: 0
 
 wrench-price: 
   world: 200

@@ -26,6 +26,10 @@ public class Server_date {
 		return timeStr;
 	}
 
+	public static String get_format_world_date(World world) {
+		return formatDate(get_world_date(world));
+	}
+
 	public static double get_solar_dec(World world) {
 		Calendar date = get_world_date(world);
 		int day = date.get(Calendar.DAY_OF_YEAR);
@@ -33,11 +37,16 @@ public class Server_date {
 	}
 
 	public static long real_time_to_full_time() {
+		return real_time_to_full_time(0);
+	}
+
+	public static long real_time_to_full_time(int offset) {
 		Calendar now = Calendar.getInstance();
 
 		Calendar start = Calendar.getInstance();
-		start.set(2000, 1, 1, 6, 0, 0);
+		start.set(2000, 1, 1, 6 - offset, 0, 0);
 		long milli = now.getTime().getTime() - start.getTime().getTime();
 		return milli / 3600;
 	}
+
 }

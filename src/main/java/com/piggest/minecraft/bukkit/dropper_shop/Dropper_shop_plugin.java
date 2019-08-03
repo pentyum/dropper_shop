@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import org.bukkit.Bukkit;
@@ -63,8 +62,10 @@ import com.piggest.minecraft.bukkit.structure.Structure;
 import com.piggest.minecraft.bukkit.structure.Structure_listener;
 import com.piggest.minecraft.bukkit.structure.Structure_manager;
 import com.piggest.minecraft.bukkit.sync_realtime.Sync_realtime;
+import com.piggest.minecraft.bukkit.sync_realtime.Sync_realtime_command_executor;
 import com.piggest.minecraft.bukkit.trees_felling_machine.Trees_felling_machine;
 import com.piggest.minecraft.bukkit.trees_felling_machine.Trees_felling_machine_manager;
+import com.piggest.minecraft.bukkit.utils.Tab_list;
 import com.piggest.minecraft.bukkit.utils.language.Enchantments_zh_cn;
 import com.piggest.minecraft.bukkit.utils.language.Item_zh_cn;
 import com.piggest.minecraft.bukkit.wrench.Wrench_command_executor;
@@ -106,7 +107,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private final Note_stick_listener note_listener = new Note_stick_listener();
 	private final Gui_listener gui_listener = new Gui_listener();
 	private final Structure_listener Structure_listener = new Structure_listener();
-	private List<String> sync_realtime_worlds;
+	private HashMap<String, Integer> sync_realtime_worlds = new HashMap<String, Integer>();
 	
 	private Listener[] structure_listeners = { new Depository_listener(), new Dropper_shop_listener(),
 			new Upgrade_component_listener(), new Grinder_listener(), new Advanced_furnace_listener(),
@@ -127,7 +128,11 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.exp_saver_max_structure_level = this.config.getInt("exp-saver-max-structure-level");
 		this.exp_saver_anvil_upgrade_need = this.config.getInt("exp-saver-anvil-upgrade-need");
 		this.exp_saver_remove_repaircost_exp = this.config.getInt("exp-saver-remove-repaircost-exp");
-		this.sync_realtime_worlds = this.config.getStringList("sync-realtime-worlds");
+		ConfigurationSection sync_realtime_section = this.config.getConfigurationSection("sync-realtime-worlds");
+		Set<String> worlds = sync_realtime_section.getKeys(false);
+		for(String world_name:worlds) {
+			this.sync_realtime_worlds.put(world_name, sync_realtime_section.getInt(world_name));
+		}
 		this.realtime_runner = new Sync_realtime(this.sync_realtime_worlds);
 		
 		ConfigurationSection price_section = this.config.getConfigurationSection("material");
@@ -226,7 +231,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public void onEnable() {
 		Dropper_shop_plugin.instance = this;
 		this.backup_old_shop_config_file();
-
+		
+		Tab_list.init();
+		
 		this.nms_manager = new NMS_manager(Bukkit.getBukkitVersion());
 		this.init_structure_manager();
 
@@ -238,7 +245,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		Wrench_command_executor wrench = new Wrench_command_executor();
 		this.getCommand("wrench").setExecutor(wrench);
 		this.getCommand("lottery").setExecutor(new Lottery_pool_command_executor());
-
+		this.getCommand("sync_realtime").setExecutor(new Sync_realtime_command_executor(this.sync_realtime_worlds));
+		
 		getLogger().info("使用Vault");
 		if (!initVault()) {
 			getLogger().severe("初始化Vault失败,请检测是否已经安装Vault插件和经济插件");
@@ -313,7 +321,6 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		} catch (IOException e) {
 			this.getLogger().severe("抽奖配置文件保存错误!");
 		}
-
 		this.remove_recipe();
 	}
 
@@ -435,7 +442,4 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		return this.nms_manager;
 	}
 	
-	public List<String> get_sync_realtime_worlds(){
-		return this.sync_realtime_worlds;
-	}
 }

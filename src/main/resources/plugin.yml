@@ -39,6 +39,11 @@ commands:
     usage: /<command> possibility to set the possibility of the item in your hand.
     permission: lottery.use
     permission-message: You don't have permission
+  sync_realtime:
+    description: commands relate to sync_realtime.
+    usage: /<command> worldname true or false to set sync_realtime.
+    permission: sync_realtime.list
+    permission-message: You don't have permission
 permissions:
   dropper_shop.*:
     description: Gives access to all dropper shop commands.
@@ -139,4 +144,10 @@ permissions:
   anti_thunder.make:
     description: Make anti thunder.
     default: true
+  sync_realtime.list:
+    description: List sync_realtime worlds.
+    default: true
+  sync_realtime.set:
+    description: Set sync_realtime.
+    default: op
 softdepend: [Vault]
