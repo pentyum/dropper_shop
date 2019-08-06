@@ -34,6 +34,8 @@ public class Item_zh_cn {
 		name.put("minecraft:clay_ball", "粘土");
 		name.put("minecraft:white_wool", "白色羊毛");
 		name.put("minecraft:tnt", "TNT");
+		name.put("minecraft:soul_sand", "灵魂沙");
+		name.put("minecraft:scaffolding", "脚手架");
 		name.put("minecraft:sponge", "海绵");
 		name.put("minecraft:glowstone", "萤石");
 		name.put("minecraft:sea_lantern", "海晶灯");

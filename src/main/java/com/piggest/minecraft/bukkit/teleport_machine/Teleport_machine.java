@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 
@@ -24,8 +27,22 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 
 	@Override
 	public void on_button_pressed(Player player, int slot) {
-		// TODO 自动生成的方法存根
+		if (slot == 10) {
+			this.known_terminal_list = this.search();
+			this.set_gui_terminal_list();
+		}
+	}
 
+	public void set_gui_terminal_list() {
+		int slot = 9;
+		for (Radio_terminal terminal : this.known_terminal_list) {
+			ItemStack item = new ItemStack(Material.END_ROD);
+			ItemMeta meta = item.getItemMeta();
+			meta.setDisplayName(terminal.getClass().getName());
+			item.setItemMeta(meta);
+			this.gui.setItem(slot, item);
+			slot++;
+		}
 	}
 
 	@Override
@@ -101,12 +118,12 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 
 	@Override
 	public void set_channel_freq() {
-		
+
 	}
 
 	@Override
 	public void set_channel_bandwidth() {
-		
+
 	}
 
 }
