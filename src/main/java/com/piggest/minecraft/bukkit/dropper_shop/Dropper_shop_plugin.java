@@ -63,6 +63,7 @@ import com.piggest.minecraft.bukkit.structure.Structure_listener;
 import com.piggest.minecraft.bukkit.structure.Structure_manager;
 import com.piggest.minecraft.bukkit.sync_realtime.Sync_realtime;
 import com.piggest.minecraft.bukkit.sync_realtime.Sync_realtime_command_executor;
+import com.piggest.minecraft.bukkit.teleport_machine.Radio_manager;
 import com.piggest.minecraft.bukkit.trees_felling_machine.Trees_felling_machine;
 import com.piggest.minecraft.bukkit.trees_felling_machine.Trees_felling_machine_manager;
 import com.piggest.minecraft.bukkit.utils.Tab_list;
@@ -108,7 +109,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private final Gui_listener gui_listener = new Gui_listener();
 	private final Structure_listener Structure_listener = new Structure_listener();
 	private HashMap<String, Integer> sync_realtime_worlds = new HashMap<String, Integer>();
-	
+
 	private Listener[] structure_listeners = { new Depository_listener(), new Dropper_shop_listener(),
 			new Upgrade_component_listener(), new Grinder_listener(), new Advanced_furnace_listener(),
 			new Exp_saver_listener(), new Pigman_spawn_listener(), new Anti_thunder_listener() };
@@ -116,7 +117,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private NMS_manager nms_manager = null;
 	private Config_auto_saver auto_saver = new Config_auto_saver(this);
 	private Sync_realtime realtime_runner = null;
-	
+	private Radio_manager radio_manager = null;
+
 	public Dropper_shop_plugin() {
 		this.getLogger().info("加载配置中");
 		saveDefaultConfig();
@@ -130,11 +132,11 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.exp_saver_remove_repaircost_exp = this.config.getInt("exp-saver-remove-repaircost-exp");
 		ConfigurationSection sync_realtime_section = this.config.getConfigurationSection("sync-realtime-worlds");
 		Set<String> worlds = sync_realtime_section.getKeys(false);
-		for(String world_name:worlds) {
+		for (String world_name : worlds) {
 			this.sync_realtime_worlds.put(world_name, sync_realtime_section.getInt(world_name));
 		}
 		this.realtime_runner = new Sync_realtime(this.sync_realtime_worlds);
-		
+
 		ConfigurationSection price_section = this.config.getConfigurationSection("material");
 		Set<String> price_keys = price_section.getKeys(false);
 		for (String material_name : price_keys) {
@@ -231,11 +233,12 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public void onEnable() {
 		Dropper_shop_plugin.instance = this;
 		this.backup_old_shop_config_file();
-		
+
 		Tab_list.init();
-		
+
 		this.nms_manager = new NMS_manager(Bukkit.getBukkitVersion());
 		this.init_structure_manager();
+		this.radio_manager = new Radio_manager();
 
 		this.getCommand("depository").setExecutor(new Depository_command_executor());
 		this.getCommand("dropper_shop").setExecutor(new Dropper_shop_command_executor());
@@ -246,7 +249,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.getCommand("wrench").setExecutor(wrench);
 		this.getCommand("lottery").setExecutor(new Lottery_pool_command_executor());
 		this.getCommand("sync_realtime").setExecutor(new Sync_realtime_command_executor(this.sync_realtime_worlds));
-		
+
 		getLogger().info("使用Vault");
 		if (!initVault()) {
 			getLogger().severe("初始化Vault失败,请检测是否已经安装Vault插件和经济插件");
@@ -441,5 +444,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public NMS_manager get_nms_manager() {
 		return this.nms_manager;
 	}
-	
+
+	public Radio_manager get_radio_manager() {
+		return this.radio_manager;
+	}
 }
