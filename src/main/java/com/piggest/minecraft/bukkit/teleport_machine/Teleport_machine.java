@@ -19,6 +19,7 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 	private int n = 0;
 	private int online_voltage = 1;
 	private int working_voltage = 12;
+	private int current_page = 1;
 	private ArrayList<Radio_terminal> known_terminal_list = new ArrayList<Radio_terminal>();
 
 	public Teleport_machine() {
@@ -27,22 +28,55 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 
 	@Override
 	public void on_button_pressed(Player player, int slot) {
-		if (slot == 10) {
+		switch (slot) {
+		case 17:// 上一页
+			this.set_gui_terminal_list(this.current_page - 1);
+			break;
+		case 26:// 下一页
+			this.set_gui_terminal_list(this.current_page + 1);
+			break;
+		case 28:// 搜台
 			this.known_terminal_list = this.search();
-			this.set_gui_terminal_list();
+			this.set_gui_terminal_list(1);
+			break;
+		case 29:
+		case 32:
+		case 33:
+		case 34:
+		case 35:
+		case 37:
+		case 50:
+		case 51:
+		case 52:
+		case 53:
+			break;
+		default:
+			break;
 		}
 	}
 
-	public void set_gui_terminal_list() {
+	public void set_gui_terminal_list(int page) {
+		if (page <= 0) {
+			return;
+		}
 		int slot = 9;
-		for (Radio_terminal terminal : this.known_terminal_list) {
+		int start = (page - 1) * 18;
+		if (start >= this.known_terminal_list.size()) {
+			return;
+		}
+		for (Radio_terminal terminal = this.known_terminal_list.get(start); start < this.known_terminal_list.size()
+				&& start < page * 18; start++) {
 			ItemStack item = new ItemStack(Material.END_ROD);
 			ItemMeta meta = item.getItemMeta();
 			meta.setDisplayName(terminal.getClass().getName());
 			item.setItemMeta(meta);
 			this.gui.setItem(slot, item);
 			slot++;
+			if (slot == 17) {
+				slot++;
+			}
 		}
+		this.current_page = page;
 	}
 
 	@Override

@@ -81,10 +81,10 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 		List<String> lore;
 		if (meta.hasLore() == false) {
 			lore = new ArrayList<String>();
-			lore.add(value ? "§r开启" : "§r关闭");
+			lore.add(value ? "§r当前: 开启" : "§r当前: 关闭");
 		} else {
 			lore = meta.getLore();
-			lore.set(0, value ? "§r开启" : "§r关闭");
+			lore.set(0, value ? "§r当前: 开启" : "§r当前: 关闭");
 		}
 		meta.setLore(lore);
 		item.setItemMeta(meta);
@@ -101,7 +101,7 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 			return false;
 		}
 		String info = lore.get(0);
-		if (info.equals("§r开启")) {
+		if (info.equals("§r当前: 开启")) {
 			return true;
 		} else {
 			return false;
