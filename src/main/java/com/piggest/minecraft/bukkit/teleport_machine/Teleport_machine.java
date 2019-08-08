@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
+import com.piggest.minecraft.bukkit.utils.Radio;
 
 public class Teleport_machine extends Multi_block_with_gui implements Radio_terminal {
 
@@ -39,16 +40,32 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 			this.known_terminal_list = this.search();
 			this.set_gui_terminal_list(1);
 			break;
-		case 29:
-		case 32:
-		case 33:
-		case 34:
-		case 35:
-		case 37:
-		case 50:
-		case 51:
-		case 52:
-		case 53:
+		case 29:// 立刻刷新无线电信息
+		case 32:// 提高待机电压
+			this.online_voltage++;
+			break;
+		case 33:// 提高发射电压
+			this.working_voltage++;
+			break;
+		case 34:// 增加带宽
+		case 35:// 提高载波频率
+		case 37:// 传送台上实体转化为元素
+		case 50:// 降低待机电压
+			if (this.online_voltage <= 0) {
+				this.online_voltage = 0;
+			} else {
+				this.online_voltage--;
+			}
+			break;
+		case 51:// 降低发射电压
+			if (this.working_voltage <= 0) {
+				this.working_voltage = 0;
+			} else {
+				this.working_voltage--;
+			}
+			break;
+		case 52:// 减少带宽
+		case 53:// 降低载波频率
 			break;
 		default:
 			break;
@@ -81,8 +98,17 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 
 	@Override
 	public boolean on_switch_pressed(Player player, int slot, boolean on) {
-		// TODO 自动生成的方法存根
-		return false;
+		switch (slot) {
+		case 27:
+			if (on == false) {
+				this.state = Radio_state.OFF;
+			} else {
+				this.state = Radio_state.ONLINE;
+			}
+			return true;
+		default:
+			return false;
+		}
 	}
 
 	@Override
@@ -151,13 +177,17 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 	}
 
 	@Override
-	public void set_channel_freq() {
-
+	public void set_channel_freq(int freq) {
+		if (Radio.check_channel_vaild(freq, this.channel_bandwidth, this.n)) {
+			this.channel_freq = freq;
+		}
 	}
 
 	@Override
-	public void set_channel_bandwidth() {
-
+	public void set_channel_bandwidth(int bandwidth) {
+		if (Radio.check_channel_vaild(this.channel_freq, bandwidth, this.n)) {
+			this.channel_bandwidth = bandwidth;
+		}
 	}
 
 }

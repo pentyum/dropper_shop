@@ -16,24 +16,24 @@ public interface Radio_terminal {
 	public int get_n();
 
 	/*
-	 * 获得信道中心频率
+	 * 获得信道中心频率，单位kHz
 	 */
 	public int get_channel_freq();
 
 	/*
-	 * 获得信道带宽
+	 * 获得信道带宽，单位kHz
 	 */
 	public int get_channel_bandwidth();
 
 	/*
-	 * 设置信道中心频率
+	 * 设置信道中心频率，单位kHz
 	 */
-	public void set_channel_freq();
+	public void set_channel_freq(int freq);
 
 	/*
-	 * 设置信道带宽
+	 * 设置信道带宽，单位kHz
 	 */
-	public void set_channel_bandwidth();
+	public void set_channel_bandwidth(int bandwidth);
 
 	public Location get_location();
 

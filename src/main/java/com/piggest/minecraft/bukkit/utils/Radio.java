@@ -46,4 +46,17 @@ public class Radio {
 		return radiant_power / distance / distance;
 	}
 
+	public static boolean check_channel_vaild(int channel_freq, int channel_bandwidth, int n) {
+		int channel_max_freq = channel_freq + channel_bandwidth / 2;
+		int channel_min_freq = channel_freq - channel_bandwidth / 2;
+		int antenna_central_freq = get_central_freq(n);
+		if (channel_max_freq > (1 + antenna_bandwidth) * antenna_central_freq
+				|| channel_min_freq > (1 - antenna_bandwidth) * antenna_central_freq) {
+			return false;
+		}
+		if (antenna_central_freq * 2 * antenna_bandwidth / channel_bandwidth < max_channel_bandwidth) {
+			return false;
+		}
+		return true;
+	}
 }
