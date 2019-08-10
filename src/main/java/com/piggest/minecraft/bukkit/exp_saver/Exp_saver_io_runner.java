@@ -17,11 +17,11 @@ public class Exp_saver_io_runner extends Structure_runner {
 
 	@Override
 	public void run() {
-		if(exp_saver.is_loaded()==false) {
+		if (exp_saver.is_loaded() == false) {
 			return;
 		}
 		Hopper hopper = exp_saver.get_hopper();
-		if(hopper!=null) {
+		if (hopper != null) {
 			org.bukkit.block.data.type.Hopper hopper_data = (org.bukkit.block.data.type.Hopper) hopper.getBlockData();
 			if (hopper_data.getFacing() == BlockFace.DOWN) {
 				for (ItemStack item : hopper.getInventory().getContents()) {

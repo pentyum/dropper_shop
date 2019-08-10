@@ -25,7 +25,7 @@ public abstract class Gui_structure_manager<T extends Multi_block_with_gui> exte
 		Slot_config slot_config = new Slot_config(material, name, lore, type);
 		this.locked_slots.put(slot, slot_config);
 	}
-
+	
 	public Slot_config get_config(int slot) {
 		return this.locked_slots.get(slot);
 	}
@@ -33,7 +33,7 @@ public abstract class Gui_structure_manager<T extends Multi_block_with_gui> exte
 	public HashMap<Integer, Slot_config> get_locked_slots() {
 		return this.locked_slots;
 	}
-
+	
 	public abstract String get_gui_name();
 
 	public abstract InventoryType get_inventory_type();

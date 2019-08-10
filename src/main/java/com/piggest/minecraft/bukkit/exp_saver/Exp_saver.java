@@ -88,14 +88,14 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 		super.set_from_save(shop_save);
 
 		this.add_exp((int) shop_save.get("saved-exp"));
-		this.set_mending((ItemStack) shop_save.get("mending-item"));
+		//this.set_mending((ItemStack) shop_save.get("mending-item"));
 		int anvil = (int) shop_save.get("anvil-count");
 		int chipped_anvil = (int) shop_save.get("chipped-anvil-count");
 		int damaged_anvil = (int) shop_save.get("damaged-anvil-count");
 		this.set_anvil_count(anvil, chipped_anvil, damaged_anvil);
 	}
 
-	private void set_mending(ItemStack item) {
+	public void set_mending(ItemStack item) {
 		this.gui.setItem(mending_slot, item);
 	}
 
@@ -103,7 +103,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 	public HashMap<String, Object> get_save() {
 		HashMap<String, Object> save = super.get_save();
 		save.put("saved-exp", this.saved_exp);
-		save.put("mending-item", this.get_mending());
+		//save.put("mending-item", this.get_mending());
 		save.put("anvil-count", this.anvil_count);
 		save.put("chipped-anvil-count", this.chipped_anvil_count);
 		save.put("damaged-anvil-count", this.damaged_anvil_count);

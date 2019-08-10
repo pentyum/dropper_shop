@@ -141,4 +141,8 @@ public interface Radio_terminal {
 		}
 		return result;
 	}
+	
+	public String get_name();
+	
+	public void set_name(String name);
 }

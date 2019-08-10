@@ -2,7 +2,9 @@ package com.piggest.minecraft.bukkit.structure;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
@@ -15,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.grinder.Grinder;
+import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 import com.piggest.minecraft.bukkit.gui.Slot_config;
 
@@ -33,14 +36,16 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 		for (Entry<Integer, Slot_config> entry : this.get_manager().get_locked_slots().entrySet()) {
 			int slot = entry.getKey();
 			Slot_config slot_config = entry.getValue();
-			ItemStack item = new ItemStack(slot_config.material);
-			ItemMeta meta = item.getItemMeta();
-			meta.setDisplayName(slot_config.name);
-			if (slot_config.lore != null) {
-				meta.setLore(new ArrayList<String>(Arrays.asList(slot_config.lore)));
+			if (slot_config.material != null) {
+				ItemStack item = new ItemStack(slot_config.material);
+				ItemMeta meta = item.getItemMeta();
+				meta.setDisplayName(slot_config.name);
+				if (slot_config.lore != null) {
+					meta.setLore(new ArrayList<String>(Arrays.asList(slot_config.lore)));
+				}
+				item.setItemMeta(meta);
+				this.getInventory().setItem(slot, item);
 			}
-			item.setItemMeta(meta);
-			this.getInventory().setItem(slot, item);
 		}
 	}
 
@@ -136,9 +141,38 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 	public Gui_structure_manager<? extends Multi_block_with_gui> get_manager() {
 		return (Gui_structure_manager<?>) super.get_manager();
 	}
-	
+
 	@Override
 	public String get_display_name() {
 		return this.get_manager().get_gui_name();
+	}
+
+	@Override
+	public HashMap<String, Object> get_save() {
+		HashMap<String, Object> save = super.get_save();
+		HashMap<Integer, Slot_config> locked_slots = this.get_manager().get_locked_slots();
+		for (Entry<Integer, Slot_config> entry : locked_slots.entrySet()) {
+			int slot = entry.getKey();
+			Slot_config config = entry.getValue();
+			if (config.type == Gui_slot_type.Item_store) {
+				save.put(config.name, this.gui.getItem(slot));
+			}
+		}
+		return save;
+	}
+
+	@Override
+	public void set_from_save(Map<?, ?> save) {
+		super.set_from_save(save);
+		HashMap<Integer, Slot_config> locked_slots = this.get_manager().get_locked_slots();
+		for (Entry<Integer, Slot_config> entry : locked_slots.entrySet()) {
+			int slot = entry.getKey();
+			Slot_config config = entry.getValue();
+			if (config.type == Gui_slot_type.Item_store) {
+				if (save.get(config.name) != null) {
+					this.gui.setItem(slot, (ItemStack) save.get(config.name));
+				}
+			}
+		}
 	}
 }

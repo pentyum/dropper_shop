@@ -48,28 +48,35 @@ public class Gui_listener implements Listener {
 			}
 		}
 		if (slot_config != null) {
-			if (slot_config.type == Gui_slot_type.Indicator) {
-
-			} else if (slot_config.type == Gui_slot_type.Switch) {
+			switch (slot_config.type) {
+			case Indicator:
+				break;
+			case Switch:
 				ItemStack item = event.getCurrentItem();
 				ItemMeta meta = item.getItemMeta();
 				List<String> lore = meta.getLore();
 				String info = lore.get(0);
-				if (info.equals("§r当前: 开启")) {  //关闭开关
+				if (info.equals("§r当前: 开启")) { // 关闭开关
 					if (structure.on_switch_pressed((Player) event.getWhoClicked(), slot, false)) {
 						lore.set(0, "§r当前: 关闭");
 						meta.setLore(lore);
 						item.setItemMeta(meta);
 					}
-				} else {  //打开开关
+				} else { // 打开开关
 					if (structure.on_switch_pressed((Player) event.getWhoClicked(), slot, true)) {
 						lore.set(0, "§r当前: 开启");
 						meta.setLore(lore);
 						item.setItemMeta(meta);
 					}
 				}
-			} else if (slot_config.type == Gui_slot_type.Button) {
+				break;
+			case Button:
 				structure.on_button_pressed((Player) event.getWhoClicked(), slot);
+				break;
+			case Item_store:
+				break;
+			default:
+				break;
 			}
 			event.setCancelled(true);
 			return;

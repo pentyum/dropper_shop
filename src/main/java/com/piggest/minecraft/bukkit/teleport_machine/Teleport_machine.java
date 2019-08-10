@@ -13,7 +13,7 @@ import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.utils.Radio;
 
 public class Teleport_machine extends Multi_block_with_gui implements Radio_terminal {
-
+	private String name = "定点传送台";
 	private int channel_freq = 0;
 	private Radio_state state = Radio_state.OFF;
 	private int channel_bandwidth = 0;
@@ -85,7 +85,7 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 				&& start < page * 18; start++) {
 			ItemStack item = new ItemStack(Material.END_ROD);
 			ItemMeta meta = item.getItemMeta();
-			meta.setDisplayName(terminal.getClass().getName());
+			meta.setDisplayName(terminal.get_name());
 			item.setItemMeta(meta);
 			this.gui.setItem(slot, item);
 			slot++;
@@ -188,6 +188,16 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 		if (Radio.check_channel_vaild(this.channel_freq, bandwidth, this.n)) {
 			this.channel_bandwidth = bandwidth;
 		}
+	}
+
+	@Override
+	public String get_name() {
+		return this.name;
+	}
+
+	@Override
+	public void set_name(String name) {
+		this.name = name;
 	}
 
 }
