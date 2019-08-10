@@ -50,7 +50,7 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 	}
 
 	@Override
-	public void on_right_click(Player player) {
+	protected void on_right_click(Player player) {
 		if (player.hasPermission(this.get_manager().get_permission_head() + ".use")) {
 			player.closeInventory();
 			player.openInventory(this.getInventory());
@@ -148,7 +148,7 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 	}
 
 	@Override
-	public HashMap<String, Object> get_save() {
+	protected HashMap<String, Object> get_save() {
 		HashMap<String, Object> save = super.get_save();
 		HashMap<Integer, Slot_config> locked_slots = this.get_manager().get_locked_slots();
 		for (Entry<Integer, Slot_config> entry : locked_slots.entrySet()) {
@@ -162,7 +162,7 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 	}
 
 	@Override
-	public void set_from_save(Map<?, ?> save) {
+	protected void set_from_save(Map<?, ?> save) {
 		super.set_from_save(save);
 		HashMap<Integer, Slot_config> locked_slots = this.get_manager().get_locked_slots();
 		for (Entry<Integer, Slot_config> entry : locked_slots.entrySet()) {
@@ -175,4 +175,10 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 			}
 		}
 	}
+
+	public abstract boolean on_put_item(Player player, ItemStack cursor_item, int slot);
+
+	public abstract boolean on_take_item(Player player, ItemStack in_item, int slot);
+
+	public abstract boolean on_exchange_item(Player player, ItemStack in_item, ItemStack cursor_item, int slot);
 }

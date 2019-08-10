@@ -31,7 +31,7 @@ public class Pigman_switch extends Multi_block_structure {
 	}
 
 	@Override
-	public void init_after_set_location() {
+	protected void init_after_set_location() {
 		return;
 	}
 }

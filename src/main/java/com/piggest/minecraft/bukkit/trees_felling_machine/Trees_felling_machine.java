@@ -218,7 +218,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 		return null;
 	}
 
-	private void set_axe(ItemStack item) {
+	public void set_axe(ItemStack item) {
 		this.gui.setItem(13, item);
 	}
 
@@ -266,24 +266,22 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	}
 
 	@Override
-	public void set_from_save(Map<?, ?> shop_save) {
+	protected void set_from_save(Map<?, ?> shop_save) {
 		super.set_from_save(shop_save);
 		this.current_x = ((int) shop_save.get("current-x"));
 		this.current_z = ((int) shop_save.get("current-z"));
 		this.scanned_blocks = ((int) shop_save.get("scanned-blocks"));
-		this.set_axe((ItemStack) shop_save.get("axe"));
 		this.set_working((boolean) shop_save.get("working"));
 		this.update_process();
 	}
 
 	@Override
-	public HashMap<String, Object> get_save() {
+	protected HashMap<String, Object> get_save() {
 		HashMap<String, Object> save = super.get_save();
 		save.put("working", this.is_working());
 		save.put("current-x", this.current_x);
 		save.put("current-z", this.current_z);
 		save.put("scanned-blocks", this.scanned_blocks);
-		save.put("axe", this.get_axe());
 		return save;
 	}
 
@@ -339,7 +337,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	}
 
 	@Override
-	public void init_after_set_location() {
+	protected void init_after_set_location() {
 		this.start_x = this.get_location().getBlockX() - this.r;
 		this.start_z = this.get_location().getBlockZ() - this.r;
 
@@ -351,5 +349,20 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 		this.total_blocks = (this.end_x - this.start_x + 1) * (this.end_z - this.start_z + 1);
 		this.set_working(false);
 		this.update_process();
+	}
+
+	@Override
+	public boolean on_put_item(Player player, ItemStack cursor_item, int slot) {
+		return true;
+	}
+
+	@Override
+	public boolean on_take_item(Player player, ItemStack in_item, int slot) {
+		return true;
+	}
+
+	@Override
+	public boolean on_exchange_item(Player player, ItemStack in_item, ItemStack cursor_item, int slot) {
+		return true;
 	}
 }

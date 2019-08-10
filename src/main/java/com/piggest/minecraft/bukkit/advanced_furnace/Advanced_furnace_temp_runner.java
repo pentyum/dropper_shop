@@ -21,20 +21,21 @@ public class Advanced_furnace_temp_runner extends Structure_runner {
 		if (this.adv_furnace.is_loaded() == false) {
 			return;
 		}
-		double current_temp = adv_furnace.get_temperature();
-		double p = adv_furnace.get_power();
-		double loss = adv_furnace.get_power_loss();
-		double d_current_temp = p - loss;
-		adv_furnace.set_temperature(current_temp + cycle * d_current_temp);
-		synchronized (adv_furnace) {
+		synchronized (adv_furnace.fuel_info) {
+			double current_temp = adv_furnace.get_temperature();
+			double p = adv_furnace.get_power();
+			double loss = adv_furnace.get_power_loss();
+			double d_current_temp = p - loss;
+			adv_furnace.set_temperature(current_temp + cycle * d_current_temp);
 			if (adv_furnace.get_fuel() != null) {
-				//Bukkit.getLogger().info("当前燃料存在");
+				// Bukkit.getLogger().info("当前燃料存在");
 				this.run_fuel();
 			} else {
-				//Bukkit.getLogger().info(Thread.currentThread().getId()+"当前燃料为null，准备吸取燃料");
+				// Bukkit.getLogger().info(Thread.currentThread().getId()+"当前燃料为null，准备吸取燃料");
 				this.get_fuel();
 			}
 		}
+		
 	}
 
 	private void run_fuel() {
@@ -46,19 +47,19 @@ public class Advanced_furnace_temp_runner extends Structure_runner {
 			break;
 		case liquid:
 		case gas:
-			max_ticks = (int) (fuel.ticks * adv_furnace.fuel_amount * adv_furnace.get_time_modify());
+			max_ticks = (int) (fuel.ticks * adv_furnace.fuel_info.fuel_amount * adv_furnace.get_time_modify());
 			break;
 		default:
 			max_ticks = (int) (fuel.ticks * adv_furnace.get_time_modify());
 		}
-		int last_sec = (max_ticks - adv_furnace.fuel_ticks) / 20;
+		int last_sec = (max_ticks - adv_furnace.fuel_info.fuel_ticks) / 20;
 		adv_furnace.set_last_sec(last_sec);
-		if (adv_furnace.fuel_ticks >= max_ticks) {
+		if (adv_furnace.fuel_info.fuel_ticks >= max_ticks) {
 			adv_furnace.set_fuel(null, 0);
-			adv_furnace.fuel_ticks = 0;
+			adv_furnace.fuel_info.fuel_ticks = 0;
 			return;
 		}
-		adv_furnace.fuel_ticks += cycle;
+		adv_furnace.fuel_info.fuel_ticks += cycle;
 	}
 
 	private void get_fuel() {
@@ -87,7 +88,7 @@ public class Advanced_furnace_temp_runner extends Structure_runner {
 					}
 				} else {
 					if (Inventory_io.Item_remove_one(fuel_item) != null) {
-						//Bukkit.getLogger().info(Thread.currentThread().getId()+"开始设置燃料为"+fuel.name());
+						// Bukkit.getLogger().info(Thread.currentThread().getId()+"开始设置燃料为"+fuel.name());
 						adv_furnace.set_fuel(fuel, default_amount);
 					}
 				}

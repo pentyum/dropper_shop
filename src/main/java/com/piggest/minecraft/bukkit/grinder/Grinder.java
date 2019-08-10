@@ -184,7 +184,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 	}
 
 	@Override
-	public void set_from_save(Map<?, ?> shop_save) {
+	protected void set_from_save(Map<?, ?> shop_save) {
 		super.set_from_save(shop_save);
 		this.set_flint_storge((Integer) shop_save.get("flint-storge"));
 		this.runner.working_ticks = (Integer) shop_save.get("working-ticks");
@@ -205,7 +205,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 	}
 
 	@Override
-	public HashMap<String, Object> get_save() {
+	protected HashMap<String, Object> get_save() {
 		HashMap<String, Object> save = super.get_save();
 		save.put("flint-storge", this.get_flint_storage());
 		save.put("working-ticks", this.runner.working_ticks);
@@ -257,7 +257,22 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 	}
 
 	@Override
-	public void init_after_set_location() {
+	protected void init_after_set_location() {
 		return;
+	}
+
+	@Override
+	public boolean on_put_item(Player player, ItemStack cursor_item, int slot) {
+		return true;
+	}
+
+	@Override
+	public boolean on_take_item(Player player, ItemStack in_item, int slot) {
+		return true;
+	}
+
+	@Override
+	public boolean on_exchange_item(Player player, ItemStack in_item, ItemStack cursor_item, int slot) {
+		return true;
 	}
 }

@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 public abstract class Multi_block_structure extends Structure {
 
-	public abstract void on_right_click(Player player);
+	protected abstract void on_right_click(Player player);
 
 	public Block get_block(int relative_x, int relative_y, int relative_z) {
 		Location loc = this.get_location().add(relative_x, relative_y, relative_z);

@@ -11,7 +11,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
-import org.bukkit.block.Furnace;
+import org.bukkit.block.data.type.Furnace;
 import org.bukkit.block.Hopper;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -51,11 +51,13 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	private Advanced_furnace_reaction_runner reaction_runner = new Advanced_furnace_reaction_runner(this);
 	private Advanced_furnace_io_runner io_runner = new Advanced_furnace_io_runner(this);
 	private Advanced_furnace_upgrade_runner upgrade_runner = new Advanced_furnace_upgrade_runner(this);
+	private boolean is_litting = false;
 
 	private int heat_keeping_value = 0;
-	private Fuel fuel = null;
-	public int fuel_ticks = 0;
-	public int fuel_amount = 0;
+	public Fuel_info fuel_info = new Fuel_info();
+	// private Fuel fuel = null;
+	// public int fuel_ticks = 0;
+	// public int fuel_amount = 0;
 	private int money = 0;
 	private int money_limit = 9000;
 	private int structure_level = 1;
@@ -141,10 +143,10 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	}
 
 	@Override
-	public void set_from_save(Map<?, ?> shop_save) {
+	protected void set_from_save(Map<?, ?> shop_save) {
 		super.set_from_save(shop_save);
 		this.set_temperature((double) shop_save.get("temperature"));
-		this.fuel_ticks = ((int) shop_save.get("fuel-ticks"));
+		this.fuel_info.fuel_ticks = ((int) shop_save.get("fuel-ticks"));
 		String fuel_type = (String) shop_save.get("fuel-type");
 		int fuel_amount = 0;
 		if (shop_save.get("fuel-amount") != null) {
@@ -163,32 +165,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 					(Integer) shop_save.get("fuel-slot-num"));
 			this.set_fuel_slot(fuel_slot_item);
 		}
-		if (shop_save.get("solid-product-slot") != null) {
-			this.set_solid_product_slot((ItemStack) shop_save.get("solid-product-slot"));
-		}
-		if (shop_save.get("solid-reactant-slot") != null) {
-			this.set_solid_reactant_slot((ItemStack) shop_save.get("solid-reactant-slot"));
-		}
-		if (shop_save.get("liquid-product-slot") != null) {
-			this.set_liquid_product_slot((ItemStack) shop_save.get("liquid-product-slot"));
-		}
-		if (shop_save.get("liquid-reactant-slot") != null) {
-			this.set_liquid_reactant_slot((ItemStack) shop_save.get("liquid-reactant-slot"));
-		}
-		if (shop_save.get("gas-product-slot") != null) {
-			this.set_gas_product_slot((ItemStack) shop_save.get("gas-product-slot"));
-		}
-		if (shop_save.get("gas-reactant-slot") != null) {
-			this.set_gas_reactant_slot((ItemStack) shop_save.get("gas-reactant-slot"));
-		}
-		if (shop_save.get("fuel-product-slot") != null) {
-			this.set_fuel_product_slot((ItemStack) shop_save.get("fuel-product-slot"));
-		}
 
-		if (shop_save.get("upgrade-component-slot") != null) {
-			this.gui.setItem(Advanced_furnace.upgrade_component_slot,
-					(ItemStack) shop_save.get("upgrade-component-slot"));
-		}
 		for (Entry<String, Integer> entry : contents.entrySet()) {
 			String name = entry.getKey();
 			Integer unit = entry.getValue();
@@ -236,57 +213,25 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	}
 
 	@Override
-	public HashMap<String, Object> get_save() {
+	protected HashMap<String, Object> get_save() {
 		HashMap<String, Object> save = super.get_save();
 		HashMap<String, Integer> contents = new HashMap<String, Integer>();
 		save.put("temperature", this.get_temperature());
-		save.put("fuel-ticks", this.fuel_ticks);
-		save.put("fuel-amount", this.fuel_amount);
-		if (this.fuel != null) {
-			save.put("fuel-type", this.fuel.name());
+		save.put("fuel-ticks", this.fuel_info.fuel_ticks);
+		save.put("fuel-amount", this.fuel_info.fuel_amount);
+		if (this.fuel_info.fuel != null) {
+			save.put("fuel-type", this.fuel_info.fuel.name());
 		} else {
 			save.put("fuel-type", "null");
 		}
+
 		ItemStack fuel_slot = this.gui.getItem(Advanced_furnace.fuel_slot);
-		ItemStack solid_product_slot = this.gui.getItem(Advanced_furnace.solid_product_slot);
-		ItemStack solid_reactant_slot = this.gui.getItem(Advanced_furnace.solid_reactant_slot);
-		ItemStack liquid_product_slot = this.gui.getItem(Advanced_furnace.liquid_product_slot);
-		ItemStack liquid_reactant_slot = this.gui.getItem(Advanced_furnace.liquid_reactant_slot);
-		ItemStack gas_product_slot = this.gui.getItem(Advanced_furnace.gas_product_slot);
-		ItemStack gas_reactant_slot = this.gui.getItem(Advanced_furnace.gas_reactant_slot);
-		ItemStack fuel_product_slot = this.gui.getItem(Advanced_furnace.fuel_product_slot);
-		ItemStack upgrade_component_slot = this.gui.getItem(Advanced_furnace.upgrade_component_slot);
 
 		if (!Grinder.is_empty(fuel_slot)) {
 			save.put("fuel-slot", Material_ext.get_id_name(fuel_slot));
 			save.put("fuel-slot-num", fuel_slot.getAmount());
 		}
 
-		if (!Grinder.is_empty(solid_product_slot)) {
-			save.put("solid-product-slot", solid_product_slot);
-		}
-		if (!Grinder.is_empty(solid_reactant_slot)) {
-			save.put("solid-reactant-slot", solid_reactant_slot);
-		}
-		if (!Grinder.is_empty(liquid_product_slot)) {
-			save.put("liquid-product-slot", liquid_product_slot);
-		}
-		if (!Grinder.is_empty(liquid_reactant_slot)) {
-			save.put("liquid-reactant-slot", liquid_reactant_slot);
-		}
-		if (!Grinder.is_empty(gas_product_slot)) {
-			save.put("gas-product-slot", gas_product_slot);
-		}
-		if (!Grinder.is_empty(gas_reactant_slot)) {
-			save.put("gas-reactant-slot", gas_reactant_slot);
-		}
-
-		if (!Grinder.is_empty(fuel_product_slot)) {
-			save.put("fuel-product-slot", fuel_product_slot);
-		}
-		if (!Grinder.is_empty(upgrade_component_slot)) {
-			save.put("upgrade-component-slot", upgrade_component_slot);
-		}
 		for (Entry<Chemical, Integer> entry : this.get_reaction_container().get_all_chemical().entrySet()) {
 			Chemical chemical = entry.getKey();
 			Integer unit = entry.getValue();
@@ -304,7 +249,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	}
 
 	public Furnace get_center_furnace() {
-		return (Furnace) this.get_location().getBlock().getState();
+		return (Furnace) this.get_location().getBlock().getBlockData();
 	}
 
 	public void set_last_sec(int last_sec) {
@@ -345,12 +290,12 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	}
 
 	public Fuel get_fuel() {
-		return this.fuel;
+		return this.fuel_info.fuel;
 	}
 
 	public synchronized void set_fuel(Fuel fuel, int amount) {
-		this.fuel = fuel;
-		this.fuel_amount = amount;
+		this.fuel_info.fuel = fuel;
+		this.fuel_info.fuel_amount = amount;
 		ItemStack temp_info = this.gui.getItem(26);
 		ItemMeta temp_info_meta = temp_info.getItemMeta();
 		List<String> lore = temp_info_meta.getLore();
@@ -709,8 +654,36 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	}
 
 	@Override
-	public void init_after_set_location() {
+	protected void init_after_set_location() {
 		this.set_temperature(this.get_base_temperature());
 		this.set_money(0);
+	}
+
+	@Override
+	public boolean on_put_item(Player player, ItemStack cursor_item, int slot) {
+		return true;
+	}
+
+	@Override
+	public boolean on_take_item(Player player, ItemStack in_item, int slot) {
+		return true;
+	}
+
+	@Override
+	public boolean on_exchange_item(Player player, ItemStack in_item, ItemStack cursor_item, int slot) {
+		return true;
+	}
+
+	public boolean is_litting() {
+		return this.is_litting;
+	}
+
+	public void set_litting(boolean litting) {
+		if (this.is_litting != litting) {
+			Furnace furnace = this.get_center_furnace();
+			furnace.setLit(litting);
+			this.is_litting = litting;
+			this.get_location().getBlock().setBlockData(furnace);
+		}
 	}
 }

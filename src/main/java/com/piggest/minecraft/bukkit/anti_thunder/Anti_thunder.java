@@ -48,7 +48,7 @@ public class Anti_thunder extends Multi_block_structure implements Ownable {
 	}
 
 	@Override
-	public void on_right_click(Player player) {
+	protected void on_right_click(Player player) {
 		return;
 	}
 
@@ -137,14 +137,14 @@ public class Anti_thunder extends Multi_block_structure implements Ownable {
 	}
 
 	@Override
-	public void set_from_save(Map<?, ?> shop_save) {
+	protected void set_from_save(Map<?, ?> shop_save) {
 		super.set_from_save(shop_save);
 		boolean active = (boolean) shop_save.get("active");
 		this.activate(active);
 	}
 
 	@Override
-	public HashMap<String, Object> get_save() {
+	protected HashMap<String, Object> get_save() {
 		HashMap<String, Object> save = super.get_save();
 		save.put("active", this.is_active());
 		return save;

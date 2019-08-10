@@ -117,7 +117,7 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 	}
 
 	@Override
-	public void init_after_set_location() {
+	protected void init_after_set_location() {
 		this.n = 1;
 	}
 
@@ -142,14 +142,14 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 	}
 
 	@Override
-	public HashMap<String, Object> get_save() {
+	protected HashMap<String, Object> get_save() {
 		HashMap<String, Object> save = super.get_save();
 		save.put("state", this.state.name());
 		return save;
 	}
 
 	@Override
-	public void set_from_save(Map<?, ?> save) {
+	protected void set_from_save(Map<?, ?> save) {
 		super.set_from_save(save);
 		String state_string = (String) save.get("state");
 		this.state = Radio_state.valueOf(state_string);
@@ -198,6 +198,21 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 	@Override
 	public void set_name(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public boolean on_put_item(Player player, ItemStack cursor_item, int slot) {
+		return true;
+	}
+
+	@Override
+	public boolean on_take_item(Player player, ItemStack in_item, int slot) {
+		return true;
+	}
+
+	@Override
+	public boolean on_exchange_item(Player player, ItemStack in_item, ItemStack cursor_item, int slot) {
+		return true;
 	}
 
 }

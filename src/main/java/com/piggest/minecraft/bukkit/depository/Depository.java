@@ -162,7 +162,7 @@ public class Depository extends Multi_block_with_gui implements Ownable, HasRunn
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void set_from_save(Map<?, ?> shop_save) {
+	protected void set_from_save(Map<?, ?> shop_save) {
 		super.set_from_save(shop_save);
 		this.owner = (String) shop_save.get("owner");
 		this.contents = (HashMap<String, Integer>) shop_save.get("contents");
@@ -175,7 +175,7 @@ public class Depository extends Multi_block_with_gui implements Ownable, HasRunn
 	}
 
 	@Override
-	public HashMap<String, Object> get_save() {
+	protected HashMap<String, Object> get_save() {
 		ArrayList<int[]> levels = new ArrayList<int[]>();
 		HashMap<String, Object> save = super.get_save();
 		save.put("contents", this.contents);
@@ -229,14 +229,29 @@ public class Depository extends Multi_block_with_gui implements Ownable, HasRunn
 	}
 
 	@Override
-	public void init_after_set_location() {
+	protected void init_after_set_location() {
 		return;
 	}
 
 	@Override
-	public void on_right_click(Player player) {
+	protected void on_right_click(Player player) {
 		if (this.get_owner_name().equalsIgnoreCase(player.getName())) {
 			super.on_right_click(player);
 		}
+	}
+
+	@Override
+	public boolean on_put_item(Player player, ItemStack cursor_item, int slot) {
+		return true;
+	}
+
+	@Override
+	public boolean on_take_item(Player player, ItemStack in_item, int slot) {
+		return true;
+	}
+
+	@Override
+	public boolean on_exchange_item(Player player, ItemStack in_item, ItemStack cursor_item, int slot) {
+		return true;
 	}
 }

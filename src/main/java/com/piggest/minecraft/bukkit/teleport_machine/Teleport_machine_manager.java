@@ -35,7 +35,23 @@ public class Teleport_machine_manager extends Gui_structure_manager<Teleport_mac
 
 	public Teleport_machine_manager() {
 		super(Teleport_machine.class);
+		this.set_gui(9, null, null, Gui_slot_type.Button);
+		this.set_gui(10, null, null, Gui_slot_type.Button);
+		this.set_gui(11, null, null, Gui_slot_type.Button);
+		this.set_gui(12, null, null, Gui_slot_type.Button);
+		this.set_gui(13, null, null, Gui_slot_type.Button);
+		this.set_gui(14, null, null, Gui_slot_type.Button);
+		this.set_gui(15, null, null, Gui_slot_type.Button);
+		this.set_gui(16, null, null, Gui_slot_type.Button);
 		this.set_gui(17, Material.WHITE_STAINED_GLASS_PANE, "§r上一页", Gui_slot_type.Button);
+		this.set_gui(18, null, null, Gui_slot_type.Button);
+		this.set_gui(19, null, null, Gui_slot_type.Button);
+		this.set_gui(20, null, null, Gui_slot_type.Button);
+		this.set_gui(21, null, null, Gui_slot_type.Button);
+		this.set_gui(22, null, null, Gui_slot_type.Button);
+		this.set_gui(23, null, null, Gui_slot_type.Button);
+		this.set_gui(24, null, null, Gui_slot_type.Button);
+		this.set_gui(25, null, null, Gui_slot_type.Button);
 		this.set_gui(26, Material.WHITE_STAINED_GLASS_PANE, "§r下一页", Gui_slot_type.Button);
 
 		this.set_gui(27, Material.LEVER, "§r无线电开关", Gui_slot_type.Switch);

@@ -16,7 +16,7 @@ public abstract class Structure {
 	protected int y;
 	protected int z;
 
-	public void set_from_save(Map<?, ?> save) {
+	protected void set_from_save(Map<?, ?> save) {
 		this.set_location((String) save.get("world"), (int) save.get("x"), (int) save.get("y"), (int) save.get("z"));
 		this.init_after_set_location();
 		if (this instanceof Ownable) {
@@ -63,7 +63,7 @@ public abstract class Structure {
 		return this.get_chunk_location().is_loaded();
 	}
 
-	public HashMap<String, Object> get_save() {
+	protected HashMap<String, Object> get_save() {
 		HashMap<String, Object> save = new HashMap<String, Object>();
 		save.put("world", this.world_name);
 		save.put("x", this.x);
@@ -92,7 +92,7 @@ public abstract class Structure {
 	/**
 	 * 在设定好位置后、读取存档之前进行的初始化操作。
 	 */
-	public abstract void init_after_set_location();
+	protected abstract void init_after_set_location();
 
 	public void remove() {
 		this.get_manager().remove(this);

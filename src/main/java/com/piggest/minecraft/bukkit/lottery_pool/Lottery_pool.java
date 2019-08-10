@@ -26,7 +26,7 @@ public class Lottery_pool extends Multi_block_structure {
 	boolean running = false;
 
 	@Override
-	public void on_right_click(Player player) {
+	protected void on_right_click(Player player) {
 		if (this.completed() == false) {
 			this.remove();
 			return;
@@ -195,7 +195,7 @@ public class Lottery_pool extends Multi_block_structure {
 	}
 
 	@Override
-	public void init_after_set_location() {
+	protected void init_after_set_location() {
 		return;
 	}
 }

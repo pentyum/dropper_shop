@@ -84,11 +84,10 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 	}
 
 	@Override
-	public void set_from_save(Map<?, ?> shop_save) {
+	protected void set_from_save(Map<?, ?> shop_save) {
 		super.set_from_save(shop_save);
 
 		this.add_exp((int) shop_save.get("saved-exp"));
-		//this.set_mending((ItemStack) shop_save.get("mending-item"));
 		int anvil = (int) shop_save.get("anvil-count");
 		int chipped_anvil = (int) shop_save.get("chipped-anvil-count");
 		int damaged_anvil = (int) shop_save.get("damaged-anvil-count");
@@ -100,10 +99,9 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 	}
 
 	@Override
-	public HashMap<String, Object> get_save() {
+	protected HashMap<String, Object> get_save() {
 		HashMap<String, Object> save = super.get_save();
 		save.put("saved-exp", this.saved_exp);
-		//save.put("mending-item", this.get_mending());
 		save.put("anvil-count", this.anvil_count);
 		save.put("chipped-anvil-count", this.chipped_anvil_count);
 		save.put("damaged-anvil-count", this.damaged_anvil_count);
@@ -338,11 +336,26 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 	}
 
 	@Override
-	public void init_after_set_location() {
+	protected void init_after_set_location() {
 		return;
 	}
 
 	public Hopper get_hopper() {
 		return this.get_hopper(hopper_check_list, false);
+	}
+
+	@Override
+	public boolean on_put_item(Player player, ItemStack cursor_item, int slot) {
+		return true;
+	}
+
+	@Override
+	public boolean on_take_item(Player player, ItemStack in_item, int slot) {
+		return true;
+	}
+
+	@Override
+	public boolean on_exchange_item(Player player, ItemStack in_item, ItemStack cursor_item, int slot) {
+		return true;
 	}
 }

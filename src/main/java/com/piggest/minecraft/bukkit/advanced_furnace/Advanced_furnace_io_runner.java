@@ -43,7 +43,9 @@ public class Advanced_furnace_io_runner extends Structure_runner {
 					product_chest);
 
 		}
-		
+
+		this.adv_furnace.set_litting(this.adv_furnace.get_temperature() > 1200);
+
 		if (this.adv_furnace.get_temperature() > 4000) {
 			Location loc = this.adv_furnace.get_location();
 			loc.getWorld().createExplosion(loc, 8);
