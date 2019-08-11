@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.config.Price_config;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.utils.Server_date;
 
 public class Dropper_shop_command_executor implements CommandExecutor {
@@ -120,6 +121,13 @@ public class Dropper_shop_command_executor implements CommandExecutor {
 				player.sendMessage("Thread: " + Thread.currentThread().getId());
 			} else if (args[0].equalsIgnoreCase("show_date")) {
 				player.sendMessage("当前服务器日期: " + Server_date.formatDate(Server_date.get_world_date(player.getWorld())));
+			} else if (args[0].equalsIgnoreCase("raid")) {
+				boolean raid_result = NMS_manager.raid_provider.trigger_raid(player);
+				if (raid_result == true) {
+					player.sendMessage("袭击触发成功");
+				} else {
+					player.sendMessage("袭击触发失败");
+				}
 			} else {
 				return false;
 			}
