@@ -142,7 +142,7 @@ public interface Radio_terminal {
 		return result;
 	}
 	
-	public String get_name();
+	public String get_display_name();
 	
-	public void set_name(String name);
+	public void set_display_name(String name);
 }

@@ -61,19 +61,27 @@ public class Teleport_machine_manager extends Gui_structure_manager<Teleport_mac
 
 		this.set_gui(36, Material.CHEST, "§r元素信息", Gui_slot_type.Indicator);
 		this.set_gui(37, Material.MINECART, "§r传送台上实体转化为元素", Gui_slot_type.Button);
+		this.set_gui(39, Material.EXPERIENCE_BOTTLE, "§r魔力信息", Gui_slot_type.Indicator);
+		this.set_gui(40, Material.PLAYER_HEAD, "§r玩家经验转化为魔力", Gui_slot_type.Button);
 
-		this.set_gui(45, Material.EXPERIENCE_BOTTLE, "§r魔力信息", Gui_slot_type.Indicator);
-		this.set_gui(46, Material.PLAYER_HEAD, "§r玩家经验转化为魔力", Gui_slot_type.Button);
+		this.set_gui(45, null, "item-slot", Gui_slot_type.Item_store);
+		this.set_gui(46, Material.BLUE_STAINED_GLASS_PANE, "§r左边放置物品转化为元素", Gui_slot_type.Indicator);
+		this.set_gui(Teleport_machine.name_tag_slot, null, "name-tag-slot", Gui_slot_type.Item_store);
+		this.set_gui(48, Material.BLUE_STAINED_GLASS_PANE, "§r左边放置命名牌给本传送机命名", Gui_slot_type.Indicator);
 
 		this.set_gui(32, Material.RED_STAINED_GLASS_PANE, "§r提高待机电压", Gui_slot_type.Button);
 		this.set_gui(33, Material.RED_STAINED_GLASS_PANE, "§r提高发射电压", Gui_slot_type.Button);
 		this.set_gui(34, Material.RED_STAINED_GLASS_PANE, "§r增加带宽", Gui_slot_type.Button);
 		this.set_gui(35, Material.RED_STAINED_GLASS_PANE, "§r提高载波频率", Gui_slot_type.Button);
 
-		this.set_gui(41, Material.COMPASS, "§r当前待机电压", Gui_slot_type.Indicator);
-		this.set_gui(42, Material.COMPASS, "§r当前发射电压", Gui_slot_type.Indicator);
-		this.set_gui(43, Material.COMPASS, "§r当前带宽", Gui_slot_type.Indicator);
-		this.set_gui(44, Material.COMPASS, "§r当前载波频率", Gui_slot_type.Indicator);
+		this.set_gui(Teleport_machine.online_voltage_indicator, Material.COMPASS, "§r当前待机电压", new String[] { "§7 0 V" },
+				Gui_slot_type.Indicator);
+		this.set_gui(Teleport_machine.working_voltage_indicator, Material.COMPASS, "§r当前发射电压",
+				new String[] { "§7 0 V" }, Gui_slot_type.Indicator);
+		this.set_gui(Teleport_machine.bandwidth_indicator, Material.COMPASS, "§r当前带宽", new String[] { "§7 0 kHz" },
+				Gui_slot_type.Indicator);
+		this.set_gui(Teleport_machine.freq_indicator, Material.COMPASS, "§r当前载波频率", new String[] { "§7 0 kHz" },
+				Gui_slot_type.Indicator);
 
 		this.set_gui(50, Material.BLUE_STAINED_GLASS_PANE, "§r降低待机电压", Gui_slot_type.Button);
 		this.set_gui(51, Material.BLUE_STAINED_GLASS_PANE, "§r降低发射电压", Gui_slot_type.Button);
