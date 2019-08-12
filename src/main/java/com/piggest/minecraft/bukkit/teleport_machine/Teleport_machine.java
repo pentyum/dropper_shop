@@ -12,6 +12,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.piggest.minecraft.bukkit.exp_saver.SetExpFix;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
@@ -23,8 +24,10 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 	public static final int working_voltage_indicator = 42;
 	public static final int bandwidth_indicator = 43;
 	public static final int freq_indicator = 44;
+	public static final int magic_indicator = 39;
+	public static final int radio_indicator = 30;
 
-	private String name = "定点传送台";
+	private String name = "魔术传送台";
 	private int channel_freq = 0;
 	private Radio_state state = Radio_state.OFF;
 	private int channel_bandwidth = 0;
@@ -35,6 +38,7 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 	private ArrayList<Radio_terminal> known_terminal_list = new ArrayList<Radio_terminal>();
 	private int[] elements_amount = new int[96];
 	private Inventory elements_gui = Bukkit.createInventory(this, 27);
+	private int exp_magic_exchange_rate = 1000; // 每1000点经验转化为多少魔力
 
 	public Teleport_machine() {
 		Radio_manager.instance.add(this);
@@ -70,6 +74,16 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 			player.openInventory(this.elements_gui);
 			break;
 		case 37:// 传送台上实体转化为元素
+			break;
+		case 40:// 玩家经验转化为魔力
+			int total_exp = SetExpFix.getTotalExperience(player);
+			int use_exp = 1000;
+			if (total_exp < 1000) {
+				use_exp = total_exp;
+			}
+			int add_magic = use_exp * exp_magic_exchange_rate / 1000;
+			this.set_amount(Element.Magic, this.get_amount(Element.Magic) + add_magic);
+			player.sendMessage("[传送机]成功将" + use_exp + "点经验转化为" + add_magic + "点魔力");
 			break;
 		case 50:// 降低待机电压
 			if (this.online_voltage <= 0) {
@@ -107,7 +121,7 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 				&& start < page * 18; start++) {
 			ItemStack item = new ItemStack(Material.END_ROD);
 			ItemMeta meta = item.getItemMeta();
-			meta.setDisplayName(terminal.get_display_name());
+			meta.setDisplayName(terminal.getCustomName());
 			item.setItemMeta(meta);
 			this.gui.setItem(slot, item);
 			slot++;
@@ -123,9 +137,9 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 		switch (slot) {
 		case 27:
 			if (on == false) {
-				this.state = Radio_state.OFF;
+				this.set_state(Radio_state.OFF);
 			} else {
-				this.state = Radio_state.ONLINE;
+				this.set_state(Radio_state.ONLINE);
 			}
 			return true;
 		default:
@@ -184,6 +198,16 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 	@Override
 	public Radio_state get_state() {
 		return this.state;
+	}
+
+	public void set_state(Radio_state state) {
+		this.state = state;
+		ItemStack item = this.gui.getItem(radio_indicator);
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = meta.getLore();
+		lore.set(1, "§7运行状态: " + state.display_name);
+		meta.setLore(lore);
+		item.setItemMeta(meta);
 	}
 
 	@Override
@@ -259,15 +283,10 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 		if (id_name.equals("name_tag")) {
 			ItemMeta meta = item.getItemMeta();
 			if (meta.hasDisplayName()) {
-				this.set_display_name(meta.getDisplayName());
+				this.setCustomName(meta.getDisplayName());
 				item.setAmount(0);
 			}
 		}
-	}
-
-	@Override
-	public void set_display_name(String name) {
-		this.name = name;
 	}
 
 	@Override
@@ -283,10 +302,16 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 	@Override
 	public void set_amount(Element element, int amount) {
 		this.elements_amount[element.atomic_number] = amount;
-		ItemStack item = this.elements_gui.getItem(element.order_id);
+		ItemStack item;
+		if (element == Element.Magic) {
+			item = this.gui.getItem(magic_indicator);
+
+		} else {
+			item = this.elements_gui.getItem(element.order_id);
+		}
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = meta.getLore();
-		lore.set(0, "§7剩余" + amount + "单位");
+		lore.set(0, "§7剩余: " + amount + "单位");
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 	}
@@ -296,7 +321,7 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 			ItemStack item = new ItemStack(Material.CHEST);
 			ItemMeta meta = item.getItemMeta();
 			ArrayList<String> lore = new ArrayList<String>();
-			lore.add("§7剩余0单位");
+			lore.add("§7剩余: 0单位");
 			meta.setLore(lore);
 			meta.setDisplayName("§r" + element.name() + " 元素");
 			item.setItemMeta(meta);
@@ -304,6 +329,39 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 			this.elements_gui.setItem(element.order_id, item);
 		}
 		ItemStack back_item = new ItemStack(Material.REDSTONE_LAMP);
+		ItemMeta meta = back_item.getItemMeta();
+		meta.setDisplayName("返回传送机界面");
+		back_item.setItemMeta(meta);
 		this.elements_gui.setItem(this.elements_gui.getSize() - 1, back_item);
+	}
+
+	@Override
+	public String getCustomName() {
+		return this.get_display_name();
+	}
+
+	@Override
+	public void setCustomName(String name) {
+		this.name = name;
+		ItemStack item = this.gui.getItem(radio_indicator);
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = meta.getLore();
+		lore.set(0, "§7终端名称: " + name);
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+	}
+
+	@Override
+	public void set_n(int n) {
+		this.n = n;
+		ItemStack item = this.gui.getItem(radio_indicator);
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = meta.getLore();
+		lore.set(4, "§7天线长度: " + n + "m");
+		int central_freq = Radio.get_central_freq(n);
+		lore.set(5, "§7中心频率: " + central_freq + "kHz");
+		lore.set(6, "§7天线频宽: " + (int) (central_freq * 2 * Radio.antenna_bandwidth) + "kHz");
+		meta.setLore(lore);
+		item.setItemMeta(meta);
 	}
 }

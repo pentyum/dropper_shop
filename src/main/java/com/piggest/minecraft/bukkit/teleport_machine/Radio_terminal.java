@@ -3,18 +3,21 @@ package com.piggest.minecraft.bukkit.teleport_machine;
 import java.util.ArrayList;
 
 import org.bukkit.Location;
+import org.bukkit.Nameable;
 import org.bukkit.block.Biome;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Radio;
 
-public interface Radio_terminal {
+public interface Radio_terminal extends Nameable {
 
 	/*
 	 * 获得天线段数，每段长度为1m，对应1/4波长
 	 */
 	public int get_n();
-
+	
+	public void set_n(int n);
+	
 	/*
 	 * 获得信道中心频率，单位kHz
 	 */
@@ -57,6 +60,8 @@ public interface Radio_terminal {
 	public int get_voltage(Radio_state state);
 
 	public Radio_state get_state();
+
+	public void set_state(Radio_state state);
 
 	/*
 	 * 获得其他信号源导致的噪声(总强度)
@@ -141,8 +146,5 @@ public interface Radio_terminal {
 		}
 		return result;
 	}
-	
-	public String get_display_name();
-	
-	public void set_display_name(String name);
+
 }
