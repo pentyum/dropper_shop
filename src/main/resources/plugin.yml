@@ -63,6 +63,9 @@ permissions:
   dropper_shop.remove.others:
     description: Remove others dropper shop.
     default: op
+  dropper_shop.raid:
+    description: Make a raid.
+    default: op
   depository.make:
     description: Make or remove a depository.
     default: true
