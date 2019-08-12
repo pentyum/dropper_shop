@@ -59,7 +59,7 @@ public class Teleport_machine_manager extends Gui_structure_manager<Teleport_mac
 		this.set_gui(29, Material.PAPER, "§r立刻刷新无线电信息", Gui_slot_type.Button);
 		this.set_gui(30, Material.END_ROD, "§r当前无线电信息", Gui_slot_type.Indicator);
 
-		this.set_gui(36, Material.CHEST, "§r元素信息", Gui_slot_type.Indicator);
+		this.set_gui(36, Material.CHEST, "§r元素信息", Gui_slot_type.Button);
 		this.set_gui(37, Material.MINECART, "§r传送台上实体转化为元素", Gui_slot_type.Button);
 		this.set_gui(39, Material.EXPERIENCE_BOTTLE, "§r魔力信息", Gui_slot_type.Indicator);
 		this.set_gui(40, Material.PLAYER_HEAD, "§r玩家经验转化为魔力", Gui_slot_type.Button);

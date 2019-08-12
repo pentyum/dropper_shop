@@ -8,6 +8,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.teleport_machine.Element;
+import com.piggest.minecraft.bukkit.teleport_machine.Elements_container;
 import com.piggest.minecraft.bukkit.utils.Chunk_location;
 
 public abstract class Structure {
@@ -16,6 +18,7 @@ public abstract class Structure {
 	protected int y;
 	protected int z;
 
+	@SuppressWarnings("unchecked")
 	protected void set_from_save(Map<?, ?> save) {
 		this.set_location((String) save.get("world"), (int) save.get("x"), (int) save.get("y"), (int) save.get("z"));
 		this.init_after_set_location();
@@ -26,6 +29,13 @@ public abstract class Structure {
 		if (this instanceof Capacity_upgradable) {
 			Capacity_upgradable upgradable = (Capacity_upgradable) this;
 			upgradable.set_capacity_level((int) save.get("structure-level"));
+		}
+		if (this instanceof Elements_container) {
+			Elements_container elements_container = (Elements_container) this;
+			HashMap<String, Integer> elements_map = (HashMap<String, Integer>) save.get("elements");
+			for (Element element : Element.values()) {
+				elements_container.set_amount(element, elements_map.get(element.name()));
+			}
 		}
 	}
 
@@ -76,6 +86,14 @@ public abstract class Structure {
 		if (this instanceof Capacity_upgradable) {
 			Capacity_upgradable upgradable = (Capacity_upgradable) this;
 			save.put("structure-level", upgradable.get_capacity_level());
+		}
+		if (this instanceof Elements_container) {
+			Elements_container elements_container = (Elements_container) this;
+			HashMap<String, Integer> elements_map = new HashMap<String, Integer>();
+			for (Element element : Element.values()) {
+				elements_map.put(element.name(), elements_container.get_amount(element));
+			}
+			save.put("elements", elements_map);
 		}
 		return save;
 	}

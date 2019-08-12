@@ -31,6 +31,9 @@ public class Gui_listener implements Listener {
 		if (holder == null) {
 			return;
 		}
+		if (holder.getInventory() != event.getClickedInventory()) {
+			return;
+		}
 		Structure_manager<?> structure_manager = Dropper_shop_plugin.instance.get_structure_manager()
 				.get(holder.getClass());
 		if (structure_manager == null) {

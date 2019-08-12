@@ -5,16 +5,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.utils.Radio;
 
-public class Teleport_machine extends Multi_block_with_gui implements Radio_terminal {
+public class Teleport_machine extends Multi_block_with_gui implements Radio_terminal, Elements_container {
 	public static final int name_tag_slot = 47;
 	public static final int online_voltage_indicator = 41;
 	public static final int working_voltage_indicator = 42;
@@ -30,9 +33,12 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 	private int working_voltage = 12;
 	private int current_page = 1;
 	private ArrayList<Radio_terminal> known_terminal_list = new ArrayList<Radio_terminal>();
+	private int[] elements_amount = new int[96];
+	private Inventory elements_gui = Bukkit.createInventory(this, 27);
 
 	public Teleport_machine() {
 		Radio_manager.instance.add(this);
+		this.init_elements_gui();
 	}
 
 	@Override
@@ -49,6 +55,7 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 			this.set_gui_terminal_list(1);
 			break;
 		case 29:// 立刻刷新无线电信息
+			break;
 		case 32:// 提高待机电压
 			this.set_online_voltage(this.online_voltage + 1);
 			break;
@@ -56,8 +63,14 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 			this.set_working_voltage(this.online_voltage + 1);
 			break;
 		case 34:// 增加带宽
+			break;
 		case 35:// 提高载波频率
+			break;
+		case 36:// 显示元素信息
+			player.openInventory(this.elements_gui);
+			break;
 		case 37:// 传送台上实体转化为元素
+			break;
 		case 50:// 降低待机电压
 			if (this.online_voltage <= 0) {
 				this.set_online_voltage(0);
@@ -73,6 +86,7 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 			}
 			break;
 		case 52:// 减少带宽
+			break;
 		case 53:// 降低载波频率
 			break;
 		default:
@@ -188,14 +202,14 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 		this.online_voltage = voltage;
 		ItemStack item = this.gui.getItem(online_voltage_indicator);
 		List<String> lore = item.getItemMeta().getLore();
-		lore.set(0, "§7 " + voltage + " V");
+		lore.set(0, "§7" + voltage + " V");
 	}
 
 	private void set_working_voltage(int voltage) {
 		this.working_voltage = voltage;
 		ItemStack item = this.gui.getItem(working_voltage_indicator);
 		List<String> lore = item.getItemMeta().getLore();
-		lore.set(0, "§7 " + voltage + " V");
+		lore.set(0, "§7" + voltage + " V");
 	}
 
 	@Override
@@ -204,7 +218,7 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 			this.channel_freq = freq;
 			ItemStack item = this.gui.getItem(freq_indicator);
 			List<String> lore = item.getItemMeta().getLore();
-			lore.set(0, "§7 " + freq + " kHz");
+			lore.set(0, "§7" + freq + " kHz");
 		}
 	}
 
@@ -214,7 +228,7 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 			this.channel_bandwidth = bandwidth;
 			ItemStack item = this.gui.getItem(bandwidth_indicator);
 			List<String> lore = item.getItemMeta().getLore();
-			lore.set(0, "§7 " + bandwidth + " kHz");
+			lore.set(0, "§7" + bandwidth + " kHz");
 		}
 	}
 
@@ -259,5 +273,37 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 	@Override
 	public String get_display_name() {
 		return this.name;
+	}
+
+	@Override
+	public int get_amount(Element element) {
+		return this.elements_amount[element.atomic_number];
+	}
+
+	@Override
+	public void set_amount(Element element, int amount) {
+		this.elements_amount[element.atomic_number] = amount;
+		ItemStack item = this.elements_gui.getItem(element.order_id);
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = meta.getLore();
+		lore.set(0, "§7剩余" + amount + "单位");
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+	}
+
+	private void init_elements_gui() {
+		for (Element element : Element.values()) {
+			ItemStack item = new ItemStack(Material.CHEST);
+			ItemMeta meta = item.getItemMeta();
+			ArrayList<String> lore = new ArrayList<String>();
+			lore.add("§7剩余0单位");
+			meta.setLore(lore);
+			meta.setDisplayName("§r" + element.name() + " 元素");
+			item.setItemMeta(meta);
+			NMS_manager.element_type_provider.set_element_id(item, element.atomic_number);
+			this.elements_gui.setItem(element.order_id, item);
+		}
+		ItemStack back_item = new ItemStack(Material.REDSTONE_LAMP);
+		this.elements_gui.setItem(this.elements_gui.getSize() - 1, back_item);
 	}
 }
