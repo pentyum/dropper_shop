@@ -12,7 +12,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.exp_saver.SetExpFix;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
@@ -27,24 +29,29 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 	public static final int freq_indicator = 44;
 	public static final int magic_indicator = 39;
 	public static final int radio_indicator = 30;
+	public static final int open_switch = 27;
 
-	private String name = "魔术传送台";
-	private int channel_freq = 0;
+	private String name = this.get_manager().get_gui_name();
+	private int channel_freq = 75000;
 	private Radio_state state = Radio_state.OFF;
-	private int channel_bandwidth = 0;
+	private int channel_bandwidth = 100;
 	private int n = 0;
 	private int online_voltage = 1;
 	private int working_voltage = 12;
 	private int current_page = 1;
 	private ArrayList<Radio_terminal> known_terminal_list = new ArrayList<Radio_terminal>();
 	private int[] elements_amount = new int[96];
-	private Inventory elements_gui = Bukkit.createInventory(this, 27);
+	private Inventory elements_gui = Bukkit.createInventory(this, 27, "元素存储");
 	private int exp_magic_exchange_rate = 1000; // 每1000点经验转化为多少魔力
 	private Radio_terminal current_work_with = null;
 
 	public Teleport_machine() {
 		Radio_manager.instance.add(this);
 		this.init_elements_gui();
+		this.set_switch(open_switch, false);
+		this.set_process(0);
+		this.set_online_voltage(this.online_voltage);
+		this.set_working_voltage(this.working_voltage);
 	}
 
 	@Override
@@ -131,18 +138,18 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 			ArrayList<String> lore = new ArrayList<String>();
 			Location loc = terminal.get_location();
 			lore.add("§7位置: " + loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ() + ",");
-			lore.add("§7距离: " + (int) (loc.distance(this.get_location())) + "m");
-			lore.add("§7频率: " + terminal.get_channel_freq() + "kHz");
-			lore.add("§7载波带宽: " + terminal.get_channel_bandwidth() + "kHz");
+			lore.add("§7距离: " + (int) (loc.distance(this.get_location())) + " m");
+			lore.add("§7频率: " + terminal.get_channel_freq() + " kHz");
+			lore.add("§7载波带宽: " + terminal.get_channel_bandwidth() + " kHz");
 			double signal = this.get_signal(terminal, terminal.get_state());
 			double noise = this.get_noise(terminal);
 			int snr = (int) (10 * Math.log10(signal / noise));
-			lore.add("§7当前接收目标发射强度: " + snr + "dB");
-			signal = terminal.get_signal(this, Radio_state.WORKING,true);
+			lore.add("§7当前接收目标发射强度: " + snr + " dB");
+			signal = terminal.get_signal(this, Radio_state.WORKING, true);
 			noise = terminal.get_noise(this);
 			snr = (int) (10 * Math.log10(signal / noise));
-			lore.add("§7预计发射目标接收强度: " + snr + "dB");
-			//lore.add("§7预计传输速率: kB/s");
+			lore.add("§7预计发射目标接收强度: " + snr + " dB");
+			// lore.add("§7预计传输速率: kB/s");
 			meta.setLore(lore);
 			item.setItemMeta(meta);
 			this.gui.setItem(slot, item);
@@ -176,7 +183,7 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 
 	@Override
 	protected void init_after_set_location() {
-		this.n = 1;
+		this.set_n(1);
 	}
 
 	@Override
@@ -203,6 +210,10 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 	protected HashMap<String, Object> get_save() {
 		HashMap<String, Object> save = super.get_save();
 		save.put("state", this.state.name());
+		save.put("channel-bandwidth", this.channel_bandwidth);
+		save.put("channel-freq", this.channel_freq);
+		save.put("working-voltage", this.working_voltage);
+		save.put("online-voltage", this.online_voltage);
 		return save;
 	}
 
@@ -211,10 +222,10 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 		super.set_from_save(save);
 		String state_string = (String) save.get("state");
 		this.state = Radio_state.valueOf(state_string);
-		this.channel_bandwidth = (int) save.get("channel-bandwidth");
-		this.channel_freq = (int) save.get("channel-freq");
-		this.working_voltage = (int) save.get("working-voltage");
-		this.online_voltage = (int) save.get("online_voltage");
+		this.set_channel_bandwidth((int) save.get("channel-bandwidth"));
+		this.set_channel_freq((int) save.get("channel-freq"));
+		this.set_working_voltage((int) save.get("working-voltage"));
+		this.set_online_voltage((int) save.get("online-voltage"));
 	}
 
 	@Override
@@ -247,15 +258,21 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 	private void set_online_voltage(int voltage) {
 		this.online_voltage = voltage;
 		ItemStack item = this.gui.getItem(online_voltage_indicator);
-		List<String> lore = item.getItemMeta().getLore();
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = meta.getLore();
 		lore.set(0, "§7" + voltage + " V");
+		meta.setLore(lore);
+		item.setItemMeta(meta);
 	}
 
 	private void set_working_voltage(int voltage) {
 		this.working_voltage = voltage;
 		ItemStack item = this.gui.getItem(working_voltage_indicator);
-		List<String> lore = item.getItemMeta().getLore();
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = meta.getLore();
 		lore.set(0, "§7" + voltage + " V");
+		meta.setLore(lore);
+		item.setItemMeta(meta);
 	}
 
 	@Override
@@ -263,8 +280,11 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 		if (Radio.check_channel_vaild(freq, this.channel_bandwidth, this.n)) {
 			this.channel_freq = freq;
 			ItemStack item = this.gui.getItem(freq_indicator);
-			List<String> lore = item.getItemMeta().getLore();
+			ItemMeta meta = item.getItemMeta();
+			List<String> lore = meta.getLore();
 			lore.set(0, "§7" + freq + " kHz");
+			meta.setLore(lore);
+			item.setItemMeta(meta);
 		}
 	}
 
@@ -273,8 +293,11 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 		if (Radio.check_channel_vaild(this.channel_freq, bandwidth, this.n)) {
 			this.channel_bandwidth = bandwidth;
 			ItemStack item = this.gui.getItem(bandwidth_indicator);
-			List<String> lore = item.getItemMeta().getLore();
+			ItemMeta meta = item.getItemMeta();
+			List<String> lore = meta.getLore();
 			lore.set(0, "§7" + bandwidth + " kHz");
+			meta.setLore(lore);
+			item.setItemMeta(meta);
 		}
 	}
 
@@ -282,7 +305,8 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 	public boolean on_put_item(Player player, ItemStack cursor_item, int slot) {
 		switch (slot) {
 		case name_tag_slot:
-			this.set_name_by_name_tag(cursor_item);
+			Name_tag_remover remover = new Name_tag_remover(this);
+			remover.runTaskLaterAsynchronously(Dropper_shop_plugin.instance, 1);
 			return true;
 		default:
 			break;
@@ -300,17 +324,6 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 		return true;
 	}
 
-	private void set_name_by_name_tag(ItemStack item) {
-		String id_name = Material_ext.get_id_name(item);
-		if (id_name.equals("name_tag")) {
-			ItemMeta meta = item.getItemMeta();
-			if (meta.hasDisplayName()) {
-				this.setCustomName(meta.getDisplayName());
-				item.setAmount(0);
-			}
-		}
-	}
-
 	@Override
 	public String get_display_name() {
 		return this.name;
@@ -325,25 +338,30 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 	public void set_amount(Element element, int amount) {
 		this.elements_amount[element.atomic_number] = amount;
 		ItemStack item;
+		String unit;
 		if (element == Element.Magic) {
 			item = this.gui.getItem(magic_indicator);
-
+			unit = " Wh";
 		} else {
 			item = this.elements_gui.getItem(element.order_id);
+			unit = " 单位";
 		}
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = meta.getLore();
-		lore.set(0, "§7剩余: " + amount + "单位");
+		lore.set(0, "§7剩余: " + amount + unit);
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 	}
 
 	private void init_elements_gui() {
 		for (Element element : Element.values()) {
+			if (element.order_id < 0) {
+				continue;
+			}
 			ItemStack item = new ItemStack(Material.CHEST);
 			ItemMeta meta = item.getItemMeta();
 			ArrayList<String> lore = new ArrayList<String>();
-			lore.add("§7剩余: 0单位");
+			lore.add("§7剩余: 0 单位");
 			meta.setLore(lore);
 			meta.setDisplayName("§r" + element.name() + " 元素");
 			item.setItemMeta(meta);
@@ -352,7 +370,7 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 		}
 		ItemStack back_item = new ItemStack(Material.REDSTONE_LAMP);
 		ItemMeta meta = back_item.getItemMeta();
-		meta.setDisplayName("返回传送机界面");
+		meta.setDisplayName("§6返回传送机界面");
 		back_item.setItemMeta(meta);
 		this.elements_gui.setItem(this.elements_gui.getSize() - 1, back_item);
 	}
@@ -379,12 +397,16 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 		ItemStack item = this.gui.getItem(radio_indicator);
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = meta.getLore();
-		lore.set(4, "§7天线长度: " + n + "m");
+		lore.set(4, "§7天线长度: " + n + " m");
 		int central_freq = Radio.get_central_freq(n);
-		lore.set(5, "§7中心频率: " + central_freq + "kHz");
-		lore.set(6, "§7天线频宽: " + (int) (central_freq * 2 * Radio.antenna_bandwidth) + "kHz");
+		lore.set(5, "§7中心频率: " + central_freq + " kHz");
+		lore.set(6, "§7天线频宽: " + (int) (central_freq * 2 * Radio.antenna_bandwidth) + " kHz");
 		meta.setLore(lore);
 		item.setItemMeta(meta);
+		this.channel_freq = central_freq;
+		this.channel_bandwidth = 100;
+		this.set_channel_freq(central_freq);
+		this.set_channel_bandwidth(100);
 	}
 
 	@Override
@@ -401,4 +423,31 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 	public Inventory get_elements_gui() {
 		return this.elements_gui;
 	}
+
+	public void set_process(int process) {
+		this.set_process(0, 0, "§e传输已完成%d%%", process);
+	}
+
+}
+
+class Name_tag_remover extends BukkitRunnable {
+	private Teleport_machine machine;
+
+	public Name_tag_remover(Teleport_machine machine) {
+		this.machine = machine;
+	}
+
+	@Override
+	public void run() {
+		ItemStack item = machine.getInventory().getItem(Teleport_machine.name_tag_slot);
+		String id_name = Material_ext.get_id_name(item);
+		if (id_name.equals("name_tag")) {
+			ItemMeta meta = item.getItemMeta();
+			if (meta.hasDisplayName()) {
+				machine.setCustomName(meta.getDisplayName());
+				item.setAmount(item.getAmount() - 1);
+			}
+		}
+	}
+
 }

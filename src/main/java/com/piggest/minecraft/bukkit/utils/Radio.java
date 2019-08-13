@@ -62,8 +62,8 @@ public class Radio {
 		}
 	}
 
-	public static double get_signal_at(Location source_location, int source_power, int source_freq, int source_bandwidth,
-			Location receiver_location, int receiver_freq, int receiver_bandwidth) {
+	public static double get_signal_at(Location source_location, int source_power, int source_freq,
+			int source_bandwidth, Location receiver_location, int receiver_freq, int receiver_bandwidth) {
 		double power_per_freq = get_power_at(source_location, source_power, source_freq, receiver_location);
 		return power_per_freq * get_common_bandwidth(source_freq, source_bandwidth, receiver_freq, receiver_bandwidth);
 	}
@@ -73,7 +73,7 @@ public class Radio {
 		int channel_min_freq = channel_freq - channel_bandwidth / 2;
 		int antenna_central_freq = get_central_freq(n);
 		if (channel_max_freq > (1 + antenna_bandwidth) * antenna_central_freq
-				|| channel_min_freq > (1 - antenna_bandwidth) * antenna_central_freq) {
+				|| channel_min_freq < (1 - antenna_bandwidth) * antenna_central_freq) {
 			return false;
 		}
 		if (antenna_central_freq * 2 * antenna_bandwidth / channel_bandwidth < max_channel_bandwidth) {

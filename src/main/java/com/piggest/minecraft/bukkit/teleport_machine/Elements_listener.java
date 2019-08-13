@@ -1,5 +1,6 @@
 package com.piggest.minecraft.bukkit.teleport_machine;
 
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -17,6 +18,11 @@ public class Elements_listener implements Listener {
 		if (holder instanceof Elements_container) {
 			Inventory elements_gui = ((Elements_container) holder).get_elements_gui();
 			if (gui == elements_gui) {
+				if(event.getSlot()==elements_gui.getSize()-1) {
+					HumanEntity player = event.getWhoClicked();
+					player.closeInventory();
+					player.openInventory(holder.getInventory());
+				}
 				event.setCancelled(true);
 			}
 		}

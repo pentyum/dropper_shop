@@ -61,8 +61,15 @@ public class Item_zh_cn {
 		name.put("minecraft:diamond_pickaxe", "钻石镐");
 		name.put("minecraft:diamond_sword", "钻石剑");
 		name.put("minecraft:iron_sword", "铁剑");
+		name.put("minecraft:iron_leggings", "铁护腿");
+		name.put("minecraft:iron_chestplate", "铁胸甲");
+		name.put("minecraft:iron_boots", "铁鞋子");
+		name.put("minecraft:diamond_leggings", "钻石护腿");
 		name.put("minecraft:diamond_chestplate", "钻石胸甲");
 		name.put("minecraft:diamond_boots", "钻石鞋子");
+		name.put("minecraft:chainmail_leggings", "锁链护腿");
+		name.put("minecraft:chainmail_chestplate", "锁链胸甲");
+		name.put("minecraft:chainmail_boots", "锁链鞋子");
 		name.put("minecraft:fishing_rod", "钓鱼竿");
 		name.put("minecraft:flint_and_steel", "打火石");
 		name.put("minecraft:bucket", "铁桶");
