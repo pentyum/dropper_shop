@@ -46,6 +46,28 @@ public class Radio {
 		return radiant_power / distance / distance;
 	}
 
+	public static int get_common_bandwidth(int source_freq, int source_bandwidth, int receiver_freq,
+			int receiver_bandwidth) {
+		int source_min_freq = source_freq - source_bandwidth / 2;
+		int source_max_freq = source_freq + source_bandwidth / 2;
+		int receiver_min_freq = receiver_freq - receiver_bandwidth / 2;
+		int receiver_max_freq = receiver_freq + receiver_bandwidth / 2;
+		int min_freq = Math.max(source_min_freq, receiver_min_freq);
+		int max_freq = Math.min(source_max_freq, receiver_max_freq);
+		int bandwidth = max_freq - min_freq;
+		if (bandwidth < 0) {
+			return 0;
+		} else {
+			return bandwidth;
+		}
+	}
+
+	public static double get_signal_at(Location source_location, int source_power, int source_freq, int source_bandwidth,
+			Location receiver_location, int receiver_freq, int receiver_bandwidth) {
+		double power_per_freq = get_power_at(source_location, source_power, source_freq, receiver_location);
+		return power_per_freq * get_common_bandwidth(source_freq, source_bandwidth, receiver_freq, receiver_bandwidth);
+	}
+
 	public static boolean check_channel_vaild(int channel_freq, int channel_bandwidth, int n) {
 		int channel_max_freq = channel_freq + channel_bandwidth / 2;
 		int channel_min_freq = channel_freq - channel_bandwidth / 2;

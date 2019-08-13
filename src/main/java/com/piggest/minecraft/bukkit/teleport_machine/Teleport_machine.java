@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -39,6 +40,7 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 	private int[] elements_amount = new int[96];
 	private Inventory elements_gui = Bukkit.createInventory(this, 27);
 	private int exp_magic_exchange_rate = 1000; // 每1000点经验转化为多少魔力
+	private Radio_terminal current_work_with = null;
 
 	public Teleport_machine() {
 		Radio_manager.instance.add(this);
@@ -67,8 +69,10 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 			this.set_working_voltage(this.online_voltage + 1);
 			break;
 		case 34:// 增加带宽
+			this.set_channel_bandwidth(this.get_channel_bandwidth() + 100);
 			break;
 		case 35:// 提高载波频率
+			this.set_channel_freq(this.get_channel_freq() + 500);
 			break;
 		case 36:// 显示元素信息
 			player.openInventory(this.elements_gui);
@@ -100,8 +104,10 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 			}
 			break;
 		case 52:// 减少带宽
+			this.set_channel_bandwidth(this.get_channel_bandwidth() - 100);
 			break;
 		case 53:// 降低载波频率
+			this.set_channel_freq(this.get_channel_freq() - 500);
 			break;
 		default:
 			break;
@@ -121,7 +127,23 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 				&& start < page * 18; start++) {
 			ItemStack item = new ItemStack(Material.END_ROD);
 			ItemMeta meta = item.getItemMeta();
-			meta.setDisplayName(terminal.getCustomName());
+			meta.setDisplayName("传送至 " + terminal.getCustomName());
+			ArrayList<String> lore = new ArrayList<String>();
+			Location loc = terminal.get_location();
+			lore.add("§7位置: " + loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ() + ",");
+			lore.add("§7距离: " + (int) (loc.distance(this.get_location())) + "m");
+			lore.add("§7频率: " + terminal.get_channel_freq() + "kHz");
+			lore.add("§7载波带宽: " + terminal.get_channel_bandwidth() + "kHz");
+			double signal = this.get_signal(terminal, terminal.get_state());
+			double noise = this.get_noise(terminal);
+			int snr = (int) (10 * Math.log10(signal / noise));
+			lore.add("§7当前接收目标发射强度: " + snr + "dB");
+			signal = terminal.get_signal(this, Radio_state.WORKING,true);
+			noise = terminal.get_noise(this);
+			snr = (int) (10 * Math.log10(signal / noise));
+			lore.add("§7预计发射目标接收强度: " + snr + "dB");
+			//lore.add("§7预计传输速率: kB/s");
+			meta.setLore(lore);
 			item.setItemMeta(meta);
 			this.gui.setItem(slot, item);
 			slot++;
@@ -363,5 +385,15 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 		lore.set(6, "§7天线频宽: " + (int) (central_freq * 2 * Radio.antenna_bandwidth) + "kHz");
 		meta.setLore(lore);
 		item.setItemMeta(meta);
+	}
+
+	@Override
+	public Radio_terminal get_current_work_with() {
+		return this.current_work_with;
+	}
+
+	@Override
+	public void set_current_work_with(Radio_terminal terminal) {
+		this.current_work_with = terminal;
 	}
 }

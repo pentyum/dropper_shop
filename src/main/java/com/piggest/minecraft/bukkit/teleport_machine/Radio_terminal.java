@@ -2,6 +2,8 @@ package com.piggest.minecraft.bukkit.teleport_machine;
 
 import java.util.ArrayList;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Location;
 import org.bukkit.Nameable;
 import org.bukkit.block.Biome;
@@ -15,9 +17,9 @@ public interface Radio_terminal extends Nameable {
 	 * 获得天线段数，每段长度为1m，对应1/4波长
 	 */
 	public int get_n();
-	
+
 	public void set_n(int n);
-	
+
 	/*
 	 * 获得信道中心频率，单位kHz
 	 */
@@ -72,21 +74,7 @@ public interface Radio_terminal extends Nameable {
 			if (terminal == source) {
 				continue;
 			}
-			int noise_radiant_power = terminal.get_current_radiant_power();
-			int noise_central_freq = terminal.get_channel_freq();
-			int noise_bandwidth = terminal.get_channel_bandwidth();
-			double power = Radio.get_power_at(terminal.get_location(), noise_radiant_power, noise_central_freq,
-					this.get_location());
-			int sigal_central_freq = source.get_channel_freq();
-			int sigal_bandwidth = source.get_channel_bandwidth();
-			int sigal_start_freq = sigal_central_freq - sigal_bandwidth / 2;
-			int sigal_end_freq = sigal_central_freq + sigal_bandwidth / 2;
-			int noise_start_freq = noise_central_freq - noise_bandwidth / 2;
-			int noise_end_freq = noise_central_freq + noise_bandwidth / 2;
-			if (noise_end_freq > sigal_start_freq || noise_start_freq < sigal_end_freq) {
-				total += power
-						* (Math.min(sigal_end_freq, noise_end_freq) - Math.max(sigal_start_freq, noise_start_freq));
-			}
+			total = this.get_signal(terminal, terminal.get_state());
 		}
 		return total;
 	}
@@ -112,12 +100,10 @@ public interface Radio_terminal extends Nameable {
 	}
 
 	/*
-	 * 获得某个发射源以一定功率(单位频率)发射到此处的信号强度
+	 * 获得某个发射源以此时发射到此处的信号强度
 	 */
-	public default double get_signal(Radio_terminal source, int radiant_power) {
-		double power = Radio.get_power_at(source.get_location(), radiant_power, source.get_channel_freq(),
-				this.get_location());
-		return power * source.get_channel_bandwidth();
+	public default double get_signal(Radio_terminal source, Radio_state state) {
+		return this.get_signal(source, state, false);
 	}
 
 	/*
@@ -125,7 +111,7 @@ public interface Radio_terminal extends Nameable {
 	 */
 	public default int get_working_speed(Radio_terminal source) {
 		double noise = this.get_noise(source);
-		double signal = this.get_signal(source, source.get_radiant_power(Radio_state.WORKING));
+		double signal = this.get_signal(source, Radio_state.WORKING);
 		return Radio.Shannon_equation(source.get_channel_bandwidth(), (int) (signal / noise));
 	}
 
@@ -137,7 +123,7 @@ public interface Radio_terminal extends Nameable {
 		Radio_manager manager = Dropper_shop_plugin.instance.get_radio_manager();
 		for (Radio_terminal terminal : manager) {
 			if (terminal != this) {
-				double target_signal = this.get_signal(terminal, terminal.get_current_radiant_power());
+				double target_signal = this.get_signal(terminal, terminal.get_state());
 				double target_noise = this.get_noise(terminal);
 				if (target_signal > target_noise) {
 					result.add(terminal);
@@ -147,4 +133,20 @@ public interface Radio_terminal extends Nameable {
 		return result;
 	}
 
+	@Nullable
+	public Radio_terminal get_current_work_with();
+
+	public void set_current_work_with(Radio_terminal terminal);
+
+	public default double get_signal(Radio_terminal source, Radio_state state, boolean b) {
+		if (b == false) {// 关闭频段匹配
+			return Radio.get_signal_at(source.get_location(), source.get_radiant_power(state),
+					source.get_channel_freq(), source.get_channel_bandwidth(), this.get_location(),
+					this.get_channel_freq(), this.get_channel_bandwidth());
+		} else {// 开启频段匹配
+			return Radio.get_signal_at(source.get_location(), source.get_radiant_power(state), this.get_channel_freq(),
+					this.get_channel_bandwidth(), this.get_location(), this.get_channel_freq(),
+					this.get_channel_bandwidth());
+		}
+	}
 }
