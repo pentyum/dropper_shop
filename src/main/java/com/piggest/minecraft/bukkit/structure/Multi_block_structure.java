@@ -15,8 +15,9 @@ public abstract class Multi_block_structure extends Structure {
 	}
 
 	public boolean completed() {
-		Material[][][] model = this.get_manager().get_model();
-		int[] center = this.get_manager().get_center();
+		Structure_manager<? extends Structure> manager = this.get_manager();
+		Material[][][] model = manager.get_model();
+		int[] center = manager.get_center();
 		if (model != null) {
 			for (int y = 0; y < model.length; y++) { // 从第0层开始
 				for (int z = 0; z < model[y].length; z++) {
@@ -24,6 +25,9 @@ public abstract class Multi_block_structure extends Structure {
 						Block check_block = this.get_block(x - center[0], y - center[1], z - center[2]);
 						if (model[y][z][x] != null) {
 							if (check_block.getType() != model[y][z][x]) {
+								return false;
+							}
+							if (manager.find_existed(check_block.getLocation()) != null) {
 								return false;
 							}
 						}

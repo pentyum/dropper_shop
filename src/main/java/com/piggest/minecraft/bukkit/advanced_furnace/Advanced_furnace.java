@@ -20,7 +20,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
-import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.Auto_io;
 import com.piggest.minecraft.bukkit.structure.Capacity_upgradable;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
@@ -160,12 +159,6 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 			this.set_fuel(Fuel.valueOf(fuel_type), fuel_amount);
 		}
 
-		if (shop_save.get("fuel-slot") != null) {
-			ItemStack fuel_slot_item = Material_ext.new_item((String) shop_save.get("fuel-slot"),
-					(Integer) shop_save.get("fuel-slot-num"));
-			this.set_fuel_slot(fuel_slot_item);
-		}
-
 		for (Entry<String, Integer> entry : contents.entrySet()) {
 			String name = entry.getKey();
 			Integer unit = entry.getValue();
@@ -223,13 +216,6 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 			save.put("fuel-type", this.fuel_info.fuel.name());
 		} else {
 			save.put("fuel-type", "null");
-		}
-
-		ItemStack fuel_slot = this.gui.getItem(Advanced_furnace.fuel_slot);
-
-		if (!Grinder.is_empty(fuel_slot)) {
-			save.put("fuel-slot", Material_ext.get_id_name(fuel_slot));
-			save.put("fuel-slot-num", fuel_slot.getAmount());
 		}
 
 		for (Entry<Chemical, Integer> entry : this.get_reaction_container().get_all_chemical().entrySet()) {

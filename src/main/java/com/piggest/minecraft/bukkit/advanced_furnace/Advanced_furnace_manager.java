@@ -56,6 +56,7 @@ public class Advanced_furnace_manager extends Gui_structure_manager<Advanced_fur
 				new String[] { "§7读条完成后即升级成功", "§7读条期间取出将重置进度" }, Gui_slot_type.Indicator);
 		this.set_gui(34, Material.BLUE_STAINED_GLASS_PANE, "§r右边为燃料燃烧产品", Gui_slot_type.Indicator);
 
+		this.set_gui(Advanced_furnace.fuel_slot, null, "fuel-slot", Gui_slot_type.Item_store);
 		this.set_gui(Advanced_furnace.solid_product_slot, null, "solid-product-slot", Gui_slot_type.Item_store);
 		this.set_gui(Advanced_furnace.solid_reactant_slot, null, "solid-reactant-slot", Gui_slot_type.Item_store);
 		this.set_gui(Advanced_furnace.liquid_product_slot, null, "liquid-product-slot", Gui_slot_type.Item_store);

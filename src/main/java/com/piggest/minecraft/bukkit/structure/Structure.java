@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Nameable;
 import org.bukkit.entity.Player;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
@@ -29,6 +30,10 @@ public abstract class Structure {
 		if (this instanceof Capacity_upgradable) {
 			Capacity_upgradable upgradable = (Capacity_upgradable) this;
 			upgradable.set_capacity_level((int) save.get("structure-level"));
+		}
+		if (this instanceof Nameable) {
+			Nameable nameable = (Nameable) this;
+			nameable.setCustomName((String) save.get("name"));
 		}
 		if (this instanceof Elements_container) {
 			Elements_container elements_container = (Elements_container) this;
@@ -86,6 +91,10 @@ public abstract class Structure {
 		if (this instanceof Capacity_upgradable) {
 			Capacity_upgradable upgradable = (Capacity_upgradable) this;
 			save.put("structure-level", upgradable.get_capacity_level());
+		}
+		if (this instanceof Nameable) {
+			Nameable nameable = (Nameable) this;
+			save.put("name", nameable.getCustomName());
 		}
 		if (this instanceof Elements_container) {
 			Elements_container elements_container = (Elements_container) this;
