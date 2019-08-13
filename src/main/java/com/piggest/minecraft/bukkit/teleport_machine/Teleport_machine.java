@@ -396,4 +396,9 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 	public void set_current_work_with(Radio_terminal terminal) {
 		this.current_work_with = terminal;
 	}
+
+	@Override
+	public Inventory get_elements_gui() {
+		return this.elements_gui;
+	}
 }
