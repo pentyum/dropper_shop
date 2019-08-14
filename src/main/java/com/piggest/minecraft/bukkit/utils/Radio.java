@@ -14,21 +14,47 @@ public class Radio {
 		return (int) (channel_bandwidth * Math.log(1 + ston) / Math.log(2));
 	}
 
-	/*
-	 * 获得阻抗，单位为欧姆
-	 */
-	public static int z(int n, int freq) {
-		int central_freq = get_central_freq(n);
-		int d = Math.abs(central_freq - freq);
-		return (int) (73.0 + 0.414 * 73.0 / antenna_bandwidth / central_freq * d);
+	public static double radiation_r(int n, int freq) {
+		double central_freq = get_central_freq(n);
+		double x = (double) freq / central_freq / 2;
+		return 73.1296 + 430.849 * (x - 0.5) + 508.621 * Math.pow((x - 0.5), 2) - 1255.73 * Math.pow((x - 0.5), 3);
+	}
+
+	public static double joule_r(int n) {
+		return 0.1 * n;
+	}
+
+	public static double x(int n, int freq) {
+		double central_freq = get_central_freq(n);
+		double x = (double) freq / central_freq;
+		return (x - 1) * 100;
 	}
 
 	/*
-	 * 获得单位频率的发射功率
+	 * 获得阻抗，单位为欧姆
 	 */
-	public static int get_power(int u, int n, int channel_bandwidth, int freq) {
-		int z = z(n, freq);
-		return u * u * freq / z * freq / z * n * n / channel_bandwidth;
+	public static double z(int n, int freq) {
+		return Math.sqrt(Math.pow(radiation_r(n, freq) + joule_r(n), 2) + Math.pow(x(n, freq), 2));
+	}
+
+	/*
+	 * 获得单位频率的发射功率W/kHz
+	 */
+	public static double get_radiant_power(int u, int n, int channel_bandwidth, int freq) {
+		double z = z(n, freq);
+		double i = u / z;
+		double r = radiation_r(n, freq);
+		return i * i * r / channel_bandwidth;
+	}
+
+	/*
+	 * 获得总输入功率单位W
+	 */
+	public static double get_input_power(int u, int n, int channel_bandwidth, int freq) {
+		double z = z(n, freq);
+		double i = u / z;
+		double r = radiation_r(n, freq) + joule_r(n);
+		return i * i * r;
 	}
 
 	/*
@@ -41,7 +67,7 @@ public class Radio {
 	/*
 	 * 获得一定距离处的单位频率的信号功率
 	 */
-	public static double get_power_at(Location source_location, int radiant_power, int central_freq, Location loc) {
+	public static double get_power_at(Location source_location, double radiant_power, int central_freq, Location loc) {
 		double distance = source_location.distance(loc);
 		return radiant_power / distance / distance;
 	}
@@ -62,7 +88,7 @@ public class Radio {
 		}
 	}
 
-	public static double get_signal_at(Location source_location, int source_power, int source_freq,
+	public static double get_signal_at(Location source_location, double source_power, int source_freq,
 			int source_bandwidth, Location receiver_location, int receiver_freq, int receiver_bandwidth) {
 		double power_per_freq = get_power_at(source_location, source_power, source_freq, receiver_location);
 		return power_per_freq * get_common_bandwidth(source_freq, source_bandwidth, receiver_freq, receiver_bandwidth);

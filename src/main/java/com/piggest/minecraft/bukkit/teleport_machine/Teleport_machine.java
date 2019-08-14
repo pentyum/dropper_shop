@@ -1,13 +1,19 @@
 package com.piggest.minecraft.bukkit.teleport_machine;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.function.Predicate;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -18,10 +24,12 @@ import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.exp_saver.SetExpFix;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
+import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
+import com.piggest.minecraft.bukkit.structure.Structure_runner;
 import com.piggest.minecraft.bukkit.utils.Radio;
 
-public class Teleport_machine extends Multi_block_with_gui implements Radio_terminal, Elements_container {
+public class Teleport_machine extends Multi_block_with_gui implements HasRunner, Radio_terminal, Elements_container {
 	public static final int name_tag_slot = 47;
 	public static final int online_voltage_indicator = 41;
 	public static final int working_voltage_indicator = 42;
@@ -31,27 +39,27 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 	public static final int radio_indicator = 30;
 	public static final int open_switch = 27;
 
+	private UUID uuid;
 	private String name = this.get_manager().get_gui_name();
 	private int channel_freq = 75000;
 	private Radio_state state = Radio_state.OFF;
 	private int channel_bandwidth = 100;
 	private int n = 0;
-	private int online_voltage = 1;
-	private int working_voltage = 12;
+	private int online_voltage = 12;
+	private int working_voltage = 32;
 	private int current_page = 1;
-	private ArrayList<Radio_terminal> known_terminal_list = new ArrayList<Radio_terminal>();
+	private ArrayList<UUID> known_terminal_list = new ArrayList<UUID>();
 	private int[] elements_amount = new int[96];
 	private Inventory elements_gui = Bukkit.createInventory(this, 27, "元素存储");
 	private int exp_magic_exchange_rate = 1000; // 每1000点经验转化为多少魔力
 	private Radio_terminal current_work_with = null;
+	private Auto_refresher auto_refresher = new Auto_refresher(this);
 
 	public Teleport_machine() {
-		Radio_manager.instance.add(this);
+		this.gen_uuid();
 		this.init_elements_gui();
 		this.set_switch(open_switch, false);
 		this.set_process(0);
-		this.set_online_voltage(this.online_voltage);
-		this.set_working_voltage(this.working_voltage);
 	}
 
 	@Override
@@ -68,12 +76,13 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 			this.set_gui_terminal_list(1);
 			break;
 		case 29:// 立刻刷新无线电信息
+			this.set_gui_terminal_list(this.current_page);
 			break;
 		case 32:// 提高待机电压
 			this.set_online_voltage(this.online_voltage + 1);
 			break;
 		case 33:// 提高发射电压
-			this.set_working_voltage(this.online_voltage + 1);
+			this.set_working_voltage(this.working_voltage + 1);
 			break;
 		case 34:// 增加带宽
 			this.set_channel_bandwidth(this.get_channel_bandwidth() + 100);
@@ -93,6 +102,7 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 				use_exp = total_exp;
 			}
 			int add_magic = use_exp * exp_magic_exchange_rate / 1000;
+			SetExpFix.setTotalExperience(player, total_exp - use_exp);
 			this.set_amount(Element.Magic, this.get_amount(Element.Magic) + add_magic);
 			player.sendMessage("[传送机]成功将" + use_exp + "点经验转化为" + add_magic + "点魔力");
 			break;
@@ -107,7 +117,7 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 			if (this.working_voltage <= 0) {
 				this.set_working_voltage(0);
 			} else {
-				this.set_working_voltage(this.online_voltage - 1);
+				this.set_working_voltage(this.working_voltage - 1);
 			}
 			break;
 		case 52:// 减少带宽
@@ -117,8 +127,68 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 			this.set_channel_freq(this.get_channel_freq() - 500);
 			break;
 		default:
+			if (slot >= 9 && slot <= 25) {
+				ItemStack item = this.gui.getItem(slot);
+				if (item.getType() == Material.BEACON) {
+					if (slot < 17) {
+						slot -= 9;
+					} else {
+						slot -= 10;
+					}
+					int index = slot + 16 * (this.current_page - 1);
+					Radio_terminal terminal = Radio_manager.instance.get(this.known_terminal_list.get(index));
+					this.start_teleport_to(terminal);
+				}
+			}
 			break;
 		}
+	}
+
+	private void start_teleport_to(Radio_terminal terminal) {
+		Bukkit.getLogger().info("开始传送至" + terminal.getCustomName());
+		Collection<Entity> entities = this.get_entities_in_stage();
+		int[] total_elements_cost=new int[96] ;
+		
+		for(Entity entity: entities) {
+			
+		}
+	}
+
+	public void clean_gui_terminal_list() {
+		for (int slot = 9; slot < 26; slot++) {
+			if (slot == 17) {
+				continue;
+			}
+			this.gui.setItem(slot, null);
+		}
+	}
+
+	private void set_gui_terminal_item(int slot, Radio_terminal terminal) {
+		ItemStack item = new ItemStack(Material.BEACON);
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName("传送至 " + terminal.getCustomName());
+		ArrayList<String> lore = new ArrayList<String>();
+		Location loc = terminal.get_location();
+		lore.add("§7位置: " + loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ() + ","
+				+ loc.getWorld().getName());
+		lore.add("§7距离: " + (int) (loc.distance(this.get_location())) + " m");
+		lore.add("§7频率: " + terminal.get_channel_freq() + " kHz");
+		lore.add("§7带宽: " + terminal.get_channel_bandwidth() + " kHz");
+		double signal = this.get_signal(terminal, terminal.get_state());
+		double noise = this.get_noise(terminal);
+		// Bukkit.getLogger().info(signal + "/" + noise);
+		int snr = (int) (10 * Math.log10(signal / noise));
+		lore.add("§7当前接收目标发射强度: " + snr + " dB");
+		signal = terminal.get_signal(this, Radio_state.WORKING, true);
+		noise = terminal.get_noise(this);
+		// Bukkit.getLogger().info(signal + "/" + noise);
+		snr = (int) (10 * Math.log10(signal / noise));
+		lore.add("§7预计发射目标接收强度: " + snr + " dB");
+		int rate = terminal.get_working_speed(this);
+		lore.add(String.format("§7预计传输速率: %d kB/s", rate * 8));
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+		this.gui.setItem(slot, item);
 	}
 
 	public void set_gui_terminal_list(int page) {
@@ -126,33 +196,15 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 			return;
 		}
 		int slot = 9;
-		int start = (page - 1) * 18;
-		if (start >= this.known_terminal_list.size()) {
-			return;
-		}
-		for (Radio_terminal terminal = this.known_terminal_list.get(start); start < this.known_terminal_list.size()
-				&& start < page * 18; start++) {
-			ItemStack item = new ItemStack(Material.END_ROD);
-			ItemMeta meta = item.getItemMeta();
-			meta.setDisplayName("传送至 " + terminal.getCustomName());
-			ArrayList<String> lore = new ArrayList<String>();
-			Location loc = terminal.get_location();
-			lore.add("§7位置: " + loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ() + ",");
-			lore.add("§7距离: " + (int) (loc.distance(this.get_location())) + " m");
-			lore.add("§7频率: " + terminal.get_channel_freq() + " kHz");
-			lore.add("§7载波带宽: " + terminal.get_channel_bandwidth() + " kHz");
-			double signal = this.get_signal(terminal, terminal.get_state());
-			double noise = this.get_noise(terminal);
-			int snr = (int) (10 * Math.log10(signal / noise));
-			lore.add("§7当前接收目标发射强度: " + snr + " dB");
-			signal = terminal.get_signal(this, Radio_state.WORKING, true);
-			noise = terminal.get_noise(this);
-			snr = (int) (10 * Math.log10(signal / noise));
-			lore.add("§7预计发射目标接收强度: " + snr + " dB");
-			// lore.add("§7预计传输速率: kB/s");
-			meta.setLore(lore);
-			item.setItemMeta(meta);
-			this.gui.setItem(slot, item);
+		int start = (page - 1) * 16;
+		for (; start < page * 16; start++) {
+			if (start >= this.known_terminal_list.size()) {
+				this.gui.setItem(slot, null);
+			} else {
+				UUID terminal_uuid = this.known_terminal_list.get(start);
+				Radio_terminal terminal = Radio_manager.instance.get(terminal_uuid);
+				this.set_gui_terminal_item(slot, terminal);
+			}
 			slot++;
 			if (slot == 17) {
 				slot++;
@@ -183,7 +235,10 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 
 	@Override
 	protected void init_after_set_location() {
+		Radio_manager.instance.put(this.get_uuid(), this);
 		this.set_n(1);
+		this.set_online_voltage(this.online_voltage);
+		this.set_working_voltage(this.working_voltage);
 	}
 
 	@Override
@@ -214,18 +269,29 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 		save.put("channel-freq", this.channel_freq);
 		save.put("working-voltage", this.working_voltage);
 		save.put("online-voltage", this.online_voltage);
+		save.put("known-terminal-list", Radio_manager.to_uuid_string_list(this.known_terminal_list));
 		return save;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void set_from_save(Map<?, ?> save) {
 		super.set_from_save(save);
 		String state_string = (String) save.get("state");
-		this.state = Radio_state.valueOf(state_string);
+		this.set_state(Radio_state.valueOf(state_string));
+		if (this.state == Radio_state.OFF) {
+			this.set_switch(open_switch, false);
+		} else {
+			this.set_switch(open_switch, true);
+		}
 		this.set_channel_bandwidth((int) save.get("channel-bandwidth"));
 		this.set_channel_freq((int) save.get("channel-freq"));
 		this.set_working_voltage((int) save.get("working-voltage"));
 		this.set_online_voltage((int) save.get("online-voltage"));
+		ArrayList<String> uuid_string_list = (ArrayList<String>) save.get("known-terminal-list");
+		for (String uuid_string : uuid_string_list) {
+			this.known_terminal_list.add(UUID.fromString(uuid_string));
+		}
 	}
 
 	@Override
@@ -241,12 +307,13 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 		lore.set(1, "§7运行状态: " + state.display_name);
 		meta.setLore(lore);
 		item.setItemMeta(meta);
+		this.refresh_power_info();
 	}
 
 	@Override
 	public int get_voltage(Radio_state state) {
 		switch (state) {
-		case WORKING:
+		case OFF:
 			return 0;
 		case ONLINE:
 			return this.online_voltage;
@@ -263,6 +330,7 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 		lore.set(0, "§7" + voltage + " V");
 		meta.setLore(lore);
 		item.setItemMeta(meta);
+		this.refresh_power_info();
 	}
 
 	private void set_working_voltage(int voltage) {
@@ -273,6 +341,7 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 		lore.set(0, "§7" + voltage + " V");
 		meta.setLore(lore);
 		item.setItemMeta(meta);
+		this.refresh_power_info();
 	}
 
 	@Override
@@ -285,6 +354,7 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 			lore.set(0, "§7" + freq + " kHz");
 			meta.setLore(lore);
 			item.setItemMeta(meta);
+			this.refresh_power_info();
 		}
 	}
 
@@ -298,6 +368,7 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 			lore.set(0, "§7" + bandwidth + " kHz");
 			meta.setLore(lore);
 			item.setItemMeta(meta);
+			this.refresh_power_info();
 		}
 	}
 
@@ -428,6 +499,51 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 		this.set_process(0, 0, "§e传输已完成%d%%", process);
 	}
 
+	public void refresh_power_info() {
+		ItemStack item = this.gui.getItem(radio_indicator);
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = meta.getLore();
+		lore.set(2, String.format("§7当前输入功率: %.3f W", this.get_current_input_power()));
+		lore.set(3, String.format("§7当前辐射功率: %.3f W", this.get_current_radiant_power() * this.channel_bandwidth));
+		lore.set(7, String.format("§7辐射魔阻: %.3f Ω", this.get_radiant_r()));
+		lore.set(8, String.format("§7辐射魔抗: %.3f Ω", this.get_x()));
+		lore.set(9, String.format("§7输入阻抗: %.3f Ω", this.get_z()));
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+	}
+
+	@Override
+	public UUID get_uuid() {
+		return this.uuid;
+	}
+
+	@Override
+	public void set_uuid(UUID uuid) {
+		this.uuid = uuid;
+	}
+
+	@Override
+	public Structure_runner[] get_runner() {
+		return new Structure_runner[] { this.auto_refresher };
+	}
+
+	protected int get_current_page() {
+		return this.current_page;
+	}
+
+	public Collection<Entity> get_entities_in_stage() {
+		Location loc = this.get_location();
+		World world = loc.getWorld();
+		Predicate<Entity> fliter = new Predicate<Entity>() {
+			@Override
+			public boolean test(Entity entity) {
+				EntityType type = entity.getType();
+				return type != EntityType.FALLING_BLOCK && type != EntityType.ENDER_CRYSTAL
+						&& type != EntityType.PRIMED_TNT;
+			}
+		};
+		return world.getNearbyEntities(loc, 1, 1, 1, fliter);
+	}
 }
 
 class Name_tag_remover extends BukkitRunnable {

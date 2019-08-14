@@ -60,7 +60,7 @@ public class Teleport_machine_manager extends Gui_structure_manager<Teleport_mac
 		this.set_gui(29, Material.PAPER, "§r立刻刷新无线魔术信息", Gui_slot_type.Button);
 		this.set_gui(Teleport_machine.radio_indicator, Material.END_ROD, "§r当前无线魔术信息",
 				new String[] { "§7终端名称: "+this.get_gui_name(), "§7运行状态: " + Radio_state.OFF.display_name, "§7当前输入功率: 0 W",
-						"§7当前辐射功率: 0 W", "§7天线长度: 1 m", "§7中心频率: kHz", "§7天线频宽: kHz", "§7天线魔阻: Ω", "§7天线魔抗: Ω" },
+						"§7当前辐射功率: 0 W", "§7天线长度: 1 m", "§7中心频率: kHz", "§7天线频宽: kHz", "§7辐射魔阻: Ω", "§7辐射魔抗: Ω","§7输入阻抗: Ω" },
 				Gui_slot_type.Indicator);
 
 		this.set_gui(36, Material.CHEST, "§r元素信息", Gui_slot_type.Button);

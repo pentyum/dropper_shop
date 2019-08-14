@@ -2,6 +2,7 @@ package com.piggest.minecraft.bukkit.structure;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -11,6 +12,7 @@ import org.bukkit.entity.Player;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.teleport_machine.Element;
 import com.piggest.minecraft.bukkit.teleport_machine.Elements_container;
+import com.piggest.minecraft.bukkit.teleport_machine.Unique;
 import com.piggest.minecraft.bukkit.utils.Chunk_location;
 
 public abstract class Structure {
@@ -21,6 +23,11 @@ public abstract class Structure {
 
 	@SuppressWarnings("unchecked")
 	protected void set_from_save(Map<?, ?> save) {
+		if (this instanceof Unique) {
+			Unique unique = (Unique) this;
+			UUID uuid = UUID.fromString((String) save.get("UUID"));
+			unique.set_uuid(uuid);
+		}
 		this.set_location((String) save.get("world"), (int) save.get("x"), (int) save.get("y"), (int) save.get("z"));
 		this.init_after_set_location();
 		if (this instanceof Ownable) {
@@ -87,6 +94,9 @@ public abstract class Structure {
 		if (this instanceof Ownable) {
 			Ownable ownable = (Ownable) this;
 			save.put("owner", ownable.get_owner_name());
+		}
+		if (this instanceof Unique) {
+			save.put("UUID", ((Unique) this).get_uuid().toString());
 		}
 		if (this instanceof Capacity_upgradable) {
 			Capacity_upgradable upgradable = (Capacity_upgradable) this;
