@@ -27,8 +27,11 @@ public abstract class Multi_block_structure extends Structure {
 							if (check_block.getType() != model[y][z][x]) {
 								return false;
 							}
-							if (manager.find_existed(check_block.getLocation()) != null) {
-								return false;
+							Structure existed = manager.find_existed(check_block.getLocation());
+							if (existed != null) {
+								if (!existed.get_location().equals(this.get_location())) {
+									return false;
+								}
 							}
 						}
 					}
