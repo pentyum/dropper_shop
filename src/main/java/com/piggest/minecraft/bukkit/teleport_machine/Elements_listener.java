@@ -18,7 +18,7 @@ public class Elements_listener implements Listener {
 		if (holder instanceof Elements_container) {
 			Inventory elements_gui = ((Elements_container) holder).get_elements_gui();
 			if (gui == elements_gui) {
-				if(event.getSlot()==elements_gui.getSize()-1) {
+				if (event.getSlot() == elements_gui.getSize() - 1) {
 					HumanEntity player = event.getWhoClicked();
 					player.closeInventory();
 					player.openInventory(holder.getInventory());

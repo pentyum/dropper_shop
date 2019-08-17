@@ -429,14 +429,14 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			if (element.order_id < 0) {
 				continue;
 			}
-			ItemStack item = new ItemStack(Material.CHEST);
+			ItemStack item = new ItemStack(Material.SUGAR);
 			ItemMeta meta = item.getItemMeta();
 			ArrayList<String> lore = new ArrayList<String>();
 			lore.add("§7剩余: 0 单位");
 			meta.setLore(lore);
 			meta.setDisplayName("§r" + element.name() + " 元素");
 			item.setItemMeta(meta);
-			NMS_manager.element_type_provider.set_element_id(item, element.atomic_number);
+			item = NMS_manager.element_type_provider.set_element_id(item, element.atomic_number);
 			this.elements_gui.setItem(element.order_id, item);
 		}
 		ItemStack back_item = new ItemStack(Material.REDSTONE_LAMP);
