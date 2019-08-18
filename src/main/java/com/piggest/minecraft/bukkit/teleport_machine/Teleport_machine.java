@@ -148,7 +148,6 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		Bukkit.getLogger().info("开始传送至" + terminal.getCustomName());
 		Collection<Entity> entities = this.get_entities_in_stage();
 		int[] total_elements_cost=new int[96] ;
-		
 		for(Entity entity: entities) {
 			
 		}

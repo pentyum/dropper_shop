@@ -54,7 +54,7 @@ public enum Base_material implements Has_composition {
 		}
 		Elements_composition result = new Elements_composition();
 		for(Elements_composition compostion:all_composition) {
-			result.merge_with(compostion);
+			result.add(compostion);
 		}
 		return result;
 	}
