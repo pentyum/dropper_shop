@@ -4,7 +4,10 @@ import javax.annotation.Nullable;
 
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Container;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -47,9 +50,27 @@ public class Elements_composition implements Elements_container {
 		return null;
 	}
 
+	public static Elements_composition get_element_composition(Entity entity) {
+		if (entity instanceof Item) {
+			Item item_entity = (Item) entity;
+			return get_element_composition(item_entity.getItemStack());
+		}
+		String entity_id_name = entity.getType().getKey().toString();
+		Elements_composition material_composition = get_entity_element_composition(entity_id_name);
+		if (entity instanceof InventoryHolder) {
+			InventoryHolder holder = (InventoryHolder) entity;
+			Inventory inv = holder.getInventory();
+			for (ItemStack in_item : inv.getStorageContents()) {
+				material_composition.add(Elements_composition.get_element_composition(in_item));
+			}
+		}
+		return material_composition;
+
+	}
+
 	public static Elements_composition get_element_composition(ItemStack item) {
 		String id_name = Material_ext.get_id_name(item);
-		Elements_composition material_composition = get_element_composition(id_name);
+		Elements_composition material_composition = get_material_element_composition(id_name);
 		material_composition.multiply(item.getAmount());
 		ItemMeta meta = item.getItemMeta();
 		if (meta instanceof BlockStateMeta) {
@@ -66,7 +87,11 @@ public class Elements_composition implements Elements_container {
 		return material_composition;
 	}
 
-	private static Elements_composition get_element_composition(String id_name) {
+	private static Elements_composition get_material_element_composition(String id_name) {
+		return new Elements_composition();
+	}
+
+	private static Elements_composition get_entity_element_composition(String entity_id_name) {
 		return new Elements_composition();
 	}
 }
