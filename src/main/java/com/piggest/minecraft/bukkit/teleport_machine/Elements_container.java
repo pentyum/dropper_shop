@@ -14,4 +14,14 @@ public interface Elements_container {
 			this.set_amount(element, this.get_amount(element) + other.get_amount(element));
 		}
 	}
+
+	public default boolean has_enough(Elements_container other) {
+		for (Element element : Element.values()) {
+			if (this.get_amount(element) < other.get_amount(element)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 }

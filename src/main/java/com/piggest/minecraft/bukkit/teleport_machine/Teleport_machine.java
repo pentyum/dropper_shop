@@ -29,7 +29,7 @@ import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 import com.piggest.minecraft.bukkit.utils.Radio;
 
-public class Teleport_machine extends Multi_block_with_gui implements HasRunner, Radio_terminal, Elements_container {
+public class Teleport_machine extends Multi_block_with_gui implements HasRunner, Radio_terminal {
 	public static final int name_tag_slot = 47;
 	public static final int online_voltage_indicator = 41;
 	public static final int working_voltage_indicator = 42;
@@ -137,19 +137,23 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 					}
 					int index = slot + 16 * (this.current_page - 1);
 					Radio_terminal terminal = Radio_manager.instance.get(this.known_terminal_list.get(index));
-					this.start_teleport_to(terminal);
+					this.start_teleport_to(player, terminal);
 				}
 			}
 			break;
 		}
 	}
 
-	private void start_teleport_to(Radio_terminal terminal) {
-		Bukkit.getLogger().info("开始传送至" + terminal.getCustomName());
+	private void start_teleport_to(Player operator, Radio_terminal terminal) {
+		operator.sendMessage("开始传送至" + terminal.getCustomName());
 		Collection<Entity> entities = this.get_entities_in_stage();
-		int[] total_elements_cost=new int[96] ;
-		for(Entity entity: entities) {
-			
+		Elements_composition total_elements_cost = new Elements_composition();
+		for (Entity entity : entities) {
+			total_elements_cost.add(Elements_composition.get_element_composition(entity));
+		}
+		operator.sendMessage("总共需要:" + total_elements_cost.toString());
+		if (!terminal.has_enough(total_elements_cost)) {
+			operator.sendMessage("目标元素材料不足");
 		}
 	}
 

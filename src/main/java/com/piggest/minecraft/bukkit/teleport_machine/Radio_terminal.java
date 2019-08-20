@@ -13,7 +13,7 @@ import org.bukkit.block.Biome;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Radio;
 
-public interface Radio_terminal extends Nameable, Unique {
+public interface Radio_terminal extends Nameable, Unique, Elements_container {
 
 	/*
 	 * 获得天线段数，每段长度为1m，对应1/4波长

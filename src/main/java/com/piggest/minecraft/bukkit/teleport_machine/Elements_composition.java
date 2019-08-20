@@ -1,5 +1,6 @@
 package com.piggest.minecraft.bukkit.teleport_machine;
 
+import java.util.Arrays;
 import javax.annotation.Nullable;
 
 import org.bukkit.block.BlockState;
@@ -17,21 +18,8 @@ import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 public class Elements_composition implements Elements_container {
 	int[] composition = new int[96];
 
-	public Elements_composition() {
-		for (int i = 0; i < composition.length; i++) {
-			composition[i] = 0;
-		}
-	}
-
-	public Elements_composition(Element element, int unit) {
-		this();
-		this.composition[element.atomic_number] = unit;
-	}
-
 	public void multiply(double value) {
-		for (int i = 0; i < composition.length; i++) {
-			composition[i] = (int) ((double) composition[i] * value);
-		}
+		Arrays.parallelSetAll(composition, i -> (int) ((double) i * value));
 	}
 
 	@Override
@@ -88,10 +76,29 @@ public class Elements_composition implements Elements_container {
 	}
 
 	private static Elements_composition get_material_element_composition(String id_name) {
-		return new Elements_composition();
+		Elements_composition compostion = new Elements_composition();
+		compostion.set_amount(Element.Magic, 1000);
+		return compostion;
 	}
 
 	private static Elements_composition get_entity_element_composition(String entity_id_name) {
-		return new Elements_composition();
+		Elements_composition compostion = new Elements_composition();
+		compostion.set_amount(Element.Magic, 1000);
+		return compostion;
 	}
+
+	@Override
+	public String toString() {
+		String result = "";
+		for (Element element : Element.values()) {
+			if (this.composition[element.atomic_number] != 0) {
+				result += element.name() + ": " + this.composition[element.atomic_number] + ", ";
+			}
+		}
+		if (result.length() > 0) {
+			result = result.substring(0, result.length() - 1);
+		}
+		return result;
+	}
+
 }
