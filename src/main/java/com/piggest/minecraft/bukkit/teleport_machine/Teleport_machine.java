@@ -15,6 +15,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -54,6 +55,8 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	private int exp_magic_exchange_rate = 1000; // 每1000点经验转化为多少魔力
 	private Radio_terminal current_work_with = null;
 	private Auto_refresher auto_refresher = new Auto_refresher(this);
+	private Structure_runner runner = new Teleport_machine_runner(this);
+	private Collection<Entity> entities_to_teleport = null;
 
 	public Teleport_machine() {
 		this.gen_uuid();
@@ -85,10 +88,11 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			this.set_working_voltage(this.working_voltage + 1);
 			break;
 		case 34:// 增加带宽
-			this.set_channel_bandwidth(this.get_channel_bandwidth() + 100);
+			this.set_channel_bandwidth(this.channel_bandwidth + 100);
 			break;
 		case 35:// 提高载波频率
-			this.set_channel_freq(this.get_channel_freq() + 500);
+			this.set_channel_freq(this.channel_freq + 500);
+
 			break;
 		case 36:// 显示元素信息
 			player.openInventory(this.elements_gui);
@@ -121,10 +125,10 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			}
 			break;
 		case 52:// 减少带宽
-			this.set_channel_bandwidth(this.get_channel_bandwidth() - 100);
+			this.set_channel_bandwidth(this.channel_bandwidth - 100);
 			break;
 		case 53:// 降低载波频率
-			this.set_channel_freq(this.get_channel_freq() - 500);
+			this.set_channel_freq(this.channel_freq - 500);
 			break;
 		default:
 			if (slot >= 9 && slot <= 25) {
@@ -146,16 +150,32 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 
 	private void start_teleport_to(Player operator, Radio_terminal terminal) {
 		operator.sendMessage("开始传送至" + terminal.getCustomName());
-		Collection<Entity> entities = this.get_entities_in_stage();
+		entities_to_teleport = this.get_entities_in_stage();
 		Elements_composition total_elements_cost = new Elements_composition();
-		for (Entity entity : entities) {
+		for (Entity entity : entities_to_teleport) {
 			total_elements_cost.add(Elements_composition.get_element_composition(entity));
 		}
-		operator.sendMessage("待传送实体数量:" + entities.size());
-		operator.sendMessage("总共需要:" + total_elements_cost.toString());
+		operator.sendMessage("待传送实体数量: " + entities_to_teleport.size());
+		operator.sendMessage("总共需要: " + total_elements_cost.toString());
 		if (!terminal.has_enough(total_elements_cost)) {
 			operator.sendMessage("目标元素材料不足");
+			return;
 		}
+		boolean working_result = this.set_current_work_with(terminal);
+		if (working_result == false) {
+			operator.sendMessage("不支持目标接收频段");
+			return;
+		}
+		int total_byte = total_elements_cost.get_total_byte();
+		operator.sendMessage("数据总量: " + total_byte / 1024 + " kB");
+	}
+
+	private void complete_teleport_to(Radio_terminal terminal) {
+		this.set_current_work_with(null);
+		for (Entity entity : entities_to_teleport) {
+			entity.teleport(terminal.get_location().add(0, 1, 0), TeleportCause.PLUGIN);
+		}
+		entities_to_teleport = null;
 	}
 
 	public void clean_gui_terminal_list() {
@@ -176,8 +196,8 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		lore.add("§7位置: " + loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ() + ","
 				+ loc.getWorld().getName());
 		lore.add("§7距离: " + (int) (loc.distance(this.get_location())) + " m");
-		lore.add("§7频率: " + terminal.get_channel_freq() + " kHz");
-		lore.add("§7带宽: " + terminal.get_channel_bandwidth() + " kHz");
+		lore.add("§7频率: " + terminal.get_current_channel_freq() + " kHz");
+		lore.add("§7带宽: " + terminal.get_current_channel_bandwidth() + " kHz");
 		double signal = this.get_signal(terminal, terminal.get_state());
 		double noise = this.get_noise(terminal);
 		// Bukkit.getLogger().info(signal + "/" + noise);
@@ -256,10 +276,28 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	}
 
 	@Override
+	public int get_current_channel_freq() {
+		if (this.state != Radio_state.WORKING) {
+			return this.channel_freq;
+		} else {
+			return this.get_current_work_with().get_current_channel_freq();
+		}
+	}
+	
+	@Override
 	public int get_channel_freq() {
 		return this.channel_freq;
 	}
-
+	
+	@Override
+	public int get_current_channel_bandwidth() {
+		if (this.state != Radio_state.WORKING) {
+			return this.channel_bandwidth;
+		} else {
+			return this.get_current_work_with().get_current_channel_bandwidth();
+		}
+	}
+	
 	@Override
 	public int get_channel_bandwidth() {
 		return this.channel_bandwidth;
@@ -416,7 +454,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		String unit;
 		if (element == Element.Magic) {
 			item = this.gui.getItem(magic_indicator);
-			unit = " Wh";
+			unit = " kJ";
 		} else {
 			item = this.elements_gui.getItem(element.order_id);
 			unit = " 单位";
@@ -490,8 +528,20 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	}
 
 	@Override
-	public void set_current_work_with(Radio_terminal terminal) {
-		this.current_work_with = terminal;
+	public boolean set_current_work_with(Radio_terminal terminal) {
+		if (terminal == null) {
+			this.set_state(Radio_state.ONLINE);
+			this.set_current_work_with(null);
+			return true;
+		} else {
+			if (!Radio.check_channel_vaild(terminal.get_current_channel_freq(), terminal.get_current_channel_bandwidth(),
+					this.n)) {
+				return false;
+			}
+			this.set_state(Radio_state.WORKING);
+			this.set_current_work_with(terminal);
+			return true;
+		}
 	}
 
 	@Override
@@ -528,7 +578,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 
 	@Override
 	public Structure_runner[] get_runner() {
-		return new Structure_runner[] { this.auto_refresher };
+		return new Structure_runner[] { this.auto_refresher, this.runner };
 	}
 
 	protected int get_current_page() {

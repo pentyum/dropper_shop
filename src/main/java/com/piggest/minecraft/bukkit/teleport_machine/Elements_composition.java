@@ -111,4 +111,11 @@ public class Elements_composition implements Elements_container {
 		return result;
 	}
 
+	public int get_total_byte() {
+		int total = 0;
+		for (Element element : Element.values()) {
+			total += this.composition[element.atomic_number];
+		}
+		return total;
+	}
 }

@@ -25,7 +25,7 @@ public interface Radio_terminal extends Nameable, Unique, Elements_container {
 	/*
 	 * 获得信道中心频率，单位kHz
 	 */
-	public int get_channel_freq();
+	public int get_current_channel_freq();
 
 	/*
 	 * 获得信道带宽，单位kHz
@@ -48,16 +48,16 @@ public interface Radio_terminal extends Nameable, Unique, Elements_container {
 	 * 获得当前单位频率的发射功率
 	 */
 	public default double get_current_radiant_power() {
-		return Radio.get_radiant_power(this.get_voltage(this.get_state()), this.get_n(), this.get_channel_bandwidth(),
-				this.get_channel_freq());
+		return Radio.get_radiant_power(this.get_voltage(this.get_state()), this.get_n(), this.get_current_channel_bandwidth(),
+				this.get_current_channel_freq());
 	}
 
 	/*
 	 * 获得当前总输入功率
 	 */
 	public default double get_current_input_power() {
-		return Radio.get_input_power(this.get_voltage(this.get_state()), this.get_n(), this.get_channel_bandwidth(),
-				this.get_channel_freq());
+		return Radio.get_input_power(this.get_voltage(this.get_state()), this.get_n(), this.get_current_channel_bandwidth(),
+				this.get_current_channel_freq());
 	}
 
 	/*
@@ -67,6 +67,8 @@ public interface Radio_terminal extends Nameable, Unique, Elements_container {
 		return Radio.get_radiant_power(this.get_voltage(state), this.get_n(), this.get_channel_bandwidth(),
 				this.get_channel_freq());
 	}
+
+	public int get_channel_freq();
 
 	public default double get_radiant_power(Radio_state state, int channel_bandwidth, int channel_freq) {
 		return Radio.get_radiant_power(this.get_voltage(state), this.get_n(), channel_bandwidth, channel_freq);
@@ -109,7 +111,7 @@ public interface Radio_terminal extends Nameable, Unique, Elements_container {
 	 * 获得接收某个发射源信号的噪声强度(总强度)
 	 */
 	public default double get_noise(Radio_terminal source) {
-		return this.get_biome_noise() * this.get_channel_bandwidth() + this.get_other_noise(source);
+		return this.get_biome_noise() * this.get_current_channel_bandwidth() + this.get_other_noise(source);
 	}
 
 	/*
@@ -125,7 +127,7 @@ public interface Radio_terminal extends Nameable, Unique, Elements_container {
 	public default int get_working_speed(Radio_terminal source) {
 		double noise = this.get_noise(source);
 		double signal = this.get_signal(source, Radio_state.WORKING, true);
-		return Radio.Shannon_equation(this.get_channel_bandwidth(), (int) (signal / noise));
+		return Radio.Shannon_equation(this.get_current_channel_bandwidth(), (int) (signal / noise));
 	}
 
 	/*
@@ -150,7 +152,7 @@ public interface Radio_terminal extends Nameable, Unique, Elements_container {
 	@Nullable
 	public Radio_terminal get_current_work_with();
 
-	public void set_current_work_with(Radio_terminal terminal);
+	public boolean set_current_work_with(Radio_terminal terminal);
 
 	public default double get_signal(Radio_terminal source, Radio_state state, boolean b) {
 		if (b == false) {// 关闭频段匹配
@@ -166,15 +168,17 @@ public interface Radio_terminal extends Nameable, Unique, Elements_container {
 	}
 
 	public default double get_x() {
-		return Radio.x(this.get_n(), this.get_channel_freq());
+		return Radio.x(this.get_n(), this.get_current_channel_freq());
 	}
 
 	public default double get_z() {
-		return Radio.z(this.get_n(), this.get_channel_freq());
+		return Radio.z(this.get_n(), this.get_current_channel_freq());
 	}
 
 	public default double get_radiant_r() {
-		return Radio.radiation_r(this.get_n(), this.get_channel_freq());
+		return Radio.radiation_r(this.get_n(), this.get_current_channel_freq());
 	}
+
+	int get_current_channel_bandwidth();
 
 }
