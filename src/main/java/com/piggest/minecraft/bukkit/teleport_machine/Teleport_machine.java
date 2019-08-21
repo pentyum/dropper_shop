@@ -151,6 +151,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		for (Entity entity : entities) {
 			total_elements_cost.add(Elements_composition.get_element_composition(entity));
 		}
+		operator.sendMessage("待传送实体数量:" + entities.size());
 		operator.sendMessage("总共需要:" + total_elements_cost.toString());
 		if (!terminal.has_enough(total_elements_cost)) {
 			operator.sendMessage("目标元素材料不足");
@@ -545,7 +546,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 						&& type != EntityType.PRIMED_TNT;
 			}
 		};
-		return world.getNearbyEntities(loc, 1, 1, 1, fliter);
+		return world.getNearbyEntities(loc, 2, 2, 2, fliter);
 	}
 }
 

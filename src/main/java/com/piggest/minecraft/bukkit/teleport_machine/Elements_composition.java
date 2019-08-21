@@ -13,13 +13,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
 public class Elements_composition implements Elements_container {
-	int[] composition = new int[96];
+	private int[] composition = new int[96];
 
 	public void multiply(double value) {
-		Arrays.parallelSetAll(composition, i -> (int) ((double) i * value));
+		Arrays.parallelPrefix(composition, (i, j) -> (int) ((double) j * value));
 	}
 
 	@Override
@@ -49,6 +50,9 @@ public class Elements_composition implements Elements_container {
 			InventoryHolder holder = (InventoryHolder) entity;
 			Inventory inv = holder.getInventory();
 			for (ItemStack in_item : inv.getStorageContents()) {
+				if (in_item == null) {
+					continue;
+				}
 				material_composition.add(Elements_composition.get_element_composition(in_item));
 			}
 		}
@@ -57,6 +61,9 @@ public class Elements_composition implements Elements_container {
 	}
 
 	public static Elements_composition get_element_composition(ItemStack item) {
+		if (Grinder.is_empty(item)) {
+			return new Elements_composition();
+		}
 		String id_name = Material_ext.get_id_name(item);
 		Elements_composition material_composition = get_material_element_composition(id_name);
 		material_composition.multiply(item.getAmount());
@@ -68,6 +75,9 @@ public class Elements_composition implements Elements_container {
 				Container container = (Container) blockstate;
 				Inventory inv = container.getInventory();
 				for (ItemStack in_item : inv.getStorageContents()) {
+					if (in_item == null) {
+						continue;
+					}
 					material_composition.add(Elements_composition.get_element_composition(in_item));
 				}
 			}
@@ -96,7 +106,7 @@ public class Elements_composition implements Elements_container {
 			}
 		}
 		if (result.length() > 0) {
-			result = result.substring(0, result.length() - 1);
+			result = result.substring(0, result.length() - 2);
 		}
 		return result;
 	}
