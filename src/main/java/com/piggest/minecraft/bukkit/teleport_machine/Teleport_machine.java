@@ -56,7 +56,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	private Radio_terminal current_work_with = null;
 	private Auto_refresher auto_refresher = new Auto_refresher(this);
 	private Structure_runner runner = new Teleport_machine_runner(this);
-	private Collection<Entity> entities_to_teleport = null;
+	private Teleporting_task teleport_task;
 
 	public Teleport_machine() {
 		this.gen_uuid();
@@ -149,13 +149,14 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	}
 
 	private void start_teleport_to(Player operator, Radio_terminal terminal) {
+		Teleporting_task task_to_do = new Teleporting_task();
 		operator.sendMessage("开始传送至" + terminal.getCustomName());
-		entities_to_teleport = this.get_entities_in_stage();
+		task_to_do.set_entities(this.get_entities_in_stage());
 		Elements_composition total_elements_cost = new Elements_composition();
-		for (Entity entity : entities_to_teleport) {
+		for (Entity entity : task_to_do.get_entities()) {
 			total_elements_cost.add(Elements_composition.get_element_composition(entity));
 		}
-		operator.sendMessage("待传送实体数量: " + entities_to_teleport.size());
+		operator.sendMessage("待传送实体数量: " + task_to_do.get_entities().size());
 		operator.sendMessage("总共需要: " + total_elements_cost.toString());
 		if (!terminal.has_enough(total_elements_cost)) {
 			operator.sendMessage("目标元素材料不足");
@@ -168,14 +169,17 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		}
 		int total_byte = total_elements_cost.get_total_byte();
 		operator.sendMessage("数据总量: " + total_byte / 1024 + " kB");
+		task_to_do.set_total_byte(total_byte);
+		this.teleport_task = task_to_do;
 	}
 
-	private void complete_teleport_to(Radio_terminal terminal) {
+	public void complete_teleport_to(Radio_terminal terminal) {
 		this.set_current_work_with(null);
-		for (Entity entity : entities_to_teleport) {
+		for (Entity entity : this.teleport_task.get_entities()) {
 			entity.teleport(terminal.get_location().add(0, 1, 0), TeleportCause.PLUGIN);
 		}
-		entities_to_teleport = null;
+		this.teleport_task = null;
+		this.set_process(0);
 	}
 
 	public void clean_gui_terminal_list() {
@@ -283,12 +287,12 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			return this.get_current_work_with().get_current_channel_freq();
 		}
 	}
-	
+
 	@Override
 	public int get_channel_freq() {
 		return this.channel_freq;
 	}
-	
+
 	@Override
 	public int get_current_channel_bandwidth() {
 		if (this.state != Radio_state.WORKING) {
@@ -297,7 +301,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			return this.get_current_work_with().get_current_channel_bandwidth();
 		}
 	}
-	
+
 	@Override
 	public int get_channel_bandwidth() {
 		return this.channel_bandwidth;
@@ -534,8 +538,8 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			this.set_current_work_with(null);
 			return true;
 		} else {
-			if (!Radio.check_channel_vaild(terminal.get_current_channel_freq(), terminal.get_current_channel_bandwidth(),
-					this.n)) {
+			if (!Radio.check_channel_vaild(terminal.get_current_channel_freq(),
+					terminal.get_current_channel_bandwidth(), this.n)) {
 				return false;
 			}
 			this.set_state(Radio_state.WORKING);
@@ -597,6 +601,10 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			}
 		};
 		return world.getNearbyEntities(loc, 2, 2, 2, fliter);
+	}
+
+	public Teleporting_task get_teleporting_task() {
+		return this.teleport_task;
 	}
 }
 
