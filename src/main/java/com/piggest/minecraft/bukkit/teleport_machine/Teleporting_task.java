@@ -1,7 +1,6 @@
 package com.piggest.minecraft.bukkit.teleport_machine;
 
 import java.util.Collection;
-
 import org.bukkit.entity.Entity;
 
 public class Teleporting_task {
@@ -16,7 +15,7 @@ public class Teleporting_task {
 	public int get_total_byte() {
 		return this.total_byte;
 	}
-	
+
 	public void set_completed_byte(int completed_byte) {
 		this.completed_byte = completed_byte;
 	}
@@ -24,7 +23,7 @@ public class Teleporting_task {
 	public int get_completed_byte() {
 		return this.completed_byte;
 	}
-	
+
 	public void set_entities(Collection<Entity> entities) {
 		this.entities = entities;
 	}
@@ -32,5 +31,4 @@ public class Teleporting_task {
 	public Collection<Entity> get_entities() {
 		return this.entities;
 	}
-
 }

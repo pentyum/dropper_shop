@@ -53,7 +53,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	private int[] elements_amount = new int[96];
 	private Inventory elements_gui = Bukkit.createInventory(this, 27, "元素存储");
 	private int exp_magic_exchange_rate = 1000; // 每1000点经验转化为多少魔力
-	private Radio_terminal current_work_with = null;
+	private UUID current_work_with = null;
 	private Auto_refresher auto_refresher = new Auto_refresher(this);
 	private Structure_runner runner = new Teleport_machine_runner(this);
 	private Teleporting_task teleport_task;
@@ -92,7 +92,6 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			break;
 		case 35:// 提高载波频率
 			this.set_channel_freq(this.channel_freq + 500);
-
 			break;
 		case 36:// 显示元素信息
 			player.openInventory(this.elements_gui);
@@ -310,6 +309,13 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	@Override
 	protected HashMap<String, Object> get_save() {
 		HashMap<String, Object> save = super.get_save();
+		if (this.current_work_with != null) {
+			save.put("current-working-with", this.current_work_with.toString());
+		}
+		if (this.teleport_task != null) {
+			save.put("total-bytes", this.teleport_task.get_total_byte());
+			save.put("completed-bytes", this.teleport_task.get_completed_byte());
+		}
 		save.put("state", this.state.name());
 		save.put("channel-bandwidth", this.channel_bandwidth);
 		save.put("channel-freq", this.channel_freq);
@@ -323,6 +329,15 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	@Override
 	protected void set_from_save(Map<?, ?> save) {
 		super.set_from_save(save);
+		if (save.get("current-working-with") != null) {
+			this.current_work_with = UUID.fromString((String) save.get("current-working-with"));
+		}
+		if(save.get("total-bytes")!=null) {
+			this.teleport_task = new Teleporting_task();
+			teleport_task.set_total_byte((int)save.get("total-bytes"));
+			teleport_task.set_completed_byte((int)save.get("completed-bytes"));
+			teleport_task.set_entities(this.get_entities_in_stage());
+		}
 		String state_string = (String) save.get("state");
 		this.set_state(Radio_state.valueOf(state_string));
 		if (this.state == Radio_state.OFF) {
@@ -353,7 +368,6 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		lore.set(1, "§7运行状态: " + state.display_name);
 		meta.setLore(lore);
 		item.setItemMeta(meta);
-		this.refresh_power_info();
 	}
 
 	@Override
@@ -376,7 +390,6 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		lore.set(0, "§7" + voltage + " V");
 		meta.setLore(lore);
 		item.setItemMeta(meta);
-		this.refresh_power_info();
 	}
 
 	private void set_working_voltage(int voltage) {
@@ -387,7 +400,6 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		lore.set(0, "§7" + voltage + " V");
 		meta.setLore(lore);
 		item.setItemMeta(meta);
-		this.refresh_power_info();
 	}
 
 	@Override
@@ -400,7 +412,6 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			lore.set(0, "§7" + freq + " kHz");
 			meta.setLore(lore);
 			item.setItemMeta(meta);
-			this.refresh_power_info();
 		}
 	}
 
@@ -414,7 +425,6 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			lore.set(0, "§7" + bandwidth + " kHz");
 			meta.setLore(lore);
 			item.setItemMeta(meta);
-			this.refresh_power_info();
 		}
 	}
 
@@ -528,22 +538,22 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 
 	@Override
 	public Radio_terminal get_current_work_with() {
-		return this.current_work_with;
+		return Radio_manager.instance.get(this.current_work_with);
 	}
 
 	@Override
 	public boolean set_current_work_with(Radio_terminal terminal) {
 		if (terminal == null) {
+			this.current_work_with = null;
 			this.set_state(Radio_state.ONLINE);
-			this.set_current_work_with(null);
 			return true;
 		} else {
 			if (!Radio.check_channel_vaild(terminal.get_current_channel_freq(),
 					terminal.get_current_channel_bandwidth(), this.n)) {
 				return false;
 			}
+			this.current_work_with = terminal.get_uuid();
 			this.set_state(Radio_state.WORKING);
-			this.set_current_work_with(terminal);
 			return true;
 		}
 	}

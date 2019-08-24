@@ -66,7 +66,7 @@ public class Teleport_machine_manager extends Gui_structure_manager<Teleport_mac
 		this.set_gui(36, Material.CHEST, "§r元素信息", Gui_slot_type.Button);
 		this.set_gui(37, Material.MINECART, "§r传送台上实体转化为元素", Gui_slot_type.Button);
 		this.set_gui(Teleport_machine.magic_indicator, Material.EXPERIENCE_BOTTLE, "§r魔力信息",
-				new String[] { "§7剩余: 0 单位" }, Gui_slot_type.Indicator);
+				new String[] { "§7剩余: 0 kJ" }, Gui_slot_type.Indicator);
 		this.set_gui(40, Material.PLAYER_HEAD, "§r玩家经验转化为魔力", new String[] { "§71点经验转化为1kJ魔力", "§7点击立刻转化1000点经验为魔力" },
 				Gui_slot_type.Button);
 

@@ -101,9 +101,9 @@ public interface Radio_terminal extends Nameable, Unique, Elements_container {
 		Biome biome = this.get_location().getBlock().getBiome();
 		switch (biome) {
 		case BADLANDS:
-			return 1E-11;
+			return 5E-11;
 		default:
-			return 1E-11;
+			return 5E-11;
 		}
 	}
 

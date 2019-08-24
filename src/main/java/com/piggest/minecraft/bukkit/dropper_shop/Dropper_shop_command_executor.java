@@ -9,9 +9,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.config.Price_config;
+import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.nms.Raid_info;
+import com.piggest.minecraft.bukkit.teleport_machine.Elements_composition;
 import com.piggest.minecraft.bukkit.utils.Server_date;
 
 public class Dropper_shop_command_executor implements CommandExecutor {
@@ -123,7 +125,7 @@ public class Dropper_shop_command_executor implements CommandExecutor {
 			} else if (args[0].equalsIgnoreCase("show_date")) {
 				player.sendMessage("当前服务器日期: " + Server_date.formatDate(Server_date.get_world_date(player.getWorld())));
 			} else if (args[0].equalsIgnoreCase("raid")) {
-				if(!player.hasPermission("dropper_shop.raid")) {
+				if (!player.hasPermission("dropper_shop.raid")) {
 					player.sendMessage("你没有触发袭击的权限");
 				}
 				int level = 1;
@@ -142,6 +144,11 @@ public class Dropper_shop_command_executor implements CommandExecutor {
 					player.sendMessage(msg);
 				} else {
 					player.sendMessage("袭击触发失败");
+				}
+			} else if (args[0].equalsIgnoreCase("show_elements")) {
+				ItemStack item = player.getInventory().getItemInMainHand();
+				if (!Grinder.is_empty(item)) {
+					player.sendMessage(Elements_composition.get_element_composition(item).toString());
 				}
 			} else {
 				return false;

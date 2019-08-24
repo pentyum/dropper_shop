@@ -1,6 +1,7 @@
 package com.piggest.minecraft.bukkit.teleport_machine;
 
 import java.util.Arrays;
+
 import javax.annotation.Nullable;
 
 import org.bukkit.block.BlockState;
@@ -20,7 +21,11 @@ public class Elements_composition implements Elements_container {
 	private int[] composition = new int[96];
 
 	public void multiply(double value) {
-		Arrays.parallelPrefix(composition, (i, j) -> (int) ((double) j * value));
+		Arrays.parallelSetAll(composition, i -> (int) ((double) composition[i] * value));
+	}
+
+	public void multiply(int value) {
+		Arrays.parallelSetAll(composition, i -> composition[i] * value);
 	}
 
 	@Override

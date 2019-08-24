@@ -12,10 +12,12 @@ public class Teleport_machine_runner extends Structure_runner {
 
 	@Override
 	public void run() {
+		teleport_machine.refresh_power_info();
 		if (teleport_machine.get_state() == Radio_state.OFF) {
 			return;
 		}
 		if (teleport_machine.get_amount(Element.Magic) <= 0) {
+			teleport_machine.set_switch(Teleport_machine.open_switch, false);
 			teleport_machine.set_state(Radio_state.OFF);
 			return;
 		}
@@ -26,6 +28,7 @@ public class Teleport_machine_runner extends Structure_runner {
 			int current_magic = teleport_machine.get_amount(Element.Magic);
 			int new_magic = current_magic - need_to_cost_kj;
 			if (new_magic < 0) {
+				teleport_machine.set_switch(Teleport_machine.open_switch, false);
 				teleport_machine.set_state(Radio_state.OFF);
 				return;
 			} else {
