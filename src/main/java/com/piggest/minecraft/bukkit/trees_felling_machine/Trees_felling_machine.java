@@ -5,7 +5,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Stack;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -14,15 +16,19 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Leaves;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
+
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.structure.Auto_io;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
+import com.piggest.minecraft.bukkit.structure.Ownable;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
-public class Trees_felling_machine extends Multi_block_with_gui implements HasRunner, Auto_io {
+public class Trees_felling_machine extends Multi_block_with_gui implements HasRunner, Auto_io, Ownable {
 	private int current_x;
 	private int current_z;
 	private int start_x;
@@ -31,12 +37,15 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	private int end_z;
 	private int total_blocks;
 	private int scanned_blocks = 0;
+	private Random random = new Random();
 	private static final int[][] axe_hopper_check_list = { { 0, 1, 2 }, { 2, 1, 0 }, { 0, 1, -2 }, { -2, 1, 0 } }; // 注入斧头
 	private static final int[][] product_chest_check_list = { { 0, -1, 2 }, { 2, -1, 0 }, { 0, -1, -2 },
 			{ -2, -1, 0 } };
+	public static final int owner_indicator = 15;
 
 	private int r = 32;
 	private Trees_felling_machine_runner runner = new Trees_felling_machine_runner(this);
+	private String owner;
 
 	@Override
 	public void on_button_pressed(Player player, int slot) {
@@ -125,6 +134,14 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 				}
 				while (!tree_stack.isEmpty()) {
 					Block block = tree_stack.pop();
+					if (!this.get_owner().isOnline()) { // 玩家不在线砍树机不工作，指针不动
+						return;
+					}
+					BlockBreakEvent event = new BlockBreakEvent(block, this.get_owner().getPlayer());// 新建一个方块破坏事件
+					Bukkit.getServer().getPluginManager().callEvent(event);
+					if (event.isCancelled()) { // 事件被取消了
+						continue;// 直接跳过当前方块
+					}
 					if (Tag.LOGS.isTagged(block.getType())) { // 如果是原木方块则进入砍伐程序
 						ItemStack item = new ItemStack(block.getType());
 						if (this.get_axe() == null) {
@@ -135,7 +152,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 						}
 						block.setType(Material.AIR);
 						this.use_axe();
-					} else if (Tag.LEAVES.isTagged(block.getType())) { // 如果是树叶方块则进入树叶清楚程序
+					} else if (Tag.LEAVES.isTagged(block.getType())) { // 如果是树叶方块则进入树叶清除程序
 						BlockData data = block.getBlockData();
 						Leaves leaves = (Leaves) data;
 						if (leaves.isPersistent() == true) { // 树叶为人为放置，直接跳过。
@@ -153,8 +170,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 							block.setType(Material.AIR);
 							this.use_axe();
 						} else { // 没有精准采集附魔
-							Random rand = new Random();
-							int num = rand.nextInt(300);
+							int num = random.nextInt(300);
 							Material type = block.getType();
 							ItemStack new_item = null;
 							if (type == Material.OAK_LEAVES || type == Material.DARK_OAK_LEAVES) {
@@ -318,6 +334,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 				if (Dropper_shop_plugin.instance.cost_player_money(
 						Dropper_shop_plugin.instance.get_price_config().get_start_trees_felling_machine_price(),
 						player)) {
+					this.set_owner(player.getName());
 					player.sendMessage("开启成功");
 					return true;
 				} else {
@@ -364,5 +381,26 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	@Override
 	public boolean on_exchange_item(Player player, ItemStack in_item, ItemStack cursor_item, int slot) {
 		return true;
+	}
+
+	@Override
+	public void set_owner(String owner) {
+		this.owner = owner;
+		ItemStack item = this.gui.getItem(owner_indicator);
+		SkullMeta meta = (SkullMeta) item.getItemMeta();
+		meta.setDisplayName("§r当前控制者: " + owner);
+		meta.setOwningPlayer(this.get_owner());
+		item.setItemMeta(meta);
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public OfflinePlayer get_owner() {
+		return Bukkit.getOfflinePlayer(this.owner);
+	}
+
+	@Override
+	public String get_owner_name() {
+		return this.owner;
 	}
 }

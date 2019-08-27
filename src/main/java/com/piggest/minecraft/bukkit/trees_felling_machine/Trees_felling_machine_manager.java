@@ -31,6 +31,8 @@ public class Trees_felling_machine_manager extends Gui_structure_manager<Trees_f
 		this.set_gui(12, Material.BLUE_STAINED_GLASS_PANE, "§r右边放入伐木斧头", Gui_slot_type.Indicator);
 		this.set_gui(13, null, "axe", Gui_slot_type.Item_store);
 		this.set_gui(14, Material.BLUE_STAINED_GLASS_PANE, "§r耐久附魔能减少耐久损耗", Gui_slot_type.Indicator);
+		this.set_gui(Trees_felling_machine.owner_indicator, Material.PLAYER_HEAD, "§r当前控制者: null",
+				new String[] { "§7注:启动伐木机的玩家即为控制者", "§7控制者不在线时，伐木机暂停工作" }, Gui_slot_type.Indicator);
 	}
 	/*
 	 * @Override public Trees_felling_machine find(String player_name, Location loc,
