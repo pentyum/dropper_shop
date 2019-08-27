@@ -97,6 +97,13 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			player.openInventory(this.elements_gui);
 			break;
 		case 37:// 传送台上实体转化为元素
+			Elements_composition total_elements_add = new Elements_composition();
+			for (Entity entity : this.get_entities_in_stage()) {
+				total_elements_add.add(Elements_composition.get_element_composition(entity));
+				entity.remove();
+			}
+			player.sendMessage("总共转化元素: " + total_elements_add.toString());
+			this.add(total_elements_add);
 			break;
 		case 40:// 玩家经验转化为魔力
 			int total_exp = SetExpFix.getTotalExperience(player);
@@ -161,6 +168,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			operator.sendMessage("目标元素材料不足");
 			return;
 		}
+		terminal.minus(total_elements_cost);
 		boolean working_result = this.set_current_work_with(terminal);
 		if (working_result == false) {
 			operator.sendMessage("不支持目标接收频段");
