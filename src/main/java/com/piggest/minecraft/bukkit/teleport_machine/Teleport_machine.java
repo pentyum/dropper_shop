@@ -169,6 +169,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			return;
 		}
 		task_to_do.set_elements(total_elements_cost);
+		task_to_do.set_operater(operator);
 		terminal.minus(total_elements_cost);
 		boolean working_result = this.set_current_work_with(terminal);
 		if (working_result == false) {
@@ -187,6 +188,10 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			entity.teleport(terminal.get_location().add(0, 1, 0), TeleportCause.PLUGIN);
 		}
 		this.add(this.teleport_task.get_elements());
+		Player operater = this.teleport_task.get_operater();
+		if (operater != null) {
+			operater.sendMessage("已完成传送");
+		}
 		this.teleport_task = null;
 		this.set_process(0);
 	}
@@ -342,10 +347,10 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		if (save.get("current-working-with") != null) {
 			this.current_work_with = UUID.fromString((String) save.get("current-working-with"));
 		}
-		if(save.get("total-bytes")!=null) {
+		if (save.get("total-bytes") != null) {
 			this.teleport_task = new Teleporting_task();
-			teleport_task.set_total_byte((int)save.get("total-bytes"));
-			teleport_task.set_completed_byte((int)save.get("completed-bytes"));
+			teleport_task.set_total_byte((int) save.get("total-bytes"));
+			teleport_task.set_completed_byte((int) save.get("completed-bytes"));
 			teleport_task.set_entities(this.get_entities_in_stage());
 		}
 		String state_string = (String) save.get("state");

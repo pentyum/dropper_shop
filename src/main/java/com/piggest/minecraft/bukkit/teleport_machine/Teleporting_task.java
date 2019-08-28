@@ -1,13 +1,18 @@
 package com.piggest.minecraft.bukkit.teleport_machine;
 
 import java.util.Collection;
+
+import javax.annotation.Nullable;
+
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 public class Teleporting_task {
 	private int total_byte = 0;
 	private int completed_byte = 0;
 	private Collection<Entity> entities = null;
 	private Elements_composition elements = null;
+	private Player operator;
 	
 	public void set_total_byte(int total_byte) {
 		this.total_byte = total_byte;
@@ -39,5 +44,14 @@ public class Teleporting_task {
 	
 	public Elements_composition get_elements() {
 		return this.elements;
+	}
+
+	public void set_operater(Player operator) {
+		this.operator = operator;
+	}
+	
+	@Nullable
+	public Player get_operater() {
+		return this.operator;
 	}
 }

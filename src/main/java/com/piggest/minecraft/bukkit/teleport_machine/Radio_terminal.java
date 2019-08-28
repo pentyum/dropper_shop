@@ -48,16 +48,16 @@ public interface Radio_terminal extends Nameable, Unique, Elements_container {
 	 * 获得当前单位频率的发射功率
 	 */
 	public default double get_current_radiant_power() {
-		return Radio.get_radiant_power(this.get_voltage(this.get_state()), this.get_n(), this.get_current_channel_bandwidth(),
-				this.get_current_channel_freq());
+		return Radio.get_radiant_power(this.get_voltage(this.get_state()), this.get_n(),
+				this.get_current_channel_bandwidth(), this.get_current_channel_freq());
 	}
 
 	/*
 	 * 获得当前总输入功率
 	 */
 	public default double get_current_input_power() {
-		return Radio.get_input_power(this.get_voltage(this.get_state()), this.get_n(), this.get_current_channel_bandwidth(),
-				this.get_current_channel_freq());
+		return Radio.get_input_power(this.get_voltage(this.get_state()), this.get_n(),
+				this.get_current_channel_bandwidth(), this.get_current_channel_freq());
 	}
 
 	/*
@@ -136,16 +136,26 @@ public interface Radio_terminal extends Nameable, Unique, Elements_container {
 	public default ArrayList<UUID> search() {
 		ArrayList<UUID> result = new ArrayList<UUID>();
 		Radio_manager manager = Dropper_shop_plugin.instance.get_radio_manager();
-		for (Radio_terminal terminal : manager.values()) {
-			if (terminal != this) {
-				double target_signal = this.get_signal(terminal, terminal.get_state());
-				double target_noise = this.get_noise(terminal);
-				Bukkit.getLogger().info(terminal.getCustomName() + ": " + target_signal + "/" + target_noise);
-				if (target_signal > target_noise) {
-					result.add(terminal.get_uuid());
+		int channel_freq = this.get_channel_freq();
+		int central_freq = Radio.get_central_freq(this.get_n());
+		for (int scan_freq = (int) (central_freq
+				- Radio.antenna_bandwidth * central_freq); scan_freq <= (int) (central_freq
+						+ Radio.antenna_bandwidth * central_freq); scan_freq += 100) {
+			this.set_channel_freq(scan_freq);
+			for (Radio_terminal terminal : manager.values()) {
+				if (terminal != this) {
+					double target_signal = this.get_signal(terminal, terminal.get_state());
+					double target_noise = this.get_noise(terminal);
+					Bukkit.getLogger().info(terminal.getCustomName() + ": " + target_signal + "/" + target_noise);
+					if (target_signal > target_noise) {
+						if (!result.contains(terminal.get_uuid())) {
+							result.add(terminal.get_uuid());
+						}
+					}
 				}
 			}
 		}
+		this.set_channel_freq(channel_freq);
 		return result;
 	}
 
