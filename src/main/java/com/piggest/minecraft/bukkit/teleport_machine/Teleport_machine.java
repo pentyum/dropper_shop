@@ -220,7 +220,11 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		double noise = this.get_noise(terminal);
 		// Bukkit.getLogger().info(signal + "/" + noise);
 		int snr = (int) (10 * Math.log10(signal / noise));
-		lore.add("§7当前接收目标发射强度: " + snr + " dB");
+		if (snr == Integer.MIN_VALUE) {
+			lore.add("§7当前接收目标发射强度: NaN dB");
+		} else {
+			lore.add("§7当前接收目标发射强度: " + snr + " dB");
+		}
 		signal = terminal.get_signal(this, Radio_state.WORKING, true);
 		noise = terminal.get_noise(this);
 		// Bukkit.getLogger().info(signal + "/" + noise);
