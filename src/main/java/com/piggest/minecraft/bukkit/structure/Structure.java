@@ -32,7 +32,14 @@ public abstract class Structure {
 		this.init_after_set_location();
 		if (this instanceof Ownable) {
 			Ownable ownable = (Ownable) this;
-			ownable.set_owner((String) save.get("owner"));
+			Object owner_name = save.get("owner");
+			if (owner_name == null) {
+				ownable.set_owner(null);
+			} else if (owner_name.equals("null")) {
+				ownable.set_owner(null);
+			} else {
+				ownable.set_owner((String) owner_name);
+			}
 		}
 		if (this instanceof Capacity_upgradable) {
 			Capacity_upgradable upgradable = (Capacity_upgradable) this;

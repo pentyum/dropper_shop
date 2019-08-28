@@ -388,15 +388,23 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 		this.owner = owner;
 		ItemStack item = this.gui.getItem(owner_indicator);
 		SkullMeta meta = (SkullMeta) item.getItemMeta();
-		meta.setDisplayName("§r当前控制者: " + owner);
-		meta.setOwningPlayer(this.get_owner());
+		if (owner == null) {
+			meta.setDisplayName("§r当前控制者: null");
+		} else {
+			meta.setDisplayName("§r当前控制者: " + owner);
+			meta.setOwningPlayer(this.get_owner());
+		}
 		item.setItemMeta(meta);
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
 	public OfflinePlayer get_owner() {
-		return Bukkit.getOfflinePlayer(this.owner);
+		if (this.owner != null) {
+			return Bukkit.getOfflinePlayer(this.owner);
+		} else {
+			return null;
+		}
 	}
 
 	@Override

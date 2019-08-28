@@ -168,6 +168,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			operator.sendMessage("目标元素材料不足");
 			return;
 		}
+		task_to_do.set_elements(total_elements_cost);
 		terminal.minus(total_elements_cost);
 		boolean working_result = this.set_current_work_with(terminal);
 		if (working_result == false) {
@@ -185,6 +186,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		for (Entity entity : this.teleport_task.get_entities()) {
 			entity.teleport(terminal.get_location().add(0, 1, 0), TeleportCause.PLUGIN);
 		}
+		this.add(this.teleport_task.get_elements());
 		this.teleport_task = null;
 		this.set_process(0);
 	}
