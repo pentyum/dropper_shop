@@ -146,7 +146,7 @@ public interface Radio_terminal extends Nameable, Unique, Elements_container {
 				if (terminal != this) {
 					double target_signal = this.get_signal(terminal, terminal.get_state());
 					double target_noise = this.get_noise(terminal);
-					Bukkit.getLogger().info(terminal.getCustomName() + ": " + target_signal + "/" + target_noise);
+					//Bukkit.getLogger().info(terminal.getCustomName() + ": " + target_signal + "/" + target_noise);
 					if (target_signal > target_noise) {
 						if (!result.contains(terminal.get_uuid())) {
 							result.add(terminal.get_uuid());
