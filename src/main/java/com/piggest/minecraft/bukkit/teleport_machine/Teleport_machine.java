@@ -99,8 +99,10 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		case 37:// 传送台上实体转化为元素
 			Elements_composition total_elements_add = new Elements_composition();
 			for (Entity entity : this.get_entities_in_stage()) {
-				total_elements_add.add(Elements_composition.get_element_composition(entity));
-				entity.remove();
+				if (!(entity instanceof Player)) {
+					total_elements_add.add(Elements_composition.get_element_composition(entity));
+					entity.remove();
+				}
 			}
 			player.sendMessage("总共转化元素: " + total_elements_add.toString());
 			this.add(total_elements_add);
@@ -626,7 +628,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			public boolean test(Entity entity) {
 				EntityType type = entity.getType();
 				return type != EntityType.FALLING_BLOCK && type != EntityType.ENDER_CRYSTAL
-						&& type != EntityType.PRIMED_TNT;
+						&& type != EntityType.PRIMED_TNT && type != EntityType.FISHING_HOOK;
 			}
 		};
 		return world.getNearbyEntities(loc, 2, 2, 2, fliter);

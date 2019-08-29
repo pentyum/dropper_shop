@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Container;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -51,7 +52,13 @@ public class Elements_composition implements Elements_container {
 		}
 		String entity_id_name = entity.getType().getKey().toString();
 		Elements_composition material_composition = get_entity_element_composition(entity_id_name);
-		if (entity instanceof InventoryHolder) {
+		if (entity instanceof ExperienceOrb) {
+			ExperienceOrb exp_orb = (ExperienceOrb) entity;
+			int exp = exp_orb.getExperience();
+			Elements_composition composition = new Elements_composition();
+			composition.set_amount(Element.Magic, exp);
+			material_composition.add(composition);
+		} else if (entity instanceof InventoryHolder) {
 			InventoryHolder holder = (InventoryHolder) entity;
 			Inventory inv = holder.getInventory();
 			for (ItemStack in_item : inv.getStorageContents()) {
