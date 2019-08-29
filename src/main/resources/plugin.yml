@@ -153,4 +153,10 @@ permissions:
   sync_realtime.set:
     description: Set sync_realtime.
     default: op
+  teleport_machine.make:
+    description: make.
+    default: true
+  teleport_machine.use:
+    description: use.
+    default: true
 softdepend: [Vault]
