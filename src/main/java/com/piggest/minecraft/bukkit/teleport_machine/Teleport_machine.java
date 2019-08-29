@@ -15,7 +15,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -181,14 +180,13 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		int total_byte = total_elements_cost.get_total_byte();
 		operator.sendMessage("数据总量: " + total_byte / 1024 + " kB");
 		task_to_do.set_total_byte(total_byte);
+		task_to_do.set_target(terminal);
 		this.teleport_task = task_to_do;
 	}
 
 	public void complete_teleport_to(Radio_terminal terminal) {
 		this.set_current_work_with(null);
-		for (Entity entity : this.teleport_task.get_entities()) {
-			entity.teleport(terminal.get_location().add(0, 1, 0), TeleportCause.PLUGIN);
-		}
+		this.teleport_task.runTaskLater(Dropper_shop_plugin.instance, 1);
 		this.add(this.teleport_task.get_elements());
 		Player operater = this.teleport_task.get_operater();
 		if (operater != null) {

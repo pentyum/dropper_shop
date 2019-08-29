@@ -6,13 +6,16 @@ import javax.annotation.Nullable;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.scheduler.BukkitRunnable;
 
-public class Teleporting_task {
+public class Teleporting_task extends BukkitRunnable {
 	private int total_byte = 0;
 	private int completed_byte = 0;
 	private Collection<Entity> entities = null;
 	private Elements_composition elements = null;
 	private Player operator;
+	private Radio_terminal target = null;
 	
 	public void set_total_byte(int total_byte) {
 		this.total_byte = total_byte;
@@ -53,5 +56,16 @@ public class Teleporting_task {
 	@Nullable
 	public Player get_operater() {
 		return this.operator;
+	}
+
+	@Override
+	public void run() {
+		for (Entity entity : this.get_entities()) {
+			entity.teleport(this.target.get_location().add(0, 1, 0), TeleportCause.PLUGIN);
+		}
+	}
+
+	public void set_target(Radio_terminal terminal) {
+		this.target = terminal;
 	}
 }
