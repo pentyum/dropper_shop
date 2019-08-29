@@ -140,15 +140,17 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		default:
 			if (slot >= 9 && slot <= 25) {
 				ItemStack item = this.gui.getItem(slot);
-				if (item.getType() == Material.BEACON) {
-					if (slot < 17) {
-						slot -= 9;
-					} else {
-						slot -= 10;
+				if (item != null) {
+					if (item.getType() == Material.BEACON) {
+						if (slot < 17) {
+							slot -= 9;
+						} else {
+							slot -= 10;
+						}
+						int index = slot + 16 * (this.current_page - 1);
+						Radio_terminal terminal = Radio_manager.instance.get(this.known_terminal_list.get(index));
+						this.start_teleport_to(player, terminal);
 					}
-					int index = slot + 16 * (this.current_page - 1);
-					Radio_terminal terminal = Radio_manager.instance.get(this.known_terminal_list.get(index));
-					this.start_teleport_to(player, terminal);
 				}
 			}
 			break;
