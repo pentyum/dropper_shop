@@ -68,9 +68,14 @@ public class Radio {
 	 * 获得一定距离处的单位频率的信号功率
 	 */
 	public static double get_power_at(Location source_location, double radiant_power, int central_freq, Location loc) {
-		double distance = source_location.distance(loc);
+		double distance = 1;
 		if (source_location.getWorld() != loc.getWorld()) {
-			distance += 256;
+			int x_distance = source_location.getBlockX() - loc.getBlockX();
+			int y_distance = source_location.getBlockY() - loc.getBlockY();
+			int z_distance = source_location.getBlockZ() - loc.getBlockZ();
+			distance = 256 + Math.sqrt(x_distance * x_distance + y_distance * y_distance + z_distance * z_distance);
+		} else {
+			distance = source_location.distance(loc);
 		}
 		return radiant_power / distance / distance;
 	}
