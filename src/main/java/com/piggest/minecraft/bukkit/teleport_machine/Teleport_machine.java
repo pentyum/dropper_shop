@@ -103,7 +103,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 					entity.remove();
 				}
 			}
-			player.sendMessage("总共转化元素: " + total_elements_add.toString());
+			player.sendMessage("[传送机]总共转化元素: " + total_elements_add.toString());
 			this.add(total_elements_add);
 			break;
 		case 40:// 玩家经验转化为魔力
@@ -158,8 +158,12 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	}
 
 	private void start_teleport_to(Player operator, Radio_terminal terminal) {
+		if (terminal.get_state() == Radio_state.OFF) {
+			operator.sendMessage("[传送机]目标没有开机");
+			return;
+		}
 		Teleporting_task task_to_do = new Teleporting_task();
-		operator.sendMessage("开始传送至" + terminal.getCustomName());
+		operator.sendMessage("[传送机]开始传送至" + terminal.getCustomName());
 		task_to_do.set_entities(this.get_entities_in_stage());
 		Elements_composition total_elements_cost = new Elements_composition();
 		for (Entity entity : task_to_do.get_entities()) {
@@ -168,7 +172,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		operator.sendMessage("待传送实体数量: " + task_to_do.get_entities().size());
 		operator.sendMessage("总共需要: " + total_elements_cost.toString());
 		if (!terminal.has_enough(total_elements_cost)) {
-			operator.sendMessage("目标元素材料不足");
+			operator.sendMessage("[传送机]目标元素材料不足");
 			return;
 		}
 		task_to_do.set_elements(total_elements_cost);
@@ -176,7 +180,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		terminal.minus(total_elements_cost);
 		boolean working_result = this.set_current_work_with(terminal);
 		if (working_result == false) {
-			operator.sendMessage("不支持目标接收频段");
+			operator.sendMessage("[传送机]不支持目标接收频段");
 			return;
 		}
 		int total_byte = total_elements_cost.get_total_byte();
@@ -192,7 +196,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		this.add(this.teleport_task.get_elements());
 		Player operater = this.teleport_task.get_operater();
 		if (operater != null) {
-			operater.sendMessage("已完成传送");
+			operater.sendMessage("[传送机]已完成传送");
 		}
 		this.teleport_task = null;
 		this.set_process(0);
@@ -403,7 +407,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		}
 	}
 
-	private void set_online_voltage(int voltage) {
+	protected void set_online_voltage(int voltage) {
 		this.online_voltage = voltage;
 		ItemStack item = this.gui.getItem(online_voltage_indicator);
 		ItemMeta meta = item.getItemMeta();
@@ -413,7 +417,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		item.setItemMeta(meta);
 	}
 
-	private void set_working_voltage(int voltage) {
+	protected void set_working_voltage(int voltage) {
 		this.working_voltage = voltage;
 		ItemStack item = this.gui.getItem(working_voltage_indicator);
 		ItemMeta meta = item.getItemMeta();

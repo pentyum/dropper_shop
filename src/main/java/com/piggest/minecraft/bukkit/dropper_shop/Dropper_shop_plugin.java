@@ -66,6 +66,7 @@ import com.piggest.minecraft.bukkit.sync_realtime.Sync_realtime_command_executor
 import com.piggest.minecraft.bukkit.teleport_machine.Elements_listener;
 import com.piggest.minecraft.bukkit.teleport_machine.Radio_manager;
 import com.piggest.minecraft.bukkit.teleport_machine.Teleport_machine;
+import com.piggest.minecraft.bukkit.teleport_machine.Teleport_machine_command_executer;
 import com.piggest.minecraft.bukkit.teleport_machine.Teleport_machine_manager;
 import com.piggest.minecraft.bukkit.trees_felling_machine.Trees_felling_machine;
 import com.piggest.minecraft.bukkit.trees_felling_machine.Trees_felling_machine_manager;
@@ -256,6 +257,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.getCommand("wrench").setExecutor(wrench);
 		this.getCommand("lottery").setExecutor(new Lottery_pool_command_executor());
 		this.getCommand("sync_realtime").setExecutor(new Sync_realtime_command_executor(this.sync_realtime_worlds));
+		this.getCommand("teleport_machine").setExecutor(new Teleport_machine_command_executer());
 
 		getLogger().info("使用Vault");
 		if (!initVault()) {
@@ -454,5 +456,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	public Radio_manager get_radio_manager() {
 		return this.radio_manager;
+	}
+
+	public Teleport_machine_manager get_teleport_machine_manager() {
+		return this.teleport_machine_manager;
 	}
 }

@@ -95,6 +95,9 @@ public class Radio {
 	}
 
 	public static boolean check_channel_vaild(int channel_freq, int channel_bandwidth, int n) {
+		if (channel_bandwidth <= 0 || channel_freq <= 0) {
+			return false;
+		}
 		int channel_max_freq = channel_freq + channel_bandwidth / 2;
 		int channel_min_freq = channel_freq - channel_bandwidth / 2;
 		int antenna_central_freq = get_central_freq(n);

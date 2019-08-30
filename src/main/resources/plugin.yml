@@ -44,6 +44,11 @@ commands:
     usage: /<command> worldname true or false to set sync_realtime.
     permission: sync_realtime.list
     permission-message: You don't have permission
+  teleport_machine:
+    description: commands relate to teleport_machine.
+    usage: /<command> set_online_voltage|set_working_voltage|set_freq|set_bandwidth value
+    permission: sync_realtime.use
+    permission-message: You don't have permission
 permissions:
   dropper_shop.*:
     description: Gives access to all dropper shop commands.
