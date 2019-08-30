@@ -64,6 +64,19 @@ public class Radio {
 		return 75000 / n;
 	}
 
+	public static double get_distance(Location loc1, Location loc2) {
+		double distance = 1;
+		if (loc1.getWorld() != loc2.getWorld()) {
+			int x_distance = loc1.getBlockX() - loc2.getBlockX();
+			int y_distance = loc1.getBlockY() - loc2.getBlockY();
+			int z_distance = loc1.getBlockZ() - loc2.getBlockZ();
+			distance = 256 + Math.sqrt(x_distance * x_distance + y_distance * y_distance + z_distance * z_distance);
+		} else {
+			distance = loc1.distance(loc2);
+		}
+		return distance;
+	}
+
 	/*
 	 * 获得一定距离处的单位频率的信号功率
 	 */

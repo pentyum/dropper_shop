@@ -219,7 +219,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		Location loc = terminal.get_location();
 		lore.add("§7位置: " + loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ() + ","
 				+ loc.getWorld().getName());
-		lore.add("§7距离: " + (int) (loc.distance(this.get_location())) + " m");
+		lore.add("§7距离: " + (int) (Radio.get_distance(loc, this.get_location())) + " m");
 		lore.add("§7频率: " + terminal.get_current_channel_freq() + " kHz");
 		lore.add("§7带宽: " + terminal.get_current_channel_bandwidth() + " kHz");
 		double signal = this.get_signal(terminal, terminal.get_state());
