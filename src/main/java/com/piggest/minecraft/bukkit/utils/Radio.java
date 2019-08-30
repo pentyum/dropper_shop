@@ -69,6 +69,9 @@ public class Radio {
 	 */
 	public static double get_power_at(Location source_location, double radiant_power, int central_freq, Location loc) {
 		double distance = source_location.distance(loc);
+		if (source_location.getWorld() != loc.getWorld()) {
+			distance += 256;
+		}
 		return radiant_power / distance / distance;
 	}
 
