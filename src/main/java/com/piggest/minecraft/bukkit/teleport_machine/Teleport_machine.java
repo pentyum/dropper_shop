@@ -408,6 +408,12 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	}
 
 	protected void set_online_voltage(int voltage) {
+		if (voltage > 1000) {
+			voltage = 1000;
+		}
+		if (voltage < 0) {
+			voltage = 0;
+		}
 		this.online_voltage = voltage;
 		ItemStack item = this.gui.getItem(online_voltage_indicator);
 		ItemMeta meta = item.getItemMeta();
@@ -418,6 +424,12 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	}
 
 	protected void set_working_voltage(int voltage) {
+		if (voltage > 10000) {
+			voltage = 10000;
+		}
+		if (voltage < 0) {
+			voltage = 0;
+		}
 		this.working_voltage = voltage;
 		ItemStack item = this.gui.getItem(working_voltage_indicator);
 		ItemMeta meta = item.getItemMeta();
