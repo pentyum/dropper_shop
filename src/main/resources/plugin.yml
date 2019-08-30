@@ -47,7 +47,7 @@ commands:
   teleport_machine:
     description: commands relate to teleport_machine.
     usage: /<command> set_online_voltage|set_working_voltage|set_freq|set_bandwidth value
-    permission: sync_realtime.use
+    permission: teleport_machine.use
     permission-message: You don't have permission
 permissions:
   dropper_shop.*:
