@@ -158,7 +158,25 @@ public class Elements_composition implements Elements_container {
 
 	private static Elements_composition get_entity_element_composition(String entity_id_name) {
 		Elements_composition compostion = new Elements_composition();
-		compostion.set_amount(Element.Magic, 1000);
+		switch (entity_id_name) {
+		case "player":
+			compostion.set_amount(Element.Magic, 1000);
+			compostion.set_amount(Element.C, 475);
+			compostion.set_amount(Element.H, 3150);
+			compostion.set_amount(Element.O, 1275);
+			compostion.set_amount(Element.N, 70);
+			compostion.set_amount(Element.P, 12);
+			compostion.set_amount(Element.S, 3);
+			break;
+		case "iron_golem":
+			compostion.set_amount(Element.Magic, 10000);
+			compostion.set_amount(Element.Fe, 36000);
+			break;
+		default:
+			compostion = new Elements_composition();
+			compostion.set_amount(Element.Magic, 1000);
+			break;
+		}
 		return compostion;
 	}
 
