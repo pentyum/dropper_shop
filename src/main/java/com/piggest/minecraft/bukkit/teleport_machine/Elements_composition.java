@@ -61,7 +61,7 @@ public class Elements_composition implements Elements_container {
 		} else if (entity instanceof InventoryHolder) {
 			InventoryHolder holder = (InventoryHolder) entity;
 			Inventory inv = holder.getInventory();
-			for (ItemStack in_item : inv.getStorageContents()) {
+			for (ItemStack in_item : inv.getContents()) {
 				if (in_item == null) {
 					continue;
 				}
@@ -98,8 +98,47 @@ public class Elements_composition implements Elements_container {
 	}
 
 	private static Elements_composition get_material_element_composition(String id_name) {
-		Elements_composition compostion = new Elements_composition();
-		compostion.set_amount(Element.Magic, 1000);
+		Elements_composition compostion = null;
+		if (id_name.contains("_leaves")) {
+			id_name = "leaves";
+		} else if (id_name.contains("_wood")) {
+			id_name = "wood";
+		} else if (id_name.contains("_log")) {
+			id_name = "wood";
+		} else if (id_name.contains("_planks")) {
+			id_name = "planks";
+		} else if (id_name.contains("_sapling")) {
+			id_name = "sapling";
+		} else if (id_name.contains("_wool")) {
+			id_name = "wool";
+		} else if (id_name.contains("_glass_pane")) {
+			id_name = "glass_pane";
+		} else if (id_name.contains("_glass")) {
+			id_name = "glass";
+		} else if (id_name.contains("_carpet")) {
+			id_name = "carpet";
+		} else if (id_name.contains("_terracotta")) {
+			id_name = "terracotta";
+		} else if (id_name.contains("_concrete_powder")) {
+			id_name = "concrete_powder";
+		} else if (id_name.contains("_concrete")) {
+			id_name = "concrete";
+		} else if (id_name.contains("_sign")) {
+			id_name = "sign";
+		} else if (id_name.contains("_bed")) {
+			id_name = "bed";
+		} else if (id_name.contains("_banner")) {
+			id_name = "banner";
+		} else if (id_name.contains("_shulker_box")) {
+			id_name = "shulker_box";
+		}
+		Base_material material = Base_material.get(id_name);
+		if (material != null) {
+			compostion = material.get_elements_composition();
+		} else {
+			compostion = new Elements_composition();
+			compostion.set_amount(Element.Magic, 1000);
+		}
 		return compostion;
 	}
 
