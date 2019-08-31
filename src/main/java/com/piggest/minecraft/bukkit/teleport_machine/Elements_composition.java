@@ -131,6 +131,20 @@ public class Elements_composition implements Elements_container {
 			id_name = "banner";
 		} else if (id_name.contains("_shulker_box")) {
 			id_name = "shulker_box";
+		} else if (id_name.contains("_anvil")) {
+			id_name = "anvil";
+		} else if (id_name.contains("_door")) {
+			if (!id_name.equals("iron_door")) {
+				id_name = "planks_door";
+			}
+		} else if (id_name.contains("_trapdoor")) {
+			if (!id_name.equals("iron_trapdoor")) {
+				id_name = "planks_trapdoor";
+			}
+		} else if (id_name.contains("_button")) {
+			if (!id_name.equals("stone_button")) {
+				id_name = "planks_button";
+			}
 		}
 		Base_material material = Base_material.get(id_name);
 		if (material != null) {
