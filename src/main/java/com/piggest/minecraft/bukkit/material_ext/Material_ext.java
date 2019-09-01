@@ -1,5 +1,6 @@
 package com.piggest.minecraft.bukkit.material_ext;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import org.bukkit.Material;
@@ -66,14 +67,14 @@ public class Material_ext {
 	private static ItemStack new_item(NamespacedKey namespacedkey, int num) {
 		return new_item(namespacedkey, num, null);
 	}
-	
+
 	/*
 	 * 以名称新建物品，如果原版中没找到，则到本插件中寻找。
 	 */
 	public static ItemStack new_item_full_name(String full_name, int num) {
 		return new_item(get_namespacedkey(full_name), num);
 	}
-	
+
 	/*
 	 * 以名称新建物品，如果原版中没找到，则到本插件中寻找。
 	 */
@@ -137,7 +138,7 @@ public class Material_ext {
 		NamespacedKey namespacedkey = Material_ext.get_namespacedkey(full_name);
 		return get_material(namespacedkey);
 	}
-	
+
 	/*
 	 * 获得namespacedkey
 	 */
@@ -150,7 +151,7 @@ public class Material_ext {
 		}
 		return null;
 	}
-	
+
 	/*
 	 * 获得namespacedkey
 	 */
@@ -158,7 +159,7 @@ public class Material_ext {
 		String full_name = get_full_name(item);
 		return get_namespacedkey(full_name);
 	}
-	
+
 	public static Status is_empty_container(ItemStack item) {
 		String id_name = Material_ext.get_id_name(item);
 		if (id_name.equals(Reader.id_name)) {
@@ -176,6 +177,20 @@ public class Material_ext {
 		default:
 			return null;
 		}
+	}
+
+	public static ItemStack[] split_to_max_stack_size(ItemStack item) {
+		int quantity = item.getAmount();
+		int max_stack_size = item.getMaxStackSize();
+		int stacks = quantity / max_stack_size + 1;
+		ItemStack[] items = new ItemStack[stacks];
+		for (ItemStack splited_item : items) {
+			splited_item = item.clone();
+			int amount = quantity - max_stack_size > 0 ? max_stack_size : quantity;
+			splited_item.setAmount(amount);
+			quantity -= amount;
+		}
+		return items;
 	}
 
 	public static ItemStack get_empty_container(ItemStack item) {
@@ -198,4 +213,11 @@ public class Material_ext {
 			return null;
 		}
 	}
+
+	public static ArrayList<String> get_ext_full_name_list() {
+		ArrayList<String> list = new ArrayList<String>();
+		ext_material_map.keySet().forEach(key -> list.add(key.toString()));
+		return list;
+	}
+
 }

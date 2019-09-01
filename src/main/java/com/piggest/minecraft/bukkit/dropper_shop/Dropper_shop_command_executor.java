@@ -1,10 +1,13 @@
 package com.piggest.minecraft.bukkit.dropper_shop;
 
+import java.util.HashMap;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -14,7 +17,7 @@ import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.teleport_machine.Elements_composition;
 import com.piggest.minecraft.bukkit.utils.Server_date;
 
-public class Dropper_shop_command_executor implements CommandExecutor {
+public class Dropper_shop_command_executor implements TabExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
 		if (cmd.getName().equalsIgnoreCase("dropper_shop")) {
@@ -127,11 +130,49 @@ public class Dropper_shop_command_executor implements CommandExecutor {
 				if (!Grinder.is_empty(item)) {
 					player.sendMessage(Elements_composition.get_element_composition(item).toString());
 				}
+			} else if (args[0].equalsIgnoreCase("get_item")) {
+				if (!player.hasPermission("dropper_shop.get_item")) {
+					player.sendMessage("你没有权限获得物品");
+					return true;
+				}
+				int quantity = 1;
+				if (args.length < 2) {
+					player.sendMessage("未指定物品ID");
+					return true;
+				}
+				if (args.length < 3) {
+					try {
+						quantity = Integer.parseInt(args[2]);
+					} catch (Exception e) {
+						player.sendMessage("物品数量不正确");
+						return true;
+					}
+					if (quantity < 0) {
+						player.sendMessage("物品数量不正确");
+						return true;
+					}
+				}
+				ItemStack item = Material_ext.new_item_full_name(args[1], quantity);
+				ItemStack[] items = Material_ext.split_to_max_stack_size(item);
+				HashMap<Integer, ItemStack> left = player.getInventory().addItem(items);
+				for (ItemStack left_item : left.values()) {
+					player.getWorld().dropItemNaturally(player.getLocation(), left_item);
+				}
 			} else {
 				return false;
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+		if (args[0].equalsIgnoreCase("get_item")) {
+			if (args.length == 1) {
+				return Material_ext.get_ext_full_name_list();
+			}
+		}
+		return null;
 	}
 
 }
