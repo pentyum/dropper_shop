@@ -1,11 +1,13 @@
 package com.piggest.minecraft.bukkit.teleport_machine;
 
 import java.util.Arrays;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Container;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Item;
@@ -13,6 +15,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.grinder.Grinder;
@@ -80,7 +83,7 @@ public class Elements_composition implements Elements_container {
 		Elements_composition material_composition = get_material_element_composition(id_name);
 		material_composition.multiply(item.getAmount());
 		ItemMeta meta = item.getItemMeta();
-		if (meta instanceof BlockStateMeta) {
+		if (meta instanceof BlockStateMeta) { // 潜影盒
 			BlockStateMeta blockstatemeta = (BlockStateMeta) meta;
 			BlockState blockstate = blockstatemeta.getBlockState();
 			if (blockstate instanceof Container) {
@@ -92,6 +95,17 @@ public class Elements_composition implements Elements_container {
 					}
 					material_composition.add(Elements_composition.get_element_composition(in_item));
 				}
+			}
+		}
+		Map<Enchantment, Integer> ench_map = meta.getEnchants(); // 被附魔的物品
+		for (int level : ench_map.values()) {
+			material_composition.add(Element.Magic.get_elements_composition(level * 1000));
+		}
+		if (meta instanceof EnchantmentStorageMeta) { // 附魔书
+			EnchantmentStorageMeta enchantmentstoragemeta = (EnchantmentStorageMeta) meta;
+			Map<Enchantment, Integer> storge_ench_map = enchantmentstoragemeta.getStoredEnchants();
+			for (int level : storge_ench_map.values()) {
+				material_composition.add(Element.Magic.get_elements_composition(level * 1000));
 			}
 		}
 		return material_composition;
@@ -172,9 +186,16 @@ public class Elements_composition implements Elements_container {
 			compostion.set_amount(Element.Magic, 10000);
 			compostion.set_amount(Element.Fe, 36000);
 			break;
+		case "minecart":
+			compostion.set_amount(Element.Fe, 5000);
 		default:
-			compostion = new Elements_composition();
 			compostion.set_amount(Element.Magic, 1000);
+			compostion.set_amount(Element.C, 475);
+			compostion.set_amount(Element.H, 3150);
+			compostion.set_amount(Element.O, 1275);
+			compostion.set_amount(Element.N, 70);
+			compostion.set_amount(Element.P, 12);
+			compostion.set_amount(Element.S, 3);
 			break;
 		}
 		return compostion;

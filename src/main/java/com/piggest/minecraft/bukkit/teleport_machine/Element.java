@@ -39,8 +39,12 @@ public enum Element implements Has_composition {
 
 	@Override
 	public Elements_composition get_elements_composition() {
+		return this.get_elements_composition(1);
+	}
+	
+	public Elements_composition get_elements_composition(int value) {
 		Elements_composition comp = new Elements_composition();
-		comp.set_amount(this, 1);
+		comp.set_amount(this, value);
 		return comp;
 	}
 }
