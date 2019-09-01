@@ -140,7 +140,7 @@ public class Dropper_shop_command_executor implements TabExecutor {
 					player.sendMessage("未指定物品ID");
 					return true;
 				}
-				if (args.length < 3) {
+				if (args.length > 2) {
 					try {
 						quantity = Integer.parseInt(args[2]);
 					} catch (Exception e) {
@@ -153,6 +153,10 @@ public class Dropper_shop_command_executor implements TabExecutor {
 					}
 				}
 				ItemStack item = Material_ext.new_item_full_name(args[1], quantity);
+				if (item == null) {
+					player.sendMessage("物品ID不正确");
+					return true;
+				}
 				ItemStack[] items = Material_ext.split_to_max_stack_size(item);
 				HashMap<Integer, ItemStack> left = player.getInventory().addItem(items);
 				for (ItemStack left_item : left.values()) {
