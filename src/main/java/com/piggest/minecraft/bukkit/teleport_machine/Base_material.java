@@ -22,11 +22,15 @@ public enum Base_material implements Has_composition {
 	sucrose_molecule(new Has_composition[] {Element.C,Element.H,Element.O},new int[] {6,10,5}),//碳水化合物
 	polysaccharide_molecule(new Has_composition[] {Element.C,Element.H,Element.O},new int[] {12,22,11}), //蔗糖
 	tnt_molecule(new Has_composition[] {Element.C,Element.H,Element.O,Element.N},new int[] {7,5,6,3}),
+	hydroxyapatite_molecule(new Has_composition[] {Element.Ca,Element.P,Element.O,Element.H},new int[] {5,3,13,1}),  //羟基磷酸钙
 	
 	vine(new Has_composition[] {sucrose_molecule,water_molecule},new int[] {10,10}),
 	slime_ball(new Has_composition[] {sucrose_molecule,water_molecule},new int[] {10,90}),
 	slime_block(new Has_composition[] {slime_ball},new int[] {9}),
-		
+	bone_meal(new Has_composition[] {hydroxyapatite_molecule},new int[] {10}),
+	bone(new Has_composition[] {bone_meal},new int[] {4}),
+	bone_block(new Has_composition[] {bone_meal},new int[] {9}),
+	
 	wool_base(new Has_composition[] {Element.C,Element.H,Element.O,Element.N,Element.S},new int[] {78,154,67,20,5}),
 	carpet(new Has_composition[] {wool_base},new int[] {2}),
 	wool(new Has_composition[] {wool_base},new int[] {3}),
