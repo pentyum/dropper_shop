@@ -72,7 +72,7 @@ public enum Base_material implements Has_composition {
 	packed_ice(new Has_composition[] {ice},new int[] {9}),
 	blue_ice(new Has_composition[] {packed_ice},new int[] {9}),
 	
-	suger(new Has_composition[] {polysaccharide_molecule},new int[] {20}),
+	sugar(new Has_composition[] {polysaccharide_molecule},new int[] {20}),
 	
 	sapling(new Has_composition[] {sucrose_molecule,water_molecule},new int[] {6,10}),
 	leaves(new Has_composition[] {sucrose_molecule,water_molecule},new int[] {6,10}),
