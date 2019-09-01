@@ -168,7 +168,7 @@ public class Dropper_shop_command_executor implements TabExecutor {
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 		if (args[0].equalsIgnoreCase("get_item")) {
-			if (args.length == 1) {
+			if (args.length == 2) {
 				return Material_ext.get_ext_full_name_list();
 			}
 		}
