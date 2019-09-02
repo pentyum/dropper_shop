@@ -139,7 +139,7 @@ public enum Base_material implements Has_composition {
 	chest_minecart(new Has_composition[] {chest,minecart},new int[] {1,1}),
 	furnace_minecart(new Has_composition[] {furnace,minecart},new int[] {1,1}),
 	tnt_minecart(new Has_composition[] {tnt,minecart},new int[] {1,1}),
-	rail(new Has_composition[] {iron_ingot,stick},new double[] {6/16,1/16}),
+	rail(new Has_composition[] {iron_ingot,stick},new double[] {6.0/16.0,1.0/16.0}),
 	
 	gold_nugget(new Has_composition[] {Element.Au},new int[] {100}),
 	gold_powder(new Has_composition[] {Element.Au},new int[] {1000}),
@@ -192,7 +192,7 @@ public enum Base_material implements Has_composition {
 	dropper(new Has_composition[] {cobblestone,redstone},new int[] {7,1}),
 	dispenser(new Has_composition[] {dropper,bow},new int[] {1,1}),
 	hopper_minecart(new Has_composition[] {hopper,minecart},new int[] {1,1}),
-	powered_rail(new Has_composition[] {gold_ingot,stick,redstone},new double[] {1,1/6,1/6});
+	powered_rail(new Has_composition[] {gold_ingot,stick,redstone},new double[] {1,1.0/6.0,1.0/6.0});
 
 	public final HashMap<Has_composition,Double> map = new HashMap<Has_composition,Double>();
 	Base_material(Has_composition[] element, double[] unit){
