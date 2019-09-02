@@ -149,7 +149,11 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 						}
 						int index = slot + 16 * (this.current_page - 1);
 						Radio_terminal terminal = Radio_manager.instance.get(this.known_terminal_list.get(index));
-						this.start_teleport_to(player, terminal);
+						if (terminal == null) {
+							player.sendMessage("目标传送机已经丢失");
+						} else {
+							this.start_teleport_to(player, terminal);
+						}
 					}
 				}
 			}
@@ -255,6 +259,9 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			} else {
 				UUID terminal_uuid = this.known_terminal_list.get(start);
 				Radio_terminal terminal = Radio_manager.instance.get(terminal_uuid);
+				if (terminal == null) {
+					continue;
+				}
 				this.set_gui_terminal_item(slot, terminal);
 			}
 			slot++;

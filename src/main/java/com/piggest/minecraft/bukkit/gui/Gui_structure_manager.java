@@ -41,5 +41,8 @@ public abstract class Gui_structure_manager<T extends Multi_block_with_gui> exte
 	public abstract int get_slot_num();
 
 	public abstract int[] get_process_bar();
-
+	
+	public void remove(T structure) {
+		super.remove(structure);
+	}
 }

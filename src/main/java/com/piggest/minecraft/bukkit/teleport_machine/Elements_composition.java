@@ -39,6 +39,9 @@ public class Elements_composition implements Elements_container {
 
 	@Override
 	public void set_amount(Element element, int amount) {
+		if (amount > 1000000000) {
+			amount = 1000000000;
+		}
 		this.composition[element.atomic_number] = amount;
 	}
 
