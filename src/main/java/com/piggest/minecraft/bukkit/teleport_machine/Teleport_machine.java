@@ -22,6 +22,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.exp_saver.SetExpFix;
+import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
@@ -31,6 +32,7 @@ import com.piggest.minecraft.bukkit.utils.Radio;
 
 public class Teleport_machine extends Multi_block_with_gui implements HasRunner, Radio_terminal {
 	public static final int name_tag_slot = 47;
+	public static final int item_to_elements_slot = 45;
 	public static final int online_voltage_indicator = 41;
 	public static final int working_voltage_indicator = 42;
 	public static final int bandwidth_indicator = 43;
@@ -474,9 +476,14 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 
 	@Override
 	public boolean on_put_item(Player player, ItemStack cursor_item, int slot) {
+		BukkitRunnable remover;
 		switch (slot) {
 		case name_tag_slot:
-			Name_tag_remover remover = new Name_tag_remover(this);
+			remover = new Name_tag_remover(this);
+			remover.runTaskLaterAsynchronously(Dropper_shop_plugin.instance, 1);
+			return true;
+		case item_to_elements_slot:
+			remover = new Item_remover(this);
 			remover.runTaskLaterAsynchronously(Dropper_shop_plugin.instance, 1);
 			return true;
 		default:
@@ -681,5 +688,22 @@ class Name_tag_remover extends BukkitRunnable {
 			}
 		}
 	}
+}
 
+class Item_remover extends BukkitRunnable {
+	private Teleport_machine machine;
+
+	public Item_remover(Teleport_machine machine) {
+		this.machine = machine;
+	}
+
+	@Override
+	public void run() {
+		ItemStack item = machine.getInventory().getItem(Teleport_machine.item_to_elements_slot);
+		if (!Grinder.is_empty(item)) {
+			Elements_composition composition = Elements_composition.get_element_composition(item);
+			machine.add(composition);
+			item.setAmount(0);
+		}
+	}
 }

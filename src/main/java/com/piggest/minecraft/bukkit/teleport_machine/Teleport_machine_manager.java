@@ -71,7 +71,7 @@ public class Teleport_machine_manager extends Gui_structure_manager<Teleport_mac
 		this.set_gui(40, Material.PLAYER_HEAD, "§r玩家经验转化为魔力", new String[] { "§71点经验转化为1kJ魔力", "§7点击立刻转化1000点经验为魔力" },
 				Gui_slot_type.Button);
 
-		this.set_gui(45, null, "item-slot", Gui_slot_type.Item_store);
+		this.set_gui(Teleport_machine.item_to_elements_slot, null, "item-slot", Gui_slot_type.Item_store);
 		this.set_gui(46, Material.BLUE_STAINED_GLASS_PANE, "§r左边放置物品转化为元素", Gui_slot_type.Indicator);
 		this.set_gui(Teleport_machine.name_tag_slot, null, "name-tag-slot", Gui_slot_type.Item_store);
 		this.set_gui(48, Material.BLUE_STAINED_GLASS_PANE, "§r左边放置命名牌给本传送机命名", Gui_slot_type.Indicator);
