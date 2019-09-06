@@ -8,6 +8,7 @@ import org.bukkit.potion.PotionType;
 
 import com.piggest.minecraft.bukkit.depository.Reader;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.teleport_machine.Elements_composition;
 
 public enum Liquid implements Chemical {
 	water("水"), lava("熔岩"), milk("牛奶");
@@ -136,5 +137,10 @@ public enum Liquid implements Chemical {
 		default:
 			return null;
 		}
+	}
+
+	@Override
+	public Elements_composition get_elements_composition() {
+		return null;
 	}
 }

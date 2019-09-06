@@ -2,13 +2,24 @@ package com.piggest.minecraft.bukkit.advanced_furnace;
 
 import org.bukkit.inventory.ItemStack;
 
-public enum Gas implements Chemical {
-	hydrogen("氢气"), oxygen("氧气"), nitrogen("氮气"), chlorine("氯气"), CO("一氧化碳"), CO2("二氧化碳"), CH4("甲烷"), NH3("氨气"),
-	NO("一氧化氮"), NO2("二氧化氮"), SO2("二氧化硫"), H2S("硫化氢"), HCl("氯化氢"), HCN("氰化氢"), HF("氟化氢"), water_vapor("水蒸气"), Ar("氩气");
-	private String display_name;
+import com.piggest.minecraft.bukkit.teleport_machine.Base_material;
+import com.piggest.minecraft.bukkit.teleport_machine.Elements_composition;
 
-	Gas(String display_name) {
+public enum Gas implements Chemical {
+	hydrogen("氢气", Base_material.hygrogen_molecule), oxygen("氧气", Base_material.oxygen_molecule),
+	nitrogen("氮气", Base_material.nitrogen_molecule), chlorine("氯气", Base_material.chlorine_molecule),
+	CO("一氧化碳", Base_material.CO_molecule), CO2("二氧化碳", Base_material.CO2_molecule),
+	CH4("甲烷", Base_material.CH4_molecule), NH3("氨气", Base_material.NH3_molecule), NO("一氧化氮", Base_material.NO_molecule),
+	NO2("二氧化氮", Base_material.NO2_molecule), SO2("二氧化硫", Base_material.SO2_molecule),
+	H2S("硫化氢", Base_material.H2S_molecule), HCl("氯化氢", Base_material.HCl_molecule),
+	HCN("氰化氢", Base_material.HCN_molecule), HF("氟化氢", Base_material.HF_molecule),
+	water_vapor("水蒸气", Base_material.water_molecule), Ar("氩气", Base_material.hygrogen_molecule);
+	private String display_name;
+	private Base_material composition;
+
+	Gas(String display_name, Base_material base_material) {
 		this.display_name = display_name;
+		this.composition = base_material;
 	}
 
 	Gas() {
@@ -38,6 +49,11 @@ public enum Gas implements Chemical {
 			return Gas_bottle.get_contents(fuel_item, gastype);
 		}
 		return 0;
+	}
+
+	@Override
+	public Elements_composition get_elements_composition() {
+		return this.composition.get_elements_composition();
 	}
 
 }

@@ -5,6 +5,20 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 public enum Base_material implements Has_composition {
+	hygrogen_molecule(new Has_composition[] {Element.H},new int[] {2}),
+	oxygen_molecule(new Has_composition[] {Element.O},new int[] {2}),
+	nitrogen_molecule(new Has_composition[] {Element.N},new int[] {2}),
+	chlorine_molecule(new Has_composition[] {Element.Cl},new int[] {2}),
+	CO_molecule(new Has_composition[] {Element.C,Element.O},new int[] {1,1}),
+	CH4_molecule(new Has_composition[] {Element.C,Element.H},new int[] {1,4}),
+	NH3_molecule(new Has_composition[] {Element.N,Element.H},new int[] {1,3}),
+	NO_molecule(new Has_composition[] {Element.N,Element.O},new int[] {1,1}),
+	NO2_molecule(new Has_composition[] {Element.N,Element.O},new int[] {1,2}),
+	SO2_molecule(new Has_composition[] {Element.S,Element.O},new int[] {1,2}),
+	H2S_molecule(new Has_composition[] {Element.H,Element.S},new int[] {2,1}),
+	HCl_molecule(new Has_composition[] {Element.H,Element.Cl},new int[] {1,1}),
+	HCN_molecule(new Has_composition[] {Element.H,Element.C,Element.N},new int[] {1,1,1}),
+	HF_molecule(new Has_composition[] {Element.H,Element.F},new int[] {1,1}),
 	water_molecule(new Has_composition[] {Element.H,Element.O},new int[] {2,1}),
 	SiO2_molecule(new Has_composition[] {Element.Si,Element.O},new int[] {1,2}),
 	CaO_molecule(new Has_composition[] {Element.Ca,Element.O},new int[] {1,1}),
@@ -24,9 +38,14 @@ public enum Base_material implements Has_composition {
 	tnt_molecule(new Has_composition[] {Element.C,Element.H,Element.O,Element.N},new int[] {7,5,6,3}),
 	hydroxyapatite_molecule(new Has_composition[] {Element.Ca,Element.P,Element.O,Element.H},new int[] {5,3,13,1}),  //羟基磷酸钙
 	
+	blaze_powder(new Has_composition[] {Element.S},new int[] {100}),
+	blaze_rod(new Has_composition[] {blaze_powder},new int[] {3}),
+	
 	vine(new Has_composition[] {sucrose_molecule,water_molecule},new int[] {10,10}),
 	slime_ball(new Has_composition[] {sucrose_molecule,water_molecule},new int[] {10,90}),
 	slime_block(new Has_composition[] {slime_ball},new int[] {9}),
+	magma_cream(new Has_composition[] {slime_ball,blaze_powder},new int[] {1,1}),
+	
 	bone_meal(new Has_composition[] {hydroxyapatite_molecule},new int[] {10}),
 	bone(new Has_composition[] {bone_meal},new int[] {4}),
 	bone_block(new Has_composition[] {bone_meal},new int[] {9}),
@@ -44,6 +63,7 @@ public enum Base_material implements Has_composition {
 	lava(new Has_composition[] {SiO2_molecule},new int[] {1000}),
 	ore(new Has_composition[] {SiO2_molecule},new int[] {400}),
 	furnace(new Has_composition[] {cobblestone},new int[] {8}),
+	brewing_stand(new Has_composition[] {blaze_rod,cobblestone},new int[] {1,3}),
 	
 	sand(new Has_composition[] {SiO2_molecule},new int[] {300}),
 	glass(new Has_composition[] {sand},new int[] {1}),
@@ -64,7 +84,7 @@ public enum Base_material implements Has_composition {
 	
 	gunpowder(new Has_composition[] {tnt_molecule},new int[] {15}),
 	tnt(new Has_composition[] {gunpowder,sand},new int[] {5,2}),
-
+	
 	snowball(new Has_composition[] {water_molecule},new int[] {100}),
 	snow_block(new Has_composition[] {snowball},new int[] {4}),
 	water(new Has_composition[] {water_molecule},new int[] {1000}),
@@ -108,7 +128,8 @@ public enum Base_material implements Has_composition {
 	coal_ore(new Has_composition[] {coal_powder,ore},new int[] {2,1}),
 	coal_block(new Has_composition[] {coal},new int[] {9}),
 	torch(new Has_composition[] {coal,stick},new double[] {0.25,0.25}),
-	
+	fire_charge(new Has_composition[] {gunpowder,coal,blaze_powder},new double[] {1.0/3.0,1.0/3.0,1.0/3.0}),
+
 	lead(new Has_composition[] {string,slime_ball},new double[] {2,0.5}),
 	bow(new Has_composition[] {string,stick},new int[] {3,3}),
 	fishing_rod(new Has_composition[] {string,stick},new int[] {2,3}),
@@ -140,6 +161,7 @@ public enum Base_material implements Has_composition {
 	furnace_minecart(new Has_composition[] {furnace,minecart},new int[] {1,1}),
 	tnt_minecart(new Has_composition[] {tnt,minecart},new int[] {1,1}),
 	rail(new Has_composition[] {iron_ingot,stick},new double[] {6.0/16.0,1.0/16.0}),
+	iron_bars(new Has_composition[] {iron_ingot},new double[] {6.0/16.0}),
 	
 	gold_nugget(new Has_composition[] {Element.Au},new int[] {100}),
 	gold_powder(new Has_composition[] {Element.Au},new int[] {1000}),

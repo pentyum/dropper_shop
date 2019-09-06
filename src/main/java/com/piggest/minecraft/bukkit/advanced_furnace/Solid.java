@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import com.piggest.minecraft.bukkit.depository.Reader;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.teleport_machine.Elements_composition;
 
 public enum Solid implements Chemical {
 	iron_ore(1000, "铁矿石"), iron_powder(1000, "铁粉"), iron_ingot(1000, "铁锭"), gold_ore(1000, "金矿石"),
@@ -72,5 +73,11 @@ public enum Solid implements Chemical {
 		} finally {
 		}
 		return solid;
+	}
+
+	@Override
+	public Elements_composition get_elements_composition() {
+		// TODO 自动生成的方法存根
+		return null;
 	}
 }

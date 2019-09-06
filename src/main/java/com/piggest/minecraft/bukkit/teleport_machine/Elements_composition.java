@@ -2,6 +2,7 @@ package com.piggest.minecraft.bukkit.teleport_machine;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.annotation.Nullable;
 
@@ -18,6 +19,8 @@ import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.piggest.minecraft.bukkit.advanced_furnace.Gas;
+import com.piggest.minecraft.bukkit.advanced_furnace.Gas_bottle;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
@@ -111,6 +114,16 @@ public class Elements_composition implements Elements_container {
 				material_composition.add(Element.Magic.get_elements_composition(level * 1000));
 			}
 		}
+		if(id_name.equals("gas_bottle")) {
+			Map<Gas,Integer> gas_map = Gas_bottle.get_gas_map(item);
+			for (Entry<Gas, Integer> entry:gas_map.entrySet()) {
+				Gas gas_type = entry.getKey();
+				int amount = entry.getValue();
+				Elements_composition gas_composition = gas_type.get_elements_composition();
+				gas_composition.multiply(amount);
+				material_composition.add(gas_composition);
+			}
+		}
 		return material_composition;
 	}
 
@@ -191,6 +204,16 @@ public class Elements_composition implements Elements_container {
 			break;
 		case "minecart":
 			compostion.set_amount(Element.Fe, 5000);
+		case "villager":
+			compostion.set_amount(Element.Magic, 1000);
+			compostion.set_amount(Element.C, 475);
+			compostion.set_amount(Element.H, 3150);
+			compostion.set_amount(Element.O, 1275);
+			compostion.set_amount(Element.N, 70);
+			compostion.set_amount(Element.P, 12);
+			compostion.set_amount(Element.S, 3);
+			compostion.set_amount(Element.Be, 500);
+			break;
 		default:
 			compostion.set_amount(Element.Magic, 1000);
 			compostion.set_amount(Element.C, 475);

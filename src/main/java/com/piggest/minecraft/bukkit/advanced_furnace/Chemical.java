@@ -1,6 +1,8 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
-public interface Chemical {
+import com.piggest.minecraft.bukkit.teleport_machine.Has_composition;
+
+public interface Chemical extends Has_composition {
 
 	public String get_displayname();
 
