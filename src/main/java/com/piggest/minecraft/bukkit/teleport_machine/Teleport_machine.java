@@ -164,6 +164,10 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	}
 
 	private void start_teleport_to(Player operator, Radio_terminal terminal) {
+		if (terminal.get_location().getWorld() == null) {
+			operator.sendMessage("[传送机]目标世界未加载");
+			return;
+		}
 		if (terminal.get_state() == Radio_state.OFF) {
 			operator.sendMessage("[传送机]目标没有开机");
 			return;
@@ -228,22 +232,26 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		lore.add("§7距离: " + (int) (Radio.get_distance(loc, this.get_location())) + " m");
 		lore.add("§7频率: " + terminal.get_current_channel_freq() + " kHz");
 		lore.add("§7带宽: " + terminal.get_current_channel_bandwidth() + " kHz");
-		double signal = this.get_signal(terminal, terminal.get_state());
-		double noise = this.get_noise(terminal);
-		// Bukkit.getLogger().info(signal + "/" + noise);
-		int snr = (int) (10 * Math.log10(signal / noise));
-		if (snr == Integer.MIN_VALUE) {
-			lore.add("§7当前接收目标发射强度: NaN dB");
+		if (loc.getWorld() != null) {
+			double signal = this.get_signal(terminal, terminal.get_state());
+			double noise = this.get_noise(terminal);
+			// Bukkit.getLogger().info(signal + "/" + noise);
+			int snr = (int) (10 * Math.log10(signal / noise));
+			if (snr == Integer.MIN_VALUE) {
+				lore.add("§7当前接收目标发射强度: NaN dB");
+			} else {
+				lore.add("§7当前接收目标发射强度: " + snr + " dB");
+			}
+			signal = terminal.get_signal(this, Radio_state.WORKING, true);
+			noise = terminal.get_noise(this);
+			// Bukkit.getLogger().info(signal + "/" + noise);
+			snr = (int) (10 * Math.log10(signal / noise));
+			lore.add("§7预计发射目标接收强度: " + snr + " dB");
+			int rate = terminal.get_working_speed(this);
+			lore.add(String.format("§7预计传输速率: %d kB/s", rate * 8));
 		} else {
-			lore.add("§7当前接收目标发射强度: " + snr + " dB");
+			lore.add("§c目标世界未被加载!");
 		}
-		signal = terminal.get_signal(this, Radio_state.WORKING, true);
-		noise = terminal.get_noise(this);
-		// Bukkit.getLogger().info(signal + "/" + noise);
-		snr = (int) (10 * Math.log10(signal / noise));
-		lore.add("§7预计发射目标接收强度: " + snr + " dB");
-		int rate = terminal.get_working_speed(this);
-		lore.add(String.format("§7预计传输速率: %d kB/s", rate * 8));
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 		this.gui.setItem(slot, item);

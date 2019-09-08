@@ -40,11 +40,14 @@ public class Chunk_location {
 	public Chunk get_chunk() {
 		return this.get_world().getChunkAt(this.x, this.z);
 	}
-	
+
 	public boolean is_loaded() {
+		if (this.get_world() == null) {
+			return false;
+		}
 		return this.get_world().isChunkLoaded(get_x(), get_z());
 	}
-	
+
 	@Override
 	public boolean equals(Object other) {
 		if (other instanceof Chunk_location) {
@@ -64,7 +67,7 @@ public class Chunk_location {
 	public int hashCode() {
 		return this.world_name.length() + this.x + this.z;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "(" + this.world_name + "," + this.x + "," + this.z + ")";

@@ -89,8 +89,10 @@ public abstract class Structure_manager<T extends Structure> {
 				shop.set_from_save(shop_save);
 				if (shop instanceof Multi_block_structure) {
 					Multi_block_structure multi_block_struct = (Multi_block_structure) shop;
-					if (multi_block_struct.completed() == true) {
-						this.add(shop);
+					if (multi_block_struct.get_location().getWorld() != null) {
+						if (multi_block_struct.completed() == true) {
+							this.add(shop);
+						}
 					}
 				} else {
 					this.add(shop);
