@@ -2,15 +2,13 @@ package com.piggest.minecraft.bukkit.anti_thunder;
 
 import java.util.HashSet;
 
+import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.weather.LightningStrikeEvent;
-import org.bukkit.scheduler.BukkitRunnable;
-
 /* added for experimental fire prevention */
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockIgniteEvent.IgniteCause;
@@ -70,7 +68,7 @@ public class Anti_thunder_listener implements Listener {
 					event.setCancelled(true);
 					//Fire_remover remover = new Fire_remover(location);
 				  //remover.runTaskLater(Dropper_shop_plugin.instance, 1);
-					anti_thunder.send_msg_to_owner("[防雷器] 已阻止" + chuck_loc + "的雷击");
+					anti_thunder.send_msg_to_owner("[防雷器] 已阻止" + chunk_loc + "的雷击");
 					Dropper_shop_plugin.instance.getLogger().info("已阻止雷击");
 					break;
 				} else {
@@ -83,13 +81,13 @@ public class Anti_thunder_listener implements Listener {
 
 	@EventHandler
 	public void on_ignition(BlockIgniteEvent event) {
-		if((event.getCause​() != IgniteCause.LIGHTNING) && (event.getCause() != IgniteCause.SPREAD)){
+		if((event.getCause() != IgniteCause.LIGHTNING) && (event.getCause() != IgniteCause.SPREAD)){
 			return;
 		}
 		if (event.isCancelled() == true) {
 			return;
 		}
-		Location location = event.getLightning().getLocation();
+		Location location = event.getBlock().getLocation();
 		Chunk_location chunk_loc = new Chunk_location(location.getChunk());
 		Dropper_shop_plugin.instance.getLogger().info("区块" + chunk_loc + "发生了雷击造成的火灾");
 		HashSet<Anti_thunder> find = Anti_thunder_manager.instance.get_all_structures_around_chunk(chunk_loc, 1);
@@ -104,7 +102,7 @@ public class Anti_thunder_listener implements Listener {
 				}
 				if (anti_thunder.is_active() == true) {
 					event.setCancelled(true);
-					anti_thunder.send_msg_to_owner("[防雷器] 已阻止" + chuck_loc + "的雷击造成的火灾");
+					anti_thunder.send_msg_to_owner("[防雷器] 已阻止" + chunk_loc + "的雷击造成的火灾");
 					Dropper_shop_plugin.instance.getLogger().info("已阻止雷击造成的火灾");
 					break;
 				} else {
@@ -121,7 +119,7 @@ public class Anti_thunder_listener implements Listener {
 		if (type == EntityType.SKELETON_HORSE) {
 			Chunk spawn_chunk = event.getLocation().getChunk();
 			Chunk_location chunk_location = new Chunk_location(spawn_chunk);
-			HashSet<Pigman_switch> find = Anti_thunder_manager.instance.get_all_structures_around_chunk(chunk_location,
+			HashSet<Anti_thunder> find = Anti_thunder_manager.instance.get_all_structures_around_chunk(chunk_location,
 					1);
 			if (find != null) {
 				for (Anti_thunder anti_thunder : find) {
@@ -134,7 +132,7 @@ public class Anti_thunder_listener implements Listener {
 					}
 					if (anti_thunder.is_active() == true) {
 						event.setCancelled(true);
-						anti_thunder.send_msg_to_owner("[防雷器] 已阻止" + chuck_loc + "的雷击造成的骷髅陷阱");
+						anti_thunder.send_msg_to_owner("[防雷器] 已阻止" + chunk_location + "的雷击造成的骷髅陷阱");
 						Dropper_shop_plugin.instance.getLogger().info("已阻止雷击造成的骷髅陷阱");
 						break;
 					} else {
