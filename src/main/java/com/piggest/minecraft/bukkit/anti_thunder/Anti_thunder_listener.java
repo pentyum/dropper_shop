@@ -11,10 +11,18 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.weather.LightningStrikeEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
+/* added for experimental fire prevention */
+import org.bukkit.event.block.BlockIgniteEvent;
+import org.bukkit.event.block.BlockIgniteEvent.IgniteCause;
+
+/* added for experimental skeleton trap horse prevention */
+import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.entity.EntityType;
+
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Chunk_location;
 
-class Fire_remover extends BukkitRunnable {
+/*class Fire_remover extends BukkitRunnable {
 	private Location location;
 
 	public Fire_remover(Location loc) {
@@ -37,8 +45,7 @@ class Fire_remover extends BukkitRunnable {
 			}
 		}
 	}
-
-}
+}*/
 
 public class Anti_thunder_listener implements Listener {
 	@EventHandler
@@ -61,13 +68,79 @@ public class Anti_thunder_listener implements Listener {
 				}
 				if (anti_thunder.is_active() == true) {
 					event.setCancelled(true);
-					Fire_remover remover = new Fire_remover(location);
-					remover.runTaskLater(Dropper_shop_plugin.instance, 1);
+					//Fire_remover remover = new Fire_remover(location);
+				  //remover.runTaskLater(Dropper_shop_plugin.instance, 1);
+					anti_thunder.send_msg_to_owner("[防雷器] 已阻止" + chuck_loc + "的雷击");
 					Dropper_shop_plugin.instance.getLogger().info("已阻止雷击");
 					break;
 				} else {
 					Dropper_shop_plugin.instance.getLogger().info("防雷器未被激活，因此雷击未被阻止");
 					continue;
+				}
+			}
+		}
+	}
+
+	@EventHandler
+	public void on_ignition(BlockIgniteEvent event) {
+		if((event.getCause​() != IgniteCause.LIGHTNING) && (event.getCause() != IgniteCause.SPREAD)){
+			return;
+		}
+		if (event.isCancelled() == true) {
+			return;
+		}
+		Location location = event.getLightning().getLocation();
+		Chunk_location chunk_loc = new Chunk_location(location.getChunk());
+		Dropper_shop_plugin.instance.getLogger().info("区块" + chunk_loc + "发生了雷击造成的火灾");
+		HashSet<Anti_thunder> find = Anti_thunder_manager.instance.get_all_structures_around_chunk(chunk_loc, 1);
+		if (find != null) {
+			for (Anti_thunder anti_thunder : find) {
+				Dropper_shop_plugin.instance.getLogger().info("在雷击火灾周围的3*3区块发现防雷器");
+				if (anti_thunder.completed() == false) {
+					Dropper_shop_plugin.instance.getLogger()
+							.info("区块" + anti_thunder.get_chunk_location() + "的防雷器结构不完整，已经移除");
+					anti_thunder.remove();
+					continue;
+				}
+				if (anti_thunder.is_active() == true) {
+					event.setCancelled(true);
+					anti_thunder.send_msg_to_owner("[防雷器] 已阻止" + chuck_loc + "的雷击造成的火灾");
+					Dropper_shop_plugin.instance.getLogger().info("已阻止雷击造成的火灾");
+					break;
+				} else {
+					Dropper_shop_plugin.instance.getLogger().info("防雷器未被激活，因此雷击火灾未被阻止");
+					continue;
+				}
+			}
+		}
+	}
+
+	@EventHandler
+	public void on_spawn(EntitySpawnEvent event) {
+		EntityType type = event.getEntityType();
+		if (type == EntityType.SKELETON_HORSE) {
+			Chunk spawn_chunk = event.getLocation().getChunk();
+			Chunk_location chunk_location = new Chunk_location(spawn_chunk);
+			HashSet<Pigman_switch> find = Anti_thunder_manager.instance.get_all_structures_around_chunk(chunk_location,
+					1);
+			if (find != null) {
+				for (Anti_thunder anti_thunder : find) {
+					Dropper_shop_plugin.instance.getLogger().info("在雷击形成的骷髅陷阱周围的3*3区块发现防雷器");
+					if (anti_thunder.completed() == false) {
+						Dropper_shop_plugin.instance.getLogger()
+								.info("区块" + anti_thunder.get_chunk_location() + "的防雷器结构不完整，已经移除");
+						anti_thunder.remove();
+						continue;
+					}
+					if (anti_thunder.is_active() == true) {
+						event.setCancelled(true);
+						anti_thunder.send_msg_to_owner("[防雷器] 已阻止" + chuck_loc + "的雷击造成的骷髅陷阱");
+						Dropper_shop_plugin.instance.getLogger().info("已阻止雷击造成的骷髅陷阱");
+						break;
+					} else {
+						Dropper_shop_plugin.instance.getLogger().info("防雷器未被激活，因此雷击骷髅陷阱未被阻止");
+						continue;
+					}
 				}
 			}
 		}
