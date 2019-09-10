@@ -2,7 +2,6 @@ package com.piggest.minecraft.bukkit.anti_thunder;
 
 import java.util.HashSet;
 
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -46,13 +45,8 @@ import com.piggest.minecraft.bukkit.utils.Chunk_location;
 }*/
 
 public class Anti_thunder_listener implements Listener {
-	@EventHandler
-	public void on_thunder(LightningStrikeEvent event) {
-		if (event.isCancelled() == true) {
-			return;
-		}
-		Location location = event.getLightning().getLocation();
-		Chunk_location chunk_loc = new Chunk_location(location.getChunk());
+	public boolean find_anti_thunder(Location loc, String event_string) {
+		Chunk_location chunk_loc = new Chunk_location(loc.getChunk());
 		Dropper_shop_plugin.instance.getLogger().info("区块" + chunk_loc + "发生雷击");
 		HashSet<Anti_thunder> find = Anti_thunder_manager.instance.get_all_structures_around_chunk(chunk_loc, 1);
 		if (find != null) {
@@ -65,82 +59,47 @@ public class Anti_thunder_listener implements Listener {
 					continue;
 				}
 				if (anti_thunder.is_active() == true) {
-					event.setCancelled(true);
-					//Fire_remover remover = new Fire_remover(location);
-				  //remover.runTaskLater(Dropper_shop_plugin.instance, 1);
-					anti_thunder.send_msg_to_owner("[防雷器] 已阻止" + chunk_loc + "的雷击");
-					Dropper_shop_plugin.instance.getLogger().info("已阻止雷击");
-					break;
+					anti_thunder.send_msg_to_owner("[防雷器] 已阻止" + chunk_loc + "的" + event_string);
+					Dropper_shop_plugin.instance.getLogger().info("已阻止" + event_string);
+					return true;
 				} else {
-					Dropper_shop_plugin.instance.getLogger().info("防雷器未被激活，因此雷击未被阻止");
+					Dropper_shop_plugin.instance.getLogger().info("防雷器未被激活，因此" + event_string + "未被阻止");
 					continue;
 				}
 			}
 		}
+		return false;
+	}
+
+	@EventHandler
+	public void on_thunder(LightningStrikeEvent event) {
+		if (event.isCancelled() == true) {
+			return;
+		}
+		Location loc = event.getLightning().getLocation();
+		event.setCancelled(this.find_anti_thunder(loc, "雷击"));
 	}
 
 	@EventHandler
 	public void on_ignition(BlockIgniteEvent event) {
-		if((event.getCause() != IgniteCause.LIGHTNING) && (event.getCause() != IgniteCause.SPREAD)){
+		if (event.getCause() != IgniteCause.LIGHTNING) {
 			return;
 		}
 		if (event.isCancelled() == true) {
 			return;
 		}
-		Location location = event.getBlock().getLocation();
-		Chunk_location chunk_loc = new Chunk_location(location.getChunk());
-		Dropper_shop_plugin.instance.getLogger().info("区块" + chunk_loc + "发生了雷击造成的火灾");
-		HashSet<Anti_thunder> find = Anti_thunder_manager.instance.get_all_structures_around_chunk(chunk_loc, 1);
-		if (find != null) {
-			for (Anti_thunder anti_thunder : find) {
-				Dropper_shop_plugin.instance.getLogger().info("在雷击火灾周围的3*3区块发现防雷器");
-				if (anti_thunder.completed() == false) {
-					Dropper_shop_plugin.instance.getLogger()
-							.info("区块" + anti_thunder.get_chunk_location() + "的防雷器结构不完整，已经移除");
-					anti_thunder.remove();
-					continue;
-				}
-				if (anti_thunder.is_active() == true) {
-					event.setCancelled(true);
-					anti_thunder.send_msg_to_owner("[防雷器] 已阻止" + chunk_loc + "的雷击造成的火灾");
-					Dropper_shop_plugin.instance.getLogger().info("已阻止雷击造成的火灾");
-					break;
-				} else {
-					Dropper_shop_plugin.instance.getLogger().info("防雷器未被激活，因此雷击火灾未被阻止");
-					continue;
-				}
-			}
-		}
+		Location loc = event.getBlock().getLocation();
+		event.setCancelled(this.find_anti_thunder(loc, "雷击造成的火灾"));
 	}
 
 	@EventHandler
 	public void on_spawn(EntitySpawnEvent event) {
+		if (event.isCancelled() == true) {
+			return;
+		}
 		EntityType type = event.getEntityType();
 		if (type == EntityType.SKELETON_HORSE) {
-			Chunk spawn_chunk = event.getLocation().getChunk();
-			Chunk_location chunk_location = new Chunk_location(spawn_chunk);
-			HashSet<Anti_thunder> find = Anti_thunder_manager.instance.get_all_structures_around_chunk(chunk_location,
-					1);
-			if (find != null) {
-				for (Anti_thunder anti_thunder : find) {
-					Dropper_shop_plugin.instance.getLogger().info("在雷击形成的骷髅陷阱周围的3*3区块发现防雷器");
-					if (anti_thunder.completed() == false) {
-						Dropper_shop_plugin.instance.getLogger()
-								.info("区块" + anti_thunder.get_chunk_location() + "的防雷器结构不完整，已经移除");
-						anti_thunder.remove();
-						continue;
-					}
-					if (anti_thunder.is_active() == true) {
-						event.setCancelled(true);
-						anti_thunder.send_msg_to_owner("[防雷器] 已阻止" + chunk_location + "的雷击造成的骷髅陷阱");
-						Dropper_shop_plugin.instance.getLogger().info("已阻止雷击造成的骷髅陷阱");
-						break;
-					} else {
-						Dropper_shop_plugin.instance.getLogger().info("防雷器未被激活，因此雷击骷髅陷阱未被阻止");
-						continue;
-					}
-				}
-			}
+			event.setCancelled(this.find_anti_thunder(event.getLocation(), "骷髅陷阱马"));
 		}
 	}
 
@@ -154,9 +113,9 @@ public class Anti_thunder_listener implements Listener {
 		if (structure != null) {
 			if (structure.get_location().equals(event.getBlock().getLocation())) {
 				if (structure.activate(true) == true) {
-					structure.send_msg_to_owner("区块" + chunk_loc + "的防雷器已经激活");
+					structure.send_msg_to_owner("[防雷器]区块" + chunk_loc + "的防雷器已经激活");
 				} else {
-					structure.send_msg_to_owner("区块" + chunk_loc + "的防雷器激活失败");
+					structure.send_msg_to_owner("[防雷器]区块" + chunk_loc + "的防雷器激活失败");
 					event.setCancelled(true);
 				}
 			}
@@ -174,10 +133,10 @@ public class Anti_thunder_listener implements Listener {
 			if (structure.get_location().equals(event.getBlock().getLocation()) && structure.is_active() == true) {
 				if (structure.completed() == true) {
 					structure.activate(false);
-					structure.send_msg_to_owner("区块" + chunk_loc + "的防雷器已经暂停");
+					structure.send_msg_to_owner("[防雷器]区块" + chunk_loc + "的防雷器已经暂停");
 				} else {
 					structure.remove();
-					structure.send_msg_to_owner("区块" + chunk_loc + "的防雷器结构不完整，已经移除");
+					structure.send_msg_to_owner("[防雷器]区块" + chunk_loc + "的防雷器结构不完整，已经移除");
 				}
 			}
 		}
