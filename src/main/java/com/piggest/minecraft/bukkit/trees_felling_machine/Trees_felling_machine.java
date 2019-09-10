@@ -118,8 +118,16 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 				break;
 			}
 		}
+		
 		if (check_block != null) {
-			if (Tag.LEAVES.isTagged(check_block.getType())) {// 第一个非空气方块是树叶，则判定为树
+			if (Tag.LEAVES.isTagged(check_block.getType())) {// 第一个非空气方块是树叶，则准备判定为树
+				BlockData check_block_data = check_block.getBlockData();
+				Leaves check_block_leaves = (Leaves) check_block_data;
+				if (check_block_leaves.isPersistent() == true) { // 第一个非空气方块的树叶是人为放置的，直接跳过这一格。
+					this.pointer_move_to_next();
+					return;
+				}
+				
 				Stack<Block> tree_stack = new Stack<Block>();
 				for (; y >= 50; y--) { // 继续往下检测，找到原木方块
 					Block block = this.get_location().getWorld().getBlockAt(this.current_x, y, this.current_z);
