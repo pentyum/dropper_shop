@@ -50,6 +50,12 @@ public class Watersheep_command_executor implements TabExecutor {
 			}
 			
 			Player player = (Player) sender;
+			
+			if (!player.hasPermission("watersheep.use")) {
+				player.sendMessage("你没有权限操作植物羊");
+				return true;
+			}
+			
 			Location player_location = player.getLocation();
 			
 			sub_command subcommand = null;
