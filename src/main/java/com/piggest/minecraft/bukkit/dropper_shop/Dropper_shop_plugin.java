@@ -73,6 +73,8 @@ import com.piggest.minecraft.bukkit.trees_felling_machine.Trees_felling_machine_
 import com.piggest.minecraft.bukkit.utils.Tab_list;
 import com.piggest.minecraft.bukkit.utils.language.Enchantments_zh_cn;
 import com.piggest.minecraft.bukkit.utils.language.Item_zh_cn;
+import com.piggest.minecraft.bukkit.watersheep.Watersheep_command_executor;
+import com.piggest.minecraft.bukkit.watersheep.Watersheep_runner;
 import com.piggest.minecraft.bukkit.wrench.Wrench_command_executor;
 
 import net.milkbowl.vault.economy.Economy;
@@ -124,6 +126,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private Config_auto_saver auto_saver = new Config_auto_saver(this);
 	private Sync_realtime realtime_runner = null;
 	private Radio_manager radio_manager = null;
+	private Watersheep_runner watersheep_runner = null;
 
 	public Dropper_shop_plugin() {
 		this.getLogger().info("加载配置中");
@@ -142,6 +145,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 			this.sync_realtime_worlds.put(world_name, sync_realtime_section.getInt(world_name));
 		}
 		this.realtime_runner = new Sync_realtime(this.sync_realtime_worlds);
+		this.watersheep_runner = new Watersheep_runner(this.getServer());
 
 		ConfigurationSection price_section = this.config.getConfigurationSection("material");
 		Set<String> price_keys = price_section.getKeys(false);
@@ -258,6 +262,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.getCommand("lottery").setExecutor(new Lottery_pool_command_executor());
 		this.getCommand("sync_realtime").setExecutor(new Sync_realtime_command_executor(this.sync_realtime_worlds));
 		this.getCommand("teleport_machine").setExecutor(new Teleport_machine_command_executer());
+		this.getCommand("watersheep").setExecutor(new Watersheep_command_executor());
 
 		getLogger().info("使用Vault");
 		if (!initVault()) {
@@ -285,7 +290,6 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		PluginManager pm = getServer().getPluginManager();
 
 		pm.registerEvents(this.Structure_listener, this);
-
 		pm.registerEvents(this.gui_listener, this);
 		pm.registerEvents(this.note_listener, this);
 
@@ -295,6 +299,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		note_listener.runner.runTaskTimer(this, 10, 5);
 		this.auto_saver.runTaskTimerAsynchronously(this, 10, 6000);
 		this.realtime_runner.runTaskTimerAsynchronously(this, 5, 2);
+		this.watersheep_runner.runTaskTimerAsynchronously(this, 120, 2560);
 	}
 
 	public boolean save_structure() {
