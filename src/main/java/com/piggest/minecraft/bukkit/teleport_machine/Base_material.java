@@ -56,10 +56,12 @@ public enum Base_material implements Has_composition {
 	string(new Has_composition[] {wool_base},new int[] {1}),
 	cobweb(new Has_composition[] {string},new int[] {9}),
 	
-	stone(new Has_composition[] {SiO2_molecule},new int[] {1000}),
-	cobblestone(new Has_composition[] {stone,water_molecule},new int[] {1,50}),
+	stone_slab(new Has_composition[] {SiO2_molecule},new int[] {500}),
+	stone(new Has_composition[] {stone_slab},new int[] {2}),
+	cobblestone_slab(new Has_composition[] {stone_slab,water_molecule},new int[] {1,50}),
+	cobblestone(new Has_composition[] {cobblestone_slab},new int[] {2}),
 	mossy_cobblestone(new Has_composition[] {cobblestone,vine},new int[] {1,1}),
-	smooth_stone(new Has_composition[] {stone},new int[] {1}),
+	mossy_cobblestone_slab(new Has_composition[] {mossy_cobblestone},new double[] {0.5}),
 	lava(new Has_composition[] {SiO2_molecule},new int[] {1000}),
 	ore(new Has_composition[] {SiO2_molecule},new int[] {400}),
 	furnace(new Has_composition[] {cobblestone},new int[] {8}),
@@ -71,9 +73,6 @@ public enum Base_material implements Has_composition {
 	smooth_sandstone_slab(new Has_composition[] {sand},new int[] {2}),
 	cut_sandstone_slab(new Has_composition[] {sand},new int[] {2}),
 	sandstone(new Has_composition[] {sand},new int[] {4}),
-	smooth_sandstone(new Has_composition[] {sand},new int[] {4}),
-	chiseled_sandstone(new Has_composition[] {sand},new int[] {4}),
-	cut_sandstone(new Has_composition[] {sand},new int[] {4}),
 	
 	granite(new Has_composition[] {SiO2_molecule},new int[] {1000}), //花岗岩
 	diorite(new Has_composition[] {SiO2_molecule},new int[] {1000}), //闪长岩
@@ -98,6 +97,7 @@ public enum Base_material implements Has_composition {
 	leaves(new Has_composition[] {sucrose_molecule,water_molecule},new int[] {6,10}),
 	stick(new Has_composition[] {sucrose_molecule},new int[] {6}),
 	planks_slab(new Has_composition[] {stick},new int[] {1}),
+	planks_stairs(new Has_composition[] {stick},new double[] {4.0/3.0}),
 	planks(new Has_composition[] {stick},new int[] {2}),
 	wood(new Has_composition[] {planks},new int[] {4}),
 	crafting_table(new Has_composition[] {planks},new int[] {4}),
@@ -108,6 +108,9 @@ public enum Base_material implements Has_composition {
 	ladder(new Has_composition[] {stick},new int[] {2}),
 	planks_door(new Has_composition[] {planks},new int[] {2}),
 	planks_trapdoor(new Has_composition[] {planks},new int[] {3}),
+	lever(new Has_composition[] {cobblestone,stick},new int[] {1,1}),
+	grindstone(new Has_composition[] {planks,stone_slab,stick},new int[] {2,1,2}),
+	
 	wooden_sword(new Has_composition[] {planks,stick},new int[] {2,1}),
 	wooden_shovel(new Has_composition[] {planks,stick},new int[] {1,2}),
 	wooden_pickaxe(new Has_composition[] {planks,stick},new int[] {3,2}),
@@ -193,9 +196,7 @@ public enum Base_material implements Has_composition {
 	
 	quartz(new Has_composition[] {SiO2_molecule},new int[] {300}),
 	quartz_block(new Has_composition[] {quartz},new int[] {4}),
-	smooth_quartz(new Has_composition[] {quartz},new int[] {4}),
 	quartz_pillar(new Has_composition[] {quartz},new int[] {4}),
-	chiseled_quartz_block(new Has_composition[] {quartz},new int[] {4}),
 	nether_quartz_ore(new Has_composition[] {quartz,netherore},new int[] {2,1}),
 	
 	redstone(new Has_composition[] {Al2O3_molecule},new int[] {100}),
@@ -203,6 +204,7 @@ public enum Base_material implements Has_composition {
 	redstone_ore(new Has_composition[] {redstone,ore},new int[] {5,1}),
 	redstone_torch(new Has_composition[] {redstone,stick},new int[] {1,1}),
 	redstone_lamp(new Has_composition[] {redstone,glowstone},new int[] {4,1}),
+	
 	repeater(new Has_composition[] {redstone,redstone_torch,stone},new int[] {1,2,3}),
 	comparator(new Has_composition[] {quartz,redstone_torch,stone},new int[] {1,3,3}),
 	daylight_detector(new Has_composition[] {quartz,glass,planks_slab},new int[] {3,3,3}),
