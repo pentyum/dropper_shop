@@ -49,6 +49,11 @@ commands:
     usage: /<command> set_online_voltage|set_working_voltage|set_freq|set_bandwidth value
     permission: teleport_machine.use
     permission-message: You don't have permission
+  watersheep:
+  	description: commands relate to watersheep.
+    usage: /<command> curse|bless|info
+    permission: watersheep.use
+    permission-message: You don't have permission
 permissions:
   dropper_shop.*:
     description: Gives access to all dropper shop commands.
@@ -163,5 +168,8 @@ permissions:
     default: true
   teleport_machine.use:
     description: use.
+    default: true
+  watersheep.use:
+  	description: use.
     default: true
 softdepend: [Vault]
