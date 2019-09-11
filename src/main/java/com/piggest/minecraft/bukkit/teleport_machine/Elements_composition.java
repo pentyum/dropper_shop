@@ -129,6 +129,18 @@ public class Elements_composition implements Elements_container {
 
 	private static Elements_composition get_material_element_composition(String id_name) {
 		Elements_composition compostion = null;
+		if(id_name.contains("polished_")) {
+			id_name = id_name.substring("polished_".length());
+		}
+		if(id_name.contains("smooth_")) {
+			id_name = id_name.substring("smooth_".length());
+		}
+		if(id_name.contains("cut_")) {
+			id_name = id_name.substring("cut_".length());
+		}
+		if(id_name.contains("chiseled_")) {
+			id_name = id_name.substring("chiseled_".length());
+		}
 		if (id_name.contains("_leaves")) {
 			id_name = "leaves";
 		} else if (id_name.contains("_wood")) {
@@ -174,6 +186,32 @@ public class Elements_composition implements Elements_container {
 		} else if (id_name.contains("_button")) {
 			if (!id_name.equals("stone_button")) {
 				id_name = "planks_button";
+			}
+		} else if (id_name.contains("_slab")) {
+			switch (id_name) {
+			case "oak_slab":
+			case "spruce_slab":
+			case "birch_slab":
+			case "jungle_slab":
+			case "acacia_slab":
+			case "dark_oak_slab":
+				id_name = "planks_slab";
+				break;
+			default:
+				break;
+			}
+		} else if (id_name.contains("_stairs")) {
+			switch (id_name) {
+			case "oak_stairs":
+			case "spruce_stairs":
+			case "birch_stairs":
+			case "jungle_stairs":
+			case "acacia_stairs":
+			case "dark_oak_stairs":
+				id_name = "planks_stairs";
+				break;
+			default:
+				break;
 			}
 		}
 		Base_material material = Base_material.get(id_name);
