@@ -39,13 +39,7 @@ public class Watersheep_runner extends BukkitRunnable {
 				return Watersheep_process_code.no_grass;
 			}
 			
-			grass_supposed_loc.getBlock().setType(Material.DIRT);
-			
-			/* 必须是白天 */
-			long current_world_time = s.getWorld().getTime();
-			if(current_world_time < 6000 || current_world_time > 18000) {
-				return Watersheep_process_code.not_morning;
-			}
+			grass_supposed_loc.getBlock().setType(Material.DIRT);	
 			
 			s.setSheared(false);
 			return Watersheep_process_code.succeed;
@@ -62,7 +56,6 @@ public class Watersheep_runner extends BukkitRunnable {
 		int counter_how_many_sheep_proceesed = 0;
 		int counter_how_many_sheep_not_sheared = 0;
 		int counter_how_many_sheep_no_grass = 0;
-		int counter_how_many_sheep_not_morning = 0;
 		int counter_how_many_sheep_succeed = 0;
 		
 		/* 取得在线玩家列表 */
@@ -82,6 +75,12 @@ public class Watersheep_runner extends BukkitRunnable {
 		if(!worlds_with_players.isEmpty()) {
 			for(String one_world_name: worlds_with_players) {
 				World one_world = this.server.getWorld(one_world_name);
+				
+				/* 必须是白天 */
+				long current_world_time = one_world.getTime();
+				if(current_world_time < 6000 || current_world_time > 18000) {
+					continue;
+				}
 				
 				/* 取得这个世界里面加载的区块 */
 				Chunk[] loaded_chunks = one_world.getLoadedChunks();
@@ -108,9 +107,6 @@ public class Watersheep_runner extends BukkitRunnable {
 							case no_grass:
 								counter_how_many_sheep_no_grass ++;
 								break;
-							case not_morning:
-								counter_how_many_sheep_not_morning ++;
-								break;
 							case succeed:
 								counter_how_many_sheep_succeed ++;
 								break;
@@ -120,7 +116,7 @@ public class Watersheep_runner extends BukkitRunnable {
 			}
 		}
 		
-		String msg = "[植物羊]在加载的 " + counter_how_many_sheep_proceesed + " 只植物羊里面，有 " + counter_how_many_sheep_not_sheared + "本身有毛，有 " + counter_how_many_sheep_no_grass + " 只脚下没有草，有 " + counter_how_many_sheep_not_morning + " 只因为不是白天而不长毛，有 " + counter_how_many_sheep_succeed + " 只成功长出了毛。";
+		String msg = "[植物羊]在加载的 " + counter_how_many_sheep_proceesed + " 只植物羊里面，有 " + counter_how_many_sheep_not_sheared + "本身有毛，有 " + counter_how_many_sheep_no_grass + " 只脚下没有草，有 " + counter_how_many_sheep_succeed + " 只成功长出了毛。";
 		
 		if(server.getPlayer("weikeng") != null && server.getPlayer("weikeng").isOnline()) {
 			server.getPlayer("weikeng").sendMessage(msg);
