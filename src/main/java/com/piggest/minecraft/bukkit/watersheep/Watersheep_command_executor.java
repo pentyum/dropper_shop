@@ -187,7 +187,7 @@ public class Watersheep_command_executor implements TabExecutor {
 						}
 					}
 					
-					player.sendMessage("[植物羊]附近的 16x16区块中有 " + counter_how_many_normal_sheep + " 只普通羊和 " + counter_how_many_watersheep + " 只植物羊");
+					player.sendMessage("[植物羊]附近的 16x16 区块中有 " + counter_how_many_normal_sheep + " 只普通羊和 " + counter_how_many_watersheep + " 只植物羊");
 				}
 				
 				return true;
