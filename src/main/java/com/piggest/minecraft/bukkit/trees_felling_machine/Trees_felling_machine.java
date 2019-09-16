@@ -113,7 +113,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 		}
 		for (y = 250; y >= 63; y--) { // 从高空开始往下检测
 			Block block = this.get_location().getWorld().getBlockAt(this.current_x, y, this.current_z);
-			if (block.getType() != Material.AIR && block.getType() != Material.VINE) { // 获得第一个非空气方块的类型
+			if (block.getType() != Material.AIR && block.getType() != Material.VINE && block.getType() != Material.SNOW) { // 获得第一个非空气方块的类型
 				check_block = block;
 				break;
 			}
