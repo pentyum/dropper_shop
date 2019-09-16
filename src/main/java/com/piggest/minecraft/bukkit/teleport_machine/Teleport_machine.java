@@ -675,6 +675,11 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	public Teleporting_task get_teleporting_task() {
 		return this.teleport_task;
 	}
+
+	@Override
+	public ItemStack[] get_drop_items() {
+		return null;
+	}
 }
 
 class Name_tag_remover extends BukkitRunnable {

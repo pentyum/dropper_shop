@@ -113,12 +113,13 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 		}
 		for (y = 250; y >= 63; y--) { // 从高空开始往下检测
 			Block block = this.get_location().getWorld().getBlockAt(this.current_x, y, this.current_z);
-			if (block.getType() != Material.AIR && block.getType() != Material.VINE && block.getType() != Material.SNOW) { // 获得第一个非空气方块的类型
+			if (block.getType() != Material.AIR && block.getType() != Material.VINE
+					&& block.getType() != Material.SNOW) { // 获得第一个非空气方块的类型
 				check_block = block;
 				break;
 			}
 		}
-		
+
 		if (check_block != null) {
 			if (Tag.LEAVES.isTagged(check_block.getType())) {// 第一个非空气方块是树叶，则准备判定为树
 				BlockData check_block_data = check_block.getBlockData();
@@ -127,7 +128,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 					this.pointer_move_to_next();
 					return;
 				}
-				
+
 				Stack<Block> tree_stack = new Stack<Block>();
 				for (; y >= 50; y--) { // 继续往下检测，找到原木方块
 					Block block = this.get_location().getWorld().getBlockAt(this.current_x, y, this.current_z);
@@ -418,5 +419,10 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	@Override
 	public String get_owner_name() {
 		return this.owner;
+	}
+
+	@Override
+	public ItemStack[] get_drop_items() {
+		return new ItemStack[] { this.get_axe() };
 	}
 }

@@ -254,4 +254,9 @@ public class Depository extends Multi_block_with_gui implements Ownable, HasRunn
 	public boolean on_exchange_item(Player player, ItemStack in_item, ItemStack cursor_item, int slot) {
 		return true;
 	}
+
+	@Override
+	public ItemStack[] get_drop_items() {
+		return null;
+	}
 }

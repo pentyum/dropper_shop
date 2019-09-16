@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Nameable;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.teleport_machine.Element;
@@ -157,4 +158,6 @@ public abstract class Structure {
 	public String get_display_name() {
 		return this.getClass().getSimpleName();
 	}
+	
+	public abstract ItemStack[] get_drop_items();
 }

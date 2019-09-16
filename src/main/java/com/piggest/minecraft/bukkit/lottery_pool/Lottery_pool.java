@@ -198,4 +198,9 @@ public class Lottery_pool extends Multi_block_structure {
 	protected void init_after_set_location() {
 		return;
 	}
+
+	@Override
+	public ItemStack[] get_drop_items() {
+		return null;
+	}
 }

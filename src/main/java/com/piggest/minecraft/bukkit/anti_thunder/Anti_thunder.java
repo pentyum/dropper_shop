@@ -11,6 +11,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Piston;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
 import com.piggest.minecraft.bukkit.structure.Ownable;
@@ -158,5 +160,10 @@ public class Anti_thunder extends Multi_block_structure implements Ownable {
 	@Override
 	public void init_after_set_location() {
 		return;
+	}
+
+	@Override
+	public ItemStack[] get_drop_items() {
+		return null;
 	}
 }

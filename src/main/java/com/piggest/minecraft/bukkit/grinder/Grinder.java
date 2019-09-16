@@ -275,4 +275,9 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 	public boolean on_exchange_item(Player player, ItemStack in_item, ItemStack cursor_item, int slot) {
 		return true;
 	}
+
+	@Override
+	public ItemStack[] get_drop_items() {
+		return new ItemStack[] {this.get_raw(),this.get_flint(),this.get_product()};
+	}
 }

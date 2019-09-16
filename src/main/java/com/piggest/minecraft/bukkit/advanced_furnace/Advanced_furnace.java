@@ -17,6 +17,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import com.piggest.minecraft.bukkit.depository.Upgrade_component;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
@@ -671,5 +673,21 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 			this.is_litting = litting;
 			this.get_location().getBlock().setBlockData(furnace);
 		}
+	}
+
+	@Override
+	public ItemStack[] get_drop_items() {
+		ItemStack[] drop_items = new ItemStack[] { null, null, this.gui.getItem(fuel_slot),
+				this.gui.getItem(fuel_product_slot), this.gui.getItem(solid_reactant_slot),
+				this.gui.getItem(solid_product_slot), this.gui.getItem(liquid_reactant_slot),
+				this.gui.getItem(liquid_product_slot), this.gui.getItem(gas_reactant_slot),
+				this.gui.getItem(gas_product_slot) };
+		if (this.get_overload_upgrade() > 0) {
+			drop_items[0] = Upgrade_component.overload_component_item[this.get_overload_upgrade() - 1];
+		}
+		if (this.get_time_upgrade() > 0) {
+			drop_items[1] = Upgrade_component.time_component_item[this.get_time_upgrade() - 1];
+		}
+		return drop_items;
 	}
 }

@@ -151,4 +151,9 @@ public class Dropper_shop extends Single_block_structure implements Ownable {
 	public void init_after_set_location() {
 		return;
 	}
+
+	@Override
+	public ItemStack[] get_drop_items() {
+		return null;
+	}
 }

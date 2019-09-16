@@ -70,4 +70,10 @@ public class Electrolyte extends Multi_block_with_gui implements HasRunner {
 		return false;
 	}
 
+	@Override
+	public ItemStack[] get_drop_items() {
+		// TODO 自动生成的方法存根
+		return null;
+	}
+
 }

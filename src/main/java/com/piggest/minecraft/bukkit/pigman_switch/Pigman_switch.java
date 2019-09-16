@@ -1,6 +1,7 @@
 package com.piggest.minecraft.bukkit.pigman_switch;
 
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
 
@@ -33,5 +34,10 @@ public class Pigman_switch extends Multi_block_structure {
 	@Override
 	protected void init_after_set_location() {
 		return;
+	}
+
+	@Override
+	public ItemStack[] get_drop_items() {
+		return null;
 	}
 }
