@@ -683,10 +683,10 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 				this.gui.getItem(liquid_product_slot), this.gui.getItem(gas_reactant_slot),
 				this.gui.getItem(gas_product_slot) };
 		if (this.get_overload_upgrade() > 0) {
-			drop_items[0] = Upgrade_component.overload_component_item[this.get_overload_upgrade() - 1];
+			drop_items[0] = Upgrade_component.overload_component_item[this.get_overload_upgrade() - 1].clone();
 		}
 		if (this.get_time_upgrade() > 0) {
-			drop_items[1] = Upgrade_component.time_component_item[this.get_time_upgrade() - 1];
+			drop_items[1] = Upgrade_component.time_component_item[this.get_time_upgrade() - 1].clone();
 		}
 		return drop_items;
 	}

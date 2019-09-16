@@ -213,6 +213,32 @@ public class Elements_composition implements Elements_container {
 			default:
 				break;
 			}
+		} else if (id_name.contains("_button")) {
+			switch (id_name) {
+			case "oak_button":
+			case "spruce_button":
+			case "birch_button":
+			case "jungle_button":
+			case "acacia_button":
+			case "dark_oak_button":
+				id_name = "planks_button";
+				break;
+			default:
+				break;
+			}
+		} else if (id_name.contains("_pressure_plate")) {
+			switch (id_name) {
+			case "oak_pressure_plate":
+			case "spruce_pressure_plate":
+			case "birch_pressure_plate":
+			case "jungle_pressure_plate":
+			case "acacia_pressure_plate":
+			case "dark_oak_pressure_plate":
+				id_name = "planks_pressure_plate";
+				break;
+			default:
+				break;
+			}
 		}
 		Base_material material = Base_material.get(id_name);
 		if (material != null) {
@@ -241,7 +267,8 @@ public class Elements_composition implements Elements_container {
 			compostion.set_amount(Element.Fe, 36000);
 			break;
 		case "minecart":
-			compostion.set_amount(Element.Fe, 5000);
+			compostion.add(Base_material.minecart.get_elements_composition());
+			break;
 		case "villager":
 			compostion.set_amount(Element.Magic, 1000);
 			compostion.set_amount(Element.C, 475);
@@ -251,6 +278,9 @@ public class Elements_composition implements Elements_container {
 			compostion.set_amount(Element.P, 12);
 			compostion.set_amount(Element.S, 3);
 			compostion.set_amount(Element.Be, 500);
+			break;
+		case "boat":
+			compostion.add(Base_material.boat.get_elements_composition());
 			break;
 		default:
 			compostion.set_amount(Element.Magic, 1000);
