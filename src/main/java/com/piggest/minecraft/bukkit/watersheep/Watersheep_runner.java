@@ -84,7 +84,7 @@ public class Watersheep_runner extends BukkitRunnable {
 
 				/* 必须是白天 */
 				long current_world_time = one_world.getTime();
-				if (current_world_time < 6000 || current_world_time > 18000) {
+				if (current_world_time > 12516) {
 					continue;
 				}
 
