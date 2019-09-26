@@ -24,6 +24,8 @@ public enum Base_material implements Has_composition {
 	CaO_molecule(new Has_composition[] {Element.Ca,Element.O},new int[] {1,1}),
 	MgO_molecule(new Has_composition[] {Element.Mg,Element.O},new int[] {1,1}),
 	CO2_molecule(new Has_composition[] {Element.C,Element.O},new int[] {1,2}),
+	CaCO3_molecule(new Has_composition[] {CaO_molecule,CO2_molecule},new int[] {1,1}),
+	MgCO3_molecule(new Has_composition[] {MgO_molecule,CO2_molecule},new int[] {1,1}),
 	Al2O3_molecule(new Has_composition[] {Element.Al,Element.O},new int[] {2,3}),
 	Fe2O3_molecule(new Has_composition[] {Element.Fe,Element.O},new int[] {2,3}),
 	FeO_molecule(new Has_composition[] {Element.Fe,Element.O},new int[] {1,1}),
@@ -33,6 +35,8 @@ public enum Base_material implements Has_composition {
 	KCl_molecule(new Has_composition[] {Element.K,Element.Cl},new int[] {1,1}),
 	KClO3_molecule(new Has_composition[] {Element.K,Element.Cl,Element.O},new int[] {1,1,3}),
 	CaF2_molecule(new Has_composition[] {Element.Ca,Element.F},new int[] {1,2}),
+	CaCl2_molecule(new Has_composition[] {Element.Ca,Element.Cl},new int[] {1,2}),
+	MgCl2_molecule(new Has_composition[] {Element.Mg,Element.Cl},new int[] {1,2}),
 	sucrose_molecule(new Has_composition[] {Element.C,Element.H,Element.O},new int[] {6,10,5}),//碳水化合物
 	polysaccharide_molecule(new Has_composition[] {Element.C,Element.H,Element.O},new int[] {12,22,11}), //蔗糖
 	tnt_molecule(new Has_composition[] {Element.C,Element.H,Element.O,Element.N},new int[] {7,5,6,3}),
@@ -50,11 +54,17 @@ public enum Base_material implements Has_composition {
 	bone(new Has_composition[] {bone_meal},new int[] {4}),
 	bone_block(new Has_composition[] {bone_meal},new int[] {9}),
 	
+	white_dye(new Has_composition[] {bone_meal},new int[] {1}),
+	black_dye(new Has_composition[] {Element.C},new int[] {100}),
+	ink_sac(new Has_composition[] {black_dye},new int[] {1}),
+	
 	wool_base(new Has_composition[] {Element.C,Element.H,Element.O,Element.N,Element.S},new int[] {78,154,67,20,5}),
 	carpet(new Has_composition[] {wool_base},new int[] {2}),
 	wool(new Has_composition[] {wool_base},new int[] {3}),
 	string(new Has_composition[] {wool_base},new int[] {1}),
 	cobweb(new Has_composition[] {string},new int[] {9}),
+	
+	leather(new Has_composition[] {wool},new int[] {1}),
 	
 	stone_slab(new Has_composition[] {SiO2_molecule},new int[] {500}),
 	stone(new Has_composition[] {stone_slab},new int[] {2}),
@@ -68,11 +78,12 @@ public enum Base_material implements Has_composition {
 	brewing_stand(new Has_composition[] {blaze_rod,cobblestone},new int[] {1,3}),
 	
 	sand(new Has_composition[] {SiO2_molecule},new int[] {300}),
+	red_sand(new Has_composition[] {SiO2_molecule,Fe2O3_molecule},new int[] {300,50}),
 	glass(new Has_composition[] {sand},new int[] {1}),
 	sandstone_slab(new Has_composition[] {sand},new int[] {2}),
-	smooth_sandstone_slab(new Has_composition[] {sand},new int[] {2}),
-	cut_sandstone_slab(new Has_composition[] {sand},new int[] {2}),
 	sandstone(new Has_composition[] {sand},new int[] {4}),
+	red_sandstone_slab(new Has_composition[] {red_sand},new int[] {2}),
+	red_sandstone(new Has_composition[] {red_sand},new int[] {4}),
 	
 	granite(new Has_composition[] {SiO2_molecule},new int[] {1000}), //花岗岩
 	diorite(new Has_composition[] {SiO2_molecule},new int[] {1000}), //闪长岩
@@ -80,6 +91,12 @@ public enum Base_material implements Has_composition {
 	
 	netherrack(new Has_composition[] {SiO2_molecule},new int[] {500}),
 	netherore(new Has_composition[] {SiO2_molecule},new int[] {400}),
+	
+	prismarine_shard(new Has_composition[] {SiO2_molecule,CaCO3_molecule,MgCO3_molecule},new int[] {100,50,20}),
+	prismarine_crystals(new Has_composition[] {NaCl_molecule,KCl_molecule,MgCl2_molecule,CaCl2_molecule},new int[] {150,15,25,15}),
+	prismarine(new Has_composition[] {prismarine_shard},new int[] {4}),
+	dark_prismarine(new Has_composition[] {SiO2_molecule,black_dye},new int[] {8,1}),
+	prismarine_bricks(new Has_composition[] {SiO2_molecule},new int[] {9}),
 	
 	gunpowder(new Has_composition[] {tnt_molecule},new int[] {15}),
 	tnt(new Has_composition[] {gunpowder,sand},new int[] {5,2}),
@@ -92,10 +109,12 @@ public enum Base_material implements Has_composition {
 	blue_ice(new Has_composition[] {packed_ice},new int[] {9}),
 	
 	sugar(new Has_composition[] {polysaccharide_molecule},new int[] {20}),
+	paper(new Has_composition[] {sucrose_molecule},new int[] {16}),
+	sugar_cane(new Has_composition[] {sugar,paper},new int[] {1,1}),
 	
-	sapling(new Has_composition[] {sucrose_molecule,water_molecule},new int[] {6,10}),
-	leaves(new Has_composition[] {sucrose_molecule,water_molecule},new int[] {6,10}),
-	stick(new Has_composition[] {sucrose_molecule},new int[] {6}),
+	sapling(new Has_composition[] {sucrose_molecule,water_molecule},new int[] {8,12}),
+	leaves(new Has_composition[] {sucrose_molecule,water_molecule},new int[] {8,12}),
+	stick(new Has_composition[] {sucrose_molecule},new int[] {8}),
 	planks_slab(new Has_composition[] {stick},new int[] {1}),
 	planks_stairs(new Has_composition[] {stick},new double[] {4.0/3.0}),
 	planks(new Has_composition[] {stick},new int[] {2}),
@@ -110,6 +129,9 @@ public enum Base_material implements Has_composition {
 	planks_trapdoor(new Has_composition[] {planks},new int[] {3}),
 	lever(new Has_composition[] {cobblestone,stick},new int[] {1,1}),
 	grindstone(new Has_composition[] {planks,stone_slab,stick},new int[] {2,1,2}),
+	book(new Has_composition[] {paper,leather},new int[] {3,1}),
+	bookshelf(new Has_composition[] {planks,book},new int[] {6,3}),
+	lectern(new Has_composition[] {planks_slab,bookshelf},new int[] {4,1}),
 	
 	wooden_sword(new Has_composition[] {planks,stick},new int[] {2,1}),
 	wooden_shovel(new Has_composition[] {planks,stick},new int[] {1,2}),
@@ -165,6 +187,8 @@ public enum Base_material implements Has_composition {
 	tnt_minecart(new Has_composition[] {tnt,minecart},new int[] {1,1}),
 	rail(new Has_composition[] {iron_ingot,stick},new double[] {6.0/16.0,1.0/16.0}),
 	iron_bars(new Has_composition[] {iron_ingot},new double[] {6.0/16.0}),
+	blast_furnace(new Has_composition[] {iron_ingot,furnace,stone},new int[] {5,1,3}),
+	smoker(new Has_composition[] {wood,furnace},new int[] {4,1}),
 	
 	gold_nugget(new Has_composition[] {Element.Au},new int[] {100}),
 	gold_powder(new Has_composition[] {Element.Au},new int[] {1000}),

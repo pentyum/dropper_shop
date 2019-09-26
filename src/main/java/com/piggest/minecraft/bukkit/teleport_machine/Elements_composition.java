@@ -114,9 +114,9 @@ public class Elements_composition implements Elements_container {
 				material_composition.add(Element.Magic.get_elements_composition(level * 1000));
 			}
 		}
-		if(id_name.equals("gas_bottle")) {
-			Map<Gas,Integer> gas_map = Gas_bottle.get_gas_map(item);
-			for (Entry<Gas, Integer> entry:gas_map.entrySet()) {
+		if (id_name.equals("gas_bottle")) {
+			Map<Gas, Integer> gas_map = Gas_bottle.get_gas_map(item);
+			for (Entry<Gas, Integer> entry : gas_map.entrySet()) {
 				Gas gas_type = entry.getKey();
 				int amount = entry.getValue();
 				Elements_composition gas_composition = gas_type.get_elements_composition();
@@ -129,16 +129,16 @@ public class Elements_composition implements Elements_container {
 
 	private static Elements_composition get_material_element_composition(String id_name) {
 		Elements_composition compostion = null;
-		if(id_name.contains("polished_")) {
+		if (id_name.contains("polished_")) {
 			id_name = id_name.substring("polished_".length());
 		}
-		if(id_name.contains("smooth_")) {
+		if (id_name.contains("smooth_")) {
 			id_name = id_name.substring("smooth_".length());
 		}
-		if(id_name.contains("cut_")) {
+		if (id_name.contains("cut_")) {
 			id_name = id_name.substring("cut_".length());
 		}
-		if(id_name.contains("chiseled_")) {
+		if (id_name.contains("chiseled_")) {
 			id_name = id_name.substring("chiseled_".length());
 		}
 		if (id_name.contains("_leaves")) {
@@ -198,6 +198,21 @@ public class Elements_composition implements Elements_container {
 				id_name = "planks_slab";
 				break;
 			default:
+				break;
+			}
+		} else if (id_name.contains("_wall")) {
+			String new_id_name = id_name.substring(0, id_name.length() - "_wall".length());
+			switch (id_name) {
+			case "stone_brick_wall":
+			case "brick_wall":
+			case "mossy_stone_brick_wall":
+			case "end_stone_brick_wall":
+			case "nether_brick_wall":
+			case "red_nether_brick_wall":
+				id_name = new_id_name + "s";
+				break;
+			default:
+				id_name = new_id_name;
 				break;
 			}
 		} else if (id_name.contains("_stairs")) {

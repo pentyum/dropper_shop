@@ -299,7 +299,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		note_listener.runner.runTaskTimer(this, 10, 5);
 		this.auto_saver.runTaskTimerAsynchronously(this, 10, 6000);
 		this.realtime_runner.runTaskTimerAsynchronously(this, 5, 2);
-		this.watersheep_runner.runTaskTimerAsynchronously(this, 120, 2560);
+		this.watersheep_runner.runTaskTimerAsynchronously(this, 120, 4800);
 	}
 
 	public boolean save_structure() {
