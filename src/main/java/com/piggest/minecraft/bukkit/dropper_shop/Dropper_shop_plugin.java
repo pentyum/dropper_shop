@@ -44,6 +44,7 @@ import com.piggest.minecraft.bukkit.exp_saver.Exp_saver;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver_command_executor;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver_listener;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver_manager;
+import com.piggest.minecraft.bukkit.flying_item.Flying_item;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.grinder.Grinder_command_executor;
 import com.piggest.minecraft.bukkit.grinder.Grinder_listener;
@@ -247,11 +248,14 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.backup_old_shop_config_file();
 
 		Tab_list.init();
-
+		
+		//初始化NMS和管理器
 		this.nms_manager = new NMS_manager(Bukkit.getBukkitVersion());
 		this.init_structure_manager();
 		this.radio_manager = new Radio_manager();
-
+		//初始化管理器完成
+		
+		//初始化指令
 		this.getCommand("depository").setExecutor(new Depository_command_executor());
 		this.getCommand("dropper_shop").setExecutor(new Dropper_shop_command_executor());
 		this.getCommand("grinder").setExecutor(new Grinder_command_executor());
@@ -263,13 +267,15 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.getCommand("sync_realtime").setExecutor(new Sync_realtime_command_executor(this.sync_realtime_worlds));
 		this.getCommand("teleport_machine").setExecutor(new Teleport_machine_command_executer());
 		this.getCommand("watersheep").setExecutor(new Watersheep_command_executor());
-
+		//初始化指令完成
+		
 		getLogger().info("使用Vault");
 		if (!initVault()) {
 			getLogger().severe("初始化Vault失败,请检测是否已经安装Vault插件和经济插件");
 			return;
 		}
-
+		
+		//初始化插件特有物品
 		Powder.init_powder();
 		Reader.init_reader_item();
 		Reader.set_recipe();
@@ -280,13 +286,18 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		Gas_bottle.set_recipe();
 		Reaction_container.init_reaction();
 		wrench.init();
-
+		Flying_item.init();
+		//初始化特有物品完成
+		
+		//加载结构
 		for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : this.structure_manager_map
 				.entrySet()) {
 			Structure_manager<? extends Structure> manager = entry.getValue();
 			manager.load_structures();
 		}
-
+		//加载结构完成
+		
+		//初始化事件监听器
 		PluginManager pm = getServer().getPluginManager();
 
 		pm.registerEvents(this.Structure_listener, this);
@@ -296,10 +307,14 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		for (Listener listener : this.structure_listeners) {
 			pm.registerEvents(listener, this);
 		}
-		note_listener.runner.runTaskTimer(this, 10, 5);
+		//初始化事件监听器完成
+		
+		//初始化定时任务
+		this.note_listener.runner.runTaskTimer(this, 10, 5);
 		this.auto_saver.runTaskTimerAsynchronously(this, 10, 6000);
 		this.realtime_runner.runTaskTimerAsynchronously(this, 5, 2);
 		this.watersheep_runner.runTaskTimerAsynchronously(this, 120, 4800);
+		//初始化定时任务完成
 	}
 
 	public boolean save_structure() {

@@ -97,9 +97,7 @@ public abstract class Structure_manager<T extends Structure> {
 				} else {
 					this.add(shop);
 				}
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
+			} catch (InstantiationException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
 		}
