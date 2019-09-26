@@ -82,12 +82,6 @@ public class Watersheep_runner extends BukkitRunnable {
 			for (String one_world_name : worlds_with_players) {
 				World one_world = this.server.getWorld(one_world_name);
 
-				/* 必须是白天 */
-				long current_world_time = one_world.getTime();
-				if (current_world_time > 12516) {
-					continue;
-				}
-
 				/* 取得这个世界里面加载的区块 */
 				Chunk[] loaded_chunks = one_world.getLoadedChunks();
 				/* 搜索这些区块里面符合条件的羊 */
