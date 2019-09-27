@@ -182,12 +182,12 @@ public class Material_ext {
 	public static ItemStack[] split_to_max_stack_size(ItemStack item) {
 		int quantity = item.getAmount();
 		int max_stack_size = item.getMaxStackSize();
-		int stacks = quantity / max_stack_size + 1;
+		int stacks = (quantity - 1) / max_stack_size + 1;
 		ItemStack[] items = new ItemStack[stacks];
-		for (ItemStack splited_item : items) {
-			splited_item = item.clone();
+		for (int i = 0; i < stacks; i++) {
+			items[i] = item.clone();
 			int amount = quantity - max_stack_size > 0 ? max_stack_size : quantity;
-			splited_item.setAmount(amount);
+			items[i].setAmount(amount);
 			quantity -= amount;
 		}
 		return items;

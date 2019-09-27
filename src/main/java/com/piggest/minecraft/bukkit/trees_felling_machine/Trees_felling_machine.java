@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
@@ -395,15 +396,20 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	@Override
 	public void set_owner(String owner) {
 		this.owner = owner;
-		ItemStack item = this.gui.getItem(owner_indicator);
-		SkullMeta meta = (SkullMeta) item.getItemMeta();
-		if (owner == null) {
-			meta.setDisplayName("§r当前控制者: null");
-		} else {
-			meta.setDisplayName("§r当前控制者: " + owner);
-			meta.setOwningPlayer(this.get_owner());
-		}
-		item.setItemMeta(meta);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				ItemStack item = gui.getItem(owner_indicator);
+				SkullMeta meta = (SkullMeta) item.getItemMeta();
+				if (owner == null) {
+					meta.setDisplayName("§r当前控制者: null");
+				} else {
+					meta.setDisplayName("§r当前控制者: " + owner);
+					meta.setOwningPlayer(get_owner());
+				}
+				item.setItemMeta(meta);
+			}
+		}.runTaskLaterAsynchronously(Dropper_shop_plugin.instance, 1);
 	}
 
 	@SuppressWarnings("deprecation")

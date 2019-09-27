@@ -45,6 +45,7 @@ import com.piggest.minecraft.bukkit.exp_saver.Exp_saver_command_executor;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver_listener;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver_manager;
 import com.piggest.minecraft.bukkit.flying_item.Flying_item;
+import com.piggest.minecraft.bukkit.flying_item.Flying_item_listener;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.grinder.Grinder_command_executor;
 import com.piggest.minecraft.bukkit.grinder.Grinder_listener;
@@ -116,6 +117,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private final Note_stick_listener note_listener = new Note_stick_listener();
 	private final Gui_listener gui_listener = new Gui_listener();
 	private final Structure_listener Structure_listener = new Structure_listener();
+	private final Flying_item_listener flying_item_listener = new Flying_item_listener();
 	private HashMap<String, Integer> sync_realtime_worlds = new HashMap<String, Integer>();
 
 	private Listener[] structure_listeners = { new Depository_listener(), new Dropper_shop_listener(),
@@ -303,7 +305,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		pm.registerEvents(this.Structure_listener, this);
 		pm.registerEvents(this.gui_listener, this);
 		pm.registerEvents(this.note_listener, this);
-
+		pm.registerEvents(this.flying_item_listener, this);
 		for (Listener listener : this.structure_listeners) {
 			pm.registerEvents(listener, this);
 		}
