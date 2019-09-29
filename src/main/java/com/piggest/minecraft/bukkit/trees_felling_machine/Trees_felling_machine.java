@@ -39,6 +39,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	private int total_blocks;
 	private int scanned_blocks = 0;
 	private Random random = new Random();
+	private ItemStack buffer_item = null;
 	private static final int[][] axe_hopper_check_list = { { 0, 1, 2 }, { 2, 1, 0 }, { 0, 1, -2 }, { -2, 1, 0 } }; // 注入斧头
 	private static final int[][] product_chest_check_list = { { 0, -1, 2 }, { 2, -1, 0 }, { 0, -1, -2 },
 			{ -2, -1, 0 } };
@@ -183,38 +184,44 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 							int num = random.nextInt(300);
 							Material type = block.getType();
 							ItemStack new_item = null;
-							if (type == Material.OAK_LEAVES || type == Material.DARK_OAK_LEAVES) {
-								if (num == 0) {
-									new_item = new ItemStack(Material.APPLE);
-								} else if (num >= 1 && num <= 10) {
-									if (type == Material.OAK_LEAVES) {
-										new_item = new ItemStack(Material.OAK_SAPLING);
-									} else {
-										new_item = new ItemStack(Material.DARK_OAK_SAPLING);
+							if (this.buffer_item == null) {
+								if (type == Material.OAK_LEAVES || type == Material.DARK_OAK_LEAVES) {
+									if (num == 0) {
+										new_item = new ItemStack(Material.APPLE);
+									} else if (num >= 1 && num <= 10) {
+										if (type == Material.OAK_LEAVES) {
+											new_item = new ItemStack(Material.OAK_SAPLING);
+										} else {
+											new_item = new ItemStack(Material.DARK_OAK_SAPLING);
+										}
+									}
+								} else if (type == Material.ACACIA_LEAVES) {
+									if (num < 10) {
+										new_item = new ItemStack(Material.ACACIA_SAPLING);
+									}
+								} else if (type == Material.BIRCH_LEAVES) {
+									if (num < 10) {
+										new_item = new ItemStack(Material.BIRCH_SAPLING);
+									}
+								} else if (type == Material.SPRUCE_LEAVES) {
+									if (num < 10) {
+										new_item = new ItemStack(Material.SPRUCE_SAPLING);
+									}
+								} else if (type == Material.JUNGLE_LEAVES) {
+									if (num < 5) {
+										new_item = new ItemStack(Material.JUNGLE_SAPLING);
 									}
 								}
-							} else if (type == Material.ACACIA_LEAVES) {
-								if (num < 10) {
-									new_item = new ItemStack(Material.ACACIA_SAPLING);
-								}
-							} else if (type == Material.BIRCH_LEAVES) {
-								if (num < 10) {
-									new_item = new ItemStack(Material.BIRCH_SAPLING);
-								}
-							} else if (type == Material.SPRUCE_LEAVES) {
-								if (num < 10) {
-									new_item = new ItemStack(Material.SPRUCE_SAPLING);
-								}
-							} else if (type == Material.JUNGLE_LEAVES) {
-								if (num < 5) {
-									new_item = new ItemStack(Material.JUNGLE_SAPLING);
-								}
+							} else {
+								new_item = this.buffer_item;
+								this.buffer_item = null;
 							}
 							if (this.get_axe() == null) {
 								return;
 							}
 							if (new_item != null) {
 								if (!this.insert_item_to_chest(new_item)) { // 箱子满了，也直接返回，指针不动
+									this.buffer_item = new_item;// 砍伐成功存入buffer
 									return;
 								}
 							}
