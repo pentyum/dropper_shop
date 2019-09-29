@@ -108,7 +108,7 @@ public class Material_ext {
 	/*
 	 * 以namespacedkey注册物品
 	 */
-	private static void register(NamespacedKey namespacedkey, ItemStack item) {
+	public static void register(NamespacedKey namespacedkey, ItemStack item) {
 		item = NMS_manager.ext_id_provider.set_ext_id(item, namespacedkey.toString());
 		Material_ext.ext_material_map.put(namespacedkey, item.clone());
 	}
@@ -119,6 +119,26 @@ public class Material_ext {
 	public static void register(String id_name, ItemStack itemstack) {
 		NamespacedKey namespacedkey = Dropper_shop_plugin.instance.get_key(id_name);
 		register(namespacedkey, itemstack);
+	}
+
+	public static boolean is_registered(String full_name) {
+		NamespacedKey namespacedkey = Material_ext.get_namespacedkey(full_name);
+		if (Material_ext.ext_material_map.get(namespacedkey) == null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	/*
+	 * 强制修改某物品的ext_id，需要名称已被注册，返回值为修改后的物品。
+	 */
+	public static ItemStack set_full_name(ItemStack item, String full_name) {
+		if (!Material_ext.is_registered(full_name)) {
+			return null;
+		}
+		item = NMS_manager.ext_id_provider.set_ext_id(item, full_name);
+		return item;
 	}
 
 	private static Material get_material(NamespacedKey namespacedkey) { // 根据内部ID获得材质
