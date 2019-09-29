@@ -9,6 +9,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
@@ -22,6 +23,14 @@ import com.piggest.minecraft.bukkit.nms.NMS_manager;
 public class Flying_item_listener implements Listener {
 
 	@EventHandler
+	public void on_login(PlayerLoginEvent event) {
+		Player player = event.getPlayer();
+		if (player.getGameMode() == GameMode.SURVIVAL) {
+			player.setAllowFlight(false);
+		}
+	}
+
+	@EventHandler
 	public void on_logout(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		if (player.getGameMode() == GameMode.SURVIVAL) {
@@ -29,7 +38,7 @@ public class Flying_item_listener implements Listener {
 		}
 	}
 
-	@EventHandler(priority=EventPriority.HIGH)
+	@EventHandler(priority = EventPriority.HIGH)
 	public void on_use_firework(PlayerInteractEvent event) {
 		if (event.useItemInHand() == Result.DENY || event.useInteractedBlock() == Result.DENY) {
 			return;
