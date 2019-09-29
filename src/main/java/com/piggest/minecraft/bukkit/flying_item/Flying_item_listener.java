@@ -5,7 +5,9 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
@@ -27,7 +29,7 @@ public class Flying_item_listener implements Listener {
 		}
 	}
 
-	@EventHandler
+	@EventHandler(priority=EventPriority.HIGH)
 	public void on_use_firework(PlayerInteractEvent event) {
 		if (event.useItemInHand() == Result.DENY || event.useInteractedBlock() == Result.DENY) {
 			return;
@@ -37,6 +39,9 @@ public class Flying_item_listener implements Listener {
 			return;
 		}
 		if (item.getType() != Material.FIREWORK_ROCKET) {
+			return;
+		}
+		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
 			return;
 		}
 		if (NMS_manager.flying_time_provider.has_flying_time(item)) {
