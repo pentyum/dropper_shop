@@ -2,6 +2,7 @@ package com.piggest.minecraft.bukkit.flying_item;
 
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
@@ -19,6 +20,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
+import com.piggest.minecraft.bukkit.utils.Use_block;
 
 public class Flying_item_listener implements Listener {
 
@@ -38,7 +40,7 @@ public class Flying_item_listener implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void on_use_firework(PlayerInteractEvent event) {
 		if (event.useItemInHand() == Result.DENY || event.useInteractedBlock() == Result.DENY) {
 			return;
@@ -53,11 +55,17 @@ public class Flying_item_listener implements Listener {
 		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
 			return;
 		}
+		Block clicked_block = event.getClickedBlock();
+		Player player = event.getPlayer();
+		if (Use_block.is_use_block(clicked_block)) {
+			if(player.isSneaking()==false) {
+				return;
+			}
+		}
 		if (NMS_manager.flying_time_provider.has_flying_time(item)) {
 			ItemMeta meta = item.getItemMeta();
 			if (meta instanceof FireworkMeta) {
 				int flying_time = NMS_manager.flying_time_provider.get_flying_time(item);
-				Player player = event.getPlayer();
 				if (player.getAllowFlight() == true) {
 					player.sendMessage("[飞行道具]你已经是飞行状态了");
 					event.setCancelled(true);
