@@ -4,10 +4,9 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.annotation.Nullable;
-
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Container;
+import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ExperienceOrb;

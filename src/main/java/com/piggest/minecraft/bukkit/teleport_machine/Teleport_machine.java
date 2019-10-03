@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -221,38 +222,42 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		}
 	}
 
-	private void set_gui_terminal_item(int slot, Radio_terminal terminal) {
+	private void set_gui_terminal_item(int slot,@Nullable Radio_terminal terminal) {
 		ItemStack item = new ItemStack(Material.BEACON);
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName("传送至 " + terminal.getCustomName());
-		ArrayList<String> lore = new ArrayList<String>();
-		Location loc = terminal.get_location();
-		lore.add("§7位置: " + loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ() + ","
-				+ loc.getWorld().getName());
-		lore.add("§7距离: " + (int) (Radio.get_distance(loc, this.get_location())) + " m");
-		lore.add("§7频率: " + terminal.get_current_channel_freq() + " kHz");
-		lore.add("§7带宽: " + terminal.get_current_channel_bandwidth() + " kHz");
-		if (loc.getWorld() != null) {
-			double signal = this.get_signal(terminal, terminal.get_state());
-			double noise = this.get_noise(terminal);
-			// Bukkit.getLogger().info(signal + "/" + noise);
-			int snr = (int) (10 * Math.log10(signal / noise));
-			if (snr == Integer.MIN_VALUE) {
-				lore.add("§7当前接收目标发射强度: NaN dB");
+		if(terminal==null) {
+			meta.setDisplayName("§c此传送机已丢失!");
+		}else {
+			meta.setDisplayName("传送至 " + terminal.getCustomName());
+			ArrayList<String> lore = new ArrayList<String>();
+			Location loc = terminal.get_location();
+			lore.add("§7位置: " + loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ() + ","
+					+ loc.getWorld().getName());
+			lore.add("§7距离: " + (int) (Radio.get_distance(loc, this.get_location())) + " m");
+			lore.add("§7频率: " + terminal.get_current_channel_freq() + " kHz");
+			lore.add("§7带宽: " + terminal.get_current_channel_bandwidth() + " kHz");
+			if (loc.getWorld() != null) {
+				double signal = this.get_signal(terminal, terminal.get_state());
+				double noise = this.get_noise(terminal);
+				// Bukkit.getLogger().info(signal + "/" + noise);
+				int snr = (int) (10 * Math.log10(signal / noise));
+				if (snr == Integer.MIN_VALUE) {
+					lore.add("§7当前接收目标发射强度: NaN dB");
+				} else {
+					lore.add("§7当前接收目标发射强度: " + snr + " dB");
+				}
+				signal = terminal.get_signal(this, Radio_state.WORKING, true);
+				noise = terminal.get_noise(this);
+				// Bukkit.getLogger().info(signal + "/" + noise);
+				snr = (int) (10 * Math.log10(signal / noise));
+				lore.add("§7预计发射目标接收强度: " + snr + " dB");
+				int rate = terminal.get_working_speed(this);
+				lore.add(String.format("§7预计传输速率: %d kB/s", rate * 8));
 			} else {
-				lore.add("§7当前接收目标发射强度: " + snr + " dB");
+				lore.add("§c目标世界未被加载!");
 			}
-			signal = terminal.get_signal(this, Radio_state.WORKING, true);
-			noise = terminal.get_noise(this);
-			// Bukkit.getLogger().info(signal + "/" + noise);
-			snr = (int) (10 * Math.log10(signal / noise));
-			lore.add("§7预计发射目标接收强度: " + snr + " dB");
-			int rate = terminal.get_working_speed(this);
-			lore.add(String.format("§7预计传输速率: %d kB/s", rate * 8));
-		} else {
-			lore.add("§c目标世界未被加载!");
+			meta.setLore(lore);
 		}
-		meta.setLore(lore);
 		item.setItemMeta(meta);
 		this.gui.setItem(slot, item);
 	}
@@ -269,9 +274,6 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			} else {
 				UUID terminal_uuid = this.known_terminal_list.get(start);
 				Radio_terminal terminal = Radio_manager.instance.get(terminal_uuid);
-				if (terminal == null) {
-					continue;
-				}
 				this.set_gui_terminal_item(slot, terminal);
 			}
 			slot++;
