@@ -138,6 +138,6 @@ public class Teleport_machine_manager extends Gui_structure_manager<Teleport_mac
 	@Override
 	public void remove(Teleport_machine structure) {
 		super.remove(structure);
-		Radio_manager.instance.remove(structure.gen_uuid());
+		Radio_manager.instance.remove(structure.get_uuid());
 	}
 }
