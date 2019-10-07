@@ -9,6 +9,13 @@ public class Pigman_switch extends Multi_block_structure {
 
 	@Override
 	public void on_right_click(Player player) {
+		String msg = "当前猪人生成控制器状态为: ";
+		if (this.activated() == true) {
+			msg += "开,3*3区块内的猪人不会生成";
+		} else {
+			msg += "关,猪人正常生成";
+		}
+		player.sendMessage(msg);
 		return;
 	}
 
