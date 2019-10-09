@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -28,6 +29,7 @@ public class Flying_item_listener implements Listener {
 	public void on_login(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		if (player.getGameMode() == GameMode.SURVIVAL) {
+			player.removeScoreboardTag("flying_item");
 			player.setAllowFlight(false);
 		}
 	}
@@ -36,7 +38,45 @@ public class Flying_item_listener implements Listener {
 	public void on_logout(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		if (player.getGameMode() == GameMode.SURVIVAL) {
+			player.removeScoreboardTag("flying_item");
 			player.setAllowFlight(false);
+		}
+	}
+	
+	@EventHandler
+	public void on_changed_dimension(PlayerChangedWorldEvent event) {
+		Player player = event.getPlayer();
+		if (player.getGameMode() == GameMode.SURVIVAL) {
+			if(player.getScoreboardTags().contains("flying_item")) {
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						if (player != null) {
+							player.setAllowFlight(true);
+							player.sendMessage("[飞行道具] 检测到世界切换，现在可以继续飞行。");
+						}
+					}
+				}.runTaskLaterAsynchronously(Dropper_shop_plugin.instance, 3 * 20);
+				
+				/* retry to ensure correctness*/
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						if (player != null) {
+							player.setAllowFlight(true);
+						}
+					}
+				}.runTaskLaterAsynchronously(Dropper_shop_plugin.instance, 5 * 20);
+				
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						if (player != null) {
+							player.setAllowFlight(true);
+						}
+					}
+				}.runTaskLaterAsynchronously(Dropper_shop_plugin.instance, 10 * 20);
+			}
 		}
 	}
 
@@ -72,12 +112,15 @@ public class Flying_item_listener implements Listener {
 					return;
 				}
 				player.setAllowFlight(true);
+				player.addScoreboardTag("flying_item");
 				player.sendMessage("[飞行道具]你的现在可以进行持续" + flying_time + "秒的飞行");
 				if (flying_time >= 60) {
 					new BukkitRunnable() {
 						@Override
 						public void run() {
 							if (player != null) {
+								/* remove the tag now */
+								player.removeScoreboardTag("flying_item");
 								player.sendMessage("[飞行道具]你的飞行时间还剩余30秒");
 							}
 						}
@@ -88,6 +131,7 @@ public class Flying_item_listener implements Listener {
 					public void run() {
 						if (player != null) {
 							if (player.getGameMode() == GameMode.SURVIVAL) {
+								player.removeScoreboardTag("flying_item");
 								player.setAllowFlight(false);
 							}
 							player.sendMessage("[飞行道具]你的飞行时间已到");
