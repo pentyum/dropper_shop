@@ -37,6 +37,10 @@ public enum Base_material implements Has_composition {
 	CaF2_molecule(new Has_composition[] {Element.Ca,Element.F},new int[] {1,2}),
 	CaCl2_molecule(new Has_composition[] {Element.Ca,Element.Cl},new int[] {1,2}),
 	MgCl2_molecule(new Has_composition[] {Element.Mg,Element.Cl},new int[] {1,2}),
+	CuS_molecule(new Has_composition[] {Element.Cu,Element.S},new int[] {1,1}),
+	ZnS_molecule(new Has_composition[] {Element.Zn,Element.S},new int[] {1,1}),
+	FeS2_molecule(new Has_composition[] {Element.Fe,Element.S},new int[] {1,2}),
+	iron_hydroxide_molecule(new Has_composition[] {Element.Fe,Element.O,Element.H},new int[] {1,3,3}),
 	sucrose_molecule(new Has_composition[] {Element.C,Element.H,Element.O},new int[] {6,10,5}),//碳水化合物
 	polysaccharide_molecule(new Has_composition[] {Element.C,Element.H,Element.O},new int[] {12,22,11}), //蔗糖
 	tnt_molecule(new Has_composition[] {Element.C,Element.H,Element.O,Element.N},new int[] {7,5,6,3}),
@@ -77,6 +81,10 @@ public enum Base_material implements Has_composition {
 	furnace(new Has_composition[] {cobblestone},new int[] {8}),
 	brewing_stand(new Has_composition[] {blaze_rod,cobblestone},new int[] {1,3}),
 	
+	stone_bricks(new Has_composition[] {stone},new int[] {1}),
+	mossy_stone_bricks(new Has_composition[] {stone,vine},new int[] {1,1}),
+	cracked_stone_bricks(new Has_composition[] {stone},new int[] {1}),
+	
 	sand(new Has_composition[] {SiO2_molecule},new int[] {300}),
 	red_sand(new Has_composition[] {SiO2_molecule,Fe2O3_molecule},new int[] {300,50}),
 	glass(new Has_composition[] {sand},new int[] {1}),
@@ -89,14 +97,18 @@ public enum Base_material implements Has_composition {
 	diorite(new Has_composition[] {SiO2_molecule},new int[] {1000}), //闪长岩
 	andesite(new Has_composition[] {SiO2_molecule},new int[] {1000}), //安山岩
 	
-	netherrack(new Has_composition[] {SiO2_molecule},new int[] {500}),
-	netherore(new Has_composition[] {SiO2_molecule},new int[] {400}),
+	nether_wart(new Has_composition[] {iron_hydroxide_molecule},new int[] {200}),
+	netherrack(new Has_composition[] {SiO2_molecule,CuS_molecule},new int[] {500,10}),
+	netherore(new Has_composition[] {SiO2_molecule,CuS_molecule},new int[] {350,5}),
+	nether_brick(new Has_composition[] {netherrack},new int[] {1}),
+	nether_bricks(new Has_composition[] {nether_brick},new int[] {4}),
+	red_nether_bricks(new Has_composition[] {nether_brick,nether_wart},new int[] {2,2}),
 	
 	prismarine_shard(new Has_composition[] {SiO2_molecule,CaCO3_molecule,MgCO3_molecule},new int[] {100,50,20}),
 	prismarine_crystals(new Has_composition[] {NaCl_molecule,KCl_molecule,MgCl2_molecule,CaCl2_molecule},new int[] {150,15,25,15}),
 	prismarine(new Has_composition[] {prismarine_shard},new int[] {4}),
 	dark_prismarine(new Has_composition[] {SiO2_molecule,black_dye},new int[] {8,1}),
-	prismarine_bricks(new Has_composition[] {SiO2_molecule},new int[] {9}),
+	prismarine_bricks(new Has_composition[] {prismarine_shard},new int[] {9}),
 	
 	gunpowder(new Has_composition[] {tnt_molecule},new int[] {15}),
 	tnt(new Has_composition[] {gunpowder,sand},new int[] {5,2}),
@@ -240,8 +252,9 @@ public enum Base_material implements Has_composition {
 	dropper(new Has_composition[] {cobblestone,redstone},new int[] {7,1}),
 	dispenser(new Has_composition[] {dropper,bow},new int[] {1,1}),
 	hopper_minecart(new Has_composition[] {hopper,minecart},new int[] {1,1}),
-	powered_rail(new Has_composition[] {gold_ingot,stick,redstone},new double[] {1,1.0/6.0,1.0/6.0});
-
+	powered_rail(new Has_composition[] {gold_ingot,stick,redstone},new double[] {1,1.0/6.0,1.0/6.0}),
+	tripwire_hook(new Has_composition[] {iron_ingot,stick,planks},new double[] {0.5,0.5,0.5});
+	
 	public final HashMap<Has_composition,Double> map = new HashMap<Has_composition,Double>();
 	Base_material(Has_composition[] element, double[] unit){
 		for(int i=0;i<element.length;i++) {
