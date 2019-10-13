@@ -8,41 +8,21 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.weather.LightningStrikeEvent;
-/* added for experimental fire prevention */
+/* added for fire prevention */
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockIgniteEvent.IgniteCause;
-
-/* added for experimental skeleton trap horse prevention */
+/* added for skeleton trap horse prevention */
 import org.bukkit.event.entity.EntitySpawnEvent;
+/* added for creeper powering prevention */
+import org.bukkit.event.entity.CreeperPowerEvent;
+/* added for villager transformation prevention */
+import org.bukkit.event.entity.EntityTransformEvent;
+/* added for pig transformation prevention */
+import org.bukkit.event.entity.PigZapEvent;
 import org.bukkit.entity.EntityType;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Chunk_location;
-
-/*class Fire_remover extends BukkitRunnable {
-	private Location location;
-
-	public Fire_remover(Location loc) {
-		this.location = loc;
-	}
-
-	@Override
-	public void run() {
-		int x;
-		int y;
-		int z;
-		for (x = -2; x <= 2; x++) {
-			for (y = -1; y <= 1; y++) {
-				for (z = -2; z <= 2; z++) {
-					Location check_loc = this.location.clone().add(x, y, z);
-					if (check_loc.getBlock().getType() == Material.FIRE) {
-						check_loc.getBlock().setType(Material.AIR);
-					}
-				}
-			}
-		}
-	}
-}*/
 
 public class Anti_thunder_listener implements Listener {
 	public boolean find_anti_thunder(Location loc, String event_string) {
@@ -101,6 +81,36 @@ public class Anti_thunder_listener implements Listener {
 		if (type == EntityType.SKELETON_HORSE) {
 			event.setCancelled(this.find_anti_thunder(event.getLocation(), "骷髅陷阱马"));
 		}
+	}
+	
+	@EventHandler
+	public void on_crepper_powered(CreeperPowerEvent event) {
+		if (event.getCause() != CreeperPowerEvent.PowerCause.LIGHTNING) {
+			return;
+		}
+		if (event.isCancelled() == true) {
+			return;
+		}
+		event.setCancelled(this.find_anti_thunder(event.getEntity().getLocation(), "高压爬行者"));
+	}
+	
+	@EventHandler
+	public void on_pigman_zagged(PigZapEvent event) {
+		if (event.isCancelled() == true) {
+			return;
+		}
+		event.setCancelled(this.find_anti_thunder(event.getEntity().getLocation(), "僵尸猪人"));
+	}
+	
+	@EventHandler
+	public void on_villager_transformed(EntityTransformEvent event) {
+		if(event.isCancelled() == true) {
+			return;
+		}
+		if(event.getTransformReason() != EntityTransformEvent.TransformReason.LIGHTNING) {
+			return;
+		}
+		event.setCancelled(this.find_anti_thunder(event.getEntity().getLocation(), "女巫"));
 	}
 
 	@EventHandler
