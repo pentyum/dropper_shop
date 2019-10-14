@@ -58,14 +58,16 @@ public class Teleport_machine_manager extends Gui_structure_manager<Teleport_mac
 		this.set_gui(Teleport_machine.open_switch, Material.LEVER, "§r无线魔术开关", Gui_slot_type.Switch);
 		this.set_gui(28, Material.REDSTONE_TORCH, "§r搜索无线魔术终端", Gui_slot_type.Button);
 		this.set_gui(29, Material.PAPER, "§r立刻刷新无线魔术信息", Gui_slot_type.Button);
+		this.set_gui(Teleport_machine.auto_player_teleport_switch, Material.LEVER, "§r自动玩家传送开关", Gui_slot_type.Switch);
+		this.set_gui(Teleport_machine.auto_entity_teleport_switch, Material.LEVER, "§r自动非玩家实体传送开关", Gui_slot_type.Switch);
 		this.set_gui(Teleport_machine.radio_indicator, Material.END_ROD, "§r当前无线魔术信息",
 				new String[] { "§7终端名称: " + this.get_gui_name(), "§7运行状态: " + Radio_state.OFF.display_name,
 						"§7当前输入功率: 0 W", "§7当前辐射功率: 0 W", "§7天线长度: 1 m", "§7中心频率: kHz", "§7天线频宽: kHz", "§7辐射魔阻: Ω",
 						"§7辐射魔抗: Ω", "§7输入阻抗: Ω" },
 				Gui_slot_type.Indicator);
 
-		this.set_gui(36, Material.CHEST, "§r元素信息", Gui_slot_type.Button);
-		this.set_gui(37, Material.MINECART, "§r传送台上实体转化为元素", Gui_slot_type.Button);
+		this.set_gui(36, Material.CHEST, "§r查看元素信息", Gui_slot_type.Button);
+		this.set_gui(37, Material.MINECART, "§r点击使传送台上实体转化为元素", Gui_slot_type.Button);
 		this.set_gui(Teleport_machine.magic_indicator, Material.EXPERIENCE_BOTTLE, "§r魔力信息",
 				new String[] { "§7剩余: 0 kJ" }, Gui_slot_type.Indicator);
 		this.set_gui(40, Material.PLAYER_HEAD, "§r玩家经验转化为魔力", new String[] { "§71点经验转化为1kJ魔力", "§7点击立刻转化1000点经验为魔力" },

@@ -36,7 +36,9 @@ public class Teleport_machine_runner extends Structure_runner {
 				this.need_to_cost_magic -= need_to_cost_kj * 1000;
 			}
 		}
-		// 上，能耗部分；下，传送进度部分
+		// 上，能耗部分；下，自动传送部分
+		teleport_machine.start_teleport_to_no_operater();
+		// 上，自动传送部分；下，传送进度部分
 		if (teleport_machine.get_state() == Radio_state.WORKING) {
 			Teleporting_task task = teleport_machine.get_teleporting_task();
 			if (task.get_completed_byte() >= task.get_total_byte()) {
@@ -61,7 +63,6 @@ public class Teleport_machine_runner extends Structure_runner {
 
 	@Override
 	public int get_delay() {
-		// TODO 自动生成的方法存根
 		return 10;
 	}
 

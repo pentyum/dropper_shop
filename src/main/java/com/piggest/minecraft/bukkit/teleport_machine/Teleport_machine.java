@@ -39,8 +39,10 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	public static final int bandwidth_indicator = 43;
 	public static final int freq_indicator = 44;
 	public static final int magic_indicator = 39;
-	public static final int radio_indicator = 30;
+	public static final int radio_indicator = 38;
 	public static final int open_switch = 27;
+	public static final int auto_player_teleport_switch = 30;
+	public static final int auto_entity_teleport_switch = 31;
 
 	private UUID uuid;
 	private String name = this.get_manager().get_gui_name();
@@ -55,6 +57,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	private int[] elements_amount = new int[96];
 	private Inventory elements_gui = Bukkit.createInventory(this, 27, "元素存储");
 	private int exp_magic_exchange_rate = 1000; // 每1000点经验转化为多少魔力
+	private UUID auto_teleport_to = null;
 	private UUID current_work_with = null;
 	private Auto_refresher auto_refresher = new Auto_refresher(this);
 	private Structure_runner runner = new Teleport_machine_runner(this);
@@ -153,8 +156,12 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 						int index = slot + 16 * (this.current_page - 1);
 						Radio_terminal terminal = Radio_manager.instance.get(this.known_terminal_list.get(index));
 						if (terminal == null) {
-							player.sendMessage("目标传送机已经丢失");
+							player.sendMessage("[传送机]目标传送机已经丢失");
 						} else {
+							if (this.is_auto_entity_teleport() || this.is_auto_player_teleport()) {// 自动模式，选择传送对象
+								this.auto_teleport_to = terminal.get_uuid();
+								player.sendMessage("[传送机]已经设置为自动传送至" + terminal.getCustomName());
+							}
 							this.start_teleport_to(player, terminal);
 						}
 					}
@@ -164,13 +171,70 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		}
 	}
 
+	protected void start_teleport_to_no_operater() {
+		if (this.auto_teleport_to == null) {
+			return;
+		}
+		boolean auto_entity_teleport = this.is_auto_entity_teleport();
+		boolean auto_player_teleport = this.is_auto_entity_teleport();
+		if (auto_entity_teleport == false && auto_player_teleport == false) {
+			return;
+		}
+		Radio_terminal terminal = Radio_manager.instance.get(this.auto_teleport_to);
+		if (terminal == null) {
+			return;
+		}
+		if (terminal.get_location().getWorld() == null) {
+			return;
+		}
+		if (terminal.get_state() == Radio_state.OFF) {
+			return;
+		}
+		if (this.get_state() == Radio_state.WORKING) {
+			return;
+		}
+		Teleporting_task task_to_do = new Teleporting_task();
+		if (auto_entity_teleport == true && auto_player_teleport == true) {
+			task_to_do.set_entities(this.get_entities_in_stage());
+		} else if (auto_entity_teleport == false && auto_player_teleport == true) {
+			task_to_do.set_entities(this.get_players_in_stage());
+		} else {
+			task_to_do.set_entities(this.get_entities_no_player_in_stage());
+		}
+		Elements_composition total_elements_cost = new Elements_composition();
+		for (Entity entity : task_to_do.get_entities()) {
+			total_elements_cost.add(Elements_composition.get_element_composition(entity));
+		}
+		if (!terminal.has_enough(total_elements_cost)) {
+			return;
+		}
+		task_to_do.set_elements(total_elements_cost);
+		terminal.minus(total_elements_cost);
+		boolean working_result = this.set_current_work_with(terminal);
+		if (working_result == false) {
+			return;
+		}
+		int total_byte = total_elements_cost.get_total_byte();
+		task_to_do.set_total_byte(total_byte);
+		task_to_do.set_target(terminal);
+		this.teleport_task = task_to_do;
+	}
+
 	private void start_teleport_to(Player operator, Radio_terminal terminal) {
+		if (terminal == null) {
+			operator.sendMessage("[传送机]目标已经丢失");
+			return;
+		}
 		if (terminal.get_location().getWorld() == null) {
 			operator.sendMessage("[传送机]目标世界未加载");
 			return;
 		}
 		if (terminal.get_state() == Radio_state.OFF) {
 			operator.sendMessage("[传送机]目标没有开机");
+			return;
+		}
+		if (this.get_state() == Radio_state.WORKING) {
+			operator.sendMessage("[传送机]当前传送机已经在工作了");
 			return;
 		}
 		Teleporting_task task_to_do = new Teleporting_task();
@@ -222,12 +286,12 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		}
 	}
 
-	private void set_gui_terminal_item(int slot,@Nullable Radio_terminal terminal) {
+	private void set_gui_terminal_item(int slot, @Nullable Radio_terminal terminal) {
 		ItemStack item = new ItemStack(Material.BEACON);
 		ItemMeta meta = item.getItemMeta();
-		if(terminal==null) {
+		if (terminal == null) {
 			meta.setDisplayName("§c此传送机已丢失!");
-		}else {
+		} else {
 			meta.setDisplayName("传送至 " + terminal.getCustomName());
 			ArrayList<String> lore = new ArrayList<String>();
 			Location loc = terminal.get_location();
@@ -360,6 +424,9 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			save.put("total-bytes", this.teleport_task.get_total_byte());
 			save.put("completed-bytes", this.teleport_task.get_completed_byte());
 		}
+		if (this.auto_teleport_to != null) {
+			save.put("auto-teleport-to", this.auto_teleport_to.toString());
+		}
 		save.put("state", this.state.name());
 		save.put("channel-bandwidth", this.channel_bandwidth);
 		save.put("channel-freq", this.channel_freq);
@@ -375,6 +442,9 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		super.set_from_save(save);
 		if (save.get("current-working-with") != null) {
 			this.current_work_with = UUID.fromString((String) save.get("current-working-with"));
+		}
+		if (save.get("auto-teleport-to") != null) {
+			this.auto_teleport_to = UUID.fromString((String) save.get("auto-teleport-to"));
 		}
 		if (save.get("total-bytes") != null) {
 			this.teleport_task = new Teleporting_task();
@@ -674,6 +744,26 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		return world.getNearbyEntities(loc, 2, 2, 2, fliter);
 	}
 
+	public Collection<Entity> get_entities_no_player_in_stage() {
+		Location loc = this.get_location();
+		World world = loc.getWorld();
+		Predicate<Entity> fliter = new Predicate<Entity>() {
+			@Override
+			public boolean test(Entity entity) {
+				EntityType type = entity.getType();
+				return type != EntityType.PLAYER && type != EntityType.FALLING_BLOCK && type != EntityType.ENDER_CRYSTAL
+						&& type != EntityType.PRIMED_TNT && type != EntityType.FISHING_HOOK;
+			}
+		};
+		return world.getNearbyEntities(loc, 2, 2, 2, fliter);
+	}
+
+	public Collection<Entity> get_players_in_stage() {
+		Location loc = this.get_location();
+		World world = loc.getWorld();
+		return world.getNearbyEntities(loc, 2, 2, 2, e -> e.getType() == EntityType.PLAYER);
+	}
+
 	public Teleporting_task get_teleporting_task() {
 		return this.teleport_task;
 	}
@@ -681,6 +771,14 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	@Override
 	public ItemStack[] get_drop_items() {
 		return null;
+	}
+
+	public boolean is_auto_player_teleport() {
+		return this.get_switch(auto_player_teleport_switch);
+	}
+
+	public boolean is_auto_entity_teleport() {
+		return this.get_switch(auto_entity_teleport_switch);
 	}
 }
 
