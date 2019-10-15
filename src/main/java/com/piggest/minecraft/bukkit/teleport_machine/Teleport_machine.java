@@ -67,6 +67,8 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		this.gen_uuid();
 		this.init_elements_gui();
 		this.set_switch(open_switch, false);
+		this.set_switch(auto_player_teleport_switch, false);
+		this.set_switch(auto_entity_teleport_switch, false);
 		this.set_process(0);
 	}
 
@@ -427,6 +429,8 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		if (this.auto_teleport_to != null) {
 			save.put("auto-teleport-to", this.auto_teleport_to.toString());
 		}
+		save.put("is-auto-player-teleport", this.is_auto_player_teleport());
+		save.put("is-auto-entity-teleport", this.is_auto_entity_teleport());
 		save.put("state", this.state.name());
 		save.put("channel-bandwidth", this.channel_bandwidth);
 		save.put("channel-freq", this.channel_freq);
@@ -445,6 +449,14 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		}
 		if (save.get("auto-teleport-to") != null) {
 			this.auto_teleport_to = UUID.fromString((String) save.get("auto-teleport-to"));
+		}
+		if (save.get("is-auto-player-teleport") != null) {
+			this.set_switch(auto_player_teleport_switch,
+					Boolean.parseBoolean((String) save.get("is-auto-player-teleport")));
+		}
+		if (save.get("is-auto-entity-teleport") != null) {
+			this.set_switch(auto_entity_teleport_switch,
+					Boolean.parseBoolean((String) save.get("is-auto-entity-teleport")));
 		}
 		if (save.get("total-bytes") != null) {
 			this.teleport_task = new Teleporting_task();
