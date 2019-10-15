@@ -169,6 +169,9 @@ permissions:
   teleport_machine.use:
     description: use.
     default: true
+  teleport_machine.no_consume:
+    description: no consume.
+    default: op
   watersheep.use:
     description: use.
     default: true

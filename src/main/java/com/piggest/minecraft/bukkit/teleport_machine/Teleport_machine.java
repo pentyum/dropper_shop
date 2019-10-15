@@ -243,16 +243,18 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		operator.sendMessage("[传送机]开始传送至" + terminal.getCustomName());
 		task_to_do.set_entities(this.get_entities_in_stage());
 		Elements_composition total_elements_cost = new Elements_composition();
-		for (Entity entity : task_to_do.get_entities()) {
-			total_elements_cost.add(Elements_composition.get_element_composition(entity));
+		if (!operator.hasPermission("teleport_machine.no_consume")) {
+			for (Entity entity : task_to_do.get_entities()) {
+				total_elements_cost.add(Elements_composition.get_element_composition(entity));
+			}
+			operator.sendMessage("待传送实体数量: " + task_to_do.get_entities().size());
+			operator.sendMessage("总共需要: " + total_elements_cost.toString());
+			if (!terminal.has_enough(total_elements_cost)) {
+				operator.sendMessage("[传送机]目标元素材料不足");
+				return;
+			}
+			task_to_do.set_elements(total_elements_cost);
 		}
-		operator.sendMessage("待传送实体数量: " + task_to_do.get_entities().size());
-		operator.sendMessage("总共需要: " + total_elements_cost.toString());
-		if (!terminal.has_enough(total_elements_cost)) {
-			operator.sendMessage("[传送机]目标元素材料不足");
-			return;
-		}
-		task_to_do.set_elements(total_elements_cost);
 		task_to_do.set_operater(operator);
 		terminal.minus(total_elements_cost);
 		boolean working_result = this.set_current_work_with(terminal);
