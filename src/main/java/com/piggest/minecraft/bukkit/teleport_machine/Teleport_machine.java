@@ -360,6 +360,9 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 				this.set_state(Radio_state.ONLINE);
 			}
 			return true;
+		case auto_entity_teleport_switch:
+		case auto_player_teleport_switch:
+			return true;
 		default:
 			return false;
 		}
