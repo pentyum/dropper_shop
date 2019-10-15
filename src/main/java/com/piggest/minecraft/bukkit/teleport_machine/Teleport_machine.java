@@ -176,7 +176,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			return;
 		}
 		boolean auto_entity_teleport = this.is_auto_entity_teleport();
-		boolean auto_player_teleport = this.is_auto_entity_teleport();
+		boolean auto_player_teleport = this.is_auto_player_teleport();
 		if (auto_entity_teleport == false && auto_player_teleport == false) {
 			return;
 		}
