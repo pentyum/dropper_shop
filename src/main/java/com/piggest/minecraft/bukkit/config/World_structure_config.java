@@ -2,7 +2,8 @@ package com.piggest.minecraft.bukkit.config;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,5 +55,9 @@ public class World_structure_config {
 
 	public List<Map<?, ?>> getMapList(String structure_name) {
 		return this.config.getMapList(structure_name);
+	}
+
+	public void set(String structure_name, ArrayList<HashMap<String, Object>> value) {
+		this.config.set(structure_name, value);
 	}
 }

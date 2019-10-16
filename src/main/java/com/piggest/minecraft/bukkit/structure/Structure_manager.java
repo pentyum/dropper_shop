@@ -3,7 +3,6 @@ package com.piggest.minecraft.bukkit.structure;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -112,22 +111,25 @@ public abstract class Structure_manager<T extends Structure> {
 
 	public void save_structures() {
 		String structure_name = this.structure_class.getName().replace('.', '-');
-		HashMap<String, ArrayList<HashMap<String,Object>>> world_structure_list = new HashMap<>();
+		HashMap<String, ArrayList<HashMap<String, Object>>> world_structure_list = new HashMap<>();
 		for (World world : Dropper_shop_plugin.instance.getServer().getWorlds()) {
 			world_structure_list.put(world.toString(), new ArrayList<HashMap<String, Object>>());
 		}
-		//ArrayList<HashMap<String, Object>> structure_list = new ArrayList<HashMap<String, Object>>();
+		// ArrayList<HashMap<String, Object>> structure_list = new
+		// ArrayList<HashMap<String, Object>>();
 		for (Entry<Location, T> entry : structure_map.entrySet()) {
 			Structure structure = entry.getValue();
 			synchronized (structure) {
-				ArrayList<HashMap<String, Object>> structure_list = world_structure_list.get(structure.get_world_name());
+				ArrayList<HashMap<String, Object>> structure_list = world_structure_list
+						.get(structure.get_world_name());
 				structure_list.add(structure.get_save());
 			}
 		}
-		for(Entry<String,ArrayList<HashMap<String,Object>>> entry:world_structure_list.entrySet()) {
-			Dropper_shop_plugin.instance.get_shop_config().get(entry.getKey()).set(structure_list);
+		for (Entry<String, ArrayList<HashMap<String, Object>>> entry : world_structure_list.entrySet()) {
+			Dropper_shop_plugin.instance.get_shop_config().get(entry.getKey()).set(structure_name, entry.getValue());
 		}
-		Dropper_shop_plugin.instance.get_shop_config().set(structure_name, structure_list);
+		// Dropper_shop_plugin.instance.get_shop_config().set(structure_name,
+		// structure_list);
 	}
 
 	public T find_existed(Location loc) {
