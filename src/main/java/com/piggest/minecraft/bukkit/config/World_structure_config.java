@@ -21,9 +21,16 @@ public class World_structure_config {
 	public World_structure_config(World world) {
 		this.world = world;
 	}
-
+	
 	public void load() {
 		this.config_file = new File(Dropper_shop_plugin.instance.getDataFolder(), "shops_" + world.getName() + ".yml");
+		if(!config_file.exists()) {
+			try {
+				config_file.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		this.config = YamlConfiguration.loadConfiguration(config_file);
 	}
 

@@ -113,7 +113,7 @@ public abstract class Structure_manager<T extends Structure> {
 		String structure_name = this.structure_class.getName().replace('.', '-');
 		HashMap<String, ArrayList<HashMap<String, Object>>> world_structure_list = new HashMap<>();
 		for (World world : Dropper_shop_plugin.instance.getServer().getWorlds()) {
-			world_structure_list.put(world.toString(), new ArrayList<HashMap<String, Object>>());
+			world_structure_list.put(world.getName(), new ArrayList<HashMap<String, Object>>());
 		}
 		// ArrayList<HashMap<String, Object>> structure_list = new
 		// ArrayList<HashMap<String, Object>>();

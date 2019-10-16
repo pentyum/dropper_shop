@@ -86,7 +86,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public static Dropper_shop_plugin instance = null;
 	private Economy economy = null;
 	private FileConfiguration config = null;
-	private HashMap<String, World_structure_config> all_shop_config = null;
+	private HashMap<String, World_structure_config> all_shop_config = new HashMap<String, World_structure_config>();
 	private FileConfiguration lottery_config = null;
 	// private File shop_file = null;
 	private File lottery_file = null;
@@ -133,9 +133,10 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private Watersheep_runner watersheep_runner = null;
 
 	public Dropper_shop_plugin() {
+		Dropper_shop_plugin.instance = this;
 		this.getLogger().info("加载配置中");
 		saveDefaultConfig();
-		saveResource("shops.yml", false);
+		
 		saveResource("lottery_pool.yml", false);
 		this.config = getConfig();
 
@@ -160,11 +161,6 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		Set<String> unit_keys = unit_section.getKeys(false);
 		for (String material_name : unit_keys) {
 			this.unit_map.put(material_name, unit_section.getInt(material_name));
-		}
-		for (World world : this.getServer().getWorlds()) {
-			World_structure_config config = new World_structure_config(world);
-			config.load();
-			this.all_shop_config.put(world.getName(), config);
 		}
 		// this.shop_file = new File(this.getDataFolder(), "shops.yml");
 		// this.shop_config = YamlConfiguration.loadConfiguration(shop_file);
@@ -236,9 +232,14 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		Dropper_shop_plugin.instance = this;
-
+		for (World world : this.getServer().getWorlds()) {
+			World_structure_config config = new World_structure_config(world);
+			this.all_shop_config.put(world.getName(), config);
+			config.load();
+			this.getLogger().info("加载"+world.getName());
+		}
 		for (Entry<String, World_structure_config> entry : this.all_shop_config.entrySet()) {
+			entry.getValue().load();
 			entry.getValue().backup();
 		}
 

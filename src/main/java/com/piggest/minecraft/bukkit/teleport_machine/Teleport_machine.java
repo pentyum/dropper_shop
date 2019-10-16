@@ -457,11 +457,11 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		}
 		if (save.get("is-auto-player-teleport") != null) {
 			this.set_switch(auto_player_teleport_switch,
-					Boolean.parseBoolean((String) save.get("is-auto-player-teleport")));
+					(boolean) save.get("is-auto-player-teleport"));
 		}
 		if (save.get("is-auto-entity-teleport") != null) {
 			this.set_switch(auto_entity_teleport_switch,
-					Boolean.parseBoolean((String) save.get("is-auto-entity-teleport")));
+					(boolean) save.get("is-auto-entity-teleport"));
 		}
 		if (save.get("total-bytes") != null) {
 			this.teleport_task = new Teleporting_task();
