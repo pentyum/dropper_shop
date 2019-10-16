@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -21,7 +22,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.google.common.io.Files;
 import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace;
 import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_command_executor;
 import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_listener;
@@ -33,6 +33,7 @@ import com.piggest.minecraft.bukkit.anti_thunder.Anti_thunder;
 import com.piggest.minecraft.bukkit.anti_thunder.Anti_thunder_listener;
 import com.piggest.minecraft.bukkit.anti_thunder.Anti_thunder_manager;
 import com.piggest.minecraft.bukkit.config.Price_config;
+import com.piggest.minecraft.bukkit.config.World_structure_config;
 import com.piggest.minecraft.bukkit.depository.Depository;
 import com.piggest.minecraft.bukkit.depository.Depository_command_executor;
 import com.piggest.minecraft.bukkit.depository.Depository_listener;
@@ -85,9 +86,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public static Dropper_shop_plugin instance = null;
 	private Economy economy = null;
 	private FileConfiguration config = null;
-	private FileConfiguration shop_config = null;
+	private HashMap<String, World_structure_config> all_shop_config = null;
 	private FileConfiguration lottery_config = null;
-	private File shop_file = null;
+	// private File shop_file = null;
 	private File lottery_file = null;
 
 	private int exp_saver_max_structure_level = 0;
@@ -160,8 +161,13 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		for (String material_name : unit_keys) {
 			this.unit_map.put(material_name, unit_section.getInt(material_name));
 		}
-		this.shop_file = new File(this.getDataFolder(), "shops.yml");
-		this.shop_config = YamlConfiguration.loadConfiguration(shop_file);
+		for (World world : this.getServer().getWorlds()) {
+			World_structure_config config = new World_structure_config(world);
+			config.load();
+			this.all_shop_config.put(world.getName(), config);
+		}
+		// this.shop_file = new File(this.getDataFolder(), "shops.yml");
+		// this.shop_config = YamlConfiguration.loadConfiguration(shop_file);
 		this.lottery_file = new File(this.getDataFolder(), "lottery_pool.yml");
 		this.lottery_config_load();
 
@@ -171,8 +177,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		Item_zh_cn.init();
 	}
 
-	public FileConfiguration get_shop_config() {
-		return this.shop_config;
+	public HashMap<String, World_structure_config> get_shop_config() {
+		return this.all_shop_config;
 	}
 
 	public FileConfiguration get_lottery_config() {
@@ -228,36 +234,23 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.structure_manager_map.put(Teleport_machine.class, teleport_machine_manager);
 	}
 
-	public boolean backup_old_shop_config_file() {
-		File shop_file_backup = new File(shop_file.getAbsolutePath() + ".bak");
-		try {
-			if (shop_file_backup.exists()) {
-				shop_file_backup.delete();
-				shop_file.createNewFile();
-			}
-			Files.copy(shop_file, shop_file_backup);
-		} catch (IOException e) {
-			getLogger().severe("原结构配置备份失败");
-			return false;
-		}
-		getLogger().info("原结构配置已保存至" + shop_file.getAbsolutePath() + ".bak");
-		return true;
-	}
-
 	@Override
 	public void onEnable() {
 		Dropper_shop_plugin.instance = this;
-		this.backup_old_shop_config_file();
+
+		for (Entry<String, World_structure_config> entry : this.all_shop_config.entrySet()) {
+			entry.getValue().backup();
+		}
 
 		Tab_list.init();
-		
-		//初始化NMS和管理器
+
+		// 初始化NMS和管理器
 		this.nms_manager = new NMS_manager(Bukkit.getBukkitVersion());
 		this.init_structure_manager();
 		this.radio_manager = new Radio_manager();
-		//初始化管理器完成
-		
-		//初始化指令
+		// 初始化管理器完成
+
+		// 初始化指令
 		this.getCommand("depository").setExecutor(new Depository_command_executor());
 		this.getCommand("dropper_shop").setExecutor(new Dropper_shop_command_executor());
 		this.getCommand("grinder").setExecutor(new Grinder_command_executor());
@@ -269,15 +262,15 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.getCommand("sync_realtime").setExecutor(new Sync_realtime_command_executor(this.sync_realtime_worlds));
 		this.getCommand("teleport_machine").setExecutor(new Teleport_machine_command_executer());
 		this.getCommand("watersheep").setExecutor(new Watersheep_command_executor());
-		//初始化指令完成
-		
+		// 初始化指令完成
+
 		getLogger().info("使用Vault");
 		if (!initVault()) {
 			getLogger().severe("初始化Vault失败,请检测是否已经安装Vault插件和经济插件");
 			return;
 		}
-		
-		//初始化插件特有物品
+
+		// 初始化插件特有物品
 		Powder.init_powder();
 		Reader.init_reader_item();
 		Reader.set_recipe();
@@ -289,17 +282,17 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		Reaction_container.init_reaction();
 		wrench.init();
 		Flying_item.init();
-		//初始化特有物品完成
-		
-		//加载结构
+		// 初始化特有物品完成
+
+		// 加载结构
 		for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : this.structure_manager_map
 				.entrySet()) {
 			Structure_manager<? extends Structure> manager = entry.getValue();
 			manager.load_structures();
 		}
-		//加载结构完成
-		
-		//初始化事件监听器
+		// 加载结构完成
+
+		// 初始化事件监听器
 		PluginManager pm = getServer().getPluginManager();
 
 		pm.registerEvents(this.Structure_listener, this);
@@ -309,14 +302,14 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		for (Listener listener : this.structure_listeners) {
 			pm.registerEvents(listener, this);
 		}
-		//初始化事件监听器完成
-		
-		//初始化定时任务
+		// 初始化事件监听器完成
+
+		// 初始化定时任务
 		this.note_listener.runner.runTaskTimer(this, 10, 5);
 		this.auto_saver.runTaskTimerAsynchronously(this, 10, 6000);
 		this.realtime_runner.runTaskTimerAsynchronously(this, 5, 2);
 		this.watersheep_runner.runTaskTimerAsynchronously(this, 120, 4800);
-		//初始化定时任务完成
+		// 初始化定时任务完成
 	}
 
 	public boolean save_structure() {
@@ -326,11 +319,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 			Structure_manager<? extends Structure> manager = entry.getValue();
 			manager.save_structures();
 		}
-		try {
-			shop_config.save(this.shop_file);
-		} catch (IOException e) {
-			this.getLogger().severe("结构文件保存错误!");
-			return false;
+		for (Entry<String, World_structure_config> entry : this.all_shop_config.entrySet()) {
+			entry.getValue().save();
 		}
 		return true;
 	}

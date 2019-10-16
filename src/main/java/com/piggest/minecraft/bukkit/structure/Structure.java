@@ -160,4 +160,8 @@ public abstract class Structure {
 	}
 	
 	public abstract ItemStack[] get_drop_items();
+
+	public String get_world_name() {
+		return this.world_name;
+	}
 }

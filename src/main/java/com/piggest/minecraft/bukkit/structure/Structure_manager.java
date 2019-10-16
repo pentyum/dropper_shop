@@ -9,9 +9,11 @@ import java.util.Map.Entry;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.piggest.minecraft.bukkit.config.World_structure_config;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Chunk_location;
 
@@ -82,7 +84,12 @@ public abstract class Structure_manager<T extends Structure> {
 
 	public void load_structures() {
 		String structure_name = this.structure_class.getName().replace('.', '-');
-		List<Map<?, ?>> save_list = Dropper_shop_plugin.instance.get_shop_config().getMapList(structure_name);
+		ArrayList<Map<?, ?>> save_list = new ArrayList<Map<?, ?>>();
+		for (World_structure_config config : Dropper_shop_plugin.instance.get_shop_config().values()) {
+			save_list.addAll(config.getMapList(structure_name));
+		}
+		// List<Map<?, ?>> save_list =
+		// Dropper_shop_plugin.instance.get_shop_config().getMapList(structure_name);
 		for (Map<?, ?> shop_save : save_list) {
 			try {
 				T shop = structure_class.newInstance();
@@ -105,12 +112,20 @@ public abstract class Structure_manager<T extends Structure> {
 
 	public void save_structures() {
 		String structure_name = this.structure_class.getName().replace('.', '-');
-		ArrayList<HashMap<String, Object>> structure_list = new ArrayList<HashMap<String, Object>>();
+		HashMap<String, ArrayList<HashMap<String,Object>>> world_structure_list = new HashMap<>();
+		for (World world : Dropper_shop_plugin.instance.getServer().getWorlds()) {
+			world_structure_list.put(world.toString(), new ArrayList<HashMap<String, Object>>());
+		}
+		//ArrayList<HashMap<String, Object>> structure_list = new ArrayList<HashMap<String, Object>>();
 		for (Entry<Location, T> entry : structure_map.entrySet()) {
 			Structure structure = entry.getValue();
 			synchronized (structure) {
+				ArrayList<HashMap<String, Object>> structure_list = world_structure_list.get(structure.get_world_name());
 				structure_list.add(structure.get_save());
 			}
+		}
+		for(Entry<String,ArrayList<HashMap<String,Object>>> entry:world_structure_list.entrySet()) {
+			Dropper_shop_plugin.instance.get_shop_config().get(entry.getKey()).set(structure_list);
 		}
 		Dropper_shop_plugin.instance.get_shop_config().set(structure_name, structure_list);
 	}
