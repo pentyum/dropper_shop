@@ -41,8 +41,9 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	public static final int magic_indicator = 39;
 	public static final int radio_indicator = 38;
 	public static final int open_switch = 27;
-	public static final int auto_player_teleport_switch = 30;
-	public static final int auto_entity_teleport_switch = 31;
+	public static final int auto_player_teleport_switch = 29;
+	public static final int auto_entity_teleport_switch = 30;
+	public static final int setting_mode_switch = 31;
 
 	private UUID uuid;
 	private String name = this.get_manager().get_gui_name();
@@ -69,6 +70,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		this.set_switch(open_switch, false);
 		this.set_switch(auto_player_teleport_switch, false);
 		this.set_switch(auto_entity_teleport_switch, false);
+		this.set_switch(setting_mode_switch, false);
 		this.set_process(0);
 	}
 
@@ -160,11 +162,12 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 						if (terminal == null) {
 							player.sendMessage("[传送机]目标传送机已经丢失");
 						} else {
-							if (this.is_auto_entity_teleport() || this.is_auto_player_teleport()) {// 自动模式，选择传送对象
+							if (this.is_setting_mode() == true) {// 自动模式，选择传送对象
 								this.auto_teleport_to = terminal.get_uuid();
 								player.sendMessage("[传送机]已经设置为自动传送至" + terminal.getCustomName());
+							} else {
+								this.start_teleport_to(player, terminal);
 							}
-							this.start_teleport_to(player, terminal);
 						}
 					}
 				}
@@ -436,6 +439,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		}
 		save.put("is-auto-player-teleport", this.is_auto_player_teleport());
 		save.put("is-auto-entity-teleport", this.is_auto_entity_teleport());
+		save.put("is-setting-mode", this.is_setting_mode());
 		save.put("state", this.state.name());
 		save.put("channel-bandwidth", this.channel_bandwidth);
 		save.put("channel-freq", this.channel_freq);
@@ -456,12 +460,13 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			this.auto_teleport_to = UUID.fromString((String) save.get("auto-teleport-to"));
 		}
 		if (save.get("is-auto-player-teleport") != null) {
-			this.set_switch(auto_player_teleport_switch,
-					(boolean) save.get("is-auto-player-teleport"));
+			this.set_switch(auto_player_teleport_switch, (boolean) save.get("is-auto-player-teleport"));
 		}
 		if (save.get("is-auto-entity-teleport") != null) {
-			this.set_switch(auto_entity_teleport_switch,
-					(boolean) save.get("is-auto-entity-teleport"));
+			this.set_switch(auto_entity_teleport_switch, (boolean) save.get("is-auto-entity-teleport"));
+		}
+		if (save.get("is-setting-mode") != null) {
+			this.set_switch(setting_mode_switch, (boolean) save.get("is-setting-mode"));
 		}
 		if (save.get("total-bytes") != null) {
 			this.teleport_task = new Teleporting_task();
@@ -796,6 +801,10 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 
 	public boolean is_auto_entity_teleport() {
 		return this.get_switch(auto_entity_teleport_switch);
+	}
+
+	public boolean is_setting_mode() {
+		return this.get_switch(setting_mode_switch);
 	}
 }
 

@@ -15,12 +15,18 @@ public abstract class Gui_structure_manager<T extends Multi_block_with_gui> exte
 	public Gui_structure_manager(Class<T> structure_class) {
 		super(structure_class);
 	}
-
+	
+	public void set_gui_full_name(int slot, String full_name, String name, Gui_slot_type type) {
+		Slot_config slot_config = new Slot_config(full_name, name, type);
+		this.locked_slots.put(slot, slot_config);
+	}
+	
 	public void set_gui(int slot, Material material, String name, Gui_slot_type type) {
 		Slot_config slot_config = new Slot_config(material, name, type);
 		this.locked_slots.put(slot, slot_config);
 	}
-
+	
+	
 	public void set_gui(int slot, Material material, String name, String[] lore, Gui_slot_type type) {
 		Slot_config slot_config = new Slot_config(material, name, lore, type);
 		this.locked_slots.put(slot, slot_config);

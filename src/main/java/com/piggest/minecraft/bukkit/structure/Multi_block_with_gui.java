@@ -20,6 +20,7 @@ import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 import com.piggest.minecraft.bukkit.gui.Slot_config;
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
 public abstract class Multi_block_with_gui extends Multi_block_structure implements InventoryHolder {
 	protected Inventory gui;
@@ -36,8 +37,13 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 		for (Entry<Integer, Slot_config> entry : this.get_manager().get_locked_slots().entrySet()) {
 			int slot = entry.getKey();
 			Slot_config slot_config = entry.getValue();
-			if (slot_config.material != null) {
-				ItemStack item = new ItemStack(slot_config.material);
+			if (slot_config.material != null || slot_config.full_name != null) {
+				ItemStack item;
+				if (slot_config.material != null) {
+					item = new ItemStack(slot_config.material);
+				} else {
+					item = Material_ext.new_item_full_name(slot_config.full_name, 1);
+				}
 				ItemMeta meta = item.getItemMeta();
 				meta.setDisplayName(slot_config.name);
 				if (slot_config.lore != null) {
