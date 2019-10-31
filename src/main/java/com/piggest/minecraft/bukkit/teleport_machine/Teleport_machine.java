@@ -412,7 +412,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 
 	@Override
 	public int get_current_channel_bandwidth() {
-		if (this.state != Radio_state.WORKING) {
+		if (this.get_current_work_with() == null) {
 			return this.channel_bandwidth;
 		} else {
 			return this.get_current_work_with().get_current_channel_bandwidth();
@@ -691,7 +691,11 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 
 	@Override
 	public Radio_terminal get_current_work_with() {
-		return Radio_manager.instance.get(this.current_work_with);
+		Radio_terminal terminal = Radio_manager.instance.get(this.current_work_with);
+		if (terminal == null && this.get_state() == Radio_state.WORKING) {
+			this.set_state(Radio_state.ONLINE);
+		}
+		return terminal;
 	}
 
 	@Override
