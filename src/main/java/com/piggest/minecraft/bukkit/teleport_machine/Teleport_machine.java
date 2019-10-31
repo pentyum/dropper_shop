@@ -76,6 +76,10 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 
 	@Override
 	public void on_button_pressed(Player player, int slot) {
+		if (this.get_state() == Radio_state.WORKING) {
+			player.sendMessage("[传送机]当前传送机处于运行中，无法进行该操作！请等待传送完成或者重启传送机。");
+			return;
+		}
 		switch (slot) {
 		case 17:// 上一页
 			this.set_gui_terminal_list(this.current_page - 1);
