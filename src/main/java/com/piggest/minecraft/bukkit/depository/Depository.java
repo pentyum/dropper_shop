@@ -10,6 +10,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.Auto_io;
@@ -18,7 +20,7 @@ import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Ownable;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
-public class Depository extends Multi_block_with_gui implements Ownable, HasRunner,Auto_io {
+public class Depository extends Multi_block_with_gui implements Ownable, HasRunner, Auto_io {
 	public static int[] price_level = { 5, 10, 20, 30, 40 };
 	public static int[] capacity_level = { 5000, 10000, 20000, 30000, 50000 };
 	private Depository_runner runner = new Depository_runner(this);
@@ -95,6 +97,12 @@ public class Depository extends Multi_block_with_gui implements Ownable, HasRunn
 	}
 
 	public synchronized boolean add(ItemStack item) {
+		ItemMeta meta = item.getItemMeta();
+		if (meta instanceof Damageable) {
+			if (((Damageable) meta).hasDamage()) {
+				return false;
+			}
+		}
 		Integer current_num = this.contents.get(Material_ext.get_full_name(item));
 		if (current_num == null) { // 存储器没有这种物品
 			if (this.get_max_type() == this.get_type()) { // 超出种类限制

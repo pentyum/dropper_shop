@@ -10,6 +10,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_manager;
@@ -50,15 +51,15 @@ public class Upgrade_component {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	public static void set_process(ItemStack item, int process) {
-		short new_damage = (short) (process * 250 / 100);
+		int new_damage =  process * 250 / 100;
 		ItemMeta meta = item.getItemMeta();
+		Damageable damageable = (Damageable)meta;
 		List<String> lore = meta.getLore();
 		lore.set(1, "§7升级进度: " + process + "%");
 		meta.setLore(lore);
+		damageable.setDamage(250 - new_damage);
 		item.setItemMeta(meta);
-		item.setDurability((short) (250 - new_damage));
 	}
 
 	public static void set_level(ItemStack item, int level) {
