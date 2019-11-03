@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -26,10 +28,11 @@ import com.piggest.minecraft.bukkit.structure.Auto_io;
 import com.piggest.minecraft.bukkit.structure.Capacity_upgradable;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
+import com.piggest.minecraft.bukkit.structure.Ownable;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 import com.piggest.minecraft.bukkit.utils.Inventory_io;
 
-public class Advanced_furnace extends Multi_block_with_gui implements HasRunner, Capacity_upgradable, Auto_io {
+public class Advanced_furnace extends Multi_block_with_gui implements HasRunner, Capacity_upgradable, Auto_io, Ownable {
 	public static final int solid_reactant_slot = 9;
 	public static final int liquid_reactant_slot = 13;
 	public static final int gas_reactant_slot = 11;
@@ -68,6 +71,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	private double e = 1;
 	private boolean is_locked_temp = false;
 	private double locked_temp = 290;
+	private String owner;
 
 	public static double get_block_temperature(Block block) {
 		double base_temp = block.getTemperature() * 20 + 270;
@@ -689,5 +693,21 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 			drop_items[1] = Upgrade_component.time_component_item[this.get_time_upgrade() - 1].clone();
 		}
 		return drop_items;
+	}
+
+	@Override
+	public void set_owner(String owner) {
+		this.owner = owner;
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public OfflinePlayer get_owner() {
+		return Bukkit.getOfflinePlayer(this.owner);
+	}
+
+	@Override
+	public String get_owner_name() {
+		return this.owner;
 	}
 }
