@@ -90,8 +90,8 @@ public class Anti_thunder extends Multi_block_structure implements Ownable {
 			if (this.completed() == true) {
 				if (runner.started() == false) {
 					runner.start();
-					Dropper_shop_plugin.instance.getLogger().info("[防雷器]10秒后启动扣钱线程");
-					runner.runTaskTimerAsynchronously(Dropper_shop_plugin.instance, 10 * 20,
+					Dropper_shop_plugin.instance.getLogger().info("[防雷器]已启动扣钱线程");
+					runner.runTaskTimerAsynchronously(Dropper_shop_plugin.instance, 0,
 							this.get_manager().get_cycle() * 20);
 				} else {
 					OfflinePlayer owner = this.get_owner();
