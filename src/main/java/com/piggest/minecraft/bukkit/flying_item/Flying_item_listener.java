@@ -42,12 +42,12 @@ public class Flying_item_listener implements Listener {
 			player.setAllowFlight(false);
 		}
 	}
-	
+
 	@EventHandler
 	public void on_changed_dimension(PlayerChangedWorldEvent event) {
 		Player player = event.getPlayer();
 		if (player.getGameMode() == GameMode.SURVIVAL) {
-			if(player.getScoreboardTags().contains("flying_item")) {
+			if (player.getScoreboardTags().contains("flying_item")) {
 				new BukkitRunnable() {
 					@Override
 					public void run() {
@@ -57,8 +57,8 @@ public class Flying_item_listener implements Listener {
 						}
 					}
 				}.runTaskLaterAsynchronously(Dropper_shop_plugin.instance, 3 * 20);
-				
-				/* retry to ensure correctness*/
+
+				/* retry to ensure correctness */
 				new BukkitRunnable() {
 					@Override
 					public void run() {
@@ -67,7 +67,7 @@ public class Flying_item_listener implements Listener {
 						}
 					}
 				}.runTaskLaterAsynchronously(Dropper_shop_plugin.instance, 5 * 20);
-				
+
 				new BukkitRunnable() {
 					@Override
 					public void run() {
@@ -98,11 +98,16 @@ public class Flying_item_listener implements Listener {
 		Block clicked_block = event.getClickedBlock();
 		Player player = event.getPlayer();
 		if (Use_block.is_use_block(clicked_block)) {
-			if(player.isSneaking()==false) {
+			if (player.isSneaking() == false) {
 				return;
 			}
 		}
 		if (NMS_manager.flying_time_provider.has_flying_time(item)) {
+			if (!player.hasPermission("flying_item.use")) {
+				player.sendMessage("[飞行道具]你没有权限使用飞行道具");
+				event.setCancelled(true);
+				return;
+			}
 			ItemMeta meta = item.getItemMeta();
 			if (meta instanceof FireworkMeta) {
 				int flying_time = NMS_manager.flying_time_provider.get_flying_time(item);

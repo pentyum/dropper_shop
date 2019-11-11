@@ -175,4 +175,10 @@ permissions:
   watersheep.use:
     description: use.
     default: true
+  flying_item.use:
+    description: use flying item.
+    default: true
+  flying_item.set:
+    description: set flying item time.
+    default: op
 softdepend: [Vault]
