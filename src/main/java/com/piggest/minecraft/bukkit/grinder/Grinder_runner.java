@@ -30,13 +30,13 @@ public class Grinder_runner extends Structure_runner {
 			grinder.set_process(0);
 			this.working_ticks = 0;
 		} else {
-			if (grinder.get_manager().recipe.get(grinder.get_raw().getType()) == null || grinder.get_flint_storage() == 0) {
+			if (grinder.get_manager().get_main_product(grinder.get_raw().getType()) == null || grinder.get_flint_storage() == 0) {
 				grinder.set_process(0);
 				this.working_ticks = 0;
 				return;
 			}
 			// Dropper_shop_plugin.instance.getLogger().info(Grinder.recipe_time.toString());
-			int need_ticks = grinder.get_manager().recipe_time.get(grinder.get_raw().getType());
+			int need_ticks = grinder.get_manager().get_time(grinder.get_raw().getType());
 			if (this.working_ticks <= need_ticks) { // 工作中
 				grinder.set_process(this.working_ticks * 100 / need_ticks);
 				this.working_ticks++;

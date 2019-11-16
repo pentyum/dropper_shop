@@ -132,21 +132,26 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 
 	public synchronized boolean to_product() {
 		if (!Inventory_io.is_empty(this.get_raw())) {
-			ItemStack product_item = this.get_manager().recipe.get(this.get_raw().getType());
-			if (product_item != null) {
-				if (Grinder.is_empty(this.get_product())) {
-					this.set_product(product_item.clone());
-					if (Inventory_io.Item_remove_one(this.get_raw()) != null) {
-						return true;
-					}
-				} else if (this.get_product().isSimilar(product_item)) {
-					int new_num = this.get_product().getAmount() + product_item.getAmount();
-					if (new_num <= product_item.getMaxStackSize()) {
+			ItemStack main_product_item = this.get_manager().get_main_product(this.get_raw().getType());
+			ItemStack minor_product_item = this.get_manager().get_minor_product(this.get_raw().getType());
+			if (main_product_item != null) {
+				if (minor_product_item == null) { // 只生成一种产物
+					if (Grinder.is_empty(this.get_product())) {
+						this.set_product(main_product_item.clone());
 						if (Inventory_io.Item_remove_one(this.get_raw()) != null) {
-							this.get_product().setAmount(new_num);
 							return true;
 						}
+					} else if (this.get_product().isSimilar(main_product_item)) {
+						int new_num = this.get_product().getAmount() + main_product_item.getAmount();
+						if (new_num <= main_product_item.getMaxStackSize()) {
+							if (Inventory_io.Item_remove_one(this.get_raw()) != null) {
+								this.get_product().setAmount(new_num);
+								return true;
+							}
+						}
 					}
+				} else { // 有副产物
+
 				}
 			}
 		}
@@ -278,6 +283,6 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 
 	@Override
 	public ItemStack[] get_drop_items() {
-		return new ItemStack[] {this.get_raw(),this.get_flint(),this.get_product()};
+		return new ItemStack[] { this.get_raw(), this.get_flint(), this.get_product() };
 	}
 }

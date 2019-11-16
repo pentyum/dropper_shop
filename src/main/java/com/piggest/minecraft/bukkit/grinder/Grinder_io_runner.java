@@ -30,7 +30,7 @@ public class Grinder_io_runner extends Structure_runner {
 					if (Grinder.is_empty(item)) {
 						continue;
 					}
-					if (grinder.get_manager().recipe.get(item.getType()) != null) {
+					if (grinder.get_manager().get_main_product(item.getType()) != null) {
 						if (grinder.add_a_raw(item) == true) {
 							break;
 						}
