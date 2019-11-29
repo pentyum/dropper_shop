@@ -28,7 +28,8 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 	private Grinder_io_runner io_runner = new Grinder_io_runner(this);
 	public static final int raw_slot = 9;
 	public static final int flint_slot = 11;
-	public static final int product_slot = 13;
+	public static final int main_product_slot = 13;
+	public static final int minor_product_slot = 15;
 	private static final int[][] product_chest_check_list = new int[][] { { 1, -2, 0 }, { -1, -2, 0 }, { 0, -2, 1 },
 			{ 0, -2, -1 } };
 	private static final int[][] raw_hopper_check_list = new int[][] { { 0, 1, 0 } };
@@ -88,12 +89,20 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 		return this.gui.getItem(flint_slot);
 	}
 
-	public ItemStack get_product() {
-		return this.gui.getItem(product_slot);
+	public ItemStack get_main_product() {
+		return this.gui.getItem(main_product_slot);
 	}
 
-	public void set_product(ItemStack product_item) {
-		this.gui.setItem(product_slot, product_item);
+	public ItemStack get_minor_product() {
+		return this.gui.getItem(minor_product_slot);
+	}
+
+	public void set_main_product(ItemStack product_item) {
+		this.gui.setItem(main_product_slot, product_item);
+	}
+
+	public void set_minor_product(ItemStack product_item) {
+		this.gui.setItem(minor_product_slot, product_item);
 	}
 
 	public void set_raw(ItemStack raw_item) {
@@ -135,24 +144,48 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 			ItemStack main_product_item = this.get_manager().get_main_product(this.get_raw().getType());
 			ItemStack minor_product_item = this.get_manager().get_minor_product(this.get_raw().getType());
 			if (main_product_item != null) {
-				if (minor_product_item == null) { // 只生成一种产物
-					if (Grinder.is_empty(this.get_product())) {
-						this.set_product(main_product_item.clone());
+				boolean main_product_slot_available = Inventory_io.try_move_a_item_to_slot(main_product_item, this.gui,
+						main_product_slot);
+				if (minor_product_item == null) {
+					if (main_product_slot_available) {
 						if (Inventory_io.Item_remove_one(this.get_raw()) != null) {
+							Inventory_io.move_a_item_to_slot(main_product_item.clone(), this.gui, main_product_slot);// 添加主产物
 							return true;
 						}
-					} else if (this.get_product().isSimilar(main_product_item)) {
-						int new_num = this.get_product().getAmount() + main_product_item.getAmount();
-						if (new_num <= main_product_item.getMaxStackSize()) {
-							if (Inventory_io.Item_remove_one(this.get_raw()) != null) {
-								this.get_product().setAmount(new_num);
-								return true;
-							}
+					}
+				} else {
+					boolean minor_product_slot_available = Inventory_io.try_move_a_item_to_slot(minor_product_item,
+							getInventory(), minor_product_slot);
+					if (main_product_slot_available && minor_product_slot_available) {
+						if (Inventory_io.Item_remove_one(this.get_raw()) != null) {
+							Inventory_io.move_a_item_to_slot(main_product_item.clone(), this.gui, main_product_slot);// 添加主产物
+							Inventory_io.move_a_item_to_slot(minor_product_item.clone(), this.gui, minor_product_slot);// 添加副产物
+							return true;
 						}
 					}
-				} else { // 有副产物
-
 				}
+				/*
+				 * if (Grinder.is_empty(this.get_main_product())) {// 主产物槽为空 if
+				 * (minor_product_item == null) {// 没副产物 if
+				 * (Inventory_io.Item_remove_one(this.get_raw()) != null) {// 移除原料
+				 * this.set_main_product(main_product_item.clone());// 添加主产物 return true; } }
+				 * else {// 有副产物 if (Grinder.is_empty(this.get_minor_product())) {// 副产物槽也为空 if
+				 * (Inventory_io.Item_remove_one(this.get_raw()) != null) {// 移除原料
+				 * this.set_main_product(main_product_item.clone());// 添加主产物
+				 * this.set_minor_product(minor_product_item.clone());// 添加副产物 return true; } }
+				 * else {// 副产物槽不是空 int new_num = this.get_minor_product().getAmount() +
+				 * minor_product_item.getAmount(); if (new_num <=
+				 * minor_product_item.getMaxStackSize()) {// 足够堆叠 if
+				 * (Inventory_io.Item_remove_one(this.get_raw()) != null) {
+				 * this.set_main_product(main_product_item.clone());// 添加主产物
+				 * this.get_minor_product().setAmount(new_num);// 添加副产物 return true; } } } } }
+				 * else if (this.get_main_product().isSimilar(main_product_item)) {// 主产物槽不是空
+				 * int new_num = this.get_main_product().getAmount() +
+				 * main_product_item.getAmount(); if (new_num <=
+				 * main_product_item.getMaxStackSize()) { if
+				 * (Inventory_io.Item_remove_one(this.get_raw()) != null) {
+				 * this.get_main_product().setAmount(new_num);// 添加主产物 return true; } } }
+				 */
 			}
 		}
 		return false;
@@ -205,7 +238,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 		if (shop_save.get("product") != null) {
 			ItemStack product_item = Material_ext.new_item((String) shop_save.get("product"),
 					(int) shop_save.get("product-num"));
-			this.set_product(product_item);
+			this.set_main_product(product_item);
 		}
 	}
 
@@ -222,9 +255,9 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 			save.put("flint", this.get_flint().getType().name());
 			save.put("flint-num", this.get_flint().getAmount());
 		}
-		if (!Grinder.is_empty(this.get_product())) {
-			save.put("product", Material_ext.get_id_name(this.get_product()));
-			save.put("product-num", this.get_product().getAmount());
+		if (!Grinder.is_empty(this.get_main_product())) {
+			save.put("product", Material_ext.get_id_name(this.get_main_product()));
+			save.put("product-num", this.get_main_product().getAmount());
 		}
 		return save;
 	}
@@ -283,6 +316,6 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 
 	@Override
 	public ItemStack[] get_drop_items() {
-		return new ItemStack[] { this.get_raw(), this.get_flint(), this.get_product() };
+		return new ItemStack[] { this.get_raw(), this.get_flint(), this.get_main_product(), this.get_minor_product() };
 	}
 }
