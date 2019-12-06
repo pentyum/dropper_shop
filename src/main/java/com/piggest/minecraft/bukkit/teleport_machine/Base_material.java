@@ -126,6 +126,7 @@ public enum Base_material implements Has_composition {
 	
 	sapling(new Has_composition[] {sucrose_molecule,water_molecule},new int[] {8,12}),
 	leaves(new Has_composition[] {sucrose_molecule,water_molecule},new int[] {8,12}),
+	bamboo(new Has_composition[] {sucrose_molecule},new int[] {4}),
 	stick(new Has_composition[] {sucrose_molecule},new int[] {8}),
 	planks_slab(new Has_composition[] {stick},new int[] {1}),
 	planks_stairs(new Has_composition[] {stick},new double[] {4.0/3.0}),
@@ -170,6 +171,7 @@ public enum Base_material implements Has_composition {
 	lead(new Has_composition[] {string,slime_ball},new double[] {2,0.5}),
 	bow(new Has_composition[] {string,stick},new int[] {3,3}),
 	fishing_rod(new Has_composition[] {string,stick},new int[] {2,3}),
+	scaffolding(new Has_composition[] {string,bamboo},new double[] {1.0/6.0,1}),
 	
 	iron_nugget(new Has_composition[] {Element.Fe},new int[] {100}),
 	iron_powder(new Has_composition[] {Element.Fe},new int[] {1000}),
@@ -206,7 +208,7 @@ public enum Base_material implements Has_composition {
 	gold_powder(new Has_composition[] {Element.Au},new int[] {1000}),
 	gold_ingot(new Has_composition[] {gold_powder},new int[] {1}),
 	gold_block(new Has_composition[] {gold_ingot},new int[] {9}),
-	gold_ore(new Has_composition[] {Element.Au,ore},new int[] {1000,1}),
+	gold_ore(new Has_composition[] {Element.Au,Element.Ag,ore},new int[] {1000,1}),
 	golden_sword(new Has_composition[] {gold_ingot,stick},new int[] {2,1}),
 	golden_shovel(new Has_composition[] {gold_ingot,stick},new int[] {1,2}),
 	golden_pickaxe(new Has_composition[] {gold_ingot,stick},new int[] {3,2}),
@@ -216,6 +218,8 @@ public enum Base_material implements Has_composition {
 	golden_chestplate(new Has_composition[] {gold_ingot},new int[] {8}),
 	golden_leggings(new Has_composition[] {gold_ingot},new int[] {7}),
 	golden_boots(new Has_composition[] {gold_ingot},new int[] {4}),
+	
+	sliver_powder(new Has_composition[] {Element.Ag},new int[] {1000}),
 	
 	diamond(new Has_composition[] {Element.C},new int[] {1500}),
 	diamond_block(new Has_composition[] {diamond},new int[] {9}),

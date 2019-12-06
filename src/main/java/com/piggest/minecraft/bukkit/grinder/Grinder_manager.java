@@ -133,7 +133,7 @@ public class Grinder_manager extends Gui_structure_manager<Grinder> {
 		this.add_recipe(Material.IRON_ORE, "iron_powder", 2, 400); // 铁粉
 		this.add_recipe(Material.IRON_INGOT, "iron_powder", 1, 200); // 铁粉
 
-		this.add_recipe(Material.GOLD_ORE, "gold_powder", 2, 400); // 金粉
+		this.add_recipe(Material.GOLD_ORE, "gold_powder", 1, "sliver_powder", 1, 400); // 金粉和银粉
 		this.add_recipe(Material.GOLD_INGOT, "gold_powder", 1, 200); // 金粉
 
 		this.add_recipe(Material.COAL_ORE, "coal_powder", 2, 400); // 煤粉
