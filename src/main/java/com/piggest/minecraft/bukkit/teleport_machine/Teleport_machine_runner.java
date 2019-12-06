@@ -42,10 +42,10 @@ public class Teleport_machine_runner extends Structure_runner {
 		if (teleport_machine.get_state() == Radio_state.WORKING) {
 			Teleporting_task task = teleport_machine.get_teleporting_task();
 			if (task.get_completed_byte() >= task.get_total_byte()) {
-				teleport_machine.complete_teleport_to(teleport_machine.get_current_work_with());
+				teleport_machine.complete_teleport_to(teleport_machine.get_current_working_with());
 				return;
 			}
-			int current_speed = teleport_machine.get_current_work_with().get_working_speed(teleport_machine);
+			int current_speed = teleport_machine.get_current_working_with().get_working_speed(teleport_machine);
 			int add_byte = current_speed * 1024;
 			int new_byte = task.get_completed_byte() + add_byte;
 			if (new_byte > task.get_total_byte()) {

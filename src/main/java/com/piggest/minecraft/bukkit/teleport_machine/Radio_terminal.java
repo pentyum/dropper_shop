@@ -3,11 +3,10 @@ package com.piggest.minecraft.bukkit.teleport_machine;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import javax.annotation.Nullable;
-
 import org.bukkit.Location;
 import org.bukkit.Nameable;
 import org.bukkit.block.Biome;
+import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Radio;
@@ -145,7 +144,8 @@ public interface Radio_terminal extends Nameable, Unique, Elements_container {
 				if (terminal != this) {
 					double target_signal = this.get_signal(terminal, terminal.get_state());
 					double target_noise = this.get_noise(terminal);
-					//Bukkit.getLogger().info(terminal.getCustomName() + ": " + target_signal + "/" + target_noise);
+					// Bukkit.getLogger().info(terminal.getCustomName() + ": " + target_signal + "/"
+					// + target_noise);
 					if (target_signal > target_noise) {
 						if (!result.contains(terminal.get_uuid())) {
 							result.add(terminal.get_uuid());
@@ -159,9 +159,18 @@ public interface Radio_terminal extends Nameable, Unique, Elements_container {
 	}
 
 	@Nullable
-	public Radio_terminal get_current_work_with();
+	public Teleporting_task get_current_task();
 
-	public boolean set_current_work_with(Radio_terminal terminal);
+	public boolean set_current_task(Teleporting_task terminal);
+
+	@Nullable
+	public default Radio_terminal get_current_working_with() {
+		Teleporting_task task = this.get_current_task();
+		if (task == null) {
+			return null;
+		}
+		return Radio_manager.instance.get(task.get_target());
+	}
 
 	public default double get_signal(Radio_terminal source, Radio_state state, boolean b) {
 		if (b == false) {// 关闭频段匹配

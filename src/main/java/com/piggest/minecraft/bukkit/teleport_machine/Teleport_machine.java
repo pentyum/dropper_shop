@@ -59,7 +59,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	private Inventory elements_gui = Bukkit.createInventory(this, 27, "元素存储");
 	private int exp_magic_exchange_rate = 1000; // 每1000点经验转化为多少魔力
 	private UUID auto_teleport_to = null;
-	private UUID current_work_with = null;
+	// private UUID current_work_with = null;
 	private Auto_refresher auto_refresher = new Auto_refresher(this);
 	private Structure_runner runner = new Teleport_machine_runner(this);
 	private Teleporting_task teleport_task;
@@ -202,6 +202,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		if (this.get_state() == Radio_state.WORKING) {
 			return;
 		}
+
 		Teleporting_task task_to_do = new Teleporting_task();
 		if (auto_entity_teleport == true && auto_player_teleport == true) {
 			task_to_do.set_entities(this.get_entities_in_stage());
@@ -219,14 +220,14 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		}
 		task_to_do.set_elements(total_elements_cost);
 		terminal.minus(total_elements_cost);
-		boolean working_result = this.set_current_work_with(terminal);
-		if (working_result == false) {
-			return;
-		}
 		int total_byte = total_elements_cost.get_total_byte();
 		task_to_do.set_total_byte(total_byte);
-		task_to_do.set_target(terminal);
-		this.teleport_task = task_to_do;
+		task_to_do.set_target(terminal.get_uuid());
+		boolean task_submit_result = this.set_current_task(task_to_do);
+		this.set_state(Radio_state.WORKING);
+		if (task_submit_result == false) {
+			return;
+		}
 	}
 
 	private void start_teleport_to(Player operator, Radio_terminal terminal) {
@@ -246,6 +247,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			operator.sendMessage("[传送机]当前传送机已经在工作了");
 			return;
 		}
+
 		Teleporting_task task_to_do = new Teleporting_task();
 		operator.sendMessage("[传送机]开始传送至" + terminal.getCustomName());
 		task_to_do.set_entities(this.get_entities_in_stage());
@@ -264,27 +266,26 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		}
 		task_to_do.set_operater(operator);
 		terminal.minus(total_elements_cost);
-		boolean working_result = this.set_current_work_with(terminal);
-		if (working_result == false) {
-			operator.sendMessage("[传送机]不支持目标接收频段");
-			return;
-		}
 		int total_byte = total_elements_cost.get_total_byte();
 		operator.sendMessage("数据总量: " + total_byte / 1024 + " kB");
 		task_to_do.set_total_byte(total_byte);
-		task_to_do.set_target(terminal);
-		this.teleport_task = task_to_do;
+		task_to_do.set_target(terminal.get_uuid());
+		boolean task_submit_result = this.set_current_task(task_to_do);
+		this.set_state(Radio_state.WORKING);
+		if (task_submit_result == false) {
+			operator.sendMessage("[传送机]不支持目标接收频段或者目标信息有误");
+			return;
+		}
 	}
 
 	public void complete_teleport_to(Radio_terminal terminal) {
-		this.set_current_work_with(null);
 		this.teleport_task.runTaskLater(Dropper_shop_plugin.instance, 1);
 		this.add(this.teleport_task.get_elements());
 		Player operater = this.teleport_task.get_operater();
 		if (operater != null) {
 			operater.sendMessage("[传送机]已完成传送");
 		}
-		this.teleport_task = null;
+		this.set_state(Radio_state.ONLINE);
 		this.set_process(0);
 	}
 
@@ -405,7 +406,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		if (this.state != Radio_state.WORKING) {
 			return this.channel_freq;
 		} else {
-			return this.get_current_work_with().get_current_channel_freq();
+			return this.get_current_working_with().get_current_channel_freq();
 		}
 	}
 
@@ -416,10 +417,10 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 
 	@Override
 	public int get_current_channel_bandwidth() {
-		if (this.get_current_work_with() == null) {
+		if (this.get_current_working_with() == null) {
 			return this.channel_bandwidth;
 		} else {
-			return this.get_current_work_with().get_current_channel_bandwidth();
+			return this.get_current_working_with().get_current_channel_bandwidth();
 		}
 	}
 
@@ -431,12 +432,10 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	@Override
 	protected HashMap<String, Object> get_save() {
 		HashMap<String, Object> save = super.get_save();
-		if (this.current_work_with != null) {
-			save.put("current-working-with", this.current_work_with.toString());
-		}
 		if (this.teleport_task != null) {
 			save.put("total-bytes", this.teleport_task.get_total_byte());
 			save.put("completed-bytes", this.teleport_task.get_completed_byte());
+			save.put("current-working-with", this.teleport_task.get_target().toString());
 		}
 		if (this.auto_teleport_to != null) {
 			save.put("auto-teleport-to", this.auto_teleport_to.toString());
@@ -457,9 +456,6 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	@Override
 	protected void set_from_save(Map<?, ?> save) {
 		super.set_from_save(save);
-		if (save.get("current-working-with") != null) {
-			this.current_work_with = UUID.fromString((String) save.get("current-working-with"));
-		}
 		if (save.get("auto-teleport-to") != null) {
 			this.auto_teleport_to = UUID.fromString((String) save.get("auto-teleport-to"));
 		}
@@ -472,11 +468,12 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		if (save.get("is-setting-mode") != null) {
 			this.set_switch(setting_mode_switch, (boolean) save.get("is-setting-mode"));
 		}
-		if (save.get("total-bytes") != null) {
+		if (save.get("current-working-with") != null) {
 			this.teleport_task = new Teleporting_task();
 			teleport_task.set_total_byte((int) save.get("total-bytes"));
 			teleport_task.set_completed_byte((int) save.get("completed-bytes"));
 			teleport_task.set_entities(this.get_entities_in_stage());
+			this.teleport_task.set_target(UUID.fromString((String) save.get("current-working-with")));
 		}
 		String state_string = (String) save.get("state");
 		this.set_state(Radio_state.valueOf(state_string));
@@ -502,6 +499,9 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 
 	public void set_state(Radio_state state) {
 		this.state = state;
+		if (state != Radio_state.WORKING) {
+			this.teleport_task = null;
+		}
 		ItemStack item = this.gui.getItem(radio_indicator);
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = meta.getLore();
@@ -694,29 +694,28 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	}
 
 	@Override
-	public Radio_terminal get_current_work_with() {
-		Radio_terminal terminal = Radio_manager.instance.get(this.current_work_with);
-		if (terminal == null && this.get_state() == Radio_state.WORKING) {
-			this.set_state(Radio_state.ONLINE);
-		}
-		return terminal;
+	@Nullable
+	public Teleporting_task get_current_task() {
+		return this.teleport_task;
 	}
 
 	@Override
-	public boolean set_current_work_with(Radio_terminal terminal) {
-		if (terminal == null) {
-			this.current_work_with = null;
-			this.set_state(Radio_state.ONLINE);
-			return true;
-		} else {
-			if (!Radio.check_channel_vaild(terminal.get_current_channel_freq(),
-					terminal.get_current_channel_bandwidth(), this.n)) {
-				return false;
-			}
-			this.current_work_with = terminal.get_uuid();
-			this.set_state(Radio_state.WORKING);
+	public boolean set_current_task(Teleporting_task task) {
+		if (task == null) {
+			this.teleport_task = null;
 			return true;
 		}
+		Radio_terminal terminal = Radio_manager.instance.get(task.get_target());
+		if (terminal == null) {
+			this.teleport_task = null;
+			return false;
+		}
+		if (!Radio.check_channel_vaild(terminal.get_current_channel_freq(), terminal.get_current_channel_bandwidth(),
+				this.n)) {
+			return false;
+		}
+		this.teleport_task = task;
+		return true;
 	}
 
 	@Override

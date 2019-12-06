@@ -1,6 +1,7 @@
 package com.piggest.minecraft.bukkit.teleport_machine;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import javax.annotation.Nullable;
 
@@ -15,7 +16,7 @@ public class Teleporting_task extends BukkitRunnable {
 	private Collection<Entity> entities = null;
 	private Elements_composition elements = null;
 	private Player operator;
-	private Radio_terminal target = null;
+	private UUID target = null;
 	
 	public void set_total_byte(int total_byte) {
 		this.total_byte = total_byte;
@@ -61,11 +62,15 @@ public class Teleporting_task extends BukkitRunnable {
 	@Override
 	public void run() {
 		for (Entity entity : this.get_entities()) {
-			entity.teleport(this.target.get_location().add(0, 1, 0), TeleportCause.PLUGIN);
+			entity.teleport(Radio_manager.instance.get(this.target).get_location().add(0, 1, 0), TeleportCause.PLUGIN);
 		}
 	}
 
-	public void set_target(Radio_terminal terminal) {
+	public void set_target(UUID terminal) {
 		this.target = terminal;
+	}
+	
+	public UUID get_target() {
+		return this.target;
 	}
 }
