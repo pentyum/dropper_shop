@@ -208,7 +208,7 @@ public enum Base_material implements Has_composition {
 	gold_powder(new Has_composition[] {Element.Au},new int[] {1000}),
 	gold_ingot(new Has_composition[] {gold_powder},new int[] {1}),
 	gold_block(new Has_composition[] {gold_ingot},new int[] {9}),
-	gold_ore(new Has_composition[] {Element.Au,Element.Ag,ore},new int[] {1000,1}),
+	gold_ore(new Has_composition[] {Element.Au,Element.Ag,ore},new int[] {1000,1000,1}),
 	golden_sword(new Has_composition[] {gold_ingot,stick},new int[] {2,1}),
 	golden_shovel(new Has_composition[] {gold_ingot,stick},new int[] {1,2}),
 	golden_pickaxe(new Has_composition[] {gold_ingot,stick},new int[] {3,2}),
