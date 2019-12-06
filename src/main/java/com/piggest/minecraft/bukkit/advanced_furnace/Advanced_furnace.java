@@ -33,6 +33,7 @@ import com.piggest.minecraft.bukkit.structure.Structure_runner;
 import com.piggest.minecraft.bukkit.utils.Inventory_io;
 
 public class Advanced_furnace extends Multi_block_with_gui implements HasRunner, Capacity_upgradable, Auto_io, Ownable {
+	public static final int make_money_switch = 8;
 	public static final int solid_reactant_slot = 9;
 	public static final int liquid_reactant_slot = 13;
 	public static final int gas_reactant_slot = 11;
@@ -507,7 +508,17 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 
 	@Override
 	public boolean on_switch_pressed(Player player, int slot, boolean on) {
-		return true;
+		switch (slot) {
+		case Advanced_furnace.make_money_switch:
+			if (player.hasPermission("adv_furnace.make_money")) {
+				return true;
+			} else {
+				player.sendMessage("[高级熔炉]你没有启动火力发钱的权限");
+				return false;
+			}
+		default:
+			return true;
+		}
 	}
 
 	public int get_heat_keeping_value() { // 热传导率降低率，单位百分比

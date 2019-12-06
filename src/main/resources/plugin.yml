@@ -109,6 +109,9 @@ permissions:
   adv_furnace.admin:
     description: Change advanced furnace.
     default: op
+  adv_furnace.make_money:
+    description: Make money ability.
+    default: true
   wrench.*:
     description: Gives access to all wrench commands
     default: op

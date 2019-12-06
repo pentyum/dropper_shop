@@ -45,7 +45,7 @@ public class Advanced_furnace_manager extends Gui_structure_manager<Advanced_fur
 		this.set_gui(4, Material.MINECART, "§r清除全部固体", Gui_slot_type.Button);
 		this.set_gui(5, Material.GLASS_BOTTLE, "§e敞口反应", Gui_slot_type.Switch);
 		this.set_gui(6, Material.DISPENSER, "§r清除全部气体", Gui_slot_type.Button);
-		this.set_gui(8, Material.CHEST, "§e金币制造", Gui_slot_type.Switch);
+		this.set_gui(Advanced_furnace.make_money_switch, Material.CHEST, "§e金币制造", Gui_slot_type.Switch);
 		this.set_gui(26, Material.FURNACE, "§e燃料信息", Gui_slot_type.Indicator);
 		this.set_gui(27, Material.IRON_PICKAXE, "§e金币容量升级", Gui_slot_type.Button);
 		this.set_gui(28, Material.IRON_CHESTPLATE, "§e保温升级", Gui_slot_type.Indicator);
