@@ -54,7 +54,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	private int online_voltage = 12;
 	private int working_voltage = 32;
 	private int current_page = 1;
-	private ArrayList<UUID> known_terminal_list = new ArrayList<UUID>();
+	ArrayList<UUID> known_terminal_list = new ArrayList<UUID>();
 	private int[] elements_amount = new int[96];
 	private Inventory elements_gui = Bukkit.createInventory(this, 27, "元素存储");
 	private int exp_magic_exchange_rate = 1000; // 每1000点经验转化为多少魔力
@@ -88,7 +88,11 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			this.set_gui_terminal_list(this.current_page + 1);
 			break;
 		case 28:// 搜台
-			this.known_terminal_list = this.search();
+			if(!player.hasPermission("teleport_machine.search")) {
+				player.sendMessage("[传送机]你没有搜台的权限!");
+				break;
+			}
+			this.known_terminal_list = this.search(player,false);
 			this.set_gui_terminal_list(1);
 			break;
 		case 29:// 立刻刷新无线电信息

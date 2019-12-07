@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.Nameable;
 import org.bukkit.block.Biome;
+import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
@@ -131,7 +132,7 @@ public interface Radio_terminal extends Nameable, Unique, Elements_container {
 	/*
 	 * 搜台
 	 */
-	public default ArrayList<UUID> search() {
+	public default ArrayList<UUID> search(CommandSender searcher,boolean debug) {
 		ArrayList<UUID> result = new ArrayList<UUID>();
 		Radio_manager manager = Dropper_shop_plugin.instance.get_radio_manager();
 		int channel_freq = this.get_channel_freq();
@@ -144,6 +145,9 @@ public interface Radio_terminal extends Nameable, Unique, Elements_container {
 				if (terminal != this) {
 					double target_signal = this.get_signal(terminal, terminal.get_state());
 					double target_noise = this.get_noise(terminal);
+					if(debug==true) {
+						searcher.sendMessage(terminal.getCustomName() + ": " + target_signal + "/" + target_noise+"("+scan_freq+")");
+					}
 					// Bukkit.getLogger().info(terminal.getCustomName() + ": " + target_signal + "/"
 					// + target_noise);
 					if (target_signal > target_noise) {

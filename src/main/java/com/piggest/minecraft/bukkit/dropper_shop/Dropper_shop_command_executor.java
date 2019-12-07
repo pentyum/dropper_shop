@@ -158,7 +158,7 @@ public class Dropper_shop_command_executor implements TabExecutor {
 					return true;
 				}
 				ItemStack[] items = Material_ext.split_to_max_stack_size(item);
-				player.sendMessage("长度"+items.length);
+				//player.sendMessage("长度"+items.length);
 				HashMap<Integer, ItemStack> left = player.getInventory().addItem(items);
 				for (ItemStack left_item : left.values()) {
 					player.getWorld().dropItemNaturally(player.getLocation(), left_item);

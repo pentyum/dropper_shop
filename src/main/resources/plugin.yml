@@ -172,6 +172,12 @@ permissions:
   teleport_machine.use:
     description: use.
     default: true
+  teleport_machine.search:
+    description: Search radio.
+    default: true
+  teleport_machine.search.debug:
+    description: Search radio debug.
+    default: op
   teleport_machine.no_consume:
     description: no consume.
     default: op

@@ -13,7 +13,7 @@ import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Radio;
 
 enum sub_command {
-	set_online_voltage, set_working_voltage, set_freq, set_bandwidth
+	set_online_voltage, set_working_voltage, set_freq, set_bandwidth, search,
 }
 
 public class Teleport_machine_command_executer implements TabExecutor {
@@ -61,52 +61,61 @@ public class Teleport_machine_command_executer implements TabExecutor {
 				player.sendMessage("[传送机]没有检测到完整的传送机结构");
 				return true;
 			}
-			if (args.length < 2) {
-				player.sendMessage("[传送机]没有输入参数");
-				return true;
-			}
-			int value = 0;
-			try {
-				value = Integer.parseInt(args[1]);
-			} catch (Exception e) {
-				player.sendMessage("[传送机]参数不合法");
-				return true;
-			}
-			switch (subcommand) {
-			case set_bandwidth:
-				if (Radio.check_channel_vaild(machine.get_channel_freq(), value, machine.get_n())) {
-					machine.set_channel_bandwidth(value);
-					player.sendMessage("[传送机]带宽设置成功");
-				} else {
-					player.sendMessage("[传送机]频段超出范围");
+			switch(subcommand) {
+			case search:
+				if(!player.hasPermission("teleport_machine.search.debug")) {
+					player.sendMessage("[传送机]你没有搜台debug的权限!");
+					break;
 				}
-				return true;
-			case set_freq:
-				if (Radio.check_channel_vaild(value, machine.get_channel_bandwidth(), machine.get_n())) {
-					machine.set_channel_freq(value);
-					player.sendMessage("[传送机]频率设置成功");
-				} else {
-					player.sendMessage("[传送机]频段超出范围");
-				}
-				return true;
-			case set_online_voltage:
-				if (value <= 0) {
-					player.sendMessage("[传送机]电压不能小于0");
-				} else {
-					machine.set_online_voltage(value);
-				}
-				return true;
-			case set_working_voltage:
-				if (value <= 0) {
-					player.sendMessage("[传送机]电压不能小于0");
-				} else {
-					machine.set_working_voltage(value);
-				}
-				return true;
+				machine.known_terminal_list = machine.search(player,true);
+				break;
 			default:
-				return true;
+				if (args.length < 2) {
+					player.sendMessage("[传送机]没有输入参数");
+					return true;
+				}
+				int value = 0;
+				try {
+					value = Integer.parseInt(args[1]);
+				} catch (Exception e) {
+					player.sendMessage("[传送机]参数不合法");
+					return true;
+				}
+				switch (subcommand) {
+				case set_bandwidth:
+					if (Radio.check_channel_vaild(machine.get_channel_freq(), value, machine.get_n())) {
+						machine.set_channel_bandwidth(value);
+						player.sendMessage("[传送机]带宽设置成功");
+					} else {
+						player.sendMessage("[传送机]频段超出范围");
+					}
+					return true;
+				case set_freq:
+					if (Radio.check_channel_vaild(value, machine.get_channel_bandwidth(), machine.get_n())) {
+						machine.set_channel_freq(value);
+						player.sendMessage("[传送机]频率设置成功");
+					} else {
+						player.sendMessage("[传送机]频段超出范围");
+					}
+					return true;
+				case set_online_voltage:
+					if (value <= 0) {
+						player.sendMessage("[传送机]电压不能小于0");
+					} else {
+						machine.set_online_voltage(value);
+					}
+					return true;
+				case set_working_voltage:
+					if (value <= 0) {
+						player.sendMessage("[传送机]电压不能小于0");
+					} else {
+						machine.set_working_voltage(value);
+					}
+					return true;
+				default:
+					return true;
+				}
 			}
-
 		}
 		return false;
 	}
