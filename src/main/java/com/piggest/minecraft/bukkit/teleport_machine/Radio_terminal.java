@@ -132,7 +132,7 @@ public interface Radio_terminal extends Nameable, Unique, Elements_container {
 	/*
 	 * 搜台
 	 */
-	public default ArrayList<UUID> search(CommandSender searcher,boolean debug) {
+	public default ArrayList<UUID> search(CommandSender searcher, boolean debug) {
 		ArrayList<UUID> result = new ArrayList<UUID>();
 		Radio_manager manager = Dropper_shop_plugin.instance.get_radio_manager();
 		int channel_freq = this.get_channel_freq();
@@ -145,8 +145,11 @@ public interface Radio_terminal extends Nameable, Unique, Elements_container {
 				if (terminal != this) {
 					double target_signal = this.get_signal(terminal, terminal.get_state());
 					double target_noise = this.get_noise(terminal);
-					if(debug==true) {
-						searcher.sendMessage(terminal.getCustomName() + ": " + target_signal + "/" + target_noise+"("+scan_freq+")");
+					if (debug == true) {
+						String debug_msg = terminal.getCustomName() + ": " + target_signal + "/" + target_noise + "("
+								+ scan_freq + ")";
+						searcher.sendMessage(debug_msg);
+						Dropper_shop_plugin.instance.getLogger().info(debug_msg);
 					}
 					// Bukkit.getLogger().info(terminal.getCustomName() + ": " + target_signal + "/"
 					// + target_noise);

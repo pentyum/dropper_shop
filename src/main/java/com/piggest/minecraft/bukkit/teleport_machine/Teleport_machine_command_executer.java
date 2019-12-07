@@ -68,7 +68,7 @@ public class Teleport_machine_command_executer implements TabExecutor {
 					break;
 				}
 				machine.known_terminal_list = machine.search(player,true);
-				break;
+				return true;
 			default:
 				if (args.length < 2) {
 					player.sendMessage("[传送机]没有输入参数");

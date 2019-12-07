@@ -56,7 +56,7 @@ public abstract class Structure_manager<T extends Structure> {
 			HasRunner new_HasRunner = (HasRunner) new_structure;
 			Structure_runner[] runnable_list = new_HasRunner.get_runner();
 			for (Structure_runner runner : runnable_list) {
-				Dropper_shop_plugin.instance.getLogger().info("[结构管理器]已启动" + runner.getClass().getSimpleName());
+				//Dropper_shop_plugin.instance.getLogger().info("[结构管理器]已启动" + runner.getClass().getSimpleName());
 				if (runner.is_asynchronously() == true) {
 					runner.runTaskTimerAsynchronously(Dropper_shop_plugin.instance, runner.get_delay(),
 							runner.get_cycle());
@@ -87,6 +87,7 @@ public abstract class Structure_manager<T extends Structure> {
 		for (World_structure_config config : Dropper_shop_plugin.instance.get_shop_config().values()) {
 			save_list.addAll(config.getMapList(structure_name));
 		}
+		int i = 0;
 		// List<Map<?, ?>> save_list =
 		// Dropper_shop_plugin.instance.get_shop_config().getMapList(structure_name);
 		for (Map<?, ?> shop_save : save_list) {
@@ -98,15 +99,18 @@ public abstract class Structure_manager<T extends Structure> {
 					if (multi_block_struct.get_location().getWorld() != null) {
 						if (multi_block_struct.completed() == true) {
 							this.add(shop);
+							i++;
 						}
 					}
 				} else {
 					this.add(shop);
+					i++;
 				}
 			} catch (InstantiationException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
 		}
+		Dropper_shop_plugin.instance.getLogger().info("已加载"+i+"个"+structure_class.getSimpleName());
 	}
 
 	public void save_structures() {
