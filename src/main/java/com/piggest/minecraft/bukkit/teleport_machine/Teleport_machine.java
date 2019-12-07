@@ -262,8 +262,8 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 				operator.sendMessage("[传送机]目标元素材料不足");
 				return;
 			}
-			task_to_do.set_elements(total_elements_cost);
 		}
+		task_to_do.set_elements(total_elements_cost);
 		task_to_do.set_operater(operator);
 		terminal.minus(total_elements_cost);
 		int total_byte = total_elements_cost.get_total_byte();
