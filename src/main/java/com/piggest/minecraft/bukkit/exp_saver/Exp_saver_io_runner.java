@@ -26,7 +26,7 @@ public class Exp_saver_io_runner extends Structure_runner {
 			if (hopper_data.getFacing() == BlockFace.DOWN) {
 				for (ItemStack item : hopper.getInventory().getContents()) {
 					if (item != null && item.getType() != Material.AIR) {
-						Inventory_io.move_a_item_to_slot(item, exp_saver.getInventory(), Exp_saver.mending_slot);
+						Inventory_io.move_item_to_slot(item, 1, exp_saver.getInventory(), Exp_saver.mending_slot);
 					}
 				}
 			}

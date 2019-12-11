@@ -34,14 +34,17 @@ public class Inventory_io {
 		}
 	}
 
-	public static boolean try_move_a_item_to_slot(ItemStack src_item, Inventory inventory, int slot) {
+	public static boolean try_move_item_to_slot(ItemStack src_item, int quantity, Inventory inventory, int slot) {
 		if (!Grinder.is_empty(src_item)) {
 			synchronized (src_item) {
+				if (src_item.getAmount() < quantity) {
+					return false;
+				}
 				synchronized (inventory) {
 					if (Grinder.is_empty(inventory.getItem(slot))) {
 						return true;
 					} else if (src_item.isSimilar(inventory.getItem(slot))) {
-						int new_num = 1 + inventory.getItem(slot).getAmount();
+						int new_num = quantity + inventory.getItem(slot).getAmount();
 						if (new_num <= src_item.getMaxStackSize()) {
 							return true;
 						}
@@ -52,9 +55,12 @@ public class Inventory_io {
 		return false;
 	}
 
-	public static boolean move_a_item_to_slot(ItemStack src_item, Inventory inventory, int slot) {
+	public static boolean move_item_to_slot(ItemStack src_item, int quantity, Inventory inventory, int slot) {
 		if (!Grinder.is_empty(src_item)) {
 			synchronized (src_item) {
+				if (src_item.getAmount() < quantity) {
+					return false;
+				}
 				synchronized (inventory) {
 					if (Grinder.is_empty(inventory.getItem(slot))) {
 						inventory.setItem(slot, src_item.clone());
@@ -62,10 +68,10 @@ public class Inventory_io {
 						src_item.setAmount(src_item.getAmount() - 1);
 						return true;
 					} else if (src_item.isSimilar(inventory.getItem(slot))) {
-						int new_num = 1 + inventory.getItem(slot).getAmount();
+						int new_num = quantity + inventory.getItem(slot).getAmount();
 						if (new_num <= src_item.getMaxStackSize()) {
 							inventory.getItem(slot).setAmount(new_num);
-							src_item.setAmount(src_item.getAmount() - 1);
+							src_item.setAmount(src_item.getAmount() - quantity);
 							return true;
 						}
 					}

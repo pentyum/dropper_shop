@@ -395,11 +395,11 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	}
 
 	public boolean add_a_solid(ItemStack src_item) {
-		return Inventory_io.move_a_item_to_slot(src_item, this.gui, Advanced_furnace.solid_reactant_slot);
+		return Inventory_io.move_item_to_slot(src_item, 1, this.gui, Advanced_furnace.solid_reactant_slot);
 	}
 
 	public boolean add_a_fuel(ItemStack src_item) {
-		return Inventory_io.move_a_item_to_slot(src_item, this.gui, Advanced_furnace.fuel_slot);
+		return Inventory_io.move_item_to_slot(src_item, 1, this.gui, Advanced_furnace.fuel_slot);
 	}
 
 	public int get_make_money_rate() { // 生产金币的速率(30秒)

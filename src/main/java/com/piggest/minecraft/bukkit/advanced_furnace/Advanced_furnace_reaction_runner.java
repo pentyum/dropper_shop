@@ -55,12 +55,12 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 							int unit = entry.getValue();
 							if (unit >= capacity) {
 								ItemStack filled = Liquid.get_fill_container(liquid, liquid_reactant_slot);
-								if (Inventory_io.try_move_a_item_to_slot(filled, this.advanced_furnace.getInventory(),
+								if (Inventory_io.try_move_item_to_slot(filled, 1, this.advanced_furnace.getInventory(),
 										Advanced_furnace.liquid_product_slot)) {
 									if (Inventory_io.Item_remove_one(liquid_reactant_slot) != null) {
 										reaction_container.set_unit(liquid,
 												reaction_container.get_unit(liquid) - capacity);
-										Inventory_io.move_a_item_to_slot(filled, this.advanced_furnace.getInventory(),
+										Inventory_io.move_item_to_slot(filled, 1, this.advanced_furnace.getInventory(),
 												Advanced_furnace.liquid_product_slot);
 									}
 								}
@@ -72,13 +72,13 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 					Liquid liquid = Liquid.get_liquid(liquid_reactant_slot);
 					if (liquid != null) { // 检测到合法液体容器
 						ItemStack new_empty_bucket = Material_ext.get_empty_container(liquid_reactant_slot);
-						if (Inventory_io.try_move_a_item_to_slot(new_empty_bucket, this.advanced_furnace.getInventory(),
-								Advanced_furnace.liquid_product_slot)) { // 产品槽允许空桶放入则添加进内部
+						if (Inventory_io.try_move_item_to_slot(new_empty_bucket, 1,
+								this.advanced_furnace.getInventory(), Advanced_furnace.liquid_product_slot)) { // 产品槽允许空桶放入则添加进内部
 							if (Inventory_io.Item_remove_one(liquid_reactant_slot) != null) {
 								reaction_container.set_unit(liquid, reaction_container.get_unit(liquid)
 										+ Liquid.get_item_unit(liquid_reactant_slot));
-								Inventory_io.move_a_item_to_slot(new_empty_bucket, this.advanced_furnace.getInventory(),
-										Advanced_furnace.liquid_product_slot);
+								Inventory_io.move_item_to_slot(new_empty_bucket, 1,
+										this.advanced_furnace.getInventory(), Advanced_furnace.liquid_product_slot);
 							}
 						}
 					}

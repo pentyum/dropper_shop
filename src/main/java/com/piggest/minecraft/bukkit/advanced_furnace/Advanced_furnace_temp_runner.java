@@ -35,7 +35,7 @@ public class Advanced_furnace_temp_runner extends Structure_runner {
 				this.get_fuel();
 			}
 		}
-		
+
 	}
 
 	private void run_fuel() {
@@ -71,7 +71,7 @@ public class Advanced_furnace_temp_runner extends Structure_runner {
 				if (fuel.status != Status.solid) {
 					synchronized (adv_furnace.getInventory()) {
 						ItemStack bucket = Material_ext.get_empty_container(fuel_item);
-						if (!Inventory_io.try_move_a_item_to_slot(bucket, this.adv_furnace.getInventory(),
+						if (!Inventory_io.try_move_item_to_slot(bucket, 1, this.adv_furnace.getInventory(),
 								Advanced_furnace.fuel_product_slot)) {
 							return;
 						}
@@ -82,7 +82,7 @@ public class Advanced_furnace_temp_runner extends Structure_runner {
 						}
 						if (Inventory_io.Item_remove_one(fuel_item) != null) {
 							adv_furnace.set_fuel(fuel, default_amount);
-							Inventory_io.move_a_item_to_slot(bucket, this.adv_furnace.getInventory(),
+							Inventory_io.move_item_to_slot(bucket, 1, this.adv_furnace.getInventory(),
 									Advanced_furnace.fuel_product_slot);
 						}
 					}
