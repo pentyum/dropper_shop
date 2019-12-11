@@ -5,13 +5,12 @@ import java.util.Map;
 
 import org.bukkit.GameRule;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_14_R1.block.CraftBlock;
-import net.minecraft.server.v1_14_R1.PersistentRaid;
-import net.minecraft.server.v1_14_R1.WorldServer;
+import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_15_R1.block.CraftBlock;
+import net.minecraft.server.v1_15_R1.PersistentRaid;
+import net.minecraft.server.v1_15_R1.WorldServer;
 
-public class Raid_1_14 implements Raid {
-	@SuppressWarnings("unchecked")
+public class Raid_trigger_1_15 implements Raid_trigger {
 	public Raid_info trigger_raid(Location loc, int bad_omen_level) {
 		CraftBlock craft_block = (CraftBlock) loc.getBlock();
 		CraftWorld world = (CraftWorld) loc.getWorld();
@@ -20,18 +19,14 @@ public class Raid_1_14 implements Raid {
 			return null;
 		}
 		WorldServer world_nms = world.getHandle();
-		PersistentRaid persistentraid = world_nms.C();
+		PersistentRaid persistentraid = world_nms.getPersistentRaid();
 
-		Field map_field;
 		Field next_id_field;
 		int next_id = 0;
-		Map<Integer, net.minecraft.server.v1_14_R1.Raid> raid_map = null;
+		Map<Integer, net.minecraft.server.v1_15_R1.Raid> raid_map = persistentraid.raids;
 		try {
-			map_field = PersistentRaid.class.getDeclaredField("a");
 			next_id_field = PersistentRaid.class.getDeclaredField("c");
-			map_field.setAccessible(true);// 允许访问私有字段
 			next_id_field.setAccessible(true);
-			raid_map = (Map<Integer, net.minecraft.server.v1_14_R1.Raid>) map_field.get(persistentraid);
 			next_id = (int) next_id_field.get(persistentraid);
 			next_id++;
 			next_id_field.set(persistentraid, next_id);
@@ -39,14 +34,14 @@ public class Raid_1_14 implements Raid {
 			e.printStackTrace();
 			return null;
 		}
-		net.minecraft.server.v1_14_R1.Raid raid = new net.minecraft.server.v1_14_R1.Raid(next_id, world_nms,
+		net.minecraft.server.v1_15_R1.Raid raid = new net.minecraft.server.v1_15_R1.Raid(next_id, world_nms,
 				craft_block.getPosition());
-		if (bad_omen_level > raid.l()) {
-			bad_omen_level = raid.l();
+		if (bad_omen_level > raid.getMaxBadOmenLevel()) {
+			bad_omen_level = raid.getMaxBadOmenLevel();
 		}
 		Field bad_omen_field;
 		try {
-			bad_omen_field = net.minecraft.server.v1_14_R1.Raid.class.getDeclaredField("o");
+			bad_omen_field = net.minecraft.server.v1_15_R1.Raid.class.getDeclaredField("o");
 			bad_omen_field.setAccessible(true);
 			bad_omen_field.setInt(raid, bad_omen_level);
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
@@ -58,16 +53,16 @@ public class Raid_1_14 implements Raid {
 		return info;
 	}
 
-	public Raid_info get_info(net.minecraft.server.v1_14_R1.Raid raid) {
+	public Raid_info get_info(net.minecraft.server.v1_15_R1.Raid raid) {
 		if (raid == null) {
 			return null;
 		}
 		Raid_info info = new Raid_info();
-		info.id = raid.u();
-		info.started = raid.j();
+		info.id = raid.getId();
+		info.started = raid.isStarted();
 		info.active = raid.v();
-		info.bad_omen_level = raid.m();
-		info.groups_spawned = raid.k();
+		info.bad_omen_level = raid.getBadOmenLevel();
+		info.groups_spawned = raid.getGroupsSpawned();
 		return info;
 	}
 }
