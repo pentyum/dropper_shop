@@ -88,11 +88,11 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			this.set_gui_terminal_list(this.current_page + 1);
 			break;
 		case 28:// 搜台
-			if(!player.hasPermission("teleport_machine.search")) {
+			if (!player.hasPermission("teleport_machine.search")) {
 				player.sendMessage("[传送机]你没有搜台的权限!");
 				break;
 			}
-			this.known_terminal_list = this.search(player,false);
+			this.known_terminal_list = this.search(player, false);
 			this.set_gui_terminal_list(1);
 			break;
 		case 29:// 立刻刷新无线电信息
@@ -653,6 +653,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			lore.add("§7剩余: 0 单位");
 			meta.setLore(lore);
 			meta.setDisplayName("§r" + element.name() + " 元素");
+			meta.setCustomModelData(Dropper_shop_plugin.custom_model_data_offset + element.atomic_number);
 			item.setItemMeta(meta);
 			item = NMS_manager.element_type_provider.set_element_id(item, element.atomic_number);
 			this.elements_gui.setItem(element.order_id, item);

@@ -40,6 +40,7 @@ public class Wrench_command_executor implements CommandExecutor {
 		lore.add("§7正面转至该面");
 		lore.add("§7(潜行状态下相反)");
 		meta.setLore(lore);
+		meta.setCustomModelData(Dropper_shop_plugin.custom_model_data_offset + 1);
 		item.setItemMeta(meta);
 		Material_ext.register("wrench", item);
 	}
