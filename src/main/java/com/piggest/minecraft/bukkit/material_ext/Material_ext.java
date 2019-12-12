@@ -8,6 +8,8 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 import com.piggest.minecraft.bukkit.advanced_furnace.Gas_bottle;
 import com.piggest.minecraft.bukkit.advanced_furnace.Status;
@@ -17,6 +19,7 @@ import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.utils.language.Item_zh_cn;
 
 public class Material_ext {
+	public final static NamespacedKey ext_id_namespacedkey = new NamespacedKey(Dropper_shop_plugin.instance, "ext_id");
 	private static HashMap<NamespacedKey, ItemStack> ext_material_map = new HashMap<NamespacedKey, ItemStack>();
 
 	/*
@@ -54,7 +57,12 @@ public class Material_ext {
 	 * 获得带命名空间的全名，如minecraft:stone
 	 */
 	public static String get_full_name(ItemStack item) {
-		String ext_id = NMS_manager.ext_id_provider.get_ext_id(item);
+		ItemMeta meta = item.getItemMeta();
+		String ext_id = meta.getPersistentDataContainer().get(ext_id_namespacedkey, PersistentDataType.STRING);
+		if (ext_id != null) {
+			return ext_id;
+		}
+		ext_id = NMS_manager.ext_id_provider.get_ext_id(item);
 		if (ext_id != null) {
 			return ext_id;
 		}
@@ -109,7 +117,12 @@ public class Material_ext {
 	 * 以namespacedkey注册物品
 	 */
 	public static void register(NamespacedKey namespacedkey, ItemStack item) {
-		item = NMS_manager.ext_id_provider.set_ext_id(item, namespacedkey.toString());
+		// item = NMS_manager.ext_id_provider.set_ext_id(item,
+		// namespacedkey.toString());
+		ItemMeta meta = item.getItemMeta();
+		PersistentDataContainer container = meta.getPersistentDataContainer();
+		container.set(new NamespacedKey(Dropper_shop_plugin.instance, "ext_id"), PersistentDataType.STRING,
+				namespacedkey.toString());
 		Material_ext.ext_material_map.put(namespacedkey, item.clone());
 	}
 
@@ -133,12 +146,14 @@ public class Material_ext {
 	/*
 	 * 强制修改某物品的ext_id，需要名称已被注册，返回值为修改后的物品。
 	 */
-	public static ItemStack set_full_name(ItemStack item, String full_name) {
+	public static void set_full_name(ItemStack item, String full_name) {
 		if (!Material_ext.is_registered(full_name)) {
-			return null;
+			//return null;
 		}
-		item = NMS_manager.ext_id_provider.set_ext_id(item, full_name);
-		return item;
+		ItemMeta meta = item.getItemMeta();
+		meta.getPersistentDataContainer().set(ext_id_namespacedkey, PersistentDataType.STRING, full_name);
+		//item = NMS_manager.ext_id_provider.set_ext_id(item, full_name);
+		//return item;
 	}
 
 	private static Material get_material(NamespacedKey namespacedkey) { // 根据内部ID获得材质

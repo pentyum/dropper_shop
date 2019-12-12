@@ -16,11 +16,12 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
-import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.utils.Use_block;
 
 public class Flying_item_listener implements Listener {
@@ -102,7 +103,9 @@ public class Flying_item_listener implements Listener {
 				return;
 			}
 		}
-		if (NMS_manager.flying_time_provider.has_flying_time(item)) {
+		PersistentDataContainer tags = item.getItemMeta().getPersistentDataContainer();
+
+		if (tags.has(Flying_item.flyting_time_namespacedkey, PersistentDataType.INTEGER)) {
 			if (!player.hasPermission("flying_item.use")) {
 				player.sendMessage("[飞行道具]你没有权限使用飞行道具");
 				event.setCancelled(true);
@@ -110,7 +113,7 @@ public class Flying_item_listener implements Listener {
 			}
 			ItemMeta meta = item.getItemMeta();
 			if (meta instanceof FireworkMeta) {
-				int flying_time = NMS_manager.flying_time_provider.get_flying_time(item);
+				int flying_time = tags.get(Flying_item.flyting_time_namespacedkey, PersistentDataType.INTEGER);
 				if (player.getAllowFlight() == true) {
 					player.sendMessage("[飞行道具]你已经是飞行状态了");
 					event.setCancelled(true);
