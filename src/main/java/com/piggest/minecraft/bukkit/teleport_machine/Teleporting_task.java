@@ -3,8 +3,7 @@ package com.piggest.minecraft.bukkit.teleport_machine;
 import java.util.Collection;
 import java.util.UUID;
 
-import javax.annotation.Nullable;
-
+import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
