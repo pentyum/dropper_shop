@@ -106,7 +106,7 @@
 		{ "predicate": { "custom_model_data": 15105 }, "model": "dropper_shop:powder/copper_powder"},
 		{ "predicate": { "custom_model_data": 15106 }, "model": "dropper_shop:powder/aluminium_powder"},
 		{ "predicate": { "custom_model_data": 15107 }, "model": "dropper_shop:powder/tin_powder"},
-		{ "predicate": { "custom_model_data": 15108 }, "model": "dropper_shop:powder/sliver_powder"},
+		{ "predicate": { "custom_model_data": 15108 }, "model": "dropper_shop:powder/silver_powder"},
 		{ "predicate": { "custom_model_data": 15109 }, "model": "dropper_shop:powder/bronze_powder"},
 		{ "predicate": { "custom_model_data": 15110 }, "model": "dropper_shop:powder/emerald_powder"},
 		{ "predicate": { "custom_model_data": 15111 }, "model": "dropper_shop:powder/wheat_powder"}

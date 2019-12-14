@@ -219,7 +219,7 @@ public enum Base_material implements Has_composition {
 	golden_leggings(new Has_composition[] {gold_ingot},new int[] {7}),
 	golden_boots(new Has_composition[] {gold_ingot},new int[] {4}),
 	
-	sliver_powder(new Has_composition[] {Element.Ag},new int[] {1000}),
+	silver_powder(new Has_composition[] {Element.Ag},new int[] {1000}),
 	copper_powder(new Has_composition[] {Element.Cu},new int[] {1000}),
 	
 	diamond(new Has_composition[] {Element.C},new int[] {1500}),
