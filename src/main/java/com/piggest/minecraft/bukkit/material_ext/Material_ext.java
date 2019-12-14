@@ -58,6 +58,9 @@ public class Material_ext {
 	 */
 	public static String get_full_name(ItemStack item) {
 		ItemMeta meta = item.getItemMeta();
+		if (meta == null) {
+			return item.getType().getKey().toString();
+		}
 		String ext_id = meta.getPersistentDataContainer().get(ext_id_namespacedkey, PersistentDataType.STRING);
 		if (ext_id != null) {
 			return ext_id;
@@ -148,12 +151,12 @@ public class Material_ext {
 	 */
 	public static void set_full_name(ItemStack item, String full_name) {
 		if (!Material_ext.is_registered(full_name)) {
-			//return null;
+			// return null;
 		}
 		ItemMeta meta = item.getItemMeta();
 		meta.getPersistentDataContainer().set(ext_id_namespacedkey, PersistentDataType.STRING, full_name);
-		//item = NMS_manager.ext_id_provider.set_ext_id(item, full_name);
-		//return item;
+		// item = NMS_manager.ext_id_provider.set_ext_id(item, full_name);
+		// return item;
 	}
 
 	private static Material get_material(NamespacedKey namespacedkey) { // 根据内部ID获得材质
