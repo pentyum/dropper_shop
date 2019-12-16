@@ -10,6 +10,7 @@ import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
 public class Powder {
+	public final static int powder_model_offset = 100;
 	private String material_name;
 	private String chinese_name;
 
@@ -30,17 +31,17 @@ public class Powder {
 
 	public static void init_powder_config() {
 		powder_config.add(null);
-		powder_config.add(new Powder("iron_powder", "铁粉"));
-		powder_config.add(new Powder("gold_powder", "金粉"));
-		powder_config.add(new Powder("coal_powder", "煤粉"));
-		powder_config.add(new Powder("lapis_powder", "青金石粉"));
-		powder_config.add(new Powder("copper_powder", "铜粉"));
-		powder_config.add(new Powder("aluminium_powder", "铝粉"));
-		powder_config.add(new Powder("tin_powder", "锡粉"));
-		powder_config.add(new Powder("silver_powder", "银粉"));
-		powder_config.add(new Powder("bronze_powder", "青铜粉"));
-		powder_config.add(new Powder("emerald_powder", "绿宝石粉"));
-		powder_config.add(new Powder("flour_powder", "面粉"));
+		powder_config.add(new Powder("iron", "铁粉"));
+		powder_config.add(new Powder("gold", "金粉"));
+		powder_config.add(new Powder("coal", "煤粉"));
+		powder_config.add(new Powder("lapis", "青金石粉"));
+		powder_config.add(new Powder("copper", "铜粉"));
+		powder_config.add(new Powder("aluminium", "铝粉"));
+		powder_config.add(new Powder("tin", "锡粉"));
+		powder_config.add(new Powder("silver", "银粉"));
+		powder_config.add(new Powder("bronze", "青铜粉"));
+		powder_config.add(new Powder("emerald", "绿宝石粉"));
+		powder_config.add(new Powder("flour", "面粉"));
 	}
 
 	public static void init_powder() {
@@ -55,7 +56,7 @@ public class Powder {
 		ItemStack item = new ItemStack(Material.SUGAR);
 		ItemMeta itemmeta = item.getItemMeta();
 		itemmeta.setDisplayName("§r" + name);
-		itemmeta.setCustomModelData(Dropper_shop_plugin.custom_model_data_offset + 100 + powder_id);
+		itemmeta.setCustomModelData(Dropper_shop_plugin.custom_model_data_offset + powder_model_offset + powder_id);
 		item.setItemMeta(itemmeta);
 		Material_ext.register(id_name, item);
 	}
