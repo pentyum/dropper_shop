@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import com.google.gson.Gson;
+import com.piggest.minecraft.bukkit.grinder.Powder;
 import com.piggest.minecraft.bukkit.resourcepacks.dropper_shop.Element;
 
 public class Builder {
@@ -14,32 +15,49 @@ public class Builder {
 	public final static String dropper_shop_models_dir = resourcepack_target_dir + "assets/dropper_shop/models/";
 	public final static String dropper_shop_textures_dir = resourcepack_target_dir + "assets/dropper_shop/textures/";
 	public final static String minecraft_item_models_dir = resourcepack_target_dir + "assets/minecraft/models/item/";
-	
+
+	public static void write_json(String path, String json) {
+		FileWriter fw;
+		File json_file = new File(path);
+
+		try {
+			if (json_file.exists()) {
+				json_file.delete();
+			} else {
+				json_file.createNewFile();
+			}
+			fw = new FileWriter(json_file);
+			fw.write(json);
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static void build_elements() {
 		for (int i = 1; i < 95; i++) {
 			String file_path = dropper_shop_models_dir + "elements/element_" + i + ".json";
-			String js = gson.toJson(new Element(i));
-			FileWriter fw;
-			File json_file = new File(file_path);
-			if (json_file.exists()) {
-				json_file.delete();
-			}
-			try {
-				fw = new FileWriter(json_file);
-				fw.write(js);
-				fw.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			String js = new Element(i).to_json();
+			write_json(file_path, js);
 		}
 	}
+
+	public static void build_powder() {
+		for (int i = 1; i < Powder.powder_config.size(); i++) {
+			String material_name = Powder.powder_config.get(i).get_material_name();
+			String file_path = dropper_shop_models_dir + "powder/" + material_name + ".json";
+			String js = new com.piggest.minecraft.bukkit.resourcepacks.dropper_shop.Powder(material_name).to_json();
+			write_json(file_path, js);
+		}
+	}
+
 	public static void main(String[] args) {
 		System.out.println("欢迎使用Dropper shop插件");
-		
 		System.out.println("dropper_shop_models_dir:" + dropper_shop_models_dir);
-		
-		build_elements();
+		Powder.init_powder_config();
 
+		build_elements();
+		build_powder();
 		/*
 		 * System.out.println("Java 运行时环境版本:"+System.getProperty("java.version"));
 		 * System.out.println("Java 运行时环境供应商:"+System.getProperty("java.vendor"));

@@ -1,8 +1,9 @@
 package com.piggest.minecraft.bukkit.resourcepacks.dropper_shop;
 
+import com.piggest.minecraft.bukkit.resourcepacks.Model;
 import com.piggest.minecraft.bukkit.resourcepacks.Textures;
 
-public class Element {
+public class Element extends Model {
 	public String parent = "item/generated";
 	public Textures textures = null;
 
