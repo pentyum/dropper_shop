@@ -1,6 +1,0 @@
-{
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "dropper_shop:elements/element_76"
-    }
-}

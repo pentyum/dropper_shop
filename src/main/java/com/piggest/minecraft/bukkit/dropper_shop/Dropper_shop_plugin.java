@@ -83,7 +83,7 @@ import com.piggest.minecraft.bukkit.wrench.Wrench_command_executor;
 import net.milkbowl.vault.economy.Economy;
 
 public class Dropper_shop_plugin extends JavaPlugin {
-	public static int custom_model_data_offset = 15000;
+	public final static int custom_model_data_offset = 15000;
 	public static Dropper_shop_plugin instance = null;
 	private Economy economy = null;
 	private FileConfiguration config = null;
