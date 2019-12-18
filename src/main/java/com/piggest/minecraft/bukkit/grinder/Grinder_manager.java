@@ -128,7 +128,7 @@ public class Grinder_manager extends Gui_structure_manager<Grinder> {
 
 		this.add_recipe(Material.ORANGE_TULIP, Material.ORANGE_DYE, 2, 200); // 橙色染料
 
-		this.add_recipe(Material.WHEAT, "wheat_powder", 1, 100); // 面粉
+		this.add_recipe(Material.WHEAT, "flour_powder", 1, 100); // 面粉
 
 		this.add_recipe(Material.IRON_ORE, "iron_powder", 2, 400); // 铁粉
 		this.add_recipe(Material.IRON_INGOT, "iron_powder", 1, 200); // 铁粉

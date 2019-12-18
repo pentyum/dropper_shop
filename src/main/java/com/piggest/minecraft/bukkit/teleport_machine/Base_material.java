@@ -49,7 +49,7 @@ public enum Base_material implements Has_composition {
 	blaze_powder(new Has_composition[] {Element.S},new int[] {100}),
 	blaze_rod(new Has_composition[] {blaze_powder},new int[] {3}),
 	
-	vine(new Has_composition[] {sucrose_molecule,water_molecule},new int[] {10,10}),
+	vine(new Has_composition[] {sucrose_molecule,water_molecule},new int[] {10,20}),
 	slime_ball(new Has_composition[] {sucrose_molecule,water_molecule},new int[] {10,90}),
 	slime_block(new Has_composition[] {slime_ball},new int[] {9}),
 	magma_cream(new Has_composition[] {slime_ball,blaze_powder},new int[] {1,1}),
@@ -68,7 +68,18 @@ public enum Base_material implements Has_composition {
 	string(new Has_composition[] {wool_base},new int[] {1}),
 	cobweb(new Has_composition[] {string},new int[] {9}),
 	
+	wheat_seeds(new Has_composition[] {sucrose_molecule},new int[] {2}),
+	wheat(new Has_composition[] {sucrose_molecule,water_molecule},new int[] {8,15}),
+	bread(new Has_composition[] {wheat},new int[] {3}),
+	hay_block(new Has_composition[] {wheat},new int[] {9}),
+	
 	leather(new Has_composition[] {wool},new int[] {1}),
+	shulker_shell(new Has_composition[] {CaCO3_molecule,MgCO3_molecule},new int[] {30,10}),
+	
+	leather_helmet(new Has_composition[] {leather},new int[] {5}),
+	leather_chestplate(new Has_composition[] {leather},new int[] {8}),
+	leather_leggings(new Has_composition[] {leather},new int[] {7}),
+	leather_boots(new Has_composition[] {leather},new int[] {4}),
 	
 	stone_slab(new Has_composition[] {SiO2_molecule},new int[] {500}),
 	stone(new Has_composition[] {stone_slab},new int[] {2}),
@@ -137,6 +148,7 @@ public enum Base_material implements Has_composition {
 	chest(new Has_composition[] {planks},new int[] {8}),
 	boat(new Has_composition[] {planks},new int[] {5}),
 	barrel(new Has_composition[] {planks,planks_slab},new int[] {6,2}),
+	composter(new Has_composition[] {planks_slab},new int[] {7}),
 	ladder(new Has_composition[] {stick},new int[] {2}),
 	planks_door(new Has_composition[] {planks},new int[] {2}),
 	planks_trapdoor(new Has_composition[] {planks},new int[] {3}),
@@ -145,6 +157,8 @@ public enum Base_material implements Has_composition {
 	book(new Has_composition[] {paper,leather},new int[] {3,1}),
 	bookshelf(new Has_composition[] {planks,book},new int[] {6,3}),
 	lectern(new Has_composition[] {planks_slab,bookshelf},new int[] {4,1}),
+	loom(new Has_composition[] {string,planks},new int[] {2,2}),
+	painting(new Has_composition[] {stick,wool},new int[] {8,1}),
 	
 	wooden_sword(new Has_composition[] {planks,stick},new int[] {2,1}),
 	wooden_shovel(new Has_composition[] {planks,stick},new int[] {1,2}),
@@ -258,7 +272,9 @@ public enum Base_material implements Has_composition {
 	dispenser(new Has_composition[] {dropper,bow},new int[] {1,1}),
 	hopper_minecart(new Has_composition[] {hopper,minecart},new int[] {1,1}),
 	powered_rail(new Has_composition[] {gold_ingot,stick,redstone},new double[] {1,1.0/6.0,1.0/6.0}),
-	tripwire_hook(new Has_composition[] {iron_ingot,stick,planks},new double[] {0.5,0.5,0.5});
+	tripwire_hook(new Has_composition[] {iron_ingot,stick,planks},new double[] {0.5,0.5,0.5}),
+	
+	shulker_box(new Has_composition[] {dropper,chest},new int[] {2,1});
 	
 	public final HashMap<Has_composition,Double> map = new HashMap<Has_composition,Double>();
 	Base_material(Has_composition[] element, double[] unit){
