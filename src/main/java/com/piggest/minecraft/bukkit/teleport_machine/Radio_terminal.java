@@ -8,6 +8,7 @@ import org.bukkit.Nameable;
 import org.bukkit.block.Biome;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
+import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Radio;
@@ -205,5 +206,6 @@ public interface Radio_terminal extends Nameable, Unique, Elements_container {
 	}
 
 	int get_current_channel_bandwidth();
-
+	
+	public ItemStack get_custom_flag();
 }

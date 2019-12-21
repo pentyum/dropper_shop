@@ -77,7 +77,7 @@ public class Teleport_machine_manager extends Gui_structure_manager<Teleport_mac
 		this.set_gui(Teleport_machine.item_to_elements_slot, null, "item-slot", Gui_slot_type.Item_store);
 		this.set_gui(46, Material.BLUE_STAINED_GLASS_PANE, "§r左边放置物品转化为元素", Gui_slot_type.Indicator);
 		this.set_gui(Teleport_machine.name_tag_slot, null, "name-tag-slot", Gui_slot_type.Item_store);
-		this.set_gui(48, Material.BLUE_STAINED_GLASS_PANE, "§r左边放置命名牌给本传送机命名", Gui_slot_type.Indicator);
+		this.set_gui(48, Material.BLUE_STAINED_GLASS_PANE, "§r左边放置命名牌或者旗帜给本传送机命名", Gui_slot_type.Indicator);
 
 		this.set_gui(32, Material.RED_STAINED_GLASS_PANE, "§r提高待机魔压", new String[] { "§7+1 V" }, Gui_slot_type.Button);
 		this.set_gui(33, Material.RED_STAINED_GLASS_PANE, "§r提高发射魔压", new String[] { "§7+1 V" }, Gui_slot_type.Button);

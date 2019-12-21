@@ -11,6 +11,7 @@ import java.util.function.Predicate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.entity.Entity;
@@ -63,6 +64,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	private Auto_refresher auto_refresher = new Auto_refresher(this);
 	private Structure_runner runner = new Teleport_machine_runner(this);
 	private Teleporting_task teleport_task;
+	private ItemStack custom_flag = null;
 
 	public Teleport_machine() {
 		this.gen_uuid();
@@ -158,8 +160,8 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		default:
 			if (slot >= 9 && slot <= 25) {
 				ItemStack item = this.gui.getItem(slot);
-				if (item != null) {
-					if (item.getType() == Material.BEACON) {
+				if (!Grinder.is_empty(item)) {
+					if (item.getType() == Material.BEACON || Tag.ITEMS_BANNERS.isTagged(item.getType())) {
 						if (slot < 17) {
 							slot -= 9;
 						} else {
@@ -304,10 +306,15 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 
 	private void set_gui_terminal_item(int slot, @Nullable Radio_terminal terminal) {
 		ItemStack item = new ItemStack(Material.BEACON);
+		;
 		ItemMeta meta = item.getItemMeta();
 		if (terminal == null) {
 			meta.setDisplayName("§c此传送机已丢失!");
 		} else {
+			if (terminal.get_custom_flag() != null) {
+				item = terminal.get_custom_flag().clone();
+				meta = item.getItemMeta();
+			}
 			meta.setDisplayName("传送至 " + terminal.getCustomName());
 			ArrayList<String> lore = new ArrayList<String>();
 			Location loc = terminal.get_location();
@@ -454,6 +461,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		save.put("working-voltage", this.working_voltage);
 		save.put("online-voltage", this.online_voltage);
 		save.put("known-terminal-list", Radio_manager.to_uuid_string_list(this.known_terminal_list));
+		save.put("custom-flag", this.custom_flag);
 		return save;
 	}
 
@@ -494,6 +502,9 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		ArrayList<String> uuid_string_list = (ArrayList<String>) save.get("known-terminal-list");
 		for (String uuid_string : uuid_string_list) {
 			this.known_terminal_list.add(UUID.fromString(uuid_string));
+		}
+		if (save.get("custom-flag") != null) {
+			this.custom_flag = (ItemStack) save.get("custom-flag");
 		}
 	}
 
@@ -819,6 +830,14 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	public boolean is_setting_mode() {
 		return this.get_switch(setting_mode_switch);
 	}
+
+	protected void set_custom_flag(ItemStack flag) {
+		this.custom_flag = flag;
+	}
+
+	public ItemStack get_custom_flag() {
+		return this.custom_flag;
+	}
 }
 
 class Name_tag_remover extends BukkitRunnable {
@@ -831,6 +850,9 @@ class Name_tag_remover extends BukkitRunnable {
 	@Override
 	public void run() {
 		ItemStack item = machine.getInventory().getItem(Teleport_machine.name_tag_slot);
+		if (Grinder.is_empty(item)) {
+			return;
+		}
 		String id_name = Material_ext.get_id_name(item);
 		if (id_name.equals("name_tag")) {
 			ItemMeta meta = item.getItemMeta();
@@ -838,6 +860,15 @@ class Name_tag_remover extends BukkitRunnable {
 				machine.setCustomName(meta.getDisplayName());
 				item.setAmount(item.getAmount() - 1);
 			}
+		} else if (Tag.ITEMS_BANNERS.isTagged(item.getType())) {
+			ItemMeta meta = item.getItemMeta();
+			if (meta.hasDisplayName()) {
+				machine.setCustomName(meta.getDisplayName());
+			}
+			ItemStack custom_flag = item.clone();
+			custom_flag.setAmount(1);
+			machine.set_custom_flag(custom_flag);
+			item.setAmount(item.getAmount() - 1);
 		}
 	}
 }
