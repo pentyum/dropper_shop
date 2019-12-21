@@ -64,8 +64,8 @@ public class Inventory_io {
 				synchronized (inventory) {
 					if (Grinder.is_empty(inventory.getItem(slot))) {
 						inventory.setItem(slot, src_item.clone());
-						inventory.getItem(slot).setAmount(1);
-						src_item.setAmount(src_item.getAmount() - 1);
+						inventory.getItem(slot).setAmount(quantity);
+						src_item.setAmount(src_item.getAmount() - quantity);
 						return true;
 					} else if (src_item.isSimilar(inventory.getItem(slot))) {
 						int new_num = quantity + inventory.getItem(slot).getAmount();
