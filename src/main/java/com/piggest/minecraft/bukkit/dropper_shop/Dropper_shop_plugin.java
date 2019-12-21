@@ -309,7 +309,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		// 初始化定时任务
 		this.note_listener.runner.runTaskTimer(this, 10, 5);
 		this.auto_saver.runTaskTimerAsynchronously(this, 10, 6000);
-		this.realtime_runner.runTaskTimerAsynchronously(this, 5, 2);
+		this.realtime_runner.runTaskTimer(this, 5, 5);
 		this.watersheep_runner.runTaskTimerAsynchronously(this, 120, 4800);
 		// 初始化定时任务完成
 	}
