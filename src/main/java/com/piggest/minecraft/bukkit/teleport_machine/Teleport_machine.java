@@ -159,6 +159,10 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			break;
 		default:
 			if (slot >= 9 && slot <= 25) {
+				if (this.get_state() == Radio_state.OFF) {
+					player.sendMessage("[传送机]关机状态不能传送");
+					break;
+				}
 				ItemStack item = this.gui.getItem(slot);
 				if (!Grinder.is_empty(item)) {
 					if (item.getType() == Material.BEACON || Tag.ITEMS_BANNERS.isTagged(item.getType())) {
@@ -188,6 +192,9 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 
 	protected void start_teleport_to_no_operater() {
 		if (this.auto_teleport_to == null) {
+			return;
+		}
+		if (this.get_state() == Radio_state.OFF) {
 			return;
 		}
 		boolean auto_entity_teleport = this.is_auto_entity_teleport();
