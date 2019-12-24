@@ -13,29 +13,20 @@ public class Lottery_pool_manager extends Structure_manager<Lottery_pool> {
 		super(Lottery_pool.class);
 		Lottery_pool_manager.instance = this;
 	}
-	
+
 	/*
-	@Override
-	public Lottery_pool find(String player_name, Location loc, boolean new_structure) {
-		if (new_structure == false) {
-			return this.get(loc);
-		} else {
-			Lottery_pool lottery_pool = new Lottery_pool();
-			lottery_pool.set_location(loc);
-			if (lottery_pool.completed() == false) {
-				return null;
-			} else {
-				return lottery_pool;
-			}
-		}
-	}
-	*/
-	
+	 * @Override public Lottery_pool find(String player_name, Location loc, boolean
+	 * new_structure) { if (new_structure == false) { return this.get(loc); } else {
+	 * Lottery_pool lottery_pool = new Lottery_pool();
+	 * lottery_pool.set_location(loc); if (lottery_pool.completed() == false) {
+	 * return null; } else { return lottery_pool; } } }
+	 */
+
 	@Override
 	public Lottery_pool find_existed(Location loc) {
 		return this.get(loc);
 	}
-	
+
 	@Override
 	public Lottery_pool find_and_make(Player player, Location loc) {
 		Lottery_pool lottery_pool = new Lottery_pool();
@@ -46,12 +37,12 @@ public class Lottery_pool_manager extends Structure_manager<Lottery_pool> {
 			return lottery_pool;
 		}
 	}
-	
+
 	@Override
 	public String get_permission_head() {
 		return "lottery";
 	}
-	
+
 	@Override
 	public Material[][][] get_model() {
 		return null;

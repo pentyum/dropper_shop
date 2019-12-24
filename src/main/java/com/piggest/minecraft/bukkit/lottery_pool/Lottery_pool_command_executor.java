@@ -48,53 +48,62 @@ public class Lottery_pool_command_executor implements TabExecutor {
 				List<Integer> possibility_list = config.getIntegerList("possibility");
 				List<Boolean> broadcast_list = config.getBooleanList("broadcast");
 				if (args[0].equalsIgnoreCase("list")) {
-					int i = 0;
-					int page = 1;
-					if (args.length > 1) {
-						try {
-							page = Integer.parseInt(args[1]);
-						} catch (NumberFormatException e) {
-							page = 1;
-						}
-					}
-					int total_pages = (item_list.size() - 1) / 10 + 1;
-					String msg = "当前抽奖费用: " + Dropper_shop_plugin.instance.get_price_config().get_lottery_price();
-					msg += "\n------------抽奖概率公示 第" + String.format("%2d /%2d", page, total_pages) + " 页------------\n";
-					int total = 0;
-					for (i = 0; i < item_list.size(); i++) {
-						ItemStack item = item_list.get(i);
-						String enchantment_str = "";
-						Map<Enchantment, Integer> enchantments = item.getEnchantments();
-						if (enchantments != null && !enchantments.isEmpty()) {
-							enchantment_str += " 附魔:§7";
-							for (Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-								String enchantment_name = Enchantments_zh_cn.get_enchantment_name(entry.getKey());
-								enchantment_str += enchantment_name + entry.getValue() + ",";
+					if (sender instanceof Player) {
+						Player player = (Player) sender;
+						player.openInventory(new Lotter_pool_info_gui(player));
+					} else {
+						int i = 0;
+						int page = 1;
+						if (args.length > 1) {
+							try {
+								page = Integer.parseInt(args[1]);
+							} catch (NumberFormatException e) {
+								page = 1;
 							}
-							enchantment_str = enchantment_str.substring(0, enchantment_str.length() - 1);
 						}
-						if (item.getItemMeta() instanceof EnchantmentStorageMeta) {
-							EnchantmentStorageMeta stor = (EnchantmentStorageMeta) item.getItemMeta();
-							enchantments = stor.getStoredEnchants();
+						int total_pages = (item_list.size() - 1) / 10 + 1;
+						String msg = "当前抽奖费用: " + Dropper_shop_plugin.instance.get_price_config().get_lottery_price();
+						msg += "\n------------抽奖概率公示 第" + String.format("%2d /%2d", page, total_pages)
+								+ " 页------------\n";
+						int total = 0;
+						for (i = 0; i < item_list.size(); i++) {
+							ItemStack item = item_list.get(i);
+							String enchantment_str = "";
+							Map<Enchantment, Integer> enchantments = item.getEnchantments();
 							if (enchantments != null && !enchantments.isEmpty()) {
-								enchantment_str += " 存储附魔:§7";
+								enchantment_str += " 附魔:§7";
 								for (Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
 									String enchantment_name = Enchantments_zh_cn.get_enchantment_name(entry.getKey());
 									enchantment_str += enchantment_name + entry.getValue() + ",";
 								}
 								enchantment_str = enchantment_str.substring(0, enchantment_str.length() - 1);
 							}
+							if (item.getItemMeta() instanceof EnchantmentStorageMeta) {
+								EnchantmentStorageMeta stor = (EnchantmentStorageMeta) item.getItemMeta();
+								enchantments = stor.getStoredEnchants();
+								if (enchantments != null && !enchantments.isEmpty()) {
+									enchantment_str += " 存储附魔:§7";
+									for (Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+										String enchantment_name = Enchantments_zh_cn
+												.get_enchantment_name(entry.getKey());
+										enchantment_str += enchantment_name + entry.getValue() + ",";
+									}
+									enchantment_str = enchantment_str.substring(0, enchantment_str.length() - 1);
+								}
+							}
+							int possibility = possibility_list.get(i);
+							if (i >= 10 * (page - 1) && i < 10 * page) {
+								msg += "[" + i + "]: " + Material_ext.get_display_name(item) + "§r 数量:"
+										+ item.getAmount() + enchantment_str + "§r 概率:"
+										+ String.format("%4.1f", (float) possibility / 10) + "% 播报:"
+										+ broadcast_list.get(i) + "\n";
+							}
+							total += possibility;
 						}
-						int possibility = possibility_list.get(i);
-						if (i >= 10 * (page - 1) && i < 10 * page) {
-							msg += "[" + i + "]: " + Material_ext.get_display_name(item) + "§r 数量:" + item.getAmount()
-									+ enchantment_str + "§r 概率:" + String.format("%4.1f", (float) possibility / 10)
-									+ "% 播报:" + broadcast_list.get(i) + "\n";
-						}
-						total += possibility;
+						msg += "----------------总中奖概率" + String.format("%5.1f", (float) total / 10)
+								+ "%----------------";
+						sender.sendMessage(msg);
 					}
-					msg += "----------------总中奖概率" + String.format("%5.1f", (float) total / 10) + "%----------------";
-					sender.sendMessage(msg);
 				} else if (args[0].equalsIgnoreCase("del") && args.length == 2) {
 					if (!sender.hasPermission("lottery.set")) {
 						sender.sendMessage("[抽奖机]你没有权限修改抽奖池");
