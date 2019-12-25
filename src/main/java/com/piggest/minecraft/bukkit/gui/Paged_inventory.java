@@ -1,4 +1,4 @@
-package com.piggest.minecraft.bukkit.lottery_pool;
+package com.piggest.minecraft.bukkit.gui;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,17 +8,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
-public class Lotter_pool_info_gui implements Inventory {
+public class Paged_inventory implements Inventory {
 	private Inventory internal;
 
-	public Lotter_pool_info_gui(Player player) {
-		internal = Bukkit.createInventory(player, 36, "奖品列表");
+	public Paged_inventory(Paged_inventory_holder holder, int size, String title) {
+		this.internal = Bukkit.createInventory(holder, size, title);
 	}
 
 	public int getSize() {
@@ -129,8 +127,8 @@ public class Lotter_pool_info_gui implements Inventory {
 		return internal.getType();
 	}
 
-	public InventoryHolder getHolder() {
-		return internal.getHolder();
+	public Paged_inventory_holder getHolder() {
+		return (Paged_inventory_holder) internal.getHolder();
 	}
 
 	public ListIterator<ItemStack> iterator() {
@@ -143,5 +141,13 @@ public class Lotter_pool_info_gui implements Inventory {
 
 	public Location getLocation() {
 		return internal.getLocation();
+	}
+	
+	public int get_current_page() {
+		return this.getHolder().get_gui_page(this);
+	}
+	
+	public void set_current_page(int page) {
+		this.getHolder().set_gui_page(this, page);
 	}
 }

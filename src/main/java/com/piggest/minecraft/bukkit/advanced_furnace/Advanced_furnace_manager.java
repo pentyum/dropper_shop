@@ -26,7 +26,7 @@ public class Advanced_furnace_manager extends Gui_structure_manager<Advanced_fur
 		super(Advanced_furnace.class);
 		Advanced_furnace_manager.instance = this;
 		this.set_gui(1, Material.BLUE_STAINED_GLASS_PANE, "§r说明",
-				new String[] { "§7层数为从下面往上数", "§7温度下降速率由傅里叶热传导定律和普朗克黑体辐射定律决定", "§7熔炉反应速率由阿伦尼乌斯定律决定" },
+				new String[] { "§7层数为从下面往上数", "§7温度下降速率由傅里叶热传导定律和普朗克黑体辐射定律决定", "§7熔炉反应速率由阿伦尼乌斯定律决定","§7发钱效率由卡诺热机定律决定" },
 				Gui_slot_type.Indicator);
 		this.set_gui(10, Material.BLUE_STAINED_GLASS_PANE, "§r左边放固体原料", new String[] { "§7在第3层中间放置漏斗可以自动添加" },
 				Gui_slot_type.Indicator);
