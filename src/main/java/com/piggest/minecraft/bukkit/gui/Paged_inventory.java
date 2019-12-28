@@ -142,12 +142,16 @@ public class Paged_inventory implements Inventory {
 	public Location getLocation() {
 		return internal.getLocation();
 	}
-	
+
 	public int get_current_page() {
 		return this.getHolder().get_gui_page(this);
 	}
-	
+
 	public void set_current_page(int page) {
 		this.getHolder().set_gui_page(this, page);
+	}
+	
+	public int get_page_size() {
+		return this.getHolder().get_page_size();
 	}
 }

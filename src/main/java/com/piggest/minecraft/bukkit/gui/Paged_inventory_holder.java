@@ -8,4 +8,6 @@ public interface Paged_inventory_holder extends InventoryHolder {
 
 	public void set_gui_page(Paged_inventory paged_inventory, int page);
 
+	public int get_page_size();
+
 }

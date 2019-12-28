@@ -16,6 +16,7 @@ import com.piggest.minecraft.bukkit.structure.Structure_manager;
 
 public class Lottery_pool_manager extends Structure_manager<Lottery_pool> implements Paged_inventory_holder {
 	public static Lottery_pool_manager instance = null;
+	public static final int page_size = 27;
 
 	public Lottery_pool_manager() {
 		super(Lottery_pool.class);
@@ -81,7 +82,6 @@ public class Lottery_pool_manager extends Structure_manager<Lottery_pool> implem
 		List<ItemStack> item_list = (List<ItemStack>) config.getList("pool");
 		List<Integer> possibility_list = config.getIntegerList("possibility");
 		List<Boolean> broadcast_list = config.getBooleanList("broadcast");
-		int page_size = 27;
 		int total_pages = (item_list.size() - 1) / page_size + 1;
 		String msg = "";
 		msg += "\n------------抽奖概率公示 第" + String.format("%2d /%2d", page, total_pages) + " 页------------\n";
@@ -109,5 +109,10 @@ public class Lottery_pool_manager extends Structure_manager<Lottery_pool> implem
 			total += possibility;
 		}
 		msg += "总中奖概率" + String.format("%5.1f", (float) total / 10) + "%";
+	}
+
+	@Override
+	public int get_page_size() {
+		return page_size;
 	}
 }

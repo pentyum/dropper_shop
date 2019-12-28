@@ -20,7 +20,7 @@ public class Lottery_pool_gui_listener implements Listener {
 		if (holder instanceof Lottery_pool_manager) {
 			HumanEntity player = event.getWhoClicked();
 			Paged_inventory paged_gui = (Paged_inventory) gui;
-			int id = event.getSlot() + (paged_gui.get_current_page() - 1) * 27;
+			int id = event.getSlot() + (paged_gui.get_current_page() - 1) * paged_gui.get_page_size();
 			if (player.hasPermission("lottery.set")) {
 				player.sendMessage("输入指令/lottery set " + id + " <新的概率> 进行修改");
 			}
