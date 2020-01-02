@@ -1,5 +1,7 @@
 package com.piggest.minecraft.bukkit.structure;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,11 +20,17 @@ import com.piggest.minecraft.bukkit.utils.Chunk_location;
 
 public abstract class Structure_manager<T extends Structure> {
 	protected Class<T> structure_class = null;
+	protected Constructor<T> constructor = null;
 	protected HashMap<Chunk_location, HashSet<T>> chunk_structure_map = new HashMap<Chunk_location, HashSet<T>>();
 	protected HashMap<Location, T> structure_map = new HashMap<Location, T>();
 
 	public Structure_manager(Class<T> structure_class) {
 		this.structure_class = structure_class;
+		try {
+			this.constructor = structure_class.getConstructor();
+		} catch (NoSuchMethodException | SecurityException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public T get(Location loc) {
@@ -56,7 +64,8 @@ public abstract class Structure_manager<T extends Structure> {
 			HasRunner new_HasRunner = (HasRunner) new_structure;
 			Structure_runner[] runnable_list = new_HasRunner.get_runner();
 			for (Structure_runner runner : runnable_list) {
-				//Dropper_shop_plugin.instance.getLogger().info("[结构管理器]已启动" + runner.getClass().getSimpleName());
+				// Dropper_shop_plugin.instance.getLogger().info("[结构管理器]已启动" +
+				// runner.getClass().getSimpleName());
 				if (runner.is_asynchronously() == true) {
 					runner.runTaskTimerAsynchronously(Dropper_shop_plugin.instance, runner.get_delay(),
 							runner.get_cycle());
@@ -92,7 +101,7 @@ public abstract class Structure_manager<T extends Structure> {
 		// Dropper_shop_plugin.instance.get_shop_config().getMapList(structure_name);
 		for (Map<?, ?> shop_save : save_list) {
 			try {
-				T shop = structure_class.newInstance();
+				T shop = this.constructor.newInstance();
 				shop.set_from_save(shop_save);
 				if (shop instanceof Multi_block_structure) {
 					Multi_block_structure multi_block_struct = (Multi_block_structure) shop;
@@ -106,11 +115,12 @@ public abstract class Structure_manager<T extends Structure> {
 					this.add(shop);
 					i++;
 				}
-			} catch (InstantiationException | IllegalAccessException e) {
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
 				e.printStackTrace();
 			}
 		}
-		Dropper_shop_plugin.instance.getLogger().info("已加载"+i+"个"+structure_class.getSimpleName());
+		Dropper_shop_plugin.instance.getLogger().info("已加载" + i + "个" + structure_class.getSimpleName());
 	}
 
 	public void save_structures() {
@@ -180,8 +190,9 @@ public abstract class Structure_manager<T extends Structure> {
 					Material material = check_loc.getBlock().getType();
 					if (material == model[center[1]][center[2]][center[0]]) {
 						try {
-							structure = structure_class.newInstance();
-						} catch (InstantiationException | IllegalAccessException e) {
+							structure = this.constructor.newInstance();
+						} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+								| InvocationTargetException e) {
 							e.printStackTrace();
 						}
 						structure.set_location(check_loc);
