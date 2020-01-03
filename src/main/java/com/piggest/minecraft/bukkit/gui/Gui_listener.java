@@ -35,21 +35,23 @@ public class Gui_listener implements Listener {
 				return;
 			}
 			int slot = event.getSlot();
-			if (gui instanceof Paged_inventory) {
-				Paged_inventory paged_gui = (Paged_inventory) gui;
-				if (slot == paged_gui.get_last_slot()) {
-					paged_gui.set_current_page(paged_gui.get_current_page() - 1);
+			if (holder instanceof Paged_inventory_holder) {
+				Paged_inventory_holder paged_holder = (Paged_inventory_holder) holder;
+				if (slot == paged_holder.get_last_button_slot()) {
+					paged_holder.set_gui_page(paged_holder.get_gui_page() - 1);
 					event.setCancelled(true);
 					return;
-				} else if (slot == paged_gui.get_next_slot()) {
-					paged_gui.set_current_page(paged_gui.get_current_page() + 1);
+				} else if (slot == paged_holder.get_next_button_slot()) {
+					paged_holder.set_gui_page(paged_holder.get_gui_page() + 1);
 					event.setCancelled(true);
 					return;
 				}
 			}
-			/*
-			 * if (holder.getInventory() != gui) { return; }
-			 */
+
+			if (holder.getInventory() != gui) {
+				return;
+			}
+
 			Structure_manager<?> structure_manager = Dropper_shop_plugin.instance.get_structure_manager()
 					.get(holder.getClass());
 			if (structure_manager == null) {
