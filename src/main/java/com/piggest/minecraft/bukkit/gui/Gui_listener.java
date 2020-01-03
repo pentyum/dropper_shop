@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -26,15 +27,29 @@ public class Gui_listener implements Listener {
 			if (event.getClickedInventory() == null) {
 				return;
 			}
+			Inventory gui = event.getClickedInventory();
 			// String gui_name = event.getClickedInventory().getName();
 			// Bukkit.getLogger().info(event.getClickedInventory().getLocation().toString());
-			InventoryHolder holder = event.getClickedInventory().getHolder();
+			InventoryHolder holder = gui.getHolder();
 			if (holder == null) {
 				return;
 			}
-			if (holder.getInventory() != event.getClickedInventory()) {
-				return;
+			int slot = event.getSlot();
+			if (gui instanceof Paged_inventory) {
+				Paged_inventory paged_gui = (Paged_inventory) gui;
+				if (slot == paged_gui.get_last_slot()) {
+					paged_gui.set_current_page(paged_gui.get_current_page() - 1);
+					event.setCancelled(true);
+					return;
+				} else if (slot == paged_gui.get_next_slot()) {
+					paged_gui.set_current_page(paged_gui.get_current_page() + 1);
+					event.setCancelled(true);
+					return;
+				}
 			}
+			/*
+			 * if (holder.getInventory() != gui) { return; }
+			 */
 			Structure_manager<?> structure_manager = Dropper_shop_plugin.instance.get_structure_manager()
 					.get(holder.getClass());
 			if (structure_manager == null) {
@@ -45,7 +60,7 @@ public class Gui_listener implements Listener {
 			}
 			Gui_structure_manager<?> gui_structure_manager = (Gui_structure_manager<?>) structure_manager;
 			Multi_block_with_gui structure = (Multi_block_with_gui) holder;
-			int slot = event.getSlot();
+
 			Player player = (Player) event.getWhoClicked();
 
 			Slot_config slot_config = gui_structure_manager.get_locked_slots().get(slot);

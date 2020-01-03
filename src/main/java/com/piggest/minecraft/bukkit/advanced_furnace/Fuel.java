@@ -9,10 +9,10 @@ import org.bukkit.inventory.ItemStack;
 import com.piggest.minecraft.bukkit.grinder.Powder;
 
 public enum Fuel {
-	coal(1.95, Status.solid, 1600), charcoal(1.22, Status.solid, 1600), coal_block(1.9, Status.solid, 16000),
+	coal(1.95, Status.solid, 1600), charcoal(1.15, Status.solid, 1600), coal_block(1.9, Status.solid, 16000),
 	blaze_rod(2.1, Status.solid, 2400), sugar(1.05, Status.solid, 300), coal_powder(2.5, Status.solid, 1600),
-	lava(1.6, Status.liquid, 20), gun_powder(12, Status.solid, 40), wool(0.95, Status.solid, 100),
-	carpet(0.95, Status.solid, 67), planks(1.15, Status.solid, 300), flour_powder(9, Status.solid, 40),
+	lava(1.6, Status.liquid, 20), gun_powder(12, Status.solid, 40), wool(0.9, Status.solid, 100),
+	carpet(0.9, Status.solid, 67), planks(1.1, Status.solid, 300), flour_powder(9, Status.solid, 40),
 	stick(1.55, Status.solid, 100), hydrogen(2.5, Status.gas, 4), CO(1.9, Status.gas, 4), CH4(2.6, Status.gas, 4),
 	dried_kelp_block(1.4, Status.solid, 4000);
 

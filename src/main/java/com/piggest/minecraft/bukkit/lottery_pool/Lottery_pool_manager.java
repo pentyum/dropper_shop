@@ -65,7 +65,7 @@ public class Lottery_pool_manager extends Structure_manager<Lottery_pool> implem
 	@Override
 	public Paged_inventory getInventory() {
 		int current_price = Dropper_shop_plugin.instance.get_price_config().get_lottery_price();
-		Paged_inventory gui = new Paged_inventory(this, 36, "奖品列表 - 当前抽奖费用: " + current_price);
+		Paged_inventory gui = new Paged_inventory(this, 36, "奖品列表 - 当前抽奖费用: " + current_price, 27, 35);
 		this.set_gui_page(gui, 1);
 		return gui;
 	}

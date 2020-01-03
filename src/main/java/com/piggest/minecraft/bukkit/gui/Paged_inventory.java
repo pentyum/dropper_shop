@@ -11,12 +11,27 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class Paged_inventory implements Inventory {
 	private Inventory internal;
+	private int last_slot;
+	private int next_slot;
 
-	public Paged_inventory(Paged_inventory_holder holder, int size, String title) {
+	public Paged_inventory(Paged_inventory_holder holder, int size, String title, int last_slot, int next_slot) {
 		this.internal = Bukkit.createInventory(holder, size, title);
+		this.last_slot = last_slot;
+		this.next_slot = next_slot;
+		ItemStack last_item = new ItemStack(Material.WHITE_STAINED_GLASS_PANE);
+		ItemStack next_item = new ItemStack(Material.WHITE_STAINED_GLASS_PANE);
+		ItemMeta last_meta = last_item.getItemMeta();
+		ItemMeta next_meta = next_item.getItemMeta();
+		last_meta.setDisplayName("§r上一页");
+		next_meta.setDisplayName("§r下一页");
+		last_item.setItemMeta(last_meta);
+		next_item.setItemMeta(next_meta);
+		this.internal.setItem(last_slot, last_item);
+		this.internal.setItem(next_slot, next_item);
 	}
 
 	public int getSize() {
@@ -150,8 +165,16 @@ public class Paged_inventory implements Inventory {
 	public void set_current_page(int page) {
 		this.getHolder().set_gui_page(this, page);
 	}
-	
+
 	public int get_page_size() {
 		return this.getHolder().get_page_size();
+	}
+
+	public int get_last_slot() {
+		return this.last_slot;
+	}
+
+	public int get_next_slot() {
+		return this.next_slot;
 	}
 }
