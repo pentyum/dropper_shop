@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -16,6 +15,7 @@ import com.piggest.minecraft.bukkit.gui.Paged_inventory_holder;
 public class Lottery_pool_gui_holder implements Paged_inventory_holder {
 	public static final int page_size = 27;
 	public static final int last_slot = 27;
+	public static final int indicator_slot = 31;
 	public static final int next_slot = 35;
 	private int current_page = 1;
 	private Inventory gui;
@@ -23,17 +23,7 @@ public class Lottery_pool_gui_holder implements Paged_inventory_holder {
 	public Lottery_pool_gui_holder() {
 		int current_price = Dropper_shop_plugin.instance.get_price_config().get_lottery_price();
 		this.gui = Bukkit.createInventory(this, 36, "奖品列表 - 当前抽奖费用: " + current_price);
-		ItemStack last_item = new ItemStack(Material.ORANGE_STAINED_GLASS_PANE);
-		ItemStack next_item = new ItemStack(Material.ORANGE_STAINED_GLASS_PANE);
-		ItemMeta last_meta = last_item.getItemMeta();
-		ItemMeta next_meta = next_item.getItemMeta();
-		last_meta.setDisplayName("§r上一页");
-		next_meta.setDisplayName("§r下一页");
-		last_item.setItemMeta(last_meta);
-		next_item.setItemMeta(next_meta);
-		this.gui.setItem(last_slot, last_item);
-		this.gui.setItem(next_slot, next_item);
-		this.set_gui_page(1);
+		this.init(last_slot,indicator_slot,next_slot);
 	}
 
 	@Override
@@ -57,8 +47,7 @@ public class Lottery_pool_gui_holder implements Paged_inventory_holder {
 		List<Integer> possibility_list = config.getIntegerList("possibility");
 		List<Boolean> broadcast_list = config.getBooleanList("broadcast");
 		int total_pages = (item_list.size() - 1) / page_size + 1;
-		String msg = "";
-		msg += "\n------------抽奖概率公示 第" + String.format("%2d /%2d", page, total_pages) + " 页------------\n";
+		//msg += "\n------------抽奖概率公示 第" + String.format("%2d /%2d", page, total_pages) + " 页------------\n";
 		int total = 0;
 		int gui_index = -1;
 		for (int i = 0; i < item_list.size(); i++) {
@@ -87,7 +76,13 @@ public class Lottery_pool_gui_holder implements Paged_inventory_holder {
 		for (int i = gui_index + 1; i < page_size; i++) {
 			this.getInventory().setItem(i, null);
 		}
-		msg += "总中奖概率" + String.format("%5.1f", (float) total / 10) + "%";
+		ItemStack indicator_item = this.getInventory()
+				.getItem(this.get_page_indicator_slot());
+		ItemMeta meta = indicator_item.getItemMeta();
+		ArrayList<String> lore = new ArrayList<>();
+		lore.add("§7总中奖概率" + String.format("%5.1f", (float) total / 10) + "%");
+		meta.setLore(lore);
+		indicator_item.setItemMeta(meta);
 		this.current_page = page;
 	}
 
@@ -104,6 +99,11 @@ public class Lottery_pool_gui_holder implements Paged_inventory_holder {
 	@Override
 	public int get_last_button_slot() {
 		return last_slot;
+	}
+
+	@Override
+	public int get_page_indicator_slot() {
+		return indicator_slot;
 	}
 
 }

@@ -37,12 +37,29 @@ public class Gui_listener implements Listener {
 			int slot = event.getSlot();
 			if (holder instanceof Paged_inventory_holder) {
 				Paged_inventory_holder paged_holder = (Paged_inventory_holder) holder;
+				int new_page = 1;
 				if (slot == paged_holder.get_last_button_slot()) {
-					paged_holder.set_gui_page(paged_holder.get_gui_page() - 1);
+					if (paged_holder.get_gui_page() - 1 <= 0) {
+						new_page = 1;
+					} else {
+						new_page = paged_holder.get_gui_page() - 1;
+					}
+					paged_holder.set_gui_page(new_page);
+					ItemStack indicator_item = paged_holder.getInventory()
+							.getItem(paged_holder.get_page_indicator_slot());
+					ItemMeta meta = indicator_item.getItemMeta();
+					meta.setDisplayName("§r第" + new_page + "页");
+					indicator_item.setItemMeta(meta);
 					event.setCancelled(true);
 					return;
 				} else if (slot == paged_holder.get_next_button_slot()) {
-					paged_holder.set_gui_page(paged_holder.get_gui_page() + 1);
+					new_page = paged_holder.get_gui_page() + 1;
+					paged_holder.set_gui_page(new_page);
+					ItemStack indicator_item = paged_holder.getInventory()
+							.getItem(paged_holder.get_page_indicator_slot());
+					ItemMeta meta = indicator_item.getItemMeta();
+					meta.setDisplayName("§r第" + new_page + "页");
+					indicator_item.setItemMeta(meta);
 					event.setCancelled(true);
 					return;
 				}
