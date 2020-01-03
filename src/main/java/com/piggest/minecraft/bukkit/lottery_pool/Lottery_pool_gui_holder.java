@@ -23,8 +23,8 @@ public class Lottery_pool_gui_holder implements Paged_inventory_holder {
 	public Lottery_pool_gui_holder() {
 		int current_price = Dropper_shop_plugin.instance.get_price_config().get_lottery_price();
 		this.gui = Bukkit.createInventory(this, 36, "奖品列表 - 当前抽奖费用: " + current_price);
-		ItemStack last_item = new ItemStack(Material.WHITE_STAINED_GLASS_PANE);
-		ItemStack next_item = new ItemStack(Material.WHITE_STAINED_GLASS_PANE);
+		ItemStack last_item = new ItemStack(Material.ORANGE_STAINED_GLASS_PANE);
+		ItemStack next_item = new ItemStack(Material.ORANGE_STAINED_GLASS_PANE);
 		ItemMeta last_meta = last_item.getItemMeta();
 		ItemMeta next_meta = next_item.getItemMeta();
 		last_meta.setDisplayName("§r上一页");

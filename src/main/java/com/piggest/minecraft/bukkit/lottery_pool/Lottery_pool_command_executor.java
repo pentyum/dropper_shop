@@ -51,6 +51,7 @@ public class Lottery_pool_command_executor implements TabExecutor {
 					if (sender instanceof Player) {
 						Player player = (Player) sender;
 						Lottery_pool_gui_holder gui_holder = new Lottery_pool_gui_holder();
+						player.closeInventory();
 						player.openInventory(gui_holder.getInventory());
 					} else {
 						int i = 0;
