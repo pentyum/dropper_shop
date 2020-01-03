@@ -1,5 +1,9 @@
 package com.piggest.minecraft.bukkit.teleport_machine;
 
+import org.bukkit.NamespacedKey;
+
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+
 public enum Element implements Has_composition {
 	Magic(-1, 0, 0), H(0, 1, 1, 1), Be(1, 4, 9, 2), C(2, 6, 12, 4), N(3, 7, 14, -3, 5), O(4, 8, 16, -2),
 	F(5, 9, 19, -1), Na(6, 11, 23, 1), Mg(7, 12, 24, 2), Al(8, 13, 27, 3), Si(9, 14, 28, 4), P(10, 15, 31, 5),
@@ -12,6 +16,7 @@ public enum Element implements Has_composition {
 	public final int order_id;
 	public final int valence;
 	public final int valence_2;
+	public static final NamespacedKey namespacedkey = new NamespacedKey(Dropper_shop_plugin.instance, "element_id");
 
 	Element(int order_id, int atomic_number, int relative_atomic_mass) {
 		this.order_id = order_id;
@@ -41,7 +46,7 @@ public enum Element implements Has_composition {
 	public Elements_composition get_elements_composition() {
 		return this.get_elements_composition(1);
 	}
-	
+
 	public Elements_composition get_elements_composition(int value) {
 		Elements_composition comp = new Elements_composition();
 		comp.set_amount(this, value);

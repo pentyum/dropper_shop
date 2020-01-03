@@ -20,13 +20,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.exp_saver.SetExpFix;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
-import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
@@ -671,9 +671,10 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			lore.add("§7剩余: 0 单位");
 			meta.setLore(lore);
 			meta.setDisplayName("§r" + element.name() + " 元素");
+			meta.getPersistentDataContainer().set(Element.namespacedkey, PersistentDataType.INTEGER,
+					element.atomic_number);
 			meta.setCustomModelData(Dropper_shop_plugin.custom_model_data_offset + element.atomic_number);
 			item.setItemMeta(meta);
-			item = NMS_manager.element_type_provider.set_element_id(item, element.atomic_number);
 			this.elements_gui.setItem(element.order_id, item);
 		}
 		ItemStack back_item = new ItemStack(Material.REDSTONE_LAMP);
