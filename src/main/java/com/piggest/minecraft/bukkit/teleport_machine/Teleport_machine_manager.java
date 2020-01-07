@@ -5,8 +5,10 @@ import org.bukkit.event.inventory.InventoryType;
 
 import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
+import com.piggest.minecraft.bukkit.teleport_machine.dynmap.Dynmap_manager;
 
 public class Teleport_machine_manager extends Gui_structure_manager<Teleport_machine> {
+	private Dynmap_manager dynmap_manager = new Dynmap_manager(this);
 	private final int[] process_bar = new int[] { 0 };
 	private final int[] center = new int[] { 2, 0, 2 };
 	private Material[][][] model = new Material[][][] {

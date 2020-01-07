@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -18,7 +19,7 @@ import com.piggest.minecraft.bukkit.config.World_structure_config;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Chunk_location;
 
-public abstract class Structure_manager<T extends Structure> {
+public abstract class Structure_manager<T extends Structure> implements Iterable<T> {
 	protected Class<T> structure_class = null;
 	protected Constructor<T> constructor = null;
 	protected HashMap<Chunk_location, HashSet<T>> chunk_structure_map = new HashMap<Chunk_location, HashSet<T>>();
@@ -240,4 +241,7 @@ public abstract class Structure_manager<T extends Structure> {
 
 	public abstract int[] get_center();
 
+	public Iterator<T> iterator() {
+		return this.structure_map.values().iterator();
+	}
 }
