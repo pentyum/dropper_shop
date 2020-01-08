@@ -147,8 +147,8 @@ public interface Radio_terminal extends Nameable, Unique, Elements_container {
 					double target_signal = this.get_signal(terminal, terminal.get_state());
 					double target_noise = this.get_noise(terminal);
 					if (debug == true) {
-						String debug_msg = terminal.getCustomName()+"("+terminal.get_location()+")" + ": " + target_signal + "/" + target_noise + "("
-								+ scan_freq + ")";
+						String debug_msg = terminal.getCustomName() + "(" + terminal.get_location() + ")" + ": "
+								+ target_signal + "/" + target_noise + "(" + scan_freq + ")";
 						searcher.sendMessage(debug_msg);
 						Dropper_shop_plugin.instance.getLogger().info(debug_msg);
 					}
@@ -193,10 +193,16 @@ public interface Radio_terminal extends Nameable, Unique, Elements_container {
 		}
 	}
 
+	/*
+	 * 电抗
+	 */
 	public default double get_x() {
 		return Radio.x(this.get_n(), this.get_current_channel_freq());
 	}
 
+	/*
+	 * 阻抗
+	 */
 	public default double get_z() {
 		return Radio.z(this.get_n(), this.get_current_channel_freq());
 	}
@@ -206,6 +212,6 @@ public interface Radio_terminal extends Nameable, Unique, Elements_container {
 	}
 
 	int get_current_channel_bandwidth();
-	
+
 	public ItemStack get_custom_flag();
 }

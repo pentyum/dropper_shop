@@ -59,10 +59,12 @@ public class Teleport_machine_manager extends Gui_structure_manager<Teleport_mac
 
 		this.set_gui(Teleport_machine.open_switch, Material.LEVER, "§r无线魔术开关", Gui_slot_type.Switch);
 		this.set_gui(28, Material.REDSTONE_TORCH, "§r搜索无线魔术终端", Gui_slot_type.Button);
-		//this.set_gui(29, Material.PAPER, "§r立刻刷新无线魔术信息", Gui_slot_type.Button);
+		// this.set_gui(29, Material.PAPER, "§r立刻刷新无线魔术信息", Gui_slot_type.Button);
 		this.set_gui(Teleport_machine.auto_player_teleport_switch, Material.LEVER, "§r自动玩家传送开关", Gui_slot_type.Switch);
-		this.set_gui(Teleport_machine.auto_entity_teleport_switch, Material.LEVER, "§r自动非玩家实体传送开关", Gui_slot_type.Switch);
-		this.set_gui_full_name(Teleport_machine.setting_mode_switch, "dropper_shop:wrench", "§r设置模式开关，开启后可以设置自动传送目的地", Gui_slot_type.Switch);
+		this.set_gui(Teleport_machine.auto_entity_teleport_switch, Material.LEVER, "§r自动非玩家实体传送开关",
+				Gui_slot_type.Switch);
+		this.set_gui_full_name(Teleport_machine.setting_mode_switch, "dropper_shop:wrench", "§r设置模式开关，开启后可以设置自动传送目的地",
+				Gui_slot_type.Switch);
 		this.set_gui(Teleport_machine.radio_indicator, Material.END_ROD, "§r当前无线魔术信息",
 				new String[] { "§7终端名称: " + this.get_gui_name(), "§7运行状态: " + Radio_state.OFF.display_name,
 						"§7当前输入功率: 0 W", "§7当前辐射功率: 0 W", "§7天线长度: 1 m", "§7中心频率: kHz", "§7天线频宽: kHz", "§7辐射魔阻: Ω",
@@ -103,6 +105,7 @@ public class Teleport_machine_manager extends Gui_structure_manager<Teleport_mac
 				Gui_slot_type.Button);
 		this.set_gui(53, Material.BLUE_STAINED_GLASS_PANE, "§r降低载波频率", new String[] { "§7-500 kHz" },
 				Gui_slot_type.Button);
+		this.dynmap_manager.activate();
 	}
 
 	@Override
@@ -141,8 +144,19 @@ public class Teleport_machine_manager extends Gui_structure_manager<Teleport_mac
 	}
 
 	@Override
+	public void add(Teleport_machine new_structure) {
+		super.add(new_structure);
+		dynmap_manager.handle_teleport_machine_add(new_structure);
+	}
+
+	@Override
 	public void remove(Teleport_machine structure) {
 		super.remove(structure);
 		Radio_manager.instance.remove(structure.get_uuid());
+		dynmap_manager.handle_teleport_machine_remove(structure);
+	}
+
+	public Dynmap_manager get_dynmap_manager() {
+		return this.dynmap_manager;
 	}
 }

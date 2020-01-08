@@ -698,6 +698,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		lore.set(0, "§7终端名称: " + name);
 		meta.setLore(lore);
 		item.setItemMeta(meta);
+		((Teleport_machine_manager) this.get_manager()).get_dynmap_manager().handle_teleport_machine_rename(this);
 	}
 
 	@Override
