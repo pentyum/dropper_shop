@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.ChatColor;
 import org.dynmap.DynmapAPI;
 import org.dynmap.markers.Marker;
@@ -30,6 +31,8 @@ public class Dynmap_manager {
 
 	public Dynmap_manager(Teleport_machine_manager teleport_machine_manager) {
 		this.teleport_machine_manager = teleport_machine_manager;
+		Plugin dynmap = Bukkit.getPluginManager().getPlugin("dynmap");
+		this.api = (DynmapAPI) dynmap;
 	}
 
 	public MarkerSet getMarkerSet() {
@@ -144,7 +147,7 @@ public class Dynmap_manager {
 		// String desc = formatInfoWindow(res);
 
 		Marker marker = null;
-		MarkerIcon icon = set.getDefaultMarkerIcon();
+		MarkerIcon icon = markerapi.getMarkerIcon("compass");
 		if (resareas.containsKey(res.get_uuid())) {
 			marker = resareas.get(res.get_uuid());
 			resareas.remove(res.get_uuid());
@@ -152,6 +155,7 @@ public class Dynmap_manager {
 		}
 		marker = set.createMarker(res.get_uuid().toString(), name, true, res.get_world_name(), x, y, z, icon, true);
 		if (marker == null) {
+			Dropper_shop_plugin.instance.getLogger().warning("Marker创建失败");
 			return;
 		}
 		// marker.setDescription(desc);
@@ -191,16 +195,15 @@ public class Dynmap_manager {
 			Dropper_shop_plugin.instance.getLogger().warning("dynmap api 加载错误!");
 			return;
 		}
-
 		if (set != null) {
 			set.deleteMarkerSet();
 			set = null;
 		}
 		set = markerapi.getMarkerSet("teleport_machine.markerset");
 		if (set == null)
-			set = markerapi.createMarkerSet("teleport_machine.markerset", "teleport_machine", null, false);
+			set = markerapi.createMarkerSet("teleport_machine.markerset", "传送机", null, false);
 		else
-			set.setMarkerSetLabel("teleport_machine");
+			set.setMarkerSetLabel("传送机");
 
 		if (set == null) {
 			Dropper_shop_plugin.instance.getLogger().warning("Error creating marker set");

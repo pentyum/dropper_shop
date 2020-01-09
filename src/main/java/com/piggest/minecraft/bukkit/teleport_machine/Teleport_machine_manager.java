@@ -5,6 +5,7 @@ import org.bukkit.event.inventory.InventoryType;
 
 import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
+import com.piggest.minecraft.bukkit.structure.Structure;
 import com.piggest.minecraft.bukkit.teleport_machine.dynmap.Dynmap_manager;
 
 public class Teleport_machine_manager extends Gui_structure_manager<Teleport_machine> {
@@ -144,16 +145,18 @@ public class Teleport_machine_manager extends Gui_structure_manager<Teleport_mac
 	}
 
 	@Override
-	public void add(Teleport_machine new_structure) {
+	public void add(Structure new_structure) {
+		Teleport_machine machine = (Teleport_machine) new_structure;
 		super.add(new_structure);
-		dynmap_manager.handle_teleport_machine_add(new_structure);
+		dynmap_manager.handle_teleport_machine_add(machine);
 	}
 
 	@Override
-	public void remove(Teleport_machine structure) {
+	public void remove(Structure structure) {
+		Teleport_machine machine = (Teleport_machine) structure;
 		super.remove(structure);
-		Radio_manager.instance.remove(structure.get_uuid());
-		dynmap_manager.handle_teleport_machine_remove(structure);
+		Radio_manager.instance.remove(machine.get_uuid());
+		dynmap_manager.handle_teleport_machine_remove(machine);
 	}
 
 	public Dynmap_manager get_dynmap_manager() {

@@ -48,11 +48,4 @@ public abstract class Gui_structure_manager<T extends Multi_block_with_gui> exte
 
 	public abstract int[] get_process_bar();
 	
-	public void add(T structure) {
-		super.remove(structure);
-	}
-	
-	public void remove(T structure) {
-		super.remove(structure);
-	}
 }
