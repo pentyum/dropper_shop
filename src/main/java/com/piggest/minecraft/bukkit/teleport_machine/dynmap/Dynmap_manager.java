@@ -1,15 +1,12 @@
 package com.piggest.minecraft.bukkit.teleport_machine.dynmap;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.ChatColor;
 import org.dynmap.DynmapAPI;
 import org.dynmap.markers.Marker;
 import org.dynmap.markers.MarkerAPI;
@@ -17,6 +14,8 @@ import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.teleport_machine.Element;
+import com.piggest.minecraft.bukkit.teleport_machine.Radio_state;
 import com.piggest.minecraft.bukkit.teleport_machine.Teleport_machine;
 import com.piggest.minecraft.bukkit.teleport_machine.Teleport_machine_manager;
 
@@ -27,7 +26,6 @@ public class Dynmap_manager {
 	MarkerAPI markerapi;
 	MarkerSet set;
 	private Map<UUID, Marker> resareas = new HashMap<UUID, Marker>();
-	private int schedId = -1;
 
 	public Dynmap_manager(Teleport_machine_manager teleport_machine_manager) {
 		this.teleport_machine_manager = teleport_machine_manager;
@@ -47,6 +45,10 @@ public class Dynmap_manager {
 		String v = "<div class=\"regioninfo\"><div class=\"infowindow\"><span style=\"font-size:140%;font-weight:bold;\">%name%</span><br /> ";
 		//v += "所有者: " + "<span style=\"font-weight:bold;\">%playerowners%</span><br />";
 		v += "天线长度: " + "<span style=\"font-weight:bold;\">%length%</span><br />";
+		v += "待机魔压: " + "<span style=\"font-weight:bold;\">%online_voltage%</span><br />";
+		v += "工作魔压: " + "<span style=\"font-weight:bold;\">%working_voltage%</span><br />";
+		v += "当前功率: " + "<span style=\"font-weight:bold;\">%current_power%</span><br />";
+		v += "剩余魔力: " + "<span style=\"font-weight:bold;\">%magic%</span><br />";
 		v += "频率信息: " + "<br /><span style=\"font-weight:bold;\">";
 		v += "中心波长: %wavelength%<br />";
 		v += "带宽: %bandwidth%";
@@ -55,8 +57,12 @@ public class Dynmap_manager {
 
 		v = v.replace("%name%", res.getCustomName());
 		v = v.replace("%length%", res.get_n()+" m");
+		v = v.replace("%online_voltage%", res.get_voltage(Radio_state.ONLINE)+" V");
+		v = v.replace("%working_voltage%", res.get_voltage(Radio_state.WORKING)+" V");
+		v = v.replace("%current_power%", res.get_current_radiant_power()+" W");
 		v = v.replace("%wavelength%", res.get_channel_freq()+" kHz");
 		v = v.replace("%bandwidth%", res.get_channel_bandwidth()+" kHz");
+		v = v.replace("%magic%", res.get_amount(Element.Magic)+" kJ");
 		// v = v.replace("%playerowners%", res.getOwner());
 		return v;
 	}
@@ -113,7 +119,7 @@ public class Dynmap_manager {
 		resareas.put(res.get_uuid(), marker);
 	}
 
-	public void handle_teleport_machine_rename(Teleport_machine res) {
+	public void handle_teleport_machine_update(Teleport_machine res) {
 		if (res == null) {
 			return;
 		}
@@ -124,6 +130,8 @@ public class Dynmap_manager {
 		}
 		String new_name = res.getCustomName();
 		marker.setLabel(new_name, true);
+		String new_desc = formatInfoWindow(res);
+		marker.setDescription(new_desc);
 	}
 
 	public void handle_teleport_machine_remove(Teleport_machine res) {
