@@ -45,15 +45,18 @@ public class Dynmap_manager {
 		if (res.getCustomName() == null)
 			return null;
 		String v = "<div class=\"regioninfo\"><div class=\"infowindow\"><span style=\"font-size:140%;font-weight:bold;\">%name%</span><br /> ";
-		v += "所有者: " + "<span style=\"font-weight:bold;\">%playerowners%</span><br />";
+		//v += "所有者: " + "<span style=\"font-weight:bold;\">%playerowners%</span><br />";
 		v += "天线长度: " + "<span style=\"font-weight:bold;\">%length%</span><br />";
 		v += "频率信息: " + "<br /><span style=\"font-weight:bold;\">";
-		v += "中心波长: <br />";
-		v += "带宽: ";
+		v += "中心波长: %wavelength%<br />";
+		v += "带宽: %bandwidth%";
 		v += "</span>";
 		v += "</div></div>";
 
 		v = v.replace("%name%", res.getCustomName());
+		v = v.replace("%length%", res.get_n()+" m");
+		v = v.replace("%wavelength%", res.get_channel_freq()+" kHz");
+		v = v.replace("%bandwidth%", res.get_channel_bandwidth()+" kHz");
 		// v = v.replace("%playerowners%", res.getOwner());
 		return v;
 	}
