@@ -174,6 +174,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 		Enchantments_zh_cn.init();
 		Item_zh_cn.init();
+		
+		this.nms_manager = new NMS_manager(Bukkit.getBukkitVersion());
 	}
 
 	public HashMap<String, World_structure_config> get_shop_config() {
@@ -248,8 +250,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 		Tab_list.init();
 
-		// 初始化NMS和管理器
-		this.nms_manager = new NMS_manager(Bukkit.getBukkitVersion());
+		// 初始化管理器
 		this.init_structure_manager();
 		this.radio_manager = new Radio_manager();
 		// 初始化管理器完成
