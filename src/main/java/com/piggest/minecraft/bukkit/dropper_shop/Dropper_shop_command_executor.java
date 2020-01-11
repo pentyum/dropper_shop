@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -14,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import com.piggest.minecraft.bukkit.config.Price_config;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.teleport_machine.Elements_composition;
 import com.piggest.minecraft.bukkit.utils.Server_date;
 
@@ -125,11 +127,32 @@ public class Dropper_shop_command_executor implements TabExecutor {
 				player.sendMessage("Thread: " + Thread.currentThread().getId());
 			} else if (args[0].equalsIgnoreCase("show_date")) {
 				player.sendMessage("当前服务器日期: " + Server_date.formatDate(Server_date.get_world_date(player.getWorld())));
+				return true;
 			} else if (args[0].equalsIgnoreCase("show_elements")) {
 				ItemStack item = player.getInventory().getItemInMainHand();
 				if (!Grinder.is_empty(item)) {
 					player.sendMessage(Elements_composition.get_element_composition(item).toString());
 				}
+				return true;
+			} else if (args[0].equalsIgnoreCase("show_biome_temp")) {
+				Biome biome = player.getLocation().getBlock().getBiome();
+				float temp = NMS_manager.biome_modifier.get_temperature(biome);
+				player.sendMessage(biome.name() + "的当前的基础温度为:" + temp);
+				return true;
+			} else if (args[0].equalsIgnoreCase("set_biome_temp")) {
+				if (!player.hasPermission("dropper_shop.set_biome_temp")) {
+					player.sendMessage("你没有设置温度的权限!");
+					return true;
+				}
+				Biome biome = player.getLocation().getBlock().getBiome();
+				try {
+					float temp = Float.parseFloat(args[1]);
+					NMS_manager.biome_modifier.set_temperature(biome, temp);
+					player.sendMessage(biome.name() + "的基础温度已设置为:" + temp);
+				} catch (Exception e) {
+					player.sendMessage("格式错误");
+				}
+				return true;
 			} else if (args[0].equalsIgnoreCase("get_item")) {
 				if (!player.hasPermission("dropper_shop.get_item")) {
 					player.sendMessage("你没有权限获得物品");
@@ -158,7 +181,7 @@ public class Dropper_shop_command_executor implements TabExecutor {
 					return true;
 				}
 				ItemStack[] items = Material_ext.split_to_max_stack_size(item);
-				//player.sendMessage("长度"+items.length);
+				// player.sendMessage("长度"+items.length);
 				HashMap<Integer, ItemStack> left = player.getInventory().addItem(items);
 				for (ItemStack left_item : left.values()) {
 					player.getWorld().dropItemNaturally(player.getLocation(), left_item);
