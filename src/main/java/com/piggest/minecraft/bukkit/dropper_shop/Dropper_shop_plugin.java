@@ -22,6 +22,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace;
 import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_command_executor;
 import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_listener;
@@ -32,6 +34,7 @@ import com.piggest.minecraft.bukkit.advanced_furnace.Reaction_container;
 import com.piggest.minecraft.bukkit.anti_thunder.Anti_thunder;
 import com.piggest.minecraft.bukkit.anti_thunder.Anti_thunder_listener;
 import com.piggest.minecraft.bukkit.anti_thunder.Anti_thunder_manager;
+import com.piggest.minecraft.bukkit.biome_modify.Biome_modify;
 import com.piggest.minecraft.bukkit.config.Price_config;
 import com.piggest.minecraft.bukkit.config.World_structure_config;
 import com.piggest.minecraft.bukkit.depository.Depository;
@@ -132,14 +135,16 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private NMS_manager nms_manager = null;
 	private Config_auto_saver auto_saver = new Config_auto_saver(this);
 	private Sync_realtime realtime_runner = null;
+	private Biome_modify biome_modify = null;
 	private Radio_manager radio_manager = null;
 	private Watersheep_runner watersheep_runner = null;
+	private ProtocolManager protocol_manager = null;
 
 	public Dropper_shop_plugin() {
 		Dropper_shop_plugin.instance = this;
 		this.getLogger().info("加载配置中");
 		saveDefaultConfig();
-		
+
 		saveResource("lottery_pool.yml", false);
 		this.config = getConfig();
 
@@ -174,7 +179,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 		Enchantments_zh_cn.init();
 		Item_zh_cn.init();
-		
+
 		this.nms_manager = new NMS_manager(Bukkit.getBukkitVersion());
 	}
 
@@ -237,11 +242,18 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+		this.biome_modify = new Biome_modify();
+		try {
+			this.protocol_manager = ProtocolLibrary.getProtocolManager();
+			protocol_manager.addPacketListener(NMS_manager.packet_map_chunk_listener);
+		} catch (Exception e) {
+
+		}
 		for (World world : this.getServer().getWorlds()) {
 			World_structure_config config = new World_structure_config(world);
 			this.all_shop_config.put(world.getName(), config);
 			config.load();
-			this.getLogger().info("加载"+world.getName());
+			this.getLogger().info("加载" + world.getName());
 		}
 		for (Entry<String, World_structure_config> entry : this.all_shop_config.entrySet()) {
 			entry.getValue().load();
@@ -267,6 +279,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.getCommand("sync_realtime").setExecutor(new Sync_realtime_command_executor(this.sync_realtime_worlds));
 		this.getCommand("teleport_machine").setExecutor(new Teleport_machine_command_executer());
 		this.getCommand("watersheep").setExecutor(new Watersheep_command_executor());
+		this.getCommand("biome_modify").setExecutor(this.biome_modify);
 		// 初始化指令完成
 
 		getLogger().info("使用Vault");
@@ -346,7 +359,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public void onDisable() {
 		this.stop_structure_runner();
 		this.save_structure();
-		
+
 		try {
 			lottery_config.save(this.lottery_file);
 		} catch (IOException e) {
@@ -487,5 +500,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	public Teleport_machine_manager get_teleport_machine_manager() {
 		return this.teleport_machine_manager;
+	}
+
+	public Biome_modify get_biome_modify() {
+		return this.biome_modify;
 	}
 }

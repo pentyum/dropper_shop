@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.piggest.minecraft</groupId>
 	<artifactId>dropper_shop</artifactId>
-	<version>0.1.5-SNAPSHOT</version>
+	<version>0.1.6-SNAPSHOT</version>
 	<name>dropper_shop</name>
 	<repositories>
 		<repository>
@@ -15,6 +15,11 @@
 			<id>vault-repo</id>
 			<url>http://nexus.hc.to/content/repositories/pub_releases</url>
 		</repository>
+		<repository>
+			<id>dmulloy2-repo</id>
+			<url>https://repo.dmulloy2.net/nexus/repository/public/</url>
+		</repository>
+		<!-- And so on -->
 	</repositories>
 	<dependencies>
 		<!--Spigot API -->
@@ -35,6 +40,12 @@
 			<groupId>net.milkbowl.vault</groupId>
 			<artifactId>VaultAPI</artifactId>
 			<version>1.7</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.comphenix.protocol</groupId>
+			<artifactId>ProtocolLib</artifactId>
+			<version>4.5.0</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

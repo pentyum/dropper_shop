@@ -1,7 +1,7 @@
 name: dropper_shop
 main: com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin
 api-version: 1.15
-version: 0.1.5
+version: 0.1.6
 author: Pentyum
 commands:
   dropper_shop:
@@ -54,6 +54,11 @@ commands:
     usage: /<command> curse|bless|info
     permission: watersheep.use
     permission-message: You don't have permission
+  biome_modify:
+    description: commands relate to biome_modify.
+    usage: /<command> show_biome_temp|set_biome_temp
+    permission: biome_modify.use
+    permission-message: You don't have permission
 permissions:
   dropper_shop.*:
     description: Gives access to all dropper shop commands.
@@ -75,9 +80,6 @@ permissions:
     default: op
   dropper_shop.get_item:
     description: get a dropper_shop item.
-    default: op
-  dropper_shop.set_biome_temp:
-    description: set biome base temp.
     default: op
   depository.make:
     description: Make or remove a depository.
@@ -193,4 +195,11 @@ permissions:
   flying_item.set:
     description: set flying item time.
     default: op
-softdepend: [Vault]
+  biome_modify.use:
+    description: show biome base temp.
+    default: true
+  biome_modify.set_biome_temp:
+    description: set biome base temp.
+    default: op
+depend: [Vault]
+softdepend: [ProtocolLib]

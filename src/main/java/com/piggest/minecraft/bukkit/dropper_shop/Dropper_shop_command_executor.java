@@ -134,25 +134,6 @@ public class Dropper_shop_command_executor implements TabExecutor {
 					player.sendMessage(Elements_composition.get_element_composition(item).toString());
 				}
 				return true;
-			} else if (args[0].equalsIgnoreCase("show_biome_temp")) {
-				Biome biome = player.getLocation().getBlock().getBiome();
-				float temp = NMS_manager.biome_modifier.get_temperature(biome);
-				player.sendMessage(biome.name() + "的当前的基础温度为:" + temp);
-				return true;
-			} else if (args[0].equalsIgnoreCase("set_biome_temp")) {
-				if (!player.hasPermission("dropper_shop.set_biome_temp")) {
-					player.sendMessage("你没有设置温度的权限!");
-					return true;
-				}
-				Biome biome = player.getLocation().getBlock().getBiome();
-				try {
-					float temp = Float.parseFloat(args[1]);
-					NMS_manager.biome_modifier.set_temperature(biome, temp);
-					player.sendMessage(biome.name() + "的基础温度已设置为:" + temp);
-				} catch (Exception e) {
-					player.sendMessage("格式错误");
-				}
-				return true;
 			} else if (args[0].equalsIgnoreCase("get_item")) {
 				if (!player.hasPermission("dropper_shop.get_item")) {
 					player.sendMessage("你没有权限获得物品");
