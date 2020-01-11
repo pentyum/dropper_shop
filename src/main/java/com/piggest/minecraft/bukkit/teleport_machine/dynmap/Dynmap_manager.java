@@ -47,7 +47,6 @@ public class Dynmap_manager {
 		v += "天线长度: " + "<span style=\"font-weight:bold;\">%length%</span><br />";
 		v += "待机魔压: " + "<span style=\"font-weight:bold;\">%online_voltage%</span><br />";
 		v += "工作魔压: " + "<span style=\"font-weight:bold;\">%working_voltage%</span><br />";
-		v += "待机功率: " + "<span style=\"font-weight:bold;\">%online_power%</span><br />";
 		v += "剩余魔力: " + "<span style=\"font-weight:bold;\">%magic%</span><br />";
 		v += "频率信息: " + "<br /><span style=\"font-weight:bold;\">";
 		v += "中心波长: %wavelength%<br />";
