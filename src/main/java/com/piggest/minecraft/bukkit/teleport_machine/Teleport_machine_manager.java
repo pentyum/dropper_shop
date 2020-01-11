@@ -7,6 +7,7 @@ import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 import com.piggest.minecraft.bukkit.structure.Structure;
 import com.piggest.minecraft.bukkit.teleport_machine.dynmap.Dynmap_manager;
+import com.piggest.minecraft.bukkit.teleport_machine.dynmap.Dynmap_refresher;
 
 public class Teleport_machine_manager extends Gui_structure_manager<Teleport_machine> {
 	private Dynmap_manager dynmap_manager = new Dynmap_manager(this);
@@ -107,6 +108,7 @@ public class Teleport_machine_manager extends Gui_structure_manager<Teleport_mac
 		this.set_gui(53, Material.BLUE_STAINED_GLASS_PANE, "§r降低载波频率", new String[] { "§7-500 kHz" },
 				Gui_slot_type.Button);
 		this.dynmap_manager.activate();
+		this.structure_manager_runner = new Dynmap_refresher(this);
 	}
 
 	@Override

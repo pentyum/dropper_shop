@@ -24,6 +24,7 @@ public abstract class Structure_manager<T extends Structure> implements Iterable
 	protected Constructor<T> constructor = null;
 	protected HashMap<Chunk_location, HashSet<T>> chunk_structure_map = new HashMap<Chunk_location, HashSet<T>>();
 	protected HashMap<Location, T> structure_map = new HashMap<Location, T>();
+	protected Structure_manager_runner structure_manager_runner;
 
 	public Structure_manager(Class<T> structure_class) {
 		this.structure_class = structure_class;
@@ -119,6 +120,15 @@ public abstract class Structure_manager<T extends Structure> implements Iterable
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException e) {
 				e.printStackTrace();
+			}
+		}
+		if (this.structure_manager_runner != null) {
+			if (this.structure_manager_runner.is_asynchronously()) {
+				this.structure_manager_runner.runTaskTimerAsynchronously(Dropper_shop_plugin.instance,
+						this.structure_manager_runner.get_delay(), this.structure_manager_runner.get_cycle());
+			} else {
+				this.structure_manager_runner.runTaskTimer(Dropper_shop_plugin.instance,
+						this.structure_manager_runner.get_delay(), this.structure_manager_runner.get_cycle());
 			}
 		}
 		Dropper_shop_plugin.instance.getLogger().info("已加载" + i + "个" + structure_class.getSimpleName());

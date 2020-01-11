@@ -30,7 +30,6 @@ import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
-import com.piggest.minecraft.bukkit.teleport_machine.dynmap.Dynmap_refresher;
 import com.piggest.minecraft.bukkit.utils.Radio;
 
 public class Teleport_machine extends Multi_block_with_gui implements HasRunner, Radio_terminal {
@@ -64,7 +63,6 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	// private UUID current_work_with = null;
 	private Auto_refresher auto_refresher = new Auto_refresher(this);
 	private Teleport_machine_runner runner = new Teleport_machine_runner(this);
-	private Dynmap_refresher dynmap_refresher = new Dynmap_refresher(this);
 	private Teleporting_task teleport_task;
 	private ItemStack custom_flag = null;
 
@@ -779,7 +777,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 
 	@Override
 	public Structure_runner[] get_runner() {
-		return new Structure_runner[] { this.auto_refresher, this.runner,this.dynmap_refresher };
+		return new Structure_runner[] { this.auto_refresher, this.runner };
 	}
 
 	protected int get_current_page() {
