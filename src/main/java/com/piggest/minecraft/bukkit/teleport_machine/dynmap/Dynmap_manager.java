@@ -59,7 +59,6 @@ public class Dynmap_manager {
 		v = v.replace("%length%", res.get_n()+" m");
 		v = v.replace("%online_voltage%", res.get_voltage(Radio_state.ONLINE)+" V");
 		v = v.replace("%working_voltage%", res.get_voltage(Radio_state.WORKING)+" V");
-		v = v.replace("%online_power%", res.get_radiant_power(Radio_state.ONLINE)+" W");
 		v = v.replace("%wavelength%", res.get_channel_freq()+" kHz");
 		v = v.replace("%bandwidth%", res.get_channel_bandwidth()+" kHz");
 		v = v.replace("%magic%", res.get_amount(Element.Magic)+" kJ");
