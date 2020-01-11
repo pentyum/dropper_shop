@@ -344,14 +344,23 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
+		this.stop_structure_runner();
 		this.save_structure();
-
+		
 		try {
 			lottery_config.save(this.lottery_file);
 		} catch (IOException e) {
 			this.getLogger().severe("抽奖配置文件保存错误!");
 		}
 		this.remove_recipe();
+	}
+
+	private void stop_structure_runner() {
+		for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : this.structure_manager_map
+				.entrySet()) {
+			Structure_manager<? extends Structure> manager = entry.getValue();
+			manager.stop_runner();
+		}
 	}
 
 	public Dropper_shop_manager get_shop_manager() {

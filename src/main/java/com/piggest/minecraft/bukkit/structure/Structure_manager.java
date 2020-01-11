@@ -254,4 +254,10 @@ public abstract class Structure_manager<T extends Structure> implements Iterable
 	public Iterator<T> iterator() {
 		return this.structure_map.values().iterator();
 	}
+
+	public void stop_runner() {
+		if (this.structure_manager_runner != null) {
+			this.structure_manager_runner.cancel();
+		}
+	}
 }
