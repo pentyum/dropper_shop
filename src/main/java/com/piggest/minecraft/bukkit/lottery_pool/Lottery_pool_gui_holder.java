@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -41,7 +41,7 @@ public class Lottery_pool_gui_holder implements Paged_inventory_holder {
 		if (page <= 0) {
 			return;
 		}
-		FileConfiguration config = Dropper_shop_plugin.instance.get_lottery_config();
+		YamlConfiguration config = Dropper_shop_plugin.instance.get_lottery_config().get_config();
 		@SuppressWarnings("unchecked")
 		List<ItemStack> item_list = (List<ItemStack>) config.getList("pool");
 		List<Integer> possibility_list = config.getIntegerList("possibility");

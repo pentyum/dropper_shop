@@ -82,7 +82,7 @@ public class Biome_modify implements TabExecutor {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (command.getName().equalsIgnoreCase("biome_modify")) {
 			if (!(sender instanceof Player)) {
-				sender.sendMessage("只能由玩家执行");
+				sender.sendMessage("[生物群系修改器]只能由玩家执行");
 				return true;
 			}
 			Player player = (Player) sender;
@@ -90,21 +90,21 @@ public class Biome_modify implements TabExecutor {
 				Biome biome = player.getLocation().getBlock().getBiome();
 				float temp = NMS_manager.biome_modifier.get_temperature(biome);
 				float origin_temp = original_temp.get(biome);
-				player.sendMessage(
-						String.format("%s的当前的基础温度为:%.2f, 原版基础温度为:%.2f", biome.getKey().toString(), temp, origin_temp));
+				player.sendMessage(String.format("[生物群系修改器]%s的当前的基础温度为:%.2f, 原版基础温度为:%.2f", biome.getKey().toString(),
+						temp, origin_temp));
 				return true;
 			} else if (args[0].equalsIgnoreCase("set_biome_temp")) {
 				if (!player.hasPermission("biome_modify.set_biome_temp")) {
-					player.sendMessage("你没有设置温度的权限!");
+					player.sendMessage("[生物群系修改器]你没有设置温度的权限!");
 					return true;
 				}
 				Biome biome = player.getLocation().getBlock().getBiome();
 				try {
 					float temp = Float.parseFloat(args[1]);
 					this.set_custom_temp(biome, temp);
-					player.sendMessage(biome.name() + "的基础温度已设置为:" + temp);
+					player.sendMessage("[生物群系修改器]" + biome.name() + "的基础温度已设置为:" + temp);
 				} catch (Exception e) {
-					player.sendMessage("格式错误");
+					player.sendMessage("[生物群系修改器]格式错误");
 				}
 				return true;
 			}

@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -42,7 +42,7 @@ public class Lottery_pool_command_executor implements TabExecutor {
 				sender.sendMessage(msg);
 				return true;
 			} else {
-				FileConfiguration config = Dropper_shop_plugin.instance.get_lottery_config();
+				YamlConfiguration config = Dropper_shop_plugin.instance.get_lottery_config().get_config();
 				@SuppressWarnings("unchecked")
 				List<ItemStack> item_list = (List<ItemStack>) config.getList("pool");
 				List<Integer> possibility_list = config.getIntegerList("possibility");
@@ -213,7 +213,7 @@ public class Lottery_pool_command_executor implements TabExecutor {
 						sender.sendMessage("[抽奖机]你没有权限重载抽奖池");
 						return true;
 					}
-					Dropper_shop_plugin.instance.lottery_config_load();
+					Dropper_shop_plugin.instance.get_lottery_config().load();
 					sender.sendMessage("[抽奖机]奖池配置已重载");
 				} else {
 					sender.sendMessage("[抽奖机]命令格式错误");
@@ -232,7 +232,7 @@ public class Lottery_pool_command_executor implements TabExecutor {
 		if (args.length == 1) {
 			return Lottery_sub_cmd.get_list(sender);
 		} else if (args.length == 2) {
-			FileConfiguration config = Dropper_shop_plugin.instance.get_lottery_config();
+			YamlConfiguration config = Dropper_shop_plugin.instance.get_lottery_config().get_config();
 			List<Integer> possibility_list = config.getIntegerList("possibility");
 			int size = possibility_list.size();
 			ArrayList<String> list = new ArrayList<String>();

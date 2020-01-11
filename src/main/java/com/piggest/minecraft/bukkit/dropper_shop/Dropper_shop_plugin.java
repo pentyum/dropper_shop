@@ -1,7 +1,5 @@
 package com.piggest.minecraft.bukkit.dropper_shop;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,7 +12,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
@@ -35,6 +32,7 @@ import com.piggest.minecraft.bukkit.anti_thunder.Anti_thunder;
 import com.piggest.minecraft.bukkit.anti_thunder.Anti_thunder_listener;
 import com.piggest.minecraft.bukkit.anti_thunder.Anti_thunder_manager;
 import com.piggest.minecraft.bukkit.biome_modify.Biome_modify;
+import com.piggest.minecraft.bukkit.config.Lottery_config;
 import com.piggest.minecraft.bukkit.config.Price_config;
 import com.piggest.minecraft.bukkit.config.World_structure_config;
 import com.piggest.minecraft.bukkit.depository.Depository;
@@ -92,9 +90,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private Economy economy = null;
 	private FileConfiguration config = null;
 	private HashMap<String, World_structure_config> all_shop_config = new HashMap<String, World_structure_config>();
-	private FileConfiguration lottery_config = null;
-	// private File shop_file = null;
-	private File lottery_file = null;
+	private Lottery_config lottery_config = null;
 
 	private int exp_saver_max_structure_level = 0;
 	private int exp_saver_anvil_upgrade_need = 0;
@@ -170,10 +166,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		for (String material_name : unit_keys) {
 			this.unit_map.put(material_name, unit_section.getInt(material_name));
 		}
-		// this.shop_file = new File(this.getDataFolder(), "shops.yml");
-		// this.shop_config = YamlConfiguration.loadConfiguration(shop_file);
-		this.lottery_file = new File(this.getDataFolder(), "lottery_pool.yml");
-		this.lottery_config_load();
+		this.lottery_config.load();
 
 		this.gen_air();
 
@@ -187,7 +180,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		return this.all_shop_config;
 	}
 
-	public FileConfiguration get_lottery_config() {
+	public Lottery_config get_lottery_config() {
 		return this.lottery_config;
 	}
 
@@ -359,12 +352,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public void onDisable() {
 		this.stop_structure_runner();
 		this.save_structure();
-
-		try {
-			lottery_config.save(this.lottery_file);
-		} catch (IOException e) {
-			this.getLogger().severe("抽奖配置文件保存错误!");
-		}
+		
+		this.lottery_config.save();
+		
 		this.remove_recipe();
 	}
 
@@ -464,14 +454,6 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		} else {
 			return false;
 		}
-	}
-
-	public void lottery_config_load(File lottery_file) {
-		this.lottery_config = YamlConfiguration.loadConfiguration(lottery_file);
-	}
-
-	public void lottery_config_load() {
-		this.lottery_config_load(this.lottery_file);
 	}
 
 	public Price_config get_price_config() {

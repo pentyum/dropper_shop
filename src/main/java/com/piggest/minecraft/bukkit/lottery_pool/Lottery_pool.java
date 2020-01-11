@@ -9,7 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -155,7 +155,7 @@ public class Lottery_pool extends Multi_block_structure {
 	}
 
 	public void end_lottery(Player player) {
-		FileConfiguration config = Dropper_shop_plugin.instance.get_lottery_config();
+		YamlConfiguration config = Dropper_shop_plugin.instance.get_lottery_config().get_config();
 		World world = this.get_location().getWorld();
 		for (EnderCrystal ender_crystal : ender_crystal_list) { // 设置特效光柱
 			ender_crystal.setBeamTarget(null);
