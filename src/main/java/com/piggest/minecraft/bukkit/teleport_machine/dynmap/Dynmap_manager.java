@@ -47,7 +47,7 @@ public class Dynmap_manager {
 		v += "天线长度: " + "<span style=\"font-weight:bold;\">%length%</span><br />";
 		v += "待机魔压: " + "<span style=\"font-weight:bold;\">%online_voltage%</span><br />";
 		v += "工作魔压: " + "<span style=\"font-weight:bold;\">%working_voltage%</span><br />";
-		v += "当前功率: " + "<span style=\"font-weight:bold;\">%current_power%</span><br />";
+		v += "待机功率: " + "<span style=\"font-weight:bold;\">%online_power%</span><br />";
 		v += "剩余魔力: " + "<span style=\"font-weight:bold;\">%magic%</span><br />";
 		v += "频率信息: " + "<br /><span style=\"font-weight:bold;\">";
 		v += "中心波长: %wavelength%<br />";
@@ -59,7 +59,7 @@ public class Dynmap_manager {
 		v = v.replace("%length%", res.get_n()+" m");
 		v = v.replace("%online_voltage%", res.get_voltage(Radio_state.ONLINE)+" V");
 		v = v.replace("%working_voltage%", res.get_voltage(Radio_state.WORKING)+" V");
-		v = v.replace("%current_power%", res.get_current_radiant_power()+" W");
+		v = v.replace("%online_power%", res.get_radiant_power(Radio_state.ONLINE)+" W");
 		v = v.replace("%wavelength%", res.get_channel_freq()+" kHz");
 		v = v.replace("%bandwidth%", res.get_channel_bandwidth()+" kHz");
 		v = v.replace("%magic%", res.get_amount(Element.Magic)+" kJ");
