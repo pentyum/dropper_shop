@@ -166,6 +166,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		for (String material_name : unit_keys) {
 			this.unit_map.put(material_name, unit_section.getInt(material_name));
 		}
+		this.lottery_config = new Lottery_config();
 		this.lottery_config.load();
 
 		this.gen_air();
