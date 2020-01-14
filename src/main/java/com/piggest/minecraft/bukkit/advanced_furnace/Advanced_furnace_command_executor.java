@@ -63,6 +63,10 @@ public class Advanced_furnace_command_executor implements TabExecutor {
 					player.sendMessage("[高级熔炉]没有检测到完整的高级熔炉结构");
 					return true;
 				}
+				if(!player.hasPermission("adv_furnace.get_money")) {
+					player.sendMessage("[高级熔炉]你没有取出金币的权限!");
+					return true;
+				}
 				int money = adv_furnace.get_money();
 				Dropper_shop_plugin.instance.get_economy().depositPlayer(player, money);
 				player.sendMessage("[高级熔炉]已获得" + money);

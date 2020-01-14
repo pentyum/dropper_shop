@@ -117,6 +117,9 @@ permissions:
   adv_furnace.make_money:
     description: Make money ability.
     default: true
+  adv_furnace.get_money:
+    description: Get money ability.
+    default: true
   wrench.*:
     description: Gives access to all wrench commands
     default: op
