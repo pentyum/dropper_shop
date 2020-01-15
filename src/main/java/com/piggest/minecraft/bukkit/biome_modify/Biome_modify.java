@@ -126,15 +126,17 @@ public class Biome_modify implements TabExecutor {
 				try {
 					boolean enable = Boolean.parseBoolean(args[1]);
 					if (enable) {
+						player.sendMessage("[生物群系修改器]已开启冬天模式");
 						this.winter_mode.enable(this);
 					} else {
+						player.sendMessage("[生物群系修改器]已关闭冬天模式");
 						this.winter_mode.disable(this);
 					}
+					return true;
 				} catch (Exception e) {
 					player.sendMessage("[生物群系修改器]格式错误(true/false)");
 					return true;
 				}
-				return true;
 			}
 		}
 		return false;

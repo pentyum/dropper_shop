@@ -26,6 +26,7 @@ public class Winter_mode {
 
 		this.winter_biome_map.put(Biome.MOUNTAINS, Biome.SNOWY_MOUNTAINS);
 		this.winter_biome_map.put(Biome.GRAVELLY_MOUNTAINS, Biome.SNOWY_MOUNTAINS);
+		this.winter_biome_map.put(Biome.WOODED_MOUNTAINS, Biome.SNOWY_TAIGA_MOUNTAINS);
 		this.winter_biome_map.put(Biome.MODIFIED_GRAVELLY_MOUNTAINS, Biome.SNOWY_MOUNTAINS);
 
 		this.winter_biome_map.put(Biome.TAIGA, Biome.SNOWY_TAIGA);
@@ -38,6 +39,7 @@ public class Winter_mode {
 		this.winter_biome_map.put(Biome.GIANT_TREE_TAIGA_HILLS, Biome.SNOWY_TAIGA_HILLS);
 
 		this.winter_biome_map.put(Biome.FOREST, Biome.SNOWY_TAIGA);
+		this.winter_biome_map.put(Biome.WOODED_HILLS, Biome.SNOWY_TAIGA_HILLS);
 		this.winter_biome_map.put(Biome.BIRCH_FOREST, Biome.SNOWY_TAIGA);
 		this.winter_biome_map.put(Biome.BIRCH_FOREST_HILLS, Biome.SNOWY_TAIGA_HILLS);
 		this.winter_biome_map.put(Biome.DARK_FOREST, Biome.SNOWY_TAIGA);
