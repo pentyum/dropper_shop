@@ -237,6 +237,10 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		this.biome_modify = new Biome_modify();
+		boolean winter_mode_enabled = this.config.getBoolean("winter-mode");
+		if(winter_mode_enabled) {
+			this.biome_modify.get_winder_mode().enable(this.biome_modify);
+		}
 		try {
 			this.protocol_manager = ProtocolLibrary.getProtocolManager();
 			protocol_manager.addPacketListener(NMS_manager.packet_map_chunk_listener);

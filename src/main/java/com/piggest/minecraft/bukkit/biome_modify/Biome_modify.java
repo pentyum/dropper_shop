@@ -139,4 +139,8 @@ public class Biome_modify implements TabExecutor {
 		}
 		return false;
 	}
+
+	public Winter_mode get_winder_mode() {
+		return this.winter_mode;
+	}
 }

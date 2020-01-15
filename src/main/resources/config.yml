@@ -14,7 +14,7 @@ exp-saver-remove-repaircost-price: 10000
 anti-thunder-price: 60
 anti-thunder-cycle: 3600
 adv-furnace-price: 1000
-
+winter-mode: false
 sync-realtime-worlds:
   new_world: 0
 
