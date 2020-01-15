@@ -21,7 +21,9 @@ public class Biome_modify implements TabExecutor {
 
 	public void set_pretend_biome(Biome biome, Biome pretend_biome) {
 		this.pretend_biome.put(biome, pretend_biome);
-		this.custom_temp.put(biome, NMS_manager.biome_modifier.get_temperature(pretend_biome));
+		float temp = NMS_manager.biome_modifier.get_temperature(pretend_biome);
+		this.custom_temp.put(biome, temp);
+		NMS_manager.biome_modifier.set_temperature(biome, temp);
 	}
 
 	public void reset_all() {
