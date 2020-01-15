@@ -16,7 +16,18 @@ public class Biome_modify implements TabExecutor {
 	private HashMap<Biome, Float> custom_temp = new HashMap<>();
 	public static final HashMap<Biome, Float> original_temp = new HashMap<>();
 	private HashMap<Biome, Biome> pretend_biome = new HashMap<>();
-	private String[] subcommand_list = new String[] { "show_biome_temp", "set_biome_temp" };
+	private Winter_mode winter_mode = new Winter_mode();
+	private String[] subcommand_list = new String[] { "show_biome_temp", "set_biome_temp", "winter_mode" };
+
+	public void set_pretend_biome(Biome biome, Biome pretend_biome) {
+		this.pretend_biome.put(biome, pretend_biome);
+		this.custom_temp.put(biome, NMS_manager.biome_modifier.get_temperature(pretend_biome));
+	}
+
+	public void reset_all() {
+		this.pretend_biome = new HashMap<Biome, Biome>();
+		this.custom_temp = new HashMap<Biome, Float>();
+	}
 
 	public void set_custom_temp(Biome biome, float temp) {
 		custom_temp.put(biome, temp);
@@ -102,9 +113,26 @@ public class Biome_modify implements TabExecutor {
 				try {
 					float temp = Float.parseFloat(args[1]);
 					this.set_custom_temp(biome, temp);
-					player.sendMessage("[生物群系修改器]" + biome.name() + "的基础温度已设置为:" + temp);
+					player.sendMessage("[生物群系修改器]" + biome.getKey().toString() + "的基础温度已设置为:" + temp);
 				} catch (Exception e) {
 					player.sendMessage("[生物群系修改器]格式错误");
+				}
+				return true;
+			} else if (args[0].equalsIgnoreCase("winter_mode")) {
+				if (!player.hasPermission("biome_modify.set_biome_temp")) {
+					player.sendMessage("[生物群系修改器]你没有设置温度的权限!");
+					return true;
+				}
+				try {
+					boolean enable = Boolean.parseBoolean(args[1]);
+					if (enable) {
+						this.winter_mode.enable(this);
+					} else {
+						this.winter_mode.disable(this);
+					}
+				} catch (Exception e) {
+					player.sendMessage("[生物群系修改器]格式错误(true/false)");
+					return true;
 				}
 				return true;
 			}
