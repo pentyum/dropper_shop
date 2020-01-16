@@ -17,10 +17,11 @@ public class Winter_mode {
 		this.winter_biome_map.put(Biome.DEEP_OCEAN, Biome.DEEP_FROZEN_OCEAN);
 		this.winter_biome_map.put(Biome.COLD_OCEAN, Biome.FROZEN_OCEAN);
 		this.winter_biome_map.put(Biome.DEEP_COLD_OCEAN, Biome.DEEP_FROZEN_OCEAN);
-		this.winter_biome_map.put(Biome.LUKEWARM_OCEAN, Biome.FROZEN_OCEAN);
-		this.winter_biome_map.put(Biome.DEEP_LUKEWARM_OCEAN, Biome.DEEP_FROZEN_OCEAN);
-		this.winter_biome_map.put(Biome.WARM_OCEAN, Biome.COLD_OCEAN);
-
+		this.winter_biome_map.put(Biome.LUKEWARM_OCEAN, Biome.COLD_OCEAN);
+		this.winter_biome_map.put(Biome.DEEP_LUKEWARM_OCEAN, Biome.DEEP_COLD_OCEAN);
+		this.winter_biome_map.put(Biome.WARM_OCEAN, Biome.OCEAN);
+		this.winter_biome_map.put(Biome.DEEP_WARM_OCEAN, Biome.DEEP_OCEAN);
+		
 		this.winter_biome_map.put(Biome.PLAINS, Biome.SNOWY_TUNDRA);
 		this.winter_biome_map.put(Biome.SUNFLOWER_PLAINS, Biome.SNOWY_TUNDRA);
 
