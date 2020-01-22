@@ -108,7 +108,9 @@ public class Teleport_machine_manager extends Gui_structure_manager<Teleport_mac
 		this.set_gui(53, Material.BLUE_STAINED_GLASS_PANE, "§r降低载波频率", new String[] { "§7-500 kHz" },
 				Gui_slot_type.Button);
 		this.dynmap_manager.activate();
-		this.structure_manager_runner = new Dynmap_refresher(this);
+		if (this.dynmap_manager.api != null) {
+			this.structure_manager_runner = new Dynmap_refresher(this);
+		}
 	}
 
 	@Override
@@ -150,7 +152,9 @@ public class Teleport_machine_manager extends Gui_structure_manager<Teleport_mac
 	public void add(Structure new_structure) {
 		Teleport_machine machine = (Teleport_machine) new_structure;
 		super.add(new_structure);
-		dynmap_manager.handle_teleport_machine_add(machine);
+		if (dynmap_manager.api != null) {
+			dynmap_manager.handle_teleport_machine_add(machine);
+		}
 	}
 
 	@Override
@@ -158,7 +162,9 @@ public class Teleport_machine_manager extends Gui_structure_manager<Teleport_mac
 		Teleport_machine machine = (Teleport_machine) structure;
 		super.remove(structure);
 		Radio_manager.instance.remove(machine.get_uuid());
-		dynmap_manager.handle_teleport_machine_remove(machine);
+		if (dynmap_manager.api != null) {
+			dynmap_manager.handle_teleport_machine_remove(machine);
+		}
 	}
 
 	public Dynmap_manager get_dynmap_manager() {
