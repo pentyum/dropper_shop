@@ -43,7 +43,8 @@ public class Dynmap_manager {
 		if (res.getCustomName() == null)
 			return null;
 		String v = "<div class=\"regioninfo\"><div class=\"infowindow\"><span style=\"font-size:140%;font-weight:bold;\">%name%</span><br /> ";
-		//v += "所有者: " + "<span style=\"font-weight:bold;\">%playerowners%</span><br />";
+		// v += "所有者: " + "<span style=\"font-weight:bold;\">%playerowners%</span><br
+		// />";
 		v += "天线长度: " + "<span style=\"font-weight:bold;\">%length%</span><br />";
 		v += "待机魔压: " + "<span style=\"font-weight:bold;\">%online_voltage%</span><br />";
 		v += "工作魔压: " + "<span style=\"font-weight:bold;\">%working_voltage%</span><br />";
@@ -55,37 +56,33 @@ public class Dynmap_manager {
 		v += "</div></div>";
 
 		v = v.replace("%name%", res.getCustomName());
-		v = v.replace("%length%", res.get_n()+" m");
-		v = v.replace("%online_voltage%", res.get_voltage(Radio_state.ONLINE)+" V");
-		v = v.replace("%working_voltage%", res.get_voltage(Radio_state.WORKING)+" V");
-		v = v.replace("%wavelength%", res.get_channel_freq()+" kHz");
-		v = v.replace("%bandwidth%", res.get_channel_bandwidth()+" kHz");
-		v = v.replace("%magic%", res.get_amount(Element.Magic)+" kJ");
+		v = v.replace("%length%", res.get_n() + " m");
+		v = v.replace("%online_voltage%", res.get_voltage(Radio_state.ONLINE) + " V");
+		v = v.replace("%working_voltage%", res.get_voltage(Radio_state.WORKING) + " V");
+		v = v.replace("%wavelength%", res.get_channel_freq() + " kHz");
+		v = v.replace("%bandwidth%", res.get_channel_bandwidth() + " kHz");
+		v = v.replace("%magic%", res.get_amount(Element.Magic) + " kJ");
 		// v = v.replace("%playerowners%", res.getOwner());
 		return v;
 	}
+
 	/*
-	private void addStyle(Teleport_machine res, Marker m) {
-		AreaStyle as = new AreaStyle();
-		int sc = 0xFF0000;
-		int fc = 0xFF0000;
-		try {
-			sc = Integer.parseInt(as.strokecolor.substring(1), 16);
-			if (plugin.getRentManager().isForRent(resid) && !plugin.getRentManager().isRented(resid))
-				fc = Integer.parseInt(as.forrentstrokecolor.substring(1), 16);
-			else if (plugin.getRentManager().isForRent(resid) && plugin.getRentManager().isRented(resid))
-				fc = Integer.parseInt(as.rentedstrokecolor.substring(1), 16);
-			else if (plugin.getTransactionManager().isForSale(resid))
-				fc = Integer.parseInt(as.forsalestrokecolor.substring(1), 16);
-			else
-				fc = Integer.parseInt(as.fillcolor.substring(1), 16);
-		} catch (NumberFormatException nfx) {
-		}
-		m.setLineStyle(as.strokeweight, as.strokeopacity, sc);
-		m.setFillStyle(as.fillopacity, fc);
-		m.setRangeY(as.y, as.y);
-	}
-	*/
+	 * private void addStyle(Teleport_machine res, Marker m) { AreaStyle as = new
+	 * AreaStyle(); int sc = 0xFF0000; int fc = 0xFF0000; try { sc =
+	 * Integer.parseInt(as.strokecolor.substring(1), 16); if
+	 * (plugin.getRentManager().isForRent(resid) &&
+	 * !plugin.getRentManager().isRented(resid)) fc =
+	 * Integer.parseInt(as.forrentstrokecolor.substring(1), 16); else if
+	 * (plugin.getRentManager().isForRent(resid) &&
+	 * plugin.getRentManager().isRented(resid)) fc =
+	 * Integer.parseInt(as.rentedstrokecolor.substring(1), 16); else if
+	 * (plugin.getTransactionManager().isForSale(resid)) fc =
+	 * Integer.parseInt(as.forsalestrokecolor.substring(1), 16); else fc =
+	 * Integer.parseInt(as.fillcolor.substring(1), 16); } catch
+	 * (NumberFormatException nfx) { } m.setLineStyle(as.strokeweight,
+	 * as.strokeopacity, sc); m.setFillStyle(as.fillopacity, fc); m.setRangeY(as.y,
+	 * as.y); }
+	 */
 	public void handle_teleport_machine_add(Teleport_machine res) {
 
 		if (res == null) {
@@ -144,10 +141,11 @@ public class Dynmap_manager {
 
 	public void activate() {
 		try {
-			markerapi = api.getMarkerAPI();
+			this.markerapi = api.getMarkerAPI();
 		} catch (Exception e) {
 		}
-		if (markerapi == null) {
+		if (this.markerapi == null) {
+			this.api = null;
 			Dropper_shop_plugin.instance.getLogger().warning("dynmap api 加载错误!");
 			return;
 		}
