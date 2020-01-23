@@ -18,10 +18,8 @@ public class Depository_manager extends Gui_structure_manager<Depository> {
 			{ { Material.LAPIS_BLOCK, Material.IRON_BLOCK, Material.LAPIS_BLOCK },
 				{ Material.IRON_BLOCK, Material.DIAMOND_BLOCK, Material.IRON_BLOCK },
 				{ Material.LAPIS_BLOCK, Material.IRON_BLOCK, Material.LAPIS_BLOCK } } };
-	private int center_x = 1;
-	private int center_y = 1;
-	private int center_z = 1;
-
+	private int[] center = new int[] {1,1,1};
+	
 	public Depository_manager() {
 		super(Depository.class);
 		Depository_manager.instance = this;
@@ -103,6 +101,6 @@ public class Depository_manager extends Gui_structure_manager<Depository> {
 	
 	@Override
 	public int[] get_center() {
-		return new int[] {this.center_x,this.center_y,this.center_z};
+		return this.center;
 	}
 }

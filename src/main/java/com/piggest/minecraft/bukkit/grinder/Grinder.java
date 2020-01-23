@@ -72,7 +72,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 		return 0;
 	}
 
-	public synchronized void set_flint_storge(int storage) {
+	public synchronized void set_flint_storage(int storage) {
 		ItemStack flint_info = this.gui.getContents()[17];
 		ItemMeta flint_info_meta = flint_info.getItemMeta();
 		ArrayList<String> lore = new ArrayList<String>();
@@ -167,28 +167,6 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 						}
 					}
 				}
-				/*
-				 * if (Grinder.is_empty(this.get_main_product())) {// 主产物槽为空 if
-				 * (minor_product_item == null) {// 没副产物 if
-				 * (Inventory_io.Item_remove_one(this.get_raw()) != null) {// 移除原料
-				 * this.set_main_product(main_product_item.clone());// 添加主产物 return true; } }
-				 * else {// 有副产物 if (Grinder.is_empty(this.get_minor_product())) {// 副产物槽也为空 if
-				 * (Inventory_io.Item_remove_one(this.get_raw()) != null) {// 移除原料
-				 * this.set_main_product(main_product_item.clone());// 添加主产物
-				 * this.set_minor_product(minor_product_item.clone());// 添加副产物 return true; } }
-				 * else {// 副产物槽不是空 int new_num = this.get_minor_product().getAmount() +
-				 * minor_product_item.getAmount(); if (new_num <=
-				 * minor_product_item.getMaxStackSize()) {// 足够堆叠 if
-				 * (Inventory_io.Item_remove_one(this.get_raw()) != null) {
-				 * this.set_main_product(main_product_item.clone());// 添加主产物
-				 * this.get_minor_product().setAmount(new_num);// 添加副产物 return true; } } } } }
-				 * else if (this.get_main_product().isSimilar(main_product_item)) {// 主产物槽不是空
-				 * int new_num = this.get_main_product().getAmount() +
-				 * main_product_item.getAmount(); if (new_num <=
-				 * main_product_item.getMaxStackSize()) { if
-				 * (Inventory_io.Item_remove_one(this.get_raw()) != null) {
-				 * this.get_main_product().setAmount(new_num);// 添加主产物 return true; } } }
-				 */
 			}
 		}
 		return false;
@@ -196,28 +174,10 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 
 	public synchronized boolean add_a_raw(ItemStack src_item) {
 		return Inventory_io.move_item_to_slot(src_item, 1, gui, Grinder.raw_slot);
-		/*
-		 * if (!Grinder.is_empty(src_item)) { if (Grinder.is_empty(this.get_raw())) {
-		 * this.set_raw(src_item.clone()); this.get_raw().setAmount(1);
-		 * src_item.setAmount(src_item.getAmount() - 1); return true; } else if
-		 * (src_item.isSimilar(this.get_raw())) { int new_num = 1 +
-		 * this.get_raw().getAmount(); if (new_num <= src_item.getMaxStackSize()) {
-		 * this.get_raw().setAmount(new_num); src_item.setAmount(src_item.getAmount() -
-		 * 1); return true; } } } return false;
-		 */
 	}
 
 	public synchronized boolean add_a_flint(ItemStack src_item) {
 		return Inventory_io.move_item_to_slot(src_item, 1, gui, Grinder.flint_slot);
-		/*
-		 * if (!Grinder.is_empty(src_item)) { if (Grinder.is_empty(this.get_flint())) {
-		 * this.set_flint(src_item.clone()); this.get_flint().setAmount(1);
-		 * src_item.setAmount(src_item.getAmount() - 1); return true; } else if
-		 * (src_item.isSimilar(this.get_flint())) { int new_num = 1 +
-		 * this.get_flint().getAmount(); if (new_num <= src_item.getMaxStackSize()) {
-		 * this.get_flint().setAmount(new_num); src_item.setAmount(src_item.getAmount()
-		 * - 1); return true; } } } return false;
-		 */
 	}
 
 	public synchronized void set_process(int process) {
@@ -227,7 +187,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 	@Override
 	protected void set_from_save(Map<?, ?> shop_save) {
 		super.set_from_save(shop_save);
-		this.set_flint_storge((Integer) shop_save.get("flint-storge"));
+		this.set_flint_storage((Integer) shop_save.get("flint-storge"));
 		this.runner.working_ticks = (Integer) shop_save.get("working-ticks");
 		if (shop_save.get("raw") != null) {
 			ItemStack raw_item = Material_ext.new_item((String) shop_save.get("raw"), (int) shop_save.get("raw-num"));

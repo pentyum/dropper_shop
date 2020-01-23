@@ -18,10 +18,8 @@ public class Advanced_furnace_manager extends Gui_structure_manager<Advanced_fur
 			{ { Material.GOLD_BLOCK, Material.IRON_BLOCK, Material.GOLD_BLOCK },
 					{ Material.IRON_BLOCK, null, Material.IRON_BLOCK },
 					{ Material.GOLD_BLOCK, Material.IRON_BLOCK, Material.GOLD_BLOCK } } };
-	private int center_x = 1;
-	private int center_y = 1;
-	private int center_z = 1;
-
+	private int[] center = new int[] {1,1,1};
+	
 	public Advanced_furnace_manager() {
 		super(Advanced_furnace.class);
 		Advanced_furnace_manager.instance = this;
@@ -116,7 +114,7 @@ public class Advanced_furnace_manager extends Gui_structure_manager<Advanced_fur
 
 	@Override
 	public int[] get_center() {
-		return new int[] { this.center_x, this.center_y, this.center_z };
+		return this.center;
 	}
 
 	public int get_time_add_per_time_upgrade() {

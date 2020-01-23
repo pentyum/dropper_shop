@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.piggest.minecraft</groupId>
 	<artifactId>dropper_shop</artifactId>
-	<version>0.1.6-SNAPSHOT</version>
+	<version>0.1.7-SNAPSHOT</version>
 	<name>dropper_shop</name>
 	<repositories>
 		<repository>

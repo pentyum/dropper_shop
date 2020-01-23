@@ -21,10 +21,8 @@ public class Grinder_manager extends Gui_structure_manager<Grinder> {
 			{ { null, null, null }, { null, Material.COBBLESTONE_WALL, null }, { null, null, null } },
 			{ { null, Material.END_ROD, null }, { Material.END_ROD, Material.SMOOTH_STONE, Material.END_ROD },
 					{ null, Material.END_ROD, null } } };
-	private int center_x = 1;
-	private int center_y = 2;
-	private int center_z = 1;
-
+	private int[] center = new int[] {1,2,1};
+	
 	public Grinder_manager() {
 		super(Grinder.class);
 		// this.set_bar(0,"§e磨粉机工作进度: %d %%");
@@ -170,7 +168,7 @@ public class Grinder_manager extends Gui_structure_manager<Grinder> {
 
 	@Override
 	public int[] get_center() {
-		return new int[] { this.center_x, this.center_y, this.center_z };
+		return this.center;
 	}
 	/*
 	 * 注意：仅提供信息，要生成物品必须clone

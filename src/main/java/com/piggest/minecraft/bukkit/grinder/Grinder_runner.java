@@ -21,7 +21,7 @@ public class Grinder_runner extends Structure_runner {
 				Material material = grinder.get_flint().getType();
 				int unit = Dropper_shop_plugin.instance.get_unit(material);
 				if (unit != 0) {
-					grinder.set_flint_storge(grinder.get_flint_storage() + unit);
+					grinder.set_flint_storage(grinder.get_flint_storage() + unit);
 					grinder.get_flint().setAmount(grinder.get_flint().getAmount() - 1);
 				}
 			}
@@ -44,7 +44,7 @@ public class Grinder_runner extends Structure_runner {
 				if (grinder.to_product() == true) {
 					grinder.set_process(0);
 					this.working_ticks = 0;
-					grinder.set_flint_storge(grinder.get_flint_storage() - 1);
+					grinder.set_flint_storage(grinder.get_flint_storage() - 1);
 				}
 			}
 		}
