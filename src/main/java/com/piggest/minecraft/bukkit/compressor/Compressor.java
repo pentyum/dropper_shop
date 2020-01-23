@@ -32,7 +32,12 @@ public class Compressor extends Multi_block_with_gui implements HasRunner, Auto_
 	private static final int[][] piston_hopper_check_list = { { 0, -1, 2 }, { 2, -1, 0 }, { 0, -1, -2 }, { -2, -1, 0 } }; // 注入活塞单位
 	private static final int[][] product_check_list = { { 1, -1, 2 }, { 2, -1, 1 }, { -1, -1, 2 }, { 2, -1, -1 },
 			{ 1, -1, -2 }, { -2, -1, 1 }, { -2, -1, -1 }, { -1, -1, -2 } };// 产品自动流出
-
+	
+	public Compressor() {
+		this.set_process(0);
+		this.set_piston_storage(0);
+	}
+	
 	@Override
 	public void on_button_pressed(Player player, int slot) {
 		return;

@@ -20,13 +20,14 @@ public class Compressor_manager extends Gui_structure_manager<Compressor> {
 			{ { Material.STONE_BRICKS, Material.IRON_BLOCK, Material.STONE_BRICKS },
 					{ Material.IRON_BLOCK, Material.DIAMOND_BLOCK, Material.IRON_BLOCK },
 					{ Material.STONE_BRICKS, Material.IRON_BLOCK, Material.STONE_BRICKS } },
-			{ { Material.IRON_BLOCK, Material.PISTON, Material.IRON_BLOCK }, { Material.PISTON, null, Material.PISTON },
+			{ { Material.IRON_BLOCK, Material.PISTON, Material.IRON_BLOCK }, 
+					{ Material.PISTON, null, Material.PISTON },
 					{ Material.IRON_BLOCK, Material.PISTON, Material.IRON_BLOCK } },
 			{ { Material.STONE_BRICKS, Material.IRON_BLOCK, Material.STONE_BRICKS },
 					{ Material.IRON_BLOCK, Material.DIAMOND_BLOCK, Material.IRON_BLOCK },
 					{ Material.STONE_BRICKS, Material.IRON_BLOCK, Material.STONE_BRICKS } } };;
 	private String gui_name = "压缩机";
-	private int[] center = new int[] { 1, 1, 1 };
+	private int[] center = new int[] { 1, 0, 1 };
 
 	public Compressor_manager() {
 		super(Compressor.class);
@@ -37,7 +38,7 @@ public class Compressor_manager extends Gui_structure_manager<Compressor> {
 		this.set_gui(Compressor.piston_slot, null, "piston-slot", Gui_slot_type.Item_store);
 		this.set_gui(Compressor.product_slot, null, "main-product", Gui_slot_type.Item_store);
 		this.set_gui(16, Material.BLUE_STAINED_GLASS_PANE, "§r右边为活塞单元储量", Gui_slot_type.Indicator);
-		this.set_gui(17, Material.FLINT, "§e活塞单元", Gui_slot_type.Indicator);
+		this.set_gui(17, Material.PISTON, "§e活塞单元", Gui_slot_type.Indicator);
 	}
 
 	@Override

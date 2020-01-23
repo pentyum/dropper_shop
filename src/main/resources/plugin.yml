@@ -204,5 +204,11 @@ permissions:
   biome_modify.set_biome_temp:
     description: set biome base temp.
     default: op
+  compressor.make:
+    description: Make compressor.
+    default: true
+  compressor.use:
+    description: Use compressor.
+    default: true
 depend: [Vault]
 softdepend: [ProtocolLib]

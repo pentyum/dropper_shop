@@ -135,7 +135,7 @@ public abstract class Structure {
 	public abstract boolean create_condition(Player player);
 
 	/**
-	 * 在设定好位置后、读取存档之前进行的初始化操作。
+	 * 在设定好位置后、读取存档之前(新建的结构则没有存档读取过程)进行的初始化操作。
 	 */
 	protected abstract void init_after_set_location();
 

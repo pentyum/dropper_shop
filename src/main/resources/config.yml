@@ -26,6 +26,7 @@ wrench-price:
 flint-unit:
   FLINT: 16
   OBSIDIAN: 24
+  PISTON: 32
 air:
   world:
     oxygen: 210

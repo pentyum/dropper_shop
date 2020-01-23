@@ -221,9 +221,6 @@ public abstract class Structure_manager<T extends Structure> implements Iterable
 		return null;
 	}
 
-	// public abstract T find(String player_name, Location loc, boolean
-	// new_structure);
-
 	public abstract String get_permission_head();
 
 	public HashSet<T> get_all_structures_in_chunk(Chunk_location chunk_location) {
