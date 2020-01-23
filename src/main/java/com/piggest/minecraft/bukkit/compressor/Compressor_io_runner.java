@@ -4,7 +4,6 @@ import org.bukkit.block.Chest;
 import org.bukkit.block.Hopper;
 import org.bukkit.inventory.ItemStack;
 
-import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 import com.piggest.minecraft.bukkit.utils.Inventory_io;
@@ -44,7 +43,7 @@ public class Compressor_io_runner extends Structure_runner {
 
 		Chest product_chest = compressor.get_chest();
 		if (product_chest != null) { // 输出固体产品
-			Inventory_io.move_item_to_inventoryholder(compressor.getInventory(), Advanced_furnace.solid_product_slot,
+			Inventory_io.move_item_to_inventoryholder(compressor.getInventory(), Compressor.product_slot,
 					product_chest);
 
 		}
