@@ -130,6 +130,7 @@ public class Compressor_manager extends Gui_structure_manager<Compressor> {
 		this.add_recipe(Material.MELON_SLICE, 9, Material.MELON, 500);
 		this.add_recipe(Material.DRIED_KELP, 9, Material.DRIED_KELP_BLOCK, 500);
 		this.add_recipe(Material.BONE_MEAL, 9, Material.BONE_BLOCK, 500);
+		this.add_recipe(Material.NETHER_WART, 9, Material.NETHER_WART_BLOCK, 500);
 		this.add_recipe(Material.ICE, 9, Material.PACKED_ICE, 500);
 		this.add_recipe(Material.PACKED_ICE, 9, Material.BLUE_ICE, 500);
 
