@@ -27,17 +27,16 @@ public class Compressor extends Multi_block_with_gui implements HasRunner, Auto_
 	public static final int piston_slot = 11;
 	public static final int product_slot = 13;
 
-	private static final int[][] reactant_hopper_check_list = { { 0, 1, 2 }, { 2, 1, 0 }, { 0, 1, -2 },
-			{ -2, 1, 0 } }; // 注入原料
-	private static final int[][] piston_hopper_check_list = { { 0, -1, 2 }, { 2, -1, 0 }, { 0, -1, -2 }, { -2, -1, 0 } }; // 注入活塞单位
-	private static final int[][] product_check_list = { { 1, -1, 2 }, { 2, -1, 1 }, { -1, -1, 2 }, { 2, -1, -1 },
-			{ 1, -1, -2 }, { -2, -1, 1 }, { -2, -1, -1 }, { -1, -1, -2 } };// 产品自动流出
-	
+	private static final int[][] reactant_hopper_check_list = { { 0, 2, 2 }, { 2, 2, 0 }, { 0, 2, -2 }, { -2, 2, 0 } }; // 注入原料
+	private static final int[][] piston_hopper_check_list = { { 0, 0, 2 }, { 2, 0, 0 }, { 0, 0, -2 }, { -2, 0, 0 } }; // 注入活塞单位
+	private static final int[][] product_check_list = { { 1, 0, 2 }, { 2, 0, 1 }, { -1, 0, 2 }, { 2, 0, -1 },
+			{ 1, 0, -2 }, { -2, 0, 1 }, { -2, 0, -1 }, { -1, 0, -2 } };// 产品自动流出
+
 	public Compressor() {
 		this.set_process(0);
 		this.set_piston_storage(0);
 	}
-	
+
 	@Override
 	public void on_button_pressed(Player player, int slot) {
 		return;
@@ -165,7 +164,7 @@ public class Compressor extends Multi_block_with_gui implements HasRunner, Auto_
 		}
 		return false;
 	}
-	
+
 	public Hopper get_reactant_hopper() {
 		return this.get_hopper(reactant_hopper_check_list, true);
 	}
