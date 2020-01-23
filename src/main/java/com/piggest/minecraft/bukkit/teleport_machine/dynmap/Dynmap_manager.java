@@ -142,7 +142,7 @@ public class Dynmap_manager {
 	public void activate() {
 		try {
 			this.markerapi = api.getMarkerAPI();
-		} catch (Exception e) {
+		} catch (Throwable e) {
 		}
 		if (this.markerapi == null) {
 			this.api = null;
