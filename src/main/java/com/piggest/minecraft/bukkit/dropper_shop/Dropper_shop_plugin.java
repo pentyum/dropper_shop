@@ -32,6 +32,8 @@ import com.piggest.minecraft.bukkit.anti_thunder.Anti_thunder;
 import com.piggest.minecraft.bukkit.anti_thunder.Anti_thunder_listener;
 import com.piggest.minecraft.bukkit.anti_thunder.Anti_thunder_manager;
 import com.piggest.minecraft.bukkit.biome_modify.Biome_modify;
+import com.piggest.minecraft.bukkit.compressor.Compressor;
+import com.piggest.minecraft.bukkit.compressor.Compressor_manager;
 import com.piggest.minecraft.bukkit.config.Lottery_config;
 import com.piggest.minecraft.bukkit.config.Price_config;
 import com.piggest.minecraft.bukkit.config.World_structure_config;
@@ -105,10 +107,11 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private Exp_saver_manager exp_saver_manager = null;
 	private Lottery_pool_manager lottery_pool_manager = null;
 	private Trees_felling_machine_manager trees_felling_machine_manager = null;
-	private Pigman_switch_manager pigman_switch_manager;
-	private Anti_thunder_manager anti_thunder_manager;
-	private Teleport_machine_manager teleport_machine_manager;
-
+	private Pigman_switch_manager pigman_switch_manager = null;
+	private Anti_thunder_manager anti_thunder_manager = null;
+	private Teleport_machine_manager teleport_machine_manager = null;
+	private Compressor_manager compressor_manager = null;
+	
 	private HashMap<Class<? extends Structure>, Structure_manager<? extends Structure>> structure_manager_map = new HashMap<Class<? extends Structure>, Structure_manager<? extends Structure>>();
 
 	private HashMap<String, Integer> price_map = new HashMap<String, Integer>();
@@ -221,7 +224,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.pigman_switch_manager = new Pigman_switch_manager();
 		this.anti_thunder_manager = new Anti_thunder_manager();
 		this.teleport_machine_manager = new Teleport_machine_manager();
-
+		this.compressor_manager = new Compressor_manager();
+		
 		this.structure_manager_map.put(Dropper_shop.class, shop_manager);
 		this.structure_manager_map.put(Depository.class, depository_manager);
 		this.structure_manager_map.put(Grinder.class, grinder_manager);
@@ -232,6 +236,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.structure_manager_map.put(Pigman_switch.class, pigman_switch_manager);
 		this.structure_manager_map.put(Anti_thunder.class, anti_thunder_manager);
 		this.structure_manager_map.put(Teleport_machine.class, teleport_machine_manager);
+		this.structure_manager_map.put(Compressor.class, compressor_manager);
 	}
 
 	@Override
@@ -293,6 +298,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		Upgrade_component.init_component();
 		Upgrade_component.set_recipe();
 		grinder_manager.init_recipe();
+		compressor_manager.init_recipe();
 		Gas_bottle.init_gas_bottle();
 		Gas_bottle.set_recipe();
 		Reaction_container.init_reaction();

@@ -1,10 +1,11 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Hopper;
 import org.bukkit.inventory.ItemStack;
+
+import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 import com.piggest.minecraft.bukkit.utils.Inventory_io;
 
@@ -23,22 +24,26 @@ public class Advanced_furnace_io_runner extends Structure_runner {
 		Hopper solid_hopper = this.adv_furnace.get_solid_reactant_hopper();
 		if (solid_hopper != null) {
 			for (ItemStack item : solid_hopper.getInventory().getContents()) {
-				if (item != null && item.getType() != Material.AIR) {
-					this.adv_furnace.add_a_solid(item);
+				if (!Grinder.is_empty(item)) {
+					if (this.adv_furnace.add_a_solid(item)) {
+						break;
+					}
 				}
 			}
 		}
 		Hopper fuel_hopper = this.adv_furnace.get_fuel_hopper();
 		if (fuel_hopper != null) {
 			for (ItemStack item : fuel_hopper.getInventory().getContents()) {
-				if (item != null && item.getType() != Material.AIR) {
-					this.adv_furnace.add_a_fuel(item);
+				if (!Grinder.is_empty(item)) {
+					if (this.adv_furnace.add_a_fuel(item) == true) {
+						break;
+					}
 				}
 			}
 		}
 
 		Chest product_chest = adv_furnace.get_chest();
-		if (product_chest != null) { // 输出固体产品
+		if (product_chest != null) { // 输出产品
 			Inventory_io.move_item_to_inventoryholder(adv_furnace.getInventory(), Advanced_furnace.solid_product_slot,
 					product_chest);
 

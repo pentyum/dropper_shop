@@ -1,10 +1,10 @@
 package com.piggest.minecraft.bukkit.exp_saver;
 
-import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Hopper;
 import org.bukkit.inventory.ItemStack;
 
+import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 import com.piggest.minecraft.bukkit.utils.Inventory_io;
 
@@ -25,7 +25,7 @@ public class Exp_saver_io_runner extends Structure_runner {
 			org.bukkit.block.data.type.Hopper hopper_data = (org.bukkit.block.data.type.Hopper) hopper.getBlockData();
 			if (hopper_data.getFacing() == BlockFace.DOWN) {
 				for (ItemStack item : hopper.getInventory().getContents()) {
-					if (item != null && item.getType() != Material.AIR) {
+					if (!Grinder.is_empty(item)) {
 						Inventory_io.move_item_to_slot(item, 1, exp_saver.getInventory(), Exp_saver.mending_slot);
 					}
 				}

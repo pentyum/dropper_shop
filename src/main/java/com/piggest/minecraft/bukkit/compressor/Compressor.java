@@ -3,6 +3,9 @@ package com.piggest.minecraft.bukkit.compressor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.bukkit.block.Chest;
+import org.bukkit.block.Hopper;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -24,10 +27,10 @@ public class Compressor extends Multi_block_with_gui implements HasRunner, Auto_
 	public static final int piston_slot = 11;
 	public static final int product_slot = 13;
 
-	private static final int[][] solid_reactant_hopper_check_list = { { 0, 1, 2 }, { 2, 1, 0 }, { 0, 1, -2 },
+	private static final int[][] reactant_hopper_check_list = { { 0, 1, 2 }, { 2, 1, 0 }, { 0, 1, -2 },
 			{ -2, 1, 0 } }; // 注入原料
-	private static final int[][] fuel_hopper_check_list = { { 0, -1, 2 }, { 2, -1, 0 }, { 0, -1, -2 }, { -2, -1, 0 } }; // 注入活塞单位
-	private static final int[][] solid_product_check_list = { { 1, -1, 2 }, { 2, -1, 1 }, { -1, -1, 2 }, { 2, -1, -1 },
+	private static final int[][] piston_hopper_check_list = { { 0, -1, 2 }, { 2, -1, 0 }, { 0, -1, -2 }, { -2, -1, 0 } }; // 注入活塞单位
+	private static final int[][] product_check_list = { { 1, -1, 2 }, { 2, -1, 1 }, { -1, -1, 2 }, { 2, -1, -1 },
 			{ 1, -1, -2 }, { -2, -1, 1 }, { -2, -1, -1 }, { -1, -1, -2 } };// 产品自动流出
 
 	@Override
@@ -156,5 +159,25 @@ public class Compressor extends Multi_block_with_gui implements HasRunner, Auto_
 			}
 		}
 		return false;
+	}
+	
+	public Hopper get_reactant_hopper() {
+		return this.get_hopper(reactant_hopper_check_list, true);
+	}
+
+	public Hopper get_piston_hopper() {
+		return this.get_hopper(piston_hopper_check_list, true);
+	}
+
+	public Chest get_chest() {
+		return this.get_chest(product_check_list);
+	}
+
+	public boolean add_a_raw(ItemStack item) {
+		return Inventory_io.move_item_to_slot(item, 1, gui, Compressor.raw_slot);
+	}
+
+	public boolean add_a_piston(ItemStack item) {
+		return Inventory_io.move_item_to_slot(item, 1, gui, Compressor.piston_slot);
 	}
 }

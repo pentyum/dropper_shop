@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
@@ -21,8 +22,8 @@ public class Grinder_manager extends Gui_structure_manager<Grinder> {
 			{ { null, null, null }, { null, Material.COBBLESTONE_WALL, null }, { null, null, null } },
 			{ { null, Material.END_ROD, null }, { Material.END_ROD, Material.SMOOTH_STONE, Material.END_ROD },
 					{ null, Material.END_ROD, null } } };
-	private int[] center = new int[] {1,2,1};
-	
+	private int[] center = new int[] { 1, 2, 1 };
+
 	public Grinder_manager() {
 		super(Grinder.class);
 		// this.set_bar(0,"§e磨粉机工作进度: %d %%");
@@ -33,12 +34,6 @@ public class Grinder_manager extends Gui_structure_manager<Grinder> {
 		this.set_gui(16, Material.BLUE_STAINED_GLASS_PANE, "§r右边为燧石单元储量", Gui_slot_type.Indicator);
 		this.set_gui(17, Material.FLINT, "§e燧石单元", Gui_slot_type.Indicator);
 	}
-	/*
-	 * @Override public Grinder find(String player_name, Location loc, boolean
-	 * new_structure) { if (new_structure == false) { return this.get(loc); } else {
-	 * Grinder grinder = new Grinder(); grinder.set_location(loc); if
-	 * (grinder.completed() == false) { return null; } else { return grinder; } } }
-	 */
 
 	public String get_gui_name() {
 		return this.gui_name;
@@ -62,6 +57,7 @@ public class Grinder_manager extends Gui_structure_manager<Grinder> {
 	}
 
 	public void init_recipe() {
+		Dropper_shop_plugin.instance.getLogger().info("[磨粉机]开始加载合成表");
 		this.add_recipe(Material.COBBLESTONE, Material.GRAVEL, 2, 600); // 圆石
 		this.add_recipe(Material.GRAVEL, Material.SAND, 2, 200); // 砂砾
 		this.add_recipe(Material.SANDSTONE, Material.SAND, 4, 400); // 砂石
@@ -139,9 +135,9 @@ public class Grinder_manager extends Gui_structure_manager<Grinder> {
 
 		this.add_recipe(Material.LAPIS_ORE, "lapis_powder", 12, 400); // 青金石粉
 		this.add_recipe(Material.LAPIS_LAZULI, "lapis_powder", 1, 100); // 青金石粉
-		
-		this.add_recipe(Material.COBWEB, Material.STRING, 9, 100); //线
-		this.add_recipe(Material.DRIED_KELP_BLOCK, Material.DRIED_KELP, 9, 200); //干海带
+
+		this.add_recipe(Material.COBWEB, Material.STRING, 9, 100); // 线
+		this.add_recipe(Material.DRIED_KELP_BLOCK, Material.DRIED_KELP, 9, 200); // 干海带
 	}
 
 	@Override
@@ -173,19 +169,21 @@ public class Grinder_manager extends Gui_structure_manager<Grinder> {
 	public int[] get_center() {
 		return this.center;
 	}
+
 	/*
 	 * 注意：仅提供信息，要生成物品必须clone
 	 */
 	public ItemStack get_main_product(Material material) {
 		return this.main_recipe.get(material);
 	}
+
 	/*
 	 * 注意：仅提供信息，要生成物品必须clone
 	 */
 	public ItemStack get_minor_product(Material material) {
 		return this.minor_recipe.get(material);
 	}
-	
+
 	public int get_time(Material material) {
 		return this.recipe_time.get(material);
 	}

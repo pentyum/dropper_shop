@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
@@ -110,6 +111,7 @@ public class Compressor_manager extends Gui_structure_manager<Compressor> {
 	}
 
 	public void init_recipe() {
+		Dropper_shop_plugin.instance.getLogger().info("[压缩机]开始加载合成表");
 		this.add_recipe(Material.IRON_NUGGET, 9, Material.IRON_INGOT, 500);
 		this.add_recipe(Material.IRON_INGOT, 9, Material.IRON_BLOCK, 500);
 
