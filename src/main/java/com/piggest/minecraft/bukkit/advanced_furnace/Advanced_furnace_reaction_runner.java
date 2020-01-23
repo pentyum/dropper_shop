@@ -37,7 +37,7 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 				if (solid != null) {
 					int current_unit = reaction_container.get_unit(solid);
 					if (current_unit < solid.get_unit() * 64) {
-						if (Inventory_io.Item_remove_one(solid_reactant_slot) != null) {
+						if (Inventory_io.item_remove(solid_reactant_slot, 1) != null) {
 							reaction_container.set_unit(solid, current_unit + solid.get_unit());
 						}
 					}
@@ -57,7 +57,7 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 								ItemStack filled = Liquid.get_fill_container(liquid, liquid_reactant_slot);
 								if (Inventory_io.try_move_item_to_slot(filled, 1, this.advanced_furnace.getInventory(),
 										Advanced_furnace.liquid_product_slot)) {
-									if (Inventory_io.Item_remove_one(liquid_reactant_slot) != null) {
+									if (Inventory_io.item_remove(liquid_reactant_slot, 1) != null) {
 										reaction_container.set_unit(liquid,
 												reaction_container.get_unit(liquid) - capacity);
 										Inventory_io.move_item_to_slot(filled, 1, this.advanced_furnace.getInventory(),
@@ -74,7 +74,7 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 						ItemStack new_empty_bucket = Material_ext.get_empty_container(liquid_reactant_slot);
 						if (Inventory_io.try_move_item_to_slot(new_empty_bucket, 1,
 								this.advanced_furnace.getInventory(), Advanced_furnace.liquid_product_slot)) { // 产品槽允许空桶放入则添加进内部
-							if (Inventory_io.Item_remove_one(liquid_reactant_slot) != null) {
+							if (Inventory_io.item_remove(liquid_reactant_slot, 1) != null) {
 								reaction_container.set_unit(liquid, reaction_container.get_unit(liquid)
 										+ Liquid.get_item_unit(liquid_reactant_slot));
 								Inventory_io.move_item_to_slot(new_empty_bucket, 1,

@@ -148,7 +148,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 						main_product_item.getAmount(), this.gui, main_product_slot);
 				if (minor_product_item == null) {
 					if (main_product_slot_available) {
-						if (Inventory_io.Item_remove_one(this.get_raw()) != null) {
+						if (Inventory_io.item_remove(this.get_raw(), 1) != null) {
 							Inventory_io.move_item_to_slot(main_product_item.clone(), main_product_item.getAmount(),
 									this.gui, main_product_slot);// 添加主产物
 							return true;
@@ -158,7 +158,7 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 					boolean minor_product_slot_available = Inventory_io.try_move_item_to_slot(minor_product_item,
 							minor_product_item.getAmount(), getInventory(), minor_product_slot);
 					if (main_product_slot_available && minor_product_slot_available) {
-						if (Inventory_io.Item_remove_one(this.get_raw()) != null) {
+						if (Inventory_io.item_remove(this.get_raw(), 1) != null) {
 							Inventory_io.move_item_to_slot(main_product_item.clone(), main_product_item.getAmount(),
 									this.gui, main_product_slot);// 添加主产物
 							Inventory_io.move_item_to_slot(minor_product_item.clone(), minor_product_item.getAmount(),

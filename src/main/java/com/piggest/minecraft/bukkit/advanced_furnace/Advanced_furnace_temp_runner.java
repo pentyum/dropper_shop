@@ -80,14 +80,14 @@ public class Advanced_furnace_temp_runner extends Structure_runner {
 						} else if (fuel.status == Status.liquid) {
 							default_amount = Liquid.get_item_unit(fuel_item);
 						}
-						if (Inventory_io.Item_remove_one(fuel_item) != null) {
+						if (Inventory_io.item_remove(fuel_item, 1) != null) {
 							adv_furnace.set_fuel(fuel, default_amount);
 							Inventory_io.move_item_to_slot(bucket, 1, this.adv_furnace.getInventory(),
 									Advanced_furnace.fuel_product_slot);
 						}
 					}
 				} else {
-					if (Inventory_io.Item_remove_one(fuel_item) != null) {
+					if (Inventory_io.item_remove(fuel_item, 1) != null) {
 						// Bukkit.getLogger().info(Thread.currentThread().getId()+"开始设置燃料为"+fuel.name());
 						adv_furnace.set_fuel(fuel, default_amount);
 					}

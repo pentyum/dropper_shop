@@ -81,7 +81,7 @@ public class Inventory_io {
 		return false;
 	}
 
-	public static int Item_get_amount(ItemStack item) {
+	public static int item_get_amount(ItemStack item) {
 		if (Reader.is_reader(item)) {
 			ItemMeta meta = item.getItemMeta();
 			List<String> lore = meta.getLore();
@@ -94,7 +94,7 @@ public class Inventory_io {
 		}
 	}
 
-	public static ItemStack Item_remove_one(ItemStack item) {
+	public static ItemStack item_remove(ItemStack item, int quantity) {
 		if (Grinder.is_empty(item)) {
 			return null;
 		}
@@ -108,13 +108,13 @@ public class Inventory_io {
 			if (depository == null) {
 				return null;
 			}
-			move_item = depository.remove(full_name);
+			move_item = depository.remove(full_name, quantity);
 			Reader.item_lore_update(item);
 		} else {
 			synchronized (item) {
 				move_item = item.clone();
-				move_item.setAmount(1);
-				item.setAmount(item.getAmount() - 1);
+				move_item.setAmount(quantity);
+				item.setAmount(item.getAmount() - quantity);
 			}
 		}
 		return move_item;

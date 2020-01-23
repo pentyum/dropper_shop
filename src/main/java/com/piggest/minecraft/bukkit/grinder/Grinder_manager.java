@@ -139,6 +139,9 @@ public class Grinder_manager extends Gui_structure_manager<Grinder> {
 
 		this.add_recipe(Material.LAPIS_ORE, "lapis_powder", 12, 400); // 青金石粉
 		this.add_recipe(Material.LAPIS_LAZULI, "lapis_powder", 1, 100); // 青金石粉
+		
+		this.add_recipe(Material.COBWEB, Material.STRING, 9, 100); //线
+		this.add_recipe(Material.DRIED_KELP_BLOCK, Material.DRIED_KELP, 9, 200); //干海带
 	}
 
 	@Override
