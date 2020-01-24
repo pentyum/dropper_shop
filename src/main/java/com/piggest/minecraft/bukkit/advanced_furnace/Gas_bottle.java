@@ -130,8 +130,7 @@ public class Gas_bottle {
 		sr1.setIngredient('a', Material.AIR);
 		sr1.setIngredient('b', Material.GLASS_BOTTLE);
 		sr1.setIngredient('i', Material.IRON_INGOT);
-		Dropper_shop_plugin.instance.getServer().addRecipe(sr1);
-		Dropper_shop_plugin.instance.get_sr().add(sr1);
+		Dropper_shop_plugin.instance.add_recipe(sr1);
 		Dropper_shop_plugin.instance.getLogger().info("气体瓶合成表已添加");
 	}
 

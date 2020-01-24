@@ -60,7 +60,7 @@ public class Powder {
 		item.setItemMeta(itemmeta);
 		Material_ext.register(id_name, item);
 	}
-
+	
 	public static boolean is_powder(ItemStack item, String id_name) {
 		if (item.getType() != Material.SUGAR) {
 			return false;

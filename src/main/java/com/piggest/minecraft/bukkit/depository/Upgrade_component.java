@@ -52,9 +52,9 @@ public class Upgrade_component {
 	}
 
 	public static void set_process(ItemStack item, int process) {
-		int new_damage =  process * 250 / 100;
+		int new_damage = process * 250 / 100;
 		ItemMeta meta = item.getItemMeta();
-		Damageable damageable = (Damageable)meta;
+		Damageable damageable = (Damageable) meta;
 		List<String> lore = meta.getLore();
 		lore.set(1, "§7升级进度: " + process + "%");
 		meta.setLore(lore);
@@ -158,8 +158,7 @@ public class Upgrade_component {
 		sr0.setIngredient('b', Material.IRON_BARS);
 		sr0.setIngredient('c', Material.CHEST);
 		sr0.setIngredient('i', Material.IRON_BLOCK);
-		Dropper_shop_plugin.instance.getServer().addRecipe(sr0);
-		Dropper_shop_plugin.instance.get_sr().add(sr0);
+		Dropper_shop_plugin.instance.add_recipe(sr0);
 		Dropper_shop_plugin.instance.getLogger().info("存储器1级升级模块合成表已经添加");
 
 		ShapedRecipe sr1 = new ShapedRecipe(depository_upgrade1, Upgrade_component.component_item[1]);
@@ -167,8 +166,7 @@ public class Upgrade_component {
 		sr1.setIngredient('c', Material.CHEST);
 		sr1.setIngredient('p', Material.IRON_PICKAXE);
 		sr1.setIngredient('b', Material.QUARTZ_BLOCK);
-		Dropper_shop_plugin.instance.getServer().addRecipe(sr1);
-		Dropper_shop_plugin.instance.get_sr().add(sr1);
+		Dropper_shop_plugin.instance.add_recipe(sr1);
 		Dropper_shop_plugin.instance.getLogger().info("存储器2级升级模块合成表已经添加");
 
 		ShapedRecipe sr2 = new ShapedRecipe(depository_upgrade2, Upgrade_component.component_item[2]);
@@ -176,8 +174,7 @@ public class Upgrade_component {
 		sr2.setIngredient('c', Material.CHEST);
 		sr2.setIngredient('p', Material.IRON_PICKAXE);
 		sr2.setIngredient('b', Material.GOLD_BLOCK);
-		Dropper_shop_plugin.instance.getServer().addRecipe(sr2);
-		Dropper_shop_plugin.instance.get_sr().add(sr2);
+		Dropper_shop_plugin.instance.add_recipe(sr2);
 		Dropper_shop_plugin.instance.getLogger().info("存储器3级升级模块合成表已经添加");
 
 		ShapedRecipe sr3 = new ShapedRecipe(depository_upgrade3, Upgrade_component.component_item[3]);
@@ -185,8 +182,7 @@ public class Upgrade_component {
 		sr3.setIngredient('c', Material.CHEST);
 		sr3.setIngredient('p', Material.IRON_PICKAXE);
 		sr3.setIngredient('b', Material.EMERALD_BLOCK);
-		Dropper_shop_plugin.instance.getServer().addRecipe(sr3);
-		Dropper_shop_plugin.instance.get_sr().add(sr3);
+		Dropper_shop_plugin.instance.add_recipe(sr3);
 		Dropper_shop_plugin.instance.getLogger().info("存储器4级升级模块合成表已经添加");
 
 		ShapedRecipe sr4 = new ShapedRecipe(depository_upgrade4, Upgrade_component.component_item[4]);
@@ -194,8 +190,7 @@ public class Upgrade_component {
 		sr4.setIngredient('c', Material.ENDER_CHEST);
 		sr4.setIngredient('p', Material.IRON_PICKAXE);
 		sr4.setIngredient('b', Material.DIAMOND_BLOCK);
-		Dropper_shop_plugin.instance.getServer().addRecipe(sr4);
-		Dropper_shop_plugin.instance.get_sr().add(sr4);
+		Dropper_shop_plugin.instance.add_recipe(sr4);
 		Dropper_shop_plugin.instance.getLogger().info("存储器5级升级模块合成表已经添加");
 	}
 
@@ -211,8 +206,7 @@ public class Upgrade_component {
 		sr0.setIngredient('g', Material.GLOWSTONE);
 		sr0.setIngredient('c', Material.GOLDEN_HORSE_ARMOR);
 		sr0.setIngredient('i', Material.IRON_BLOCK);
-		Dropper_shop_plugin.instance.getServer().addRecipe(sr0);
-		Dropper_shop_plugin.instance.get_sr().add(sr0);
+		Dropper_shop_plugin.instance.add_recipe(sr0);
 		Dropper_shop_plugin.instance.getLogger().info("高级熔炉高速升级0->1模块合成表已经添加");
 
 		ShapedRecipe sr1 = new ShapedRecipe(overload1, Upgrade_component.overload_component_item[1]);
@@ -220,8 +214,7 @@ public class Upgrade_component {
 		sr1.setIngredient('g', Material.GLOWSTONE);
 		sr1.setIngredient('p', Material.IRON_AXE);
 		sr1.setIngredient('b', Material.QUARTZ_BLOCK);
-		Dropper_shop_plugin.instance.getServer().addRecipe(sr1);
-		Dropper_shop_plugin.instance.get_sr().add(sr1);
+		Dropper_shop_plugin.instance.add_recipe(sr1);
 		Dropper_shop_plugin.instance.getLogger().info("高级熔炉高速升级1->2模块合成表已经添加");
 
 		ShapedRecipe sr2 = new ShapedRecipe(overload2, Upgrade_component.overload_component_item[2]);
@@ -229,8 +222,7 @@ public class Upgrade_component {
 		sr2.setIngredient('g', Material.GLOWSTONE);
 		sr2.setIngredient('p', Material.IRON_AXE);
 		sr2.setIngredient('b', Material.GOLD_BLOCK);
-		Dropper_shop_plugin.instance.getServer().addRecipe(sr2);
-		Dropper_shop_plugin.instance.get_sr().add(sr2);
+		Dropper_shop_plugin.instance.add_recipe(sr2);
 		Dropper_shop_plugin.instance.getLogger().info("高级熔炉高速升级2->3模块合成表已经添加");
 
 		ShapedRecipe sr3 = new ShapedRecipe(overload3, Upgrade_component.overload_component_item[3]);
@@ -238,8 +230,7 @@ public class Upgrade_component {
 		sr3.setIngredient('g', Material.GLOWSTONE);
 		sr3.setIngredient('p', Material.IRON_AXE);
 		sr3.setIngredient('b', Material.EMERALD_BLOCK);
-		Dropper_shop_plugin.instance.getServer().addRecipe(sr3);
-		Dropper_shop_plugin.instance.get_sr().add(sr3);
+		Dropper_shop_plugin.instance.add_recipe(sr3);
 		Dropper_shop_plugin.instance.getLogger().info("高级熔炉高速升级3->4模块合成表已经添加");
 
 		ShapedRecipe sr4 = new ShapedRecipe(overload4, Upgrade_component.overload_component_item[4]);
@@ -247,8 +238,7 @@ public class Upgrade_component {
 		sr4.setIngredient('c', Material.END_CRYSTAL);
 		sr4.setIngredient('p', Material.IRON_AXE);
 		sr4.setIngredient('b', Material.DIAMOND_BLOCK);
-		Dropper_shop_plugin.instance.getServer().addRecipe(sr4);
-		Dropper_shop_plugin.instance.get_sr().add(sr4);
+		Dropper_shop_plugin.instance.add_recipe(sr4);
 		Dropper_shop_plugin.instance.getLogger().info("高级熔炉高速升级4->5模块合成表已经添加");
 	}
 
@@ -264,8 +254,7 @@ public class Upgrade_component {
 		sr0.setIngredient('r', Material.REDSTONE_BLOCK);
 		sr0.setIngredient('h', Material.GOLDEN_HORSE_ARMOR);
 		sr0.setIngredient('i', Material.IRON_BLOCK);
-		Dropper_shop_plugin.instance.getServer().addRecipe(sr0);
-		Dropper_shop_plugin.instance.get_sr().add(sr0);
+		Dropper_shop_plugin.instance.add_recipe(sr0);
 		Dropper_shop_plugin.instance.getLogger().info("高级熔炉长时升级0->1模块合成表已经添加");
 
 		ShapedRecipe sr1 = new ShapedRecipe(time1, Upgrade_component.time_component_item[1]);
@@ -273,8 +262,7 @@ public class Upgrade_component {
 		sr1.setIngredient('r', Material.REDSTONE_BLOCK);
 		sr1.setIngredient('h', Material.IRON_HOE);
 		sr1.setIngredient('b', Material.QUARTZ_BLOCK);
-		Dropper_shop_plugin.instance.getServer().addRecipe(sr1);
-		Dropper_shop_plugin.instance.get_sr().add(sr1);
+		Dropper_shop_plugin.instance.add_recipe(sr1);
 		Dropper_shop_plugin.instance.getLogger().info("高级熔炉长时升级1->2模块合成表已经添加");
 
 		ShapedRecipe sr2 = new ShapedRecipe(time2, Upgrade_component.time_component_item[2]);
@@ -282,8 +270,7 @@ public class Upgrade_component {
 		sr2.setIngredient('r', Material.REDSTONE_BLOCK);
 		sr2.setIngredient('h', Material.IRON_HOE);
 		sr2.setIngredient('b', Material.GOLD_BLOCK);
-		Dropper_shop_plugin.instance.getServer().addRecipe(sr2);
-		Dropper_shop_plugin.instance.get_sr().add(sr2);
+		Dropper_shop_plugin.instance.add_recipe(sr2);
 		Dropper_shop_plugin.instance.getLogger().info("高级熔炉长时升级2->3模块合成表已经添加");
 
 		ShapedRecipe sr3 = new ShapedRecipe(time3, Upgrade_component.time_component_item[3]);
@@ -291,8 +278,7 @@ public class Upgrade_component {
 		sr3.setIngredient('r', Material.REDSTONE_BLOCK);
 		sr3.setIngredient('h', Material.IRON_HOE);
 		sr3.setIngredient('b', Material.EMERALD_BLOCK);
-		Dropper_shop_plugin.instance.getServer().addRecipe(sr3);
-		Dropper_shop_plugin.instance.get_sr().add(sr3);
+		Dropper_shop_plugin.instance.add_recipe(sr3);
 		Dropper_shop_plugin.instance.getLogger().info("高级熔炉长时升级3->4模块合成表已经添加");
 
 		ShapedRecipe sr4 = new ShapedRecipe(time4, Upgrade_component.time_component_item[4]);
@@ -300,8 +286,7 @@ public class Upgrade_component {
 		sr4.setIngredient('c', Material.END_CRYSTAL);
 		sr4.setIngredient('p', Material.IRON_HOE);
 		sr4.setIngredient('b', Material.DIAMOND_BLOCK);
-		Dropper_shop_plugin.instance.getServer().addRecipe(sr4);
-		Dropper_shop_plugin.instance.get_sr().add(sr4);
+		Dropper_shop_plugin.instance.add_recipe(sr4);
 		Dropper_shop_plugin.instance.getLogger().info("高级熔炉高速升级4->5模块合成表已经添加");
 	}
 

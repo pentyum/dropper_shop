@@ -162,8 +162,7 @@ public class Reader {
 		sr1.setIngredient('s', Material.NETHER_STAR);
 		sr1.setIngredient('c', Material.ENDER_CHEST);
 		sr1.setIngredient('r', Material.END_CRYSTAL);
-		Dropper_shop_plugin.instance.getServer().addRecipe(sr1);
-		Dropper_shop_plugin.instance.get_sr().add(sr1);
+		Dropper_shop_plugin.instance.add_recipe(sr1);
 		Dropper_shop_plugin.instance.getLogger().info("存储读取器合成表已添加");
 	}
 

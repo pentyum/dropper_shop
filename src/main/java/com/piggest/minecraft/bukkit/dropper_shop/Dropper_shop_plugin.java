@@ -13,6 +13,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.PluginManager;
@@ -111,13 +112,14 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private Anti_thunder_manager anti_thunder_manager = null;
 	private Teleport_machine_manager teleport_machine_manager = null;
 	private Compressor_manager compressor_manager = null;
-	
+
 	private HashMap<Class<? extends Structure>, Structure_manager<? extends Structure>> structure_manager_map = new HashMap<Class<? extends Structure>, Structure_manager<? extends Structure>>();
 
 	private HashMap<String, Integer> price_map = new HashMap<String, Integer>();
 	private HashMap<String, Integer> unit_map = new HashMap<String, Integer>();
 	private HashMap<String, HashMap<Gas, Integer>> air_map = new HashMap<String, HashMap<Gas, Integer>>();
 	private ArrayList<ShapedRecipe> sr = new ArrayList<ShapedRecipe>();
+	private ArrayList<FurnaceRecipe> fr = new ArrayList<FurnaceRecipe>();
 
 	private final Note_stick_listener note_listener = new Note_stick_listener();
 	private final Gui_listener gui_listener = new Gui_listener();
@@ -225,7 +227,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.anti_thunder_manager = new Anti_thunder_manager();
 		this.teleport_machine_manager = new Teleport_machine_manager();
 		this.compressor_manager = new Compressor_manager();
-		
+
 		this.structure_manager_map.put(Dropper_shop.class, shop_manager);
 		this.structure_manager_map.put(Depository.class, depository_manager);
 		this.structure_manager_map.put(Grinder.class, grinder_manager);
@@ -243,7 +245,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public void onEnable() {
 		this.biome_modify = new Biome_modify();
 		boolean winter_mode_enabled = this.config.getBoolean("winter-mode");
-		if(winter_mode_enabled) {
+		if (winter_mode_enabled) {
 			this.biome_modify.get_winder_mode().enable(this.biome_modify);
 		}
 		try {
@@ -349,12 +351,11 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	}
 
 	public void remove_recipe() {
-		for (ShapedRecipe sr : this.sr) {
-			Iterator<Recipe> i = Bukkit.recipeIterator();
-			while (i.hasNext()) {
-				if (i.next().equals(sr)) {
-					i.remove();
-				}
+		Iterator<Recipe> i = Bukkit.recipeIterator();
+		while (i.hasNext()) {
+			Recipe recipe = i.next();
+			if (this.sr.contains(recipe) || this.fr.contains(recipe)) {
+				i.remove();
 			}
 		}
 	}
@@ -363,9 +364,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public void onDisable() {
 		this.stop_structure_runner();
 		this.save_structure();
-		
+
 		this.lottery_config.save();
-		
+
 		this.remove_recipe();
 	}
 
@@ -417,10 +418,6 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		} else {
 			return unit;
 		}
-	}
-
-	public ArrayList<ShapedRecipe> get_sr() {
-		return this.sr;
 	}
 
 	public Exp_saver_manager get_exp_saver_manager() {
@@ -497,5 +494,14 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	public Biome_modify get_biome_modify() {
 		return this.biome_modify;
+	}
+
+	public void add_recipe(Recipe recipe) {
+		this.getServer().addRecipe(recipe);
+		if (recipe instanceof ShapedRecipe) {
+			this.sr.add((ShapedRecipe) recipe);
+		} else if (recipe instanceof FurnaceRecipe) {
+			this.fr.add((FurnaceRecipe) recipe);
+		}
 	}
 }
