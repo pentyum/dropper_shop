@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -242,6 +243,7 @@ public class Upgrade_component {
 		Dropper_shop_plugin.instance.getLogger().info("高级熔炉高速升级4->5模块合成表已经添加");
 	}
 
+	@SuppressWarnings("deprecation")
 	private static void set_time_recipe() {
 		NamespacedKey time0 = new NamespacedKey(Dropper_shop_plugin.instance, "time_component_0");
 		NamespacedKey time1 = new NamespacedKey(Dropper_shop_plugin.instance, "time_component_1");
@@ -260,7 +262,8 @@ public class Upgrade_component {
 		ShapedRecipe sr1 = new ShapedRecipe(time1, Upgrade_component.time_component_item[1]);
 		sr1.shape("brb", "rhr", "brb");
 		sr1.setIngredient('r', Material.REDSTONE_BLOCK);
-		sr1.setIngredient('h', Material.IRON_HOE);
+		sr1.setIngredient('h', new RecipeChoice.ExactChoice(Upgrade_component.time_component_item[0]));
+		//sr1.setIngredient('h', Material.IRON_HOE);
 		sr1.setIngredient('b', Material.QUARTZ_BLOCK);
 		Dropper_shop_plugin.instance.add_recipe(sr1);
 		Dropper_shop_plugin.instance.getLogger().info("高级熔炉长时升级1->2模块合成表已经添加");
@@ -268,7 +271,8 @@ public class Upgrade_component {
 		ShapedRecipe sr2 = new ShapedRecipe(time2, Upgrade_component.time_component_item[2]);
 		sr2.shape("brb", "rhr", "brb");
 		sr2.setIngredient('r', Material.REDSTONE_BLOCK);
-		sr2.setIngredient('h', Material.IRON_HOE);
+		sr2.setIngredient('h', new RecipeChoice.ExactChoice(Upgrade_component.time_component_item[1]));
+		//sr2.setIngredient('h', Material.IRON_HOE);
 		sr2.setIngredient('b', Material.GOLD_BLOCK);
 		Dropper_shop_plugin.instance.add_recipe(sr2);
 		Dropper_shop_plugin.instance.getLogger().info("高级熔炉长时升级2->3模块合成表已经添加");
@@ -276,7 +280,8 @@ public class Upgrade_component {
 		ShapedRecipe sr3 = new ShapedRecipe(time3, Upgrade_component.time_component_item[3]);
 		sr3.shape("brb", "rhr", "brb");
 		sr3.setIngredient('r', Material.REDSTONE_BLOCK);
-		sr3.setIngredient('h', Material.IRON_HOE);
+		sr3.setIngredient('h', new RecipeChoice.ExactChoice(Upgrade_component.time_component_item[2]));
+		//sr3.setIngredient('h', Material.IRON_HOE);
 		sr3.setIngredient('b', Material.EMERALD_BLOCK);
 		Dropper_shop_plugin.instance.add_recipe(sr3);
 		Dropper_shop_plugin.instance.getLogger().info("高级熔炉长时升级3->4模块合成表已经添加");
@@ -284,7 +289,8 @@ public class Upgrade_component {
 		ShapedRecipe sr4 = new ShapedRecipe(time4, Upgrade_component.time_component_item[4]);
 		sr4.shape("bcb", "cpc", "bcb");
 		sr4.setIngredient('c', Material.END_CRYSTAL);
-		sr4.setIngredient('p', Material.IRON_HOE);
+		sr4.setIngredient('h', new RecipeChoice.ExactChoice(Upgrade_component.time_component_item[3]));
+		//sr4.setIngredient('p', Material.IRON_HOE);
 		sr4.setIngredient('b', Material.DIAMOND_BLOCK);
 		Dropper_shop_plugin.instance.add_recipe(sr4);
 		Dropper_shop_plugin.instance.getLogger().info("高级熔炉高速升级4->5模块合成表已经添加");
