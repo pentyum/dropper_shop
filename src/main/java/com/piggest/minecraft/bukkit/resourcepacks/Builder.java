@@ -117,11 +117,11 @@ public class Builder {
 		Sugar sugar = new Sugar();
 		com.piggest.minecraft.bukkit.grinder.Powder.init_powder_config();
 		com.piggest.minecraft.bukkit.grinder.Ingot.init_ingot_config();
-
+		//dropper_shop文件夹
 		build_elements(sugar);
 		build_powder(clay_ball);
 		build_ingot(iron_ingot);
-
+		//minecraft文件夹
 		build_sugar(sugar);
 		build_clay_ball(clay_ball);
 		build_iron_ingot(iron_ingot);

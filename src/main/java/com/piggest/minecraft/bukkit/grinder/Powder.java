@@ -59,7 +59,7 @@ public class Powder extends Material_ext {
 	}
 
 	public static boolean is_powder(ItemStack item, String id_name) {
-		if (item.getType() != Material.SUGAR) {
+		if (item.getType() != Powder.model_base) {
 			return false;
 		}
 		return Material_ext.get_id_name(item).equalsIgnoreCase(id_name);
