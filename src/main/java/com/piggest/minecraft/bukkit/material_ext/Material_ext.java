@@ -91,7 +91,7 @@ public abstract class Material_ext {
 	/*
 	 * 根据内部ID生成ItemStack，等效于new ItemStack(Material)
 	 */
-	private static ItemStack new_item(NamespacedKey namespacedkey, int num) {
+	public static ItemStack new_item(NamespacedKey namespacedkey, int num) {
 		return new_item(namespacedkey, num, null);
 	}
 

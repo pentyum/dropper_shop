@@ -55,7 +55,9 @@ import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.grinder.Grinder_command_executor;
 import com.piggest.minecraft.bukkit.grinder.Grinder_listener;
 import com.piggest.minecraft.bukkit.grinder.Grinder_manager;
+import com.piggest.minecraft.bukkit.grinder.Ingot;
 import com.piggest.minecraft.bukkit.grinder.Powder;
+import com.piggest.minecraft.bukkit.grinder.Powder_listener;
 import com.piggest.minecraft.bukkit.gui.Gui_listener;
 import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool;
 import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_command_executor;
@@ -127,6 +129,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private final Structure_listener Structure_listener = new Structure_listener();
 	private final Flying_item_listener flying_item_listener = new Flying_item_listener();
 	private final Lottery_pool_gui_listener lottery_pool_gui_listener = new Lottery_pool_gui_listener();
+	private final Powder_listener powder_listener = new Powder_listener();
+
 	private HashMap<String, Integer> sync_realtime_worlds = new HashMap<String, Integer>();
 
 	private Listener[] structure_listeners = { new Depository_listener(), new Dropper_shop_listener(),
@@ -243,19 +247,55 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.structure_manager_map.put(Compressor.class, compressor_manager);
 	}
 
+	private void init_listener() {
+		this.getLogger().info("加载事件监听器");
+		PluginManager pm = this.getServer().getPluginManager();
+
+		pm.registerEvents(this.Structure_listener, this);
+		pm.registerEvents(this.gui_listener, this);
+		pm.registerEvents(this.note_listener, this);
+		pm.registerEvents(this.flying_item_listener, this);
+		pm.registerEvents(this.lottery_pool_gui_listener, this);
+		pm.registerEvents(this.powder_listener, this);
+		for (Listener listener : this.structure_listeners) {
+			pm.registerEvents(listener, this);
+		}
+
+	}
+
+	private void init_command() {
+		this.getLogger().info("加载指令");
+		this.getCommand("depository").setExecutor(new Depository_command_executor());
+		this.getCommand("dropper_shop").setExecutor(new Dropper_shop_command_executor());
+		this.getCommand("grinder").setExecutor(new Grinder_command_executor());
+		this.getCommand("adv_furnace").setExecutor(new Advanced_furnace_command_executor());
+		this.getCommand("exp_saver").setExecutor(new Exp_saver_command_executor());
+		this.getCommand("lottery").setExecutor(new Lottery_pool_command_executor());
+		this.getCommand("sync_realtime").setExecutor(new Sync_realtime_command_executor(this.sync_realtime_worlds));
+		this.getCommand("teleport_machine").setExecutor(new Teleport_machine_command_executer());
+		this.getCommand("watersheep").setExecutor(new Watersheep_command_executor());
+		this.getCommand("biome_modify").setExecutor(this.biome_modify);
+	}
+
 	@Override
 	public void onEnable() {
+		// 处理冬天模式
 		this.biome_modify = new Biome_modify();
 		boolean winter_mode_enabled = this.config.getBoolean("winter-mode");
 		if (winter_mode_enabled) {
-			this.biome_modify.get_winder_mode().enable(this.biome_modify);
+			this.getLogger().info("开启冬天模式");
+			this.biome_modify.get_winter_mode().enable(this.biome_modify);
 		}
 		try {
 			this.protocol_manager = ProtocolLibrary.getProtocolManager();
 			protocol_manager.addPacketListener(NMS_manager.packet_map_chunk_listener);
+			this.getLogger().info("生物群系伪装开启成功");
 		} catch (Exception e) {
 
 		}
+		// 处理冬天模式完成
+
+		// 加载各世界的结构配置文件
 		for (World world : this.getServer().getWorlds()) {
 			World_structure_config config = new World_structure_config(world);
 			this.all_shop_config.put(world.getName(), config);
@@ -266,6 +306,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 			entry.getValue().load();
 			entry.getValue().backup();
 		}
+		// 各世界的结构配置文件加载完成
 
 		Tab_list.init();
 
@@ -275,21 +316,12 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		// 初始化管理器完成
 
 		// 初始化指令
-		this.getCommand("depository").setExecutor(new Depository_command_executor());
-		this.getCommand("dropper_shop").setExecutor(new Dropper_shop_command_executor());
-		this.getCommand("grinder").setExecutor(new Grinder_command_executor());
-		this.getCommand("adv_furnace").setExecutor(new Advanced_furnace_command_executor());
-		this.getCommand("exp_saver").setExecutor(new Exp_saver_command_executor());
+		this.init_command();
 		Wrench_command_executor wrench = new Wrench_command_executor();
 		this.getCommand("wrench").setExecutor(wrench);
-		this.getCommand("lottery").setExecutor(new Lottery_pool_command_executor());
-		this.getCommand("sync_realtime").setExecutor(new Sync_realtime_command_executor(this.sync_realtime_worlds));
-		this.getCommand("teleport_machine").setExecutor(new Teleport_machine_command_executer());
-		this.getCommand("watersheep").setExecutor(new Watersheep_command_executor());
-		this.getCommand("biome_modify").setExecutor(this.biome_modify);
 		// 初始化指令完成
 
-		getLogger().info("使用Vault");
+		this.getLogger().info("使用Vault");
 		if (!initVault()) {
 			getLogger().severe("初始化Vault失败,请检测是否已经安装Vault插件和经济插件");
 			return;
@@ -297,6 +329,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 		// 初始化插件特有物品
 		Powder.init_powder();
+		Ingot.init_ingot();
 		Reader.init_reader_item();
 		Reader.set_recipe();
 		Upgrade_component.init_component();
@@ -319,16 +352,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		// 加载结构完成
 
 		// 初始化事件监听器
-		PluginManager pm = getServer().getPluginManager();
-
-		pm.registerEvents(this.Structure_listener, this);
-		pm.registerEvents(this.gui_listener, this);
-		pm.registerEvents(this.note_listener, this);
-		pm.registerEvents(this.flying_item_listener, this);
-		pm.registerEvents(this.lottery_pool_gui_listener, this);
-		for (Listener listener : this.structure_listeners) {
-			pm.registerEvents(listener, this);
-		}
+		this.init_listener();
 		// 初始化事件监听器完成
 
 		// 初始化定时任务
@@ -477,14 +501,10 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public int get_exp_saver_remove_repaircost_exp() {
 		return this.exp_saver_remove_repaircost_exp;
 	}
-	
+
 	@SuppressWarnings("deprecation")
-	public static NamespacedKey get_key(String namespace, String key) {
-		return new NamespacedKey(namespace, key);
-	}
-	
 	public static NamespacedKey get_key(String key) {
-		return new NamespacedKey(Dropper_shop_plugin.instance, key);
+		return new NamespacedKey("dropper_shop", key);
 	}
 
 	public NMS_manager get_nms_manager() {

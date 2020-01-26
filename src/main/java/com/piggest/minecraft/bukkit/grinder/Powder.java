@@ -11,7 +11,7 @@ import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
 public class Powder extends Material_ext {
 	public final static int powder_model_offset = 100;
-	public final static Material model_base = Material.SUGAR;
+	public final static Material model_base = Material.CLAY;
 
 	private NamespacedKey ingot = null;
 
@@ -37,12 +37,12 @@ public class Powder extends Material_ext {
 		powder_config.add(new Powder("gold", "金粉", Material.GOLD_INGOT.getKey()));
 		powder_config.add(new Powder("coal", "煤粉", Material.COAL.getKey()));
 		powder_config.add(new Powder("lapis", "青金石粉", Material.LAPIS_LAZULI.getKey()));
-		powder_config.add(new Powder("copper", "铜粉", Dropper_shop_plugin.get_key("dropper_shop", "copper_ingot")));
+		powder_config.add(new Powder("copper", "铜粉", Dropper_shop_plugin.get_key("copper_ingot")));
 		powder_config
-				.add(new Powder("aluminium", "铝粉", Dropper_shop_plugin.get_key("dropper_shop", "aluminium_ingot")));
-		powder_config.add(new Powder("tin", "锡粉", Dropper_shop_plugin.get_key("dropper_shop", "tin_ingot")));
-		powder_config.add(new Powder("silver", "银粉", Dropper_shop_plugin.get_key("dropper_shop", "silver_ingot")));
-		powder_config.add(new Powder("bronze", "青铜粉", Dropper_shop_plugin.get_key("dropper_shop", "bronze_ingot")));
+				.add(new Powder("aluminium", "铝粉", Dropper_shop_plugin.get_key("aluminium_ingot")));
+		powder_config.add(new Powder("tin", "锡粉", Dropper_shop_plugin.get_key("tin_ingot")));
+		powder_config.add(new Powder("silver", "银粉", Dropper_shop_plugin.get_key("silver_ingot")));
+		powder_config.add(new Powder("bronze", "青铜粉", Dropper_shop_plugin.get_key("bronze_ingot")));
 		powder_config.add(new Powder("emerald", "绿宝石粉", Material.EMERALD.getKey()));
 		powder_config.add(new Powder("flour", "面粉"));
 	}
@@ -56,10 +56,6 @@ public class Powder extends Material_ext {
 					Dropper_shop_plugin.custom_model_data_offset + powder_model_offset + i);
 			powder_map.put(key.toString(), powder_config.get(i));
 		}
-	}
-
-	public static void init_powder_furnace_recipe() {
-
 	}
 
 	public static boolean is_powder(ItemStack item, String id_name) {

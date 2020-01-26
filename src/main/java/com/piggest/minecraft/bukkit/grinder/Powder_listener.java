@@ -16,5 +16,13 @@ public class Powder_listener implements Listener {
 		if (powder == null) {
 			return;
 		}
+		ItemStack result = event.getResult();
+		if (result == null) {
+			return;
+		}
+		ItemStack new_result = Material_ext.new_item(powder.get_ingot_namespacedkey(), result.getAmount());
+		if (new_result != null) {
+			event.setResult(new_result);
+		}
 	}
 }
