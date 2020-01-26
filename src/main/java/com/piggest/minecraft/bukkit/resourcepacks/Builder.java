@@ -7,9 +7,10 @@ import java.io.IOException;
 import com.google.gson.Gson;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.resourcepacks.dropper_shop.Element;
+import com.piggest.minecraft.bukkit.resourcepacks.minecraft.Brick;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.Clay_ball;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.Iron_ingot;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.Sugar;
+import com.piggest.minecraft.bukkit.resourcepacks.minecraft.Vanilla_model;
 
 public class Builder {
 	public final static Gson gson = new Gson();
@@ -17,7 +18,8 @@ public class Builder {
 	public final static String resourcepack_target_dir = project_dir + "target/resourcepacks/dropper_shop/";
 	public final static String dropper_shop_models_dir = resourcepack_target_dir + "assets/dropper_shop/models/";
 	public final static String dropper_shop_textures_dir = resourcepack_target_dir + "assets/dropper_shop/textures/";
-	public final static String minecraft_item_models_dir = resourcepack_target_dir + "assets/minecraft/models/item/";
+	public final static String minecraft_models_dir = resourcepack_target_dir + "assets/minecraft/models/";
+	public final static String minecraft_item_models_dir = minecraft_models_dir + "item/";
 
 	public static void write_json(String path, String json) {
 		FileWriter fw;
@@ -68,7 +70,7 @@ public class Builder {
 		}
 	}
 
-	private static void build_ingot(Iron_ingot iron_ingot) {
+	private static void build_ingot(Brick iron_ingot) {
 		File file = new File(dropper_shop_models_dir + "ingots");
 		if (!file.exists()) {
 			file.mkdirs();
@@ -85,46 +87,31 @@ public class Builder {
 		}
 	}
 
-	private static void build_sugar(Sugar sugar) {
+	private static void build_vanilla(Vanilla_model model) {
 		File file = new File(minecraft_item_models_dir);
 		if (!file.exists()) {
 			file.mkdirs();
 		}
-		write_json(minecraft_item_models_dir + "sugar.json", sugar.to_json());
-	}
-
-	private static void build_clay_ball(Clay_ball clay_ball) {
-		File file = new File(minecraft_item_models_dir);
-		if (!file.exists()) {
-			file.mkdirs();
-		}
-		write_json(minecraft_item_models_dir + "clay_ball.json", clay_ball.to_json());
-	}
-
-	private static void build_iron_ingot(Iron_ingot iron_ingot) {
-		File file = new File(minecraft_item_models_dir);
-		if (!file.exists()) {
-			file.mkdirs();
-		}
-		write_json(minecraft_item_models_dir + "iron_ingot.json", iron_ingot.to_json());
+		String path = minecraft_models_dir + model.getTextures().layer0 + ".json";
+		write_json(path, model.to_json());
 	}
 
 	public static void main(String[] args) {
 		System.out.println("欢迎使用Dropper shop插件");
 		System.out.println("dropper_shop_models_dir:" + dropper_shop_models_dir);
 		Clay_ball clay_ball = new Clay_ball();
-		Iron_ingot iron_ingot = new Iron_ingot();
+		Brick brick = new Brick();
 		Sugar sugar = new Sugar();
 		com.piggest.minecraft.bukkit.grinder.Powder.init_powder_config();
 		com.piggest.minecraft.bukkit.grinder.Ingot.init_ingot_config();
-		//dropper_shop文件夹
+		// dropper_shop文件夹
 		build_elements(sugar);
 		build_powder(clay_ball);
-		build_ingot(iron_ingot);
-		//minecraft文件夹
-		build_sugar(sugar);
-		build_clay_ball(clay_ball);
-		build_iron_ingot(iron_ingot);
+		build_ingot(brick);
+		// minecraft文件夹
+		build_vanilla(sugar);
+		build_vanilla(clay_ball);
+		build_vanilla(brick);
 		/*
 		 * System.out.println("Java 运行时环境版本:"+System.getProperty("java.version"));
 		 * System.out.println("Java 运行时环境供应商:"+System.getProperty("java.vendor"));

@@ -10,7 +10,7 @@ import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
 public class Ingot extends Material_ext {
 	public final static int ingot_model_offset = 100;
-	public final static Material model_base = Material.IRON_INGOT;
+	public final static Material model_base = Material.BRICK;
 	public final static ArrayList<Ingot> ingot_config = new ArrayList<>();
 	public final static HashMap<String, Ingot> ingot_map = new HashMap<>();
 	
