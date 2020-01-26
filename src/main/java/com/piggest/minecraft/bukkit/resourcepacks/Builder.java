@@ -7,8 +7,9 @@ import java.io.IOException;
 import com.google.gson.Gson;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.resourcepacks.dropper_shop.Element;
+import com.piggest.minecraft.bukkit.resourcepacks.minecraft.Clay_ball;
+import com.piggest.minecraft.bukkit.resourcepacks.minecraft.Iron_ingot;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.Sugar;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.Vanilla_model;
 
 public class Builder {
 	public final static Gson gson = new Gson();
@@ -36,7 +37,7 @@ public class Builder {
 		}
 	}
 
-	private static void build_elements(Vanilla_model sugar) {
+	private static void build_elements(Sugar sugar) {
 		File file = new File(dropper_shop_models_dir + "elements");
 		if (!file.exists()) {
 			file.mkdirs();
@@ -50,7 +51,7 @@ public class Builder {
 		}
 	}
 
-	private static void build_powder(Vanilla_model sugar) {
+	private static void build_powder(Clay_ball clay_ball) {
 		File file = new File(dropper_shop_models_dir + "powder");
 		if (!file.exists()) {
 			file.mkdirs();
@@ -60,13 +61,30 @@ public class Builder {
 			String file_path = dropper_shop_models_dir + "powder/" + material_name + ".json";
 			String js = new com.piggest.minecraft.bukkit.resourcepacks.dropper_shop.Powder(material_name).to_json();
 			write_json(file_path, js);
-			sugar.add_custom_model_override(
+			clay_ball.add_custom_model_override(
 					Dropper_shop_plugin.custom_model_data_offset
 							+ com.piggest.minecraft.bukkit.grinder.Powder.powder_model_offset + i,
 					"dropper_shop:powder/" + material_name);
 		}
 	}
-
+	
+	private static void build_ingot(Iron_ingot iron_ingot) {
+		File file = new File(dropper_shop_models_dir + "ingots");
+		if (!file.exists()) {
+			file.mkdirs();
+		}
+		for (int i = 1; i < com.piggest.minecraft.bukkit.grinder.Ingot.ingot_config.size(); i++) {
+			String material_name = com.piggest.minecraft.bukkit.grinder.Ingot.ingot_config.get(i).get_material_name();
+			String file_path = dropper_shop_models_dir + "ingots/" + material_name + ".json";
+			String js = new com.piggest.minecraft.bukkit.resourcepacks.dropper_shop.Ingot(material_name).to_json();
+			write_json(file_path, js);
+			iron_ingot.add_custom_model_override(
+					Dropper_shop_plugin.custom_model_data_offset
+							+ com.piggest.minecraft.bukkit.grinder.Ingot.ingot_model_offset + i,
+					"dropper_shop:ingots/" + material_name);
+		}
+	}
+	
 	private static void build_sugar(Sugar sugar) {
 		File file = new File(minecraft_item_models_dir);
 		if (!file.exists()) {
@@ -74,16 +92,37 @@ public class Builder {
 		}
 		write_json(minecraft_item_models_dir + "sugar.json", sugar.to_json());
 	}
+	
+	private static void build_clay_ball(Clay_ball clay_ball) {
+		File file = new File(minecraft_item_models_dir);
+		if (!file.exists()) {
+			file.mkdirs();
+		}
+		write_json(minecraft_item_models_dir + "clay_ball.json", clay_ball.to_json());
+	}
+	
+	private static void build_iron_ingot(Iron_ingot iron_ingot) {
+		File file = new File(minecraft_item_models_dir);
+		if (!file.exists()) {
+			file.mkdirs();
+		}
+		write_json(minecraft_item_models_dir + "iron_ingot.json", iron_ingot.to_json());
+	}
 
 	public static void main(String[] args) {
 		System.out.println("欢迎使用Dropper shop插件");
 		System.out.println("dropper_shop_models_dir:" + dropper_shop_models_dir);
+		Clay_ball clay_ball = new Clay_ball();
+		Iron_ingot iron_ingot = new Iron_ingot();
 		Sugar sugar = new Sugar();
 		com.piggest.minecraft.bukkit.grinder.Powder.init_powder_config();
 		build_elements(sugar);
-		build_powder(sugar);
-		build_sugar(sugar);
+		build_powder(clay_ball);
+		build_ingot(iron_ingot);
 		
+		build_sugar(sugar);
+		build_clay_ball(clay_ball);
+		build_iron_ingot(iron_ingot);
 		/*
 		 * System.out.println("Java 运行时环境版本:"+System.getProperty("java.version"));
 		 * System.out.println("Java 运行时环境供应商:"+System.getProperty("java.vendor"));

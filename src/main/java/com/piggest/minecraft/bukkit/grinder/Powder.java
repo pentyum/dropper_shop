@@ -11,7 +11,7 @@ import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
 public class Powder extends Material_ext {
 	public final static int powder_model_offset = 100;
-	public final static Material model_base = Material.CLAY;
+	public final static Material model_base = Material.CLAY_BALL;
 
 	private NamespacedKey ingot = null;
 
