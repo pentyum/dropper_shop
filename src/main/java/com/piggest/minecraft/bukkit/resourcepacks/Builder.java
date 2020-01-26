@@ -67,7 +67,7 @@ public class Builder {
 					"dropper_shop:powder/" + material_name);
 		}
 	}
-	
+
 	private static void build_ingot(Iron_ingot iron_ingot) {
 		File file = new File(dropper_shop_models_dir + "ingots");
 		if (!file.exists()) {
@@ -84,7 +84,7 @@ public class Builder {
 					"dropper_shop:ingots/" + material_name);
 		}
 	}
-	
+
 	private static void build_sugar(Sugar sugar) {
 		File file = new File(minecraft_item_models_dir);
 		if (!file.exists()) {
@@ -92,7 +92,7 @@ public class Builder {
 		}
 		write_json(minecraft_item_models_dir + "sugar.json", sugar.to_json());
 	}
-	
+
 	private static void build_clay_ball(Clay_ball clay_ball) {
 		File file = new File(minecraft_item_models_dir);
 		if (!file.exists()) {
@@ -100,7 +100,7 @@ public class Builder {
 		}
 		write_json(minecraft_item_models_dir + "clay_ball.json", clay_ball.to_json());
 	}
-	
+
 	private static void build_iron_ingot(Iron_ingot iron_ingot) {
 		File file = new File(minecraft_item_models_dir);
 		if (!file.exists()) {
@@ -116,10 +116,12 @@ public class Builder {
 		Iron_ingot iron_ingot = new Iron_ingot();
 		Sugar sugar = new Sugar();
 		com.piggest.minecraft.bukkit.grinder.Powder.init_powder_config();
+		com.piggest.minecraft.bukkit.grinder.Ingot.init_ingot_config();
+
 		build_elements(sugar);
 		build_powder(clay_ball);
 		build_ingot(iron_ingot);
-		
+
 		build_sugar(sugar);
 		build_clay_ball(clay_ball);
 		build_iron_ingot(iron_ingot);
