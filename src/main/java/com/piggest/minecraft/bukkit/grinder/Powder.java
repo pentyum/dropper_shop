@@ -6,38 +6,26 @@ import java.util.HashMap;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
-public class Powder {
+public class Powder extends Material_ext {
 	public final static int powder_model_offset = 100;
-	private String material_name;
-	private String chinese_name;
-	private String ingot_name = null;
+	public final static Material model_base = Material.SUGAR;
 
-	public String get_material_name() {
-		return this.material_name;
-	}
+	private NamespacedKey ingot = null;
 
-	public String get_chinese_name() {
-		return this.chinese_name;
-	}
-
-	public String get_ingot_name() {
-		return this.ingot_name;
+	public NamespacedKey get_ingot_namespacedkey() {
+		return this.ingot;
 	}
 
 	public Powder(String material_name, String chinese_name) {
-		this.material_name = material_name;
-		this.chinese_name = chinese_name;
+		super(material_name, chinese_name);
 	}
 
-	public Powder(String material_name, String chinese_name, String ingot_name) {
-		this.material_name = material_name;
-		this.chinese_name = chinese_name;
-		this.ingot_name = ingot_name;
+	public Powder(String material_name, String chinese_name, NamespacedKey ingot) {
+		super(material_name, chinese_name);
+		this.ingot = ingot;
 	}
 
 	public final static ArrayList<Powder> powder_config = new ArrayList<>();
@@ -45,16 +33,17 @@ public class Powder {
 
 	public static void init_powder_config() {
 		powder_config.add(null);
-		powder_config.add(new Powder("iron", "铁粉", "iron_ingot"));
-		powder_config.add(new Powder("gold", "金粉", "gold_ingot"));
-		powder_config.add(new Powder("coal", "煤粉", "coal"));
-		powder_config.add(new Powder("lapis", "青金石粉", "lapis_lazuli"));
-		powder_config.add(new Powder("copper", "铜粉", "copper_ingot"));
-		powder_config.add(new Powder("aluminium", "铝粉", "aluminium_ingot"));
-		powder_config.add(new Powder("tin", "锡粉", "tin_ingot"));
-		powder_config.add(new Powder("silver", "银粉", "silver_ingot"));
-		powder_config.add(new Powder("bronze", "青铜粉", "bronze_ingot"));
-		powder_config.add(new Powder("emerald", "绿宝石粉", "emerald"));
+		powder_config.add(new Powder("iron", "铁粉", Material.IRON_INGOT.getKey()));
+		powder_config.add(new Powder("gold", "金粉", Material.GOLD_INGOT.getKey()));
+		powder_config.add(new Powder("coal", "煤粉", Material.COAL.getKey()));
+		powder_config.add(new Powder("lapis", "青金石粉", Material.LAPIS_LAZULI.getKey()));
+		powder_config.add(new Powder("copper", "铜粉", Dropper_shop_plugin.get_key("dropper_shop", "copper_ingot")));
+		powder_config
+				.add(new Powder("aluminium", "铝粉", Dropper_shop_plugin.get_key("dropper_shop", "aluminium_ingot")));
+		powder_config.add(new Powder("tin", "锡粉", Dropper_shop_plugin.get_key("dropper_shop", "tin_ingot")));
+		powder_config.add(new Powder("silver", "银粉", Dropper_shop_plugin.get_key("dropper_shop", "silver_ingot")));
+		powder_config.add(new Powder("bronze", "青铜粉", Dropper_shop_plugin.get_key("dropper_shop", "bronze_ingot")));
+		powder_config.add(new Powder("emerald", "绿宝石粉", Material.EMERALD.getKey()));
 		powder_config.add(new Powder("flour", "面粉"));
 	}
 
@@ -62,19 +51,11 @@ public class Powder {
 		init_powder_config();
 		for (int i = 1; i < powder_config.size(); i++) {
 			String id_name = powder_config.get(i).material_name + "_powder";
-			NamespacedKey key = Dropper_shop_plugin.instance.get_key(id_name);
-			Powder.register_powder(key, powder_config.get(i).chinese_name, i);
+			NamespacedKey key = Dropper_shop_plugin.get_key(id_name);
+			Material_ext.register(key, model_base, powder_config.get(i).chinese_name,
+					Dropper_shop_plugin.custom_model_data_offset + powder_model_offset + i);
 			powder_map.put(key.toString(), powder_config.get(i));
 		}
-	}
-
-	public static void register_powder(NamespacedKey full_name, String name, int powder_id) {
-		ItemStack item = new ItemStack(Material.SUGAR);
-		ItemMeta itemmeta = item.getItemMeta();
-		itemmeta.setDisplayName("§r" + name);
-		itemmeta.setCustomModelData(Dropper_shop_plugin.custom_model_data_offset + powder_model_offset + powder_id);
-		item.setItemMeta(itemmeta);
-		Material_ext.register(full_name, item);
 	}
 
 	public static void init_powder_furnace_recipe() {

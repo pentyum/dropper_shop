@@ -29,7 +29,7 @@ public enum Solid implements Chemical {
 
 	public NamespacedKey get_namespacedkey() {
 		if (Material.getMaterial(this.name()) == null) {
-			return Dropper_shop_plugin.instance.get_key(this.name());
+			return Dropper_shop_plugin.get_key(this.name());
 		} else {
 			return NamespacedKey.minecraft(this.name().toLowerCase());
 		}

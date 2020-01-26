@@ -61,6 +61,7 @@ import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool;
 import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_command_executor;
 import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_gui_listener;
 import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_manager;
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.music_stick.Note_stick_listener;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.pigman_switch.Pigman_spawn_listener;
@@ -180,6 +181,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		Item_zh_cn.init();
 
 		this.nms_manager = new NMS_manager(Bukkit.getBukkitVersion());
+		Material_ext.ext_id_namespacedkey = Dropper_shop_plugin.get_key("ext_id");
 	}
 
 	public HashMap<String, World_structure_config> get_shop_config() {
@@ -475,9 +477,14 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public int get_exp_saver_remove_repaircost_exp() {
 		return this.exp_saver_remove_repaircost_exp;
 	}
-
-	public NamespacedKey get_key(String key) {
-		return new NamespacedKey(this, key);
+	
+	@SuppressWarnings("deprecation")
+	public static NamespacedKey get_key(String namespace, String key) {
+		return new NamespacedKey(namespace, key);
+	}
+	
+	public static NamespacedKey get_key(String key) {
+		return new NamespacedKey(Dropper_shop_plugin.instance, key);
 	}
 
 	public NMS_manager get_nms_manager() {

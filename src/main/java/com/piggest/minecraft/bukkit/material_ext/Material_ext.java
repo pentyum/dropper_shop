@@ -18,9 +18,25 @@ import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.utils.language.Item_zh_cn;
 
-public class Material_ext {
-	public final static NamespacedKey ext_id_namespacedkey = new NamespacedKey(Dropper_shop_plugin.instance, "ext_id");
+public abstract class Material_ext {
+	public static NamespacedKey ext_id_namespacedkey = null;
 	private static HashMap<NamespacedKey, ItemStack> ext_material_map = new HashMap<NamespacedKey, ItemStack>();
+
+	protected String material_name;
+	protected String chinese_name;
+
+	public Material_ext(String material_name, String chinese_name) {
+		this.material_name = material_name;
+		this.chinese_name = chinese_name;
+	}
+
+	public String get_material_name() {
+		return this.material_name;
+	}
+
+	public String get_chinese_name() {
+		return this.chinese_name;
+	}
 
 	/*
 	 * 获得材质名称
@@ -92,7 +108,7 @@ public class Material_ext {
 	public static ItemStack new_item(String id_name, int num) {
 		NamespacedKey namespacedkey = null;
 		if (Material.getMaterial(id_name.toUpperCase()) == null) {
-			namespacedkey = Dropper_shop_plugin.instance.get_key(id_name);
+			namespacedkey = Dropper_shop_plugin.get_key(id_name);
 		} else {
 			namespacedkey = NamespacedKey.minecraft(id_name.toLowerCase());
 		}
@@ -117,6 +133,18 @@ public class Material_ext {
 	}
 
 	/*
+	 * 以namespacedkey、材质、名称、物品模型ID注册物品
+	 */
+	public static void register(NamespacedKey namespacedkey, Material material_base, String name, int model_data) {
+		ItemStack item = new ItemStack(material_base);
+		ItemMeta itemmeta = item.getItemMeta();
+		itemmeta.setDisplayName("§r" + name);
+		itemmeta.setCustomModelData(model_data);
+		item.setItemMeta(itemmeta);
+		Material_ext.register(namespacedkey, item);
+	}
+
+	/*
 	 * 以namespacedkey注册物品
 	 */
 	public static void register(NamespacedKey namespacedkey, ItemStack item) {
@@ -133,7 +161,7 @@ public class Material_ext {
 	 * 注册本插件命名空间下的物品
 	 */
 	public static void register(String id_name, ItemStack itemstack) {
-		NamespacedKey namespacedkey = Dropper_shop_plugin.instance.get_key(id_name);
+		NamespacedKey namespacedkey = Dropper_shop_plugin.get_key(id_name);
 		register(namespacedkey, itemstack);
 	}
 

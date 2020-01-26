@@ -16,6 +16,5 @@ public class Powder_listener implements Listener {
 		if (powder == null) {
 			return;
 		}
-		String ingot_name = powder.get_ingot_name();
 	}
 }
