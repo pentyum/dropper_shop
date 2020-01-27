@@ -71,7 +71,21 @@ public class Reaction_container {
 		get_gold.set_reactants_coef(1);
 		get_gold.set_products_coef(1);
 		reactions.put("get_gold", get_gold);
-
+		
+		Reaction get_silver = new Reaction(false, 100000, 80000, 1, 1000);
+		get_silver.set_reactants(Solid.silver_powder);
+		get_silver.set_products(Solid.silver_ingot);
+		get_silver.set_reactants_coef(1);
+		get_silver.set_products_coef(1);
+		reactions.put("get_silver", get_silver);
+		
+		Reaction get_copper = new Reaction(false, 100000, 80000, 1, 1000);
+		get_copper.set_reactants(Solid.copper_powder);
+		get_copper.set_products(Solid.copper_ingot);
+		get_copper.set_reactants_coef(1);
+		get_copper.set_products_coef(1);
+		reactions.put("get_copper", get_copper);
+		
 		Reaction get_lapis = new Reaction(false, 100000, 80000, 1, 1000);
 		get_lapis.set_reactants(Solid.lapis_powder);
 		get_lapis.set_products(Solid.lapis_lazuli);
