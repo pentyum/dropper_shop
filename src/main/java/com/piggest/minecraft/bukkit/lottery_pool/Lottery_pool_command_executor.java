@@ -37,7 +37,7 @@ public class Lottery_pool_command_executor implements TabExecutor {
 			if (args.length == 0) {
 				String msg = "/lottery list 显示当前各物品概率\n";
 				if (sender.hasPermission("lottery.set")) {
-					msg += "/lottery add <概率> [播报:true|false] 设置抽到手上物品的概率，单位是千分比，数量以手上的为准\n/lottery del [编号] 删除该项\n/lottery set [编号] <新的概率> [播报:true|false]\n/lottery setprice <价格> 设置抽取一次的价格";
+					msg += "/lottery add <概率> [播报:true|false] 设置抽到手上物品的概率，单位是千分比，数量以手上的为准\n/lottery del [编号] 删除该项\n/lottery set [编号] <新的概率> [播报:true|false]\n/lottery setprice <价格> 设置抽取一次的价格\\n/lottery get [编号] 直接获取奖品";
 				}
 				sender.sendMessage(msg);
 				return true;
@@ -132,7 +132,7 @@ public class Lottery_pool_command_executor implements TabExecutor {
 					sender.sendMessage("[抽奖机]删除成功");
 				} else if (args[0].equalsIgnoreCase("get") && args.length == 2) {
 					if (!sender.hasPermission("lottery.set")) {
-						sender.sendMessage("[抽奖机]你没有权限修改抽奖池");
+						sender.sendMessage("[抽奖机]你没有权限直接领取抽奖池奖品");
 						return true;
 					}
 					int get_id = 0;
