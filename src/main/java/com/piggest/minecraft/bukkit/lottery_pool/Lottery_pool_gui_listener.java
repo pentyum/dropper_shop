@@ -24,7 +24,7 @@ public class Lottery_pool_gui_listener implements Listener {
 			int id = slot + (gui_holder.get_gui_page() - 1) * gui_holder.get_page_size();
 			if (slot >= 0 && slot < 27 && player.hasPermission("lottery.set")) {
 				if (!Grinder.is_empty(gui.getItem(slot))) {
-					player.sendMessage("输入指令/lottery set " + id + " <新的概率> 进行修改");
+					player.sendMessage("输入指令/lottery set|get " + id + " <新的概率> 进行修改或者直接获得物品");
 				}
 			}
 			if (slot != Lottery_pool_gui_holder.last_slot && slot != Lottery_pool_gui_holder.last_slot) {

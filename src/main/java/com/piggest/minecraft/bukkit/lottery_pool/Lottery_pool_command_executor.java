@@ -20,7 +20,7 @@ import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.utils.language.Enchantments_zh_cn;
 
 enum Lottery_sub_cmd {
-	add, set, del, list, setprice, reload;
+	add, get, set, del, list, setprice, reload;
 	public static ArrayList<String> get_list(CommandSender sender) {
 		ArrayList<String> list = new ArrayList<String>();
 		for (Lottery_sub_cmd cmd : Lottery_sub_cmd.values()) {
@@ -130,6 +130,32 @@ public class Lottery_pool_command_executor implements TabExecutor {
 					config.set("possibility", possibility_list);
 					config.set("broadcast", broadcast_list);
 					sender.sendMessage("[抽奖机]删除成功");
+				} else if (args[0].equalsIgnoreCase("get") && args.length == 2) {
+					if (!sender.hasPermission("lottery.set")) {
+						sender.sendMessage("[抽奖机]你没有权限修改抽奖池");
+						return true;
+					}
+					int get_id = 0;
+					try {
+						get_id = Integer.parseInt(args[1]);
+					} catch (NumberFormatException e) {
+						sender.sendMessage("[抽奖机]编号不是整数");
+						return true;
+					}
+					try {
+						ItemStack item = item_list.get(get_id).clone();
+						if (sender instanceof Player) {
+							Player player = (Player) sender;
+							player.getInventory().addItem(item);
+						} else {
+							sender.sendMessage("[抽奖机]只有玩家才能获取物品");
+							return true;
+						}
+					} catch (IndexOutOfBoundsException e) {
+						sender.sendMessage("[抽奖机]编号越界");
+						return true;
+					}
+					sender.sendMessage("[抽奖机]已获取物品");
 				} else if (args[0].equalsIgnoreCase("add") && args.length >= 2) {
 					if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
 						sender.sendMessage("[抽奖机]必须由玩家执行该命令");
