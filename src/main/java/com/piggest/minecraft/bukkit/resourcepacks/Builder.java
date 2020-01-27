@@ -8,7 +8,6 @@ import com.google.gson.Gson;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.resourcepacks.dropper_shop.Element;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.Brick;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.Clay_ball;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.Sugar;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.Vanilla_model;
 
@@ -53,7 +52,7 @@ public class Builder {
 		}
 	}
 
-	private static void build_powder(Clay_ball clay_ball) {
+	private static void build_powder(Sugar clay_ball) {
 		File file = new File(dropper_shop_models_dir + "powder");
 		if (!file.exists()) {
 			file.mkdirs();
@@ -99,18 +98,16 @@ public class Builder {
 	public static void main(String[] args) {
 		System.out.println("欢迎使用Dropper shop插件");
 		System.out.println("dropper_shop_models_dir:" + dropper_shop_models_dir);
-		Clay_ball clay_ball = new Clay_ball();
 		Brick brick = new Brick();
 		Sugar sugar = new Sugar();
 		com.piggest.minecraft.bukkit.grinder.Powder.init_powder_config();
 		com.piggest.minecraft.bukkit.grinder.Ingot.init_ingot_config();
 		// dropper_shop文件夹
 		build_elements(sugar);
-		build_powder(clay_ball);
+		build_powder(sugar);
 		build_ingot(brick);
 		// minecraft文件夹
 		build_vanilla(sugar);
-		build_vanilla(clay_ball);
 		build_vanilla(brick);
 		/*
 		 * System.out.println("Java 运行时环境版本:"+System.getProperty("java.version"));
