@@ -12,9 +12,7 @@ import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
 public class Grinder_manager extends Gui_structure_manager<Grinder> {
-	private HashMap<Material, ItemStack> main_recipe = new HashMap<Material, ItemStack>();
-	private HashMap<Material, ItemStack> minor_recipe = new HashMap<Material, ItemStack>();
-	private HashMap<Material, Integer> recipe_time = new HashMap<Material, Integer>();
+	private HashMap<Material, Grinder_recipe> recipe = new HashMap<Material, Grinder_recipe>();
 	private String gui_name = "磨粉机";
 
 	private Material[][][] model = {
@@ -40,20 +38,30 @@ public class Grinder_manager extends Gui_structure_manager<Grinder> {
 	}
 
 	private void add_recipe(Material material, Material main_out, int main_num, int time) {
-		this.main_recipe.put(material, new ItemStack(main_out, main_num));
-		this.recipe_time.put(material, time);
+		Grinder_recipe recipe = new Grinder_recipe(material.getKey().toString(), new ItemStack(main_out, main_num),
+				time);
+		this.recipe.put(material, recipe);
 	}
 
 	private void add_recipe(Material material, String main_out, int main_num, int time) {
-		this.main_recipe.put(material, Material_ext.new_item(main_out, main_num));
-		this.recipe_time.put(material, time);
+		Grinder_recipe recipe = new Grinder_recipe(material.getKey().toString(),
+				Material_ext.new_item(main_out, main_num), time);
+		this.recipe.put(material, recipe);
 	}
 
 	private void add_recipe(Material material, String main_out, int main_num, String minor_out, int minor_num,
 			int time) {
-		this.main_recipe.put(material, Material_ext.new_item(main_out, main_num));
-		this.minor_recipe.put(material, Material_ext.new_item(minor_out, minor_num));
-		this.recipe_time.put(material, time);
+		Grinder_recipe recipe = new Grinder_recipe(material.getKey().toString(),
+				Material_ext.new_item(main_out, main_num), Material_ext.new_item(minor_out, minor_num), time);
+		this.recipe.put(material, recipe);
+	}
+
+	private void add_recipe(Material material, String main_out, int main_num, String minor_out, int minor_num,
+			int minor_possibility, int time) {
+		Grinder_recipe recipe = new Grinder_recipe(material.getKey().toString(),
+				Material_ext.new_item(main_out, main_num), Material_ext.new_item(minor_out, minor_num),
+				minor_possibility, time);
+		this.recipe.put(material, recipe);
 	}
 
 	public void init_recipe() {
@@ -174,17 +182,37 @@ public class Grinder_manager extends Gui_structure_manager<Grinder> {
 	 * 注意：仅提供信息，要生成物品必须clone
 	 */
 	public ItemStack get_main_product(Material material) {
-		return this.main_recipe.get(material);
+		Grinder_recipe recipe = this.recipe.get(material);
+		if (recipe == null) {
+			return null;
+		}
+		return recipe.getResult();
 	}
 
 	/*
 	 * 注意：仅提供信息，要生成物品必须clone
 	 */
 	public ItemStack get_minor_product(Material material) {
-		return this.minor_recipe.get(material);
+		Grinder_recipe recipe = this.recipe.get(material);
+		if (recipe == null) {
+			return null;
+		}
+		return recipe.get_minor_result();
 	}
 
 	public int get_time(Material material) {
-		return this.recipe_time.get(material);
+		Grinder_recipe recipe = this.recipe.get(material);
+		if (recipe == null) {
+			return 0;
+		}
+		return recipe.get_recipe_time();
+	}
+
+	public int get_minor_possibility(Material material) {
+		Grinder_recipe recipe = this.recipe.get(material);
+		if (recipe == null) {
+			return 0;
+		}
+		return recipe.get_minor_possibility();
 	}
 }

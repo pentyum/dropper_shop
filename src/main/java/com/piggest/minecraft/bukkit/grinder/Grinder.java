@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,6 +27,7 @@ import com.piggest.minecraft.bukkit.utils.Inventory_io;
 public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io {
 	private Grinder_runner runner = new Grinder_runner(this);
 	private Grinder_io_runner io_runner = new Grinder_io_runner(this);
+	private Random random = new Random();
 	public static final int raw_slot = 9;
 	public static final int flint_slot = 11;
 	public static final int main_product_slot = 13;
@@ -140,15 +142,16 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 	}
 
 	public synchronized boolean to_product() {
-		if (!Inventory_io.is_empty(this.get_raw())) {
-			ItemStack main_product_item = this.get_manager().get_main_product(this.get_raw().getType());
-			ItemStack minor_product_item = this.get_manager().get_minor_product(this.get_raw().getType());
+		ItemStack raw = this.get_raw();
+		if (!Inventory_io.is_empty(raw)) {
+			ItemStack main_product_item = this.get_manager().get_main_product(raw.getType());
+			ItemStack minor_product_item = this.get_manager().get_minor_product(raw.getType());
 			if (main_product_item != null) {
 				boolean main_product_slot_available = Inventory_io.try_move_item_to_slot(main_product_item,
 						main_product_item.getAmount(), this.gui, main_product_slot);
 				if (minor_product_item == null) {
 					if (main_product_slot_available) {
-						if (Inventory_io.item_remove(this.get_raw(), 1) != null) {
+						if (Inventory_io.item_remove(raw, 1) != null) {
 							Inventory_io.move_item_to_slot(main_product_item.clone(), main_product_item.getAmount(),
 									this.gui, main_product_slot);// 添加主产物
 							return true;
@@ -158,11 +161,13 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 					boolean minor_product_slot_available = Inventory_io.try_move_item_to_slot(minor_product_item,
 							minor_product_item.getAmount(), getInventory(), minor_product_slot);
 					if (main_product_slot_available && minor_product_slot_available) {
-						if (Inventory_io.item_remove(this.get_raw(), 1) != null) {
+						if (Inventory_io.item_remove(raw, 1) != null) {
 							Inventory_io.move_item_to_slot(main_product_item.clone(), main_product_item.getAmount(),
 									this.gui, main_product_slot);// 添加主产物
-							Inventory_io.move_item_to_slot(minor_product_item.clone(), minor_product_item.getAmount(),
-									this.gui, minor_product_slot);// 添加副产物
+							if (random.nextInt(100) < this.get_manager().get_minor_possibility(raw.getType())) {
+								Inventory_io.move_item_to_slot(minor_product_item.clone(),
+										minor_product_item.getAmount(), this.gui, minor_product_slot);// 添加副产物
+							}
 							return true;
 						}
 					}

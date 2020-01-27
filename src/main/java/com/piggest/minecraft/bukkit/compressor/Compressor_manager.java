@@ -12,9 +12,12 @@ import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
 public class Compressor_manager extends Gui_structure_manager<Compressor> {
-	private HashMap<String, String> main_recipe = new HashMap<String, String>();
-	private HashMap<String, Integer> recipe_quantity = new HashMap<String, Integer>();
-	private HashMap<String, Integer> recipe_time = new HashMap<String, Integer>();
+	private HashMap<String, Compressor_recipe> recipe = new HashMap<String, Compressor_recipe>();
+	// private HashMap<String, String> main_recipe = new HashMap<String, String>();
+	// private HashMap<String, Integer> recipe_quantity = new HashMap<String,
+	// Integer>();
+	// private HashMap<String, Integer> recipe_time = new HashMap<String,
+	// Integer>();
 
 	private Material[][][] model = {
 			{ { Material.STONE_BRICKS, Material.IRON_BLOCK, Material.STONE_BRICKS },
@@ -81,36 +84,45 @@ public class Compressor_manager extends Gui_structure_manager<Compressor> {
 	/*
 	 * 注意：仅提供信息，要生成物品必须clone
 	 */
-	public ItemStack get_product(String raw_full_name, int raw_quantity) {
-		String product_full_name = this.main_recipe.get(raw_full_name);
-		if (product_full_name == null) {
+	public ItemStack get_product(String source_full_name, int raw_quantity) {
+		Compressor_recipe recipe = this.recipe.get(source_full_name);
+		if (recipe == null) {
 			return null;
 		}
-		int need_quantity = this.recipe_quantity.get(raw_full_name);
+		int need_quantity = recipe.get_need_quantity();
 		if (need_quantity > raw_quantity) {
 			return null;
 		}
-		return Material_ext.new_item_full_name(product_full_name, 1);
+		return recipe.getResult();
 	}
 
 	public int get_time(String full_name) {
-		return this.recipe_time.get(full_name);
+		Compressor_recipe recipe = this.recipe.get(full_name);
+		if (recipe == null) {
+			return 0;
+		}
+		return recipe.get_recipe_time();
 	}
 
-	public int get_raw_consume(String raw_full_name) {
-		return this.recipe_quantity.get(raw_full_name);
+	public int get_source_consume(String source_full_name) {
+		Compressor_recipe recipe = this.recipe.get(source_full_name);
+		if (recipe == null) {
+			return 0;
+		}
+		return recipe.get_need_quantity();
 	}
 
 	private void add_recipe(Material material, int need_quantity, Material main_out, int time) {
-		String raw_full_name = material.getKey().toString();
+		String source_full_name = material.getKey().toString();
 		String product_full_name = main_out.getKey().toString();
-		this.add_recipe(raw_full_name, need_quantity, product_full_name, time);
+		this.add_recipe(source_full_name, need_quantity, product_full_name, time);
 	}
 
-	private void add_recipe(String material, int need_quantity, String main_out, int time) {
-		this.main_recipe.put(material, main_out);
-		this.recipe_quantity.put(material, need_quantity);
-		this.recipe_time.put(material, time);
+	private void add_recipe(String source_full_name, int need_quantity, String main_out, int time) {
+		Compressor_recipe recipe = new Compressor_recipe(source_full_name, need_quantity,
+				Material_ext.new_item_full_name(main_out, 1), time);
+		this.recipe.put(source_full_name, recipe);
+
 	}
 
 	public void init_recipe() {

@@ -150,7 +150,7 @@ public class Compressor extends Multi_block_with_gui implements HasRunner, Auto_
 			String raw_full_name = Material_ext.get_full_name(raw_slot);
 			ItemStack main_product_item = this.get_manager().get_product(raw_full_name, raw_slot.getAmount());
 			if (main_product_item != null) {
-				int consume = this.get_manager().get_raw_consume(raw_full_name);
+				int consume = this.get_manager().get_source_consume(raw_full_name);
 				boolean main_product_slot_available = Inventory_io.try_move_item_to_slot(main_product_item,
 						main_product_item.getAmount(), this.gui, product_slot);
 				if (main_product_slot_available) {
