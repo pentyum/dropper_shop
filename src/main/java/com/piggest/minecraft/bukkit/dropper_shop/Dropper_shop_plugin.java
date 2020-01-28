@@ -62,6 +62,7 @@ import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool;
 import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_command_executor;
 import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_gui_listener;
 import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_manager;
+import com.piggest.minecraft.bukkit.material_ext.Custom_durability;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.music_stick.Note_stick_listener;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
@@ -128,7 +129,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private final Structure_listener Structure_listener = new Structure_listener();
 	private final Flying_item_listener flying_item_listener = new Flying_item_listener();
 	private final Lottery_pool_gui_listener lottery_pool_gui_listener = new Lottery_pool_gui_listener();
-	//private final Powder_listener powder_listener = new Powder_listener();
+	private final Custom_durability custom_durability_listener = new Custom_durability();
 
 	private HashMap<String, Integer> sync_realtime_worlds = new HashMap<String, Integer>();
 
@@ -255,7 +256,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		pm.registerEvents(this.note_listener, this);
 		pm.registerEvents(this.flying_item_listener, this);
 		pm.registerEvents(this.lottery_pool_gui_listener, this);
-		//pm.registerEvents(this.powder_listener, this);
+		pm.registerEvents(this.custom_durability_listener, this);
+		// pm.registerEvents(this.powder_listener, this);
 		for (Listener listener : this.structure_listeners) {
 			pm.registerEvents(listener, this);
 		}

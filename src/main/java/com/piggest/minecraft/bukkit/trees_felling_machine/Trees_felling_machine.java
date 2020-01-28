@@ -17,7 +17,10 @@ import org.bukkit.block.data.type.Leaves;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -48,6 +51,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	private int r = 32;
 	private Trees_felling_machine_runner runner = new Trees_felling_machine_runner(this);
 	private String owner;
+	private Random rand = new Random();
 
 	@Override
 	public void on_button_pressed(Player player, int slot) {
@@ -266,33 +270,43 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 		return true;
 	}
 
-	@SuppressWarnings("deprecation")
 	public void use_axe() {
 		ItemStack axe = this.get_axe();
+		ItemMeta meta = axe.getItemMeta();
+		Damageable damageable = (Damageable) meta;
 		int durability_level = axe.getEnchantmentLevel(Enchantment.DURABILITY);
-		Random rand = new Random();
 		int num = rand.nextInt(durability_level + 1);
+		int damage = 0;
+		int current_durability = damageable.getDamage();
 		if (num == 0) {
-			axe.setDurability((short) (axe.getDurability() + 1));
+			damage = 1;
 		}
+		PlayerItemDamageEvent event = new PlayerItemDamageEvent(this.get_owner().getPlayer(), axe, damage);
+		Bukkit.getServer().getPluginManager().callEvent(event);
+		if (event.isCancelled() == true) {
+			return;
+		}
+		damage = event.getDamage();
+		damageable.setDamage(damage);
+		axe.setItemMeta(meta);
 		if (axe.getType() == Material.DIAMOND_AXE) {
-			if (axe.getDurability() >= 1562) {
+			if (current_durability >= 1562) {
 				axe.setAmount(0);
 			}
 		} else if (axe.getType() == Material.STONE_AXE) {
-			if (axe.getDurability() >= 132) {
+			if (current_durability >= 132) {
 				axe.setAmount(0);
 			}
 		} else if (axe.getType() == Material.GOLDEN_AXE) {
-			if (axe.getDurability() >= 33) {
+			if (current_durability >= 33) {
 				axe.setAmount(0);
 			}
 		} else if (axe.getType() == Material.IRON_AXE) {
-			if (axe.getDurability() >= 251) {
+			if (current_durability >= 251) {
 				axe.setAmount(0);
 			}
 		} else if (axe.getType() == Material.WOODEN_AXE) {
-			if (axe.getDurability() >= 60) {
+			if (current_durability >= 60) {
 				axe.setAmount(0);
 			}
 		}
