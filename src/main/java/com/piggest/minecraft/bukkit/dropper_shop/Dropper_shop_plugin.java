@@ -185,7 +185,6 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		Item_zh_cn.init();
 
 		this.nms_manager = new NMS_manager(Bukkit.getBukkitVersion());
-		Material_ext.ext_id_namespacedkey = Dropper_shop_plugin.get_key("ext_id");
 	}
 
 	public HashMap<String, World_structure_config> get_shop_config() {

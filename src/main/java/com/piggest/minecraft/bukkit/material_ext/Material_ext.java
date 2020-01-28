@@ -19,7 +19,7 @@ import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.utils.language.Item_zh_cn;
 
 public abstract class Material_ext {
-	public static NamespacedKey ext_id_namespacedkey = null;
+	public static final NamespacedKey ext_id_namespacedkey = Dropper_shop_plugin.get_key("ext_id");
 	private static HashMap<NamespacedKey, ItemStack> ext_material_map = new HashMap<NamespacedKey, ItemStack>();
 
 	protected String material_name;
