@@ -160,11 +160,12 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 				} else {
 					boolean minor_product_slot_available = Inventory_io.try_move_item_to_slot(minor_product_item,
 							minor_product_item.getAmount(), getInventory(), minor_product_slot);
+					int minor_possibility = this.get_manager().get_minor_possibility(raw.getType());
 					if (main_product_slot_available && minor_product_slot_available) {
 						if (Inventory_io.item_remove(raw, 1) != null) {
 							Inventory_io.move_item_to_slot(main_product_item.clone(), main_product_item.getAmount(),
 									this.gui, main_product_slot);// 添加主产物
-							if (random.nextInt(100) < this.get_manager().get_minor_possibility(raw.getType())) {
+							if (random.nextInt(100) < minor_possibility) {
 								Inventory_io.move_item_to_slot(minor_product_item.clone(),
 										minor_product_item.getAmount(), this.gui, minor_product_slot);// 添加副产物
 							}
