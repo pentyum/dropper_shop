@@ -284,12 +284,11 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 		}
 		PlayerItemDamageEvent event = new PlayerItemDamageEvent(this.get_owner().getPlayer(), axe, damage);
 		Bukkit.getServer().getPluginManager().callEvent(event);
-		if (event.isCancelled() == true) {
-			return;
+		if (event.isCancelled() == false) {
+			damage = event.getDamage();
+			damageable.setDamage(damageable.getDamage() + damage);
+			axe.setItemMeta(meta);
 		}
-		damage = event.getDamage();
-		damageable.setDamage(damage);
-		axe.setItemMeta(meta);
 		Tool_material tool_material = Tool_material.get_tool_material(axe);
 		if (current_durability >= tool_material.get_max_durbility()) {
 			axe.setAmount(0);

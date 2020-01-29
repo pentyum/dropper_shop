@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -61,6 +62,7 @@ public abstract class Material_ext {
 	/*
 	 * 获得内部名称，如stone
 	 */
+	@Nullable
 	public static String get_id_name(ItemStack item) {
 		NamespacedKey namespacedkey = get_namespacedkey(item);
 		if (namespacedkey == null) {

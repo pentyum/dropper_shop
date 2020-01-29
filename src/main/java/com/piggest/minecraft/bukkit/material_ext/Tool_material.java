@@ -9,7 +9,12 @@ public interface Tool_material {
 	public int get_level();
 
 	public static Tool_material get_tool_material(ItemStack item) {
-		return Raw_material.get_raw_material(item);
+		Tool_material tool_material = Custom_material.get_custom_material(item);
+		if (tool_material == null) {
+			return Raw_material.get_raw_material(item);
+		} else {
+			return tool_material;
+		}
 	}
 
 	public static enum Raw_material implements Tool_material {
@@ -82,7 +87,10 @@ public interface Tool_material {
 		}
 	}
 
-	public static class Custom_material implements Tool_material {
+	public static enum Custom_material implements Tool_material {
+		ALUMINUM(225, Raw_material.STONE), COPPER(175, Raw_material.STONE), TIN(150, Raw_material.STONE),
+		SILVER(75, Raw_material.IRON), BRONZE(325, Raw_material.IRON), NICKEL(300, Raw_material.IRON),
+		LEAD(100, Raw_material.STONE);
 		private int max_durbility;
 		private Raw_material raw_model;
 
@@ -99,6 +107,20 @@ public interface Tool_material {
 		@Override
 		public int get_level() {
 			return this.raw_model.get_level();
+		}
+
+		public Raw_material get_raw() {
+			return this.raw_model;
+		}
+
+		public static Custom_material get_custom_material(ItemStack item) {
+			String id_name = Material_ext.get_id_name(item);
+			String[] id_name_head = id_name.split("_");
+			try {
+				return Custom_material.valueOf(id_name_head[0].toUpperCase());
+			} catch (IllegalArgumentException e) {
+				return null;
+			}
 		}
 	}
 }
