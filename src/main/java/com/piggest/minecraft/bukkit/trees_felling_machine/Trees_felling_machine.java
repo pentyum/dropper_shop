@@ -26,6 +26,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
+import com.piggest.minecraft.bukkit.material_ext.Tool_material;
 import com.piggest.minecraft.bukkit.structure.Auto_io;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
@@ -289,26 +290,9 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 		damage = event.getDamage();
 		damageable.setDamage(damage);
 		axe.setItemMeta(meta);
-		if (axe.getType() == Material.DIAMOND_AXE) {
-			if (current_durability >= 1562) {
-				axe.setAmount(0);
-			}
-		} else if (axe.getType() == Material.STONE_AXE) {
-			if (current_durability >= 132) {
-				axe.setAmount(0);
-			}
-		} else if (axe.getType() == Material.GOLDEN_AXE) {
-			if (current_durability >= 33) {
-				axe.setAmount(0);
-			}
-		} else if (axe.getType() == Material.IRON_AXE) {
-			if (current_durability >= 251) {
-				axe.setAmount(0);
-			}
-		} else if (axe.getType() == Material.WOODEN_AXE) {
-			if (current_durability >= 60) {
-				axe.setAmount(0);
-			}
+		Tool_material tool_material = Tool_material.get_tool_material(axe);
+		if (current_durability >= tool_material.get_max_durbility()) {
+			axe.setAmount(0);
 		}
 	}
 

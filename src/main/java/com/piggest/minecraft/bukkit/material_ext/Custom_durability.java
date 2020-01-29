@@ -1,5 +1,6 @@
 package com.piggest.minecraft.bukkit.material_ext;
 
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -49,5 +50,24 @@ public class Custom_durability implements Listener {
 		} else {
 			return custom_durability;
 		}
+	}
+
+	public static void set_durability(ItemStack item, int damage) {
+		ItemMeta meta = item.getItemMeta();
+		if (meta == null) {
+			return;
+		}
+		if (!(meta instanceof Damageable)) {
+			return;
+		}
+		Damageable damageable = (Damageable) meta;
+		PersistentDataContainer tag_container = meta.getPersistentDataContainer();
+		Integer custom_durability = tag_container.get(custom_durability_namespacedkey, PersistentDataType.INTEGER);
+		if (custom_durability == null) {// 一般工具
+			damageable.setDamage(damage);
+		} else {// 自定义耐久工具
+
+		}
+		item.setItemMeta(meta);
 	}
 }
