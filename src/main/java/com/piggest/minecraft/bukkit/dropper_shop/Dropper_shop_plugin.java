@@ -63,7 +63,6 @@ import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_command_executor;
 import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_gui_listener;
 import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_manager;
 import com.piggest.minecraft.bukkit.material_ext.Custom_durability;
-import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.music_stick.Note_stick_listener;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.pigman_switch.Pigman_spawn_listener;

@@ -18,7 +18,7 @@ public interface Tool_material {
 	}
 
 	public static enum Raw_material implements Tool_material {
-		WOODEN(60, 1), GOLDEN(33, 1), STONE(132, 2), IRON(251, 3), DIAMOND(1562, 4);
+		WOODEN(59, 1), GOLDEN(32, 1), STONE(131, 2), IRON(250, 3), DIAMOND(1561, 2);
 
 		private int max_durbility;
 		private int level;
