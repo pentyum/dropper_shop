@@ -11,6 +11,8 @@ public class Prepare_enchant_listener implements Listener {
 	@EventHandler
 	public void on_prepare_enchant(PrepareItemEnchantEvent event) {
 		ItemStack item = event.getItem();
-		NMS_manager.enchant_manager.enchant(item, event.getView(), event.getOffers(), event.getEnchantmentBonus());
+		if (Tool_material.is_custom_tool(item)) {
+			NMS_manager.enchant_manager.enchant(item, event.getView(), event.getOffers(), event.getEnchantmentBonus());
+		}
 	}
 }

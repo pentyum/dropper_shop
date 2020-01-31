@@ -7,8 +7,16 @@ public interface Tool_material {
 	public int get_max_durbility();
 
 	public int get_level();
-	
+
 	public int get_enchantment_ability();
+
+	public static boolean is_raw_tool(ItemStack item) {
+		return Raw_material.get_raw_material(item) != null;
+	}
+	
+	public static boolean is_custom_tool(ItemStack item) {
+		return Custom_material.get_custom_material(item) !=null;
+	}
 	
 	public static Tool_material get_tool_material(ItemStack item) {
 		Tool_material tool_material = Custom_material.get_custom_material(item);
@@ -39,11 +47,11 @@ public interface Tool_material {
 		public int get_level() {
 			return this.level;
 		}
-		
+
 		public int get_enchantment_ability() {
 			return this.enchantment_ability;
 		}
-		
+
 		public static Raw_material get_raw_material(ItemStack item) {
 			Material material = item.getType();
 			switch (material) {
