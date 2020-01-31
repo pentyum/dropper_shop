@@ -7,7 +7,9 @@ public interface Tool_material {
 	public int get_max_durbility();
 
 	public int get_level();
-
+	
+	public int get_enchantment_ability();
+	
 	public static Tool_material get_tool_material(ItemStack item) {
 		Tool_material tool_material = Custom_material.get_custom_material(item);
 		if (tool_material == null) {
@@ -18,14 +20,16 @@ public interface Tool_material {
 	}
 
 	public static enum Raw_material implements Tool_material {
-		WOODEN(59, 1), GOLDEN(32, 1), STONE(131, 2), IRON(250, 3), DIAMOND(1561, 2);
+		WOODEN(59, 1, 15), GOLDEN(32, 1, 22), STONE(131, 2, 5), IRON(250, 3, 14), DIAMOND(1561, 2, 10);
 
 		private int max_durbility;
 		private int level;
+		private int enchantment_ability;
 
-		Raw_material(int max_durbility, int level) {
+		Raw_material(int max_durbility, int level, int enchantment_ability) {
 			this.max_durbility = max_durbility;
 			this.level = level;
+			this.enchantment_ability = enchantment_ability;
 		}
 
 		public int get_max_durbility() {
@@ -35,7 +39,11 @@ public interface Tool_material {
 		public int get_level() {
 			return this.level;
 		}
-
+		
+		public int get_enchantment_ability() {
+			return this.enchantment_ability;
+		}
+		
 		public static Raw_material get_raw_material(ItemStack item) {
 			Material material = item.getType();
 			switch (material) {
@@ -121,6 +129,11 @@ public interface Tool_material {
 			} catch (IllegalArgumentException e) {
 				return null;
 			}
+		}
+
+		@Override
+		public int get_enchantment_ability() {
+			return this.raw_model.get_enchantment_ability();
 		}
 	}
 }

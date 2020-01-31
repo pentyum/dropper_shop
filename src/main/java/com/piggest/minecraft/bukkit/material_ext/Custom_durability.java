@@ -38,7 +38,7 @@ public class Custom_durability implements Listener {
 		damageable.setDamage(new_raw_durbility);
 		tag_container.set(custom_durability_namespacedkey, PersistentDataType.INTEGER, new_custom_durbility);
 		item.setItemMeta(meta);
-		if (new_raw_durbility >= raw_max_durbility) {// 耐久超出
+		if (new_raw_durbility > raw_max_durbility) {// 耐久超出
 			return;
 		}
 		event.setCancelled(true);
