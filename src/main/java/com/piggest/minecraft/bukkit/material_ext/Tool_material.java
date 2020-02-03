@@ -9,15 +9,21 @@ public interface Tool_material {
 	public int get_level();
 
 	public int get_enchantment_ability();
-
+	
+	public String get_display_name();
+	
+	public String name();
+	
+	public Raw_material get_raw();
+	
 	public static boolean is_raw_tool(ItemStack item) {
 		return Raw_material.get_raw_material(item) != null;
 	}
-	
+
 	public static boolean is_custom_tool(ItemStack item) {
-		return Custom_material.get_custom_material(item) !=null;
+		return Custom_material.get_custom_material(item) != null;
 	}
-	
+
 	public static Tool_material get_tool_material(ItemStack item) {
 		Tool_material tool_material = Custom_material.get_custom_material(item);
 		if (tool_material == null) {
@@ -27,17 +33,22 @@ public interface Tool_material {
 		}
 	}
 
+	
+	
 	public static enum Raw_material implements Tool_material {
-		WOODEN(59, 1, 15), GOLDEN(32, 1, 22), STONE(131, 2, 5), IRON(250, 3, 14), DIAMOND(1561, 2, 10);
+		WOODEN(59, 1, 15, "木"), GOLDEN(32, 1, 22, "金"), STONE(131, 2, 5, "石"), IRON(250, 3, 14, "铁"),
+		DIAMOND(1561, 2, 10, "钻石");
 
 		private int max_durbility;
 		private int level;
 		private int enchantment_ability;
+		private String name;
 
-		Raw_material(int max_durbility, int level, int enchantment_ability) {
+		Raw_material(int max_durbility, int level, int enchantment_ability, String name) {
 			this.max_durbility = max_durbility;
 			this.level = level;
 			this.enchantment_ability = enchantment_ability;
+			this.name = name;
 		}
 
 		public int get_max_durbility() {
@@ -101,18 +112,31 @@ public interface Tool_material {
 				return null;
 			}
 		}
+
+		public String get_display_name() {
+			return this.name;
+		}
+
+		@Override
+		public Raw_material get_raw() {
+			return this;
+		}
 	}
 
 	public static enum Custom_material implements Tool_material {
-		ALUMINUM(225, Raw_material.STONE), COPPER(175, Raw_material.STONE), TIN(150, Raw_material.STONE),
-		SILVER(75, Raw_material.IRON), BRONZE(325, Raw_material.IRON), NICKEL(300, Raw_material.IRON),
-		LEAD(100, Raw_material.STONE);
+		ALUMINUM(225, Raw_material.STONE, "铝"), COPPER(175, Raw_material.STONE, "铜"), TIN(150, Raw_material.STONE, "锡"),
+		SILVER(75, Raw_material.IRON, "银"), BRONZE(325, Raw_material.IRON, "青铜"), NICKEL(300, Raw_material.IRON, "镍"),
+		LEAD(100, Raw_material.STONE, "铅");
+		
 		private int max_durbility;
 		private Raw_material raw_model;
+		private int enchantment_ability = 0;
+		private String name;
 
-		Custom_material(int max_durbility, Raw_material raw_model) {
+		Custom_material(int max_durbility, Raw_material raw_model, String name) {
 			this.max_durbility = max_durbility;
 			this.raw_model = raw_model;
+			this.name = name;
 		}
 
 		@Override
@@ -141,7 +165,16 @@ public interface Tool_material {
 
 		@Override
 		public int get_enchantment_ability() {
-			return this.raw_model.get_enchantment_ability();
+			if (this.enchantment_ability == 0) {
+				return this.raw_model.get_enchantment_ability();
+			} else {
+				return this.enchantment_ability;
+			}
+		}
+
+		@Override
+		public String get_display_name() {
+			return this.name;
 		}
 	}
 }

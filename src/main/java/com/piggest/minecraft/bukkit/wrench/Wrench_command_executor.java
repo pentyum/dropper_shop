@@ -17,7 +17,7 @@ import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
 public class Wrench_command_executor implements CommandExecutor {
 	private Use_wrench_listener item_listener = new Use_wrench_listener(this);
-	private NamespacedKey namespace = new NamespacedKey(Dropper_shop_plugin.instance, "wrench");
+	private final NamespacedKey namespace = Dropper_shop_plugin.get_key("wrench");
 	private ConfigurationSection price = null;
 
 	public boolean is_wrench(ItemStack item) {

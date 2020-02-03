@@ -137,13 +137,14 @@ public abstract class Material_ext {
 	/*
 	 * 以namespacedkey、材质、名称、物品模型ID注册物品
 	 */
-	public static void register(NamespacedKey namespacedkey, Material material_base, String name, int model_data) {
+	public static ItemStack register(NamespacedKey namespacedkey, Material material_base, String name, int model_data) {
 		ItemStack item = new ItemStack(material_base);
 		ItemMeta itemmeta = item.getItemMeta();
 		itemmeta.setDisplayName("§r" + name);
 		itemmeta.setCustomModelData(model_data);
 		item.setItemMeta(itemmeta);
 		Material_ext.register(namespacedkey, item);
+		return item;
 	}
 
 	/*

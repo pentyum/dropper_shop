@@ -10,6 +10,7 @@ import com.piggest.minecraft.bukkit.resourcepacks.dropper_shop.Element;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.Brick;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.Sugar;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.Vanilla_model;
+import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Iron_pickaxe;
 
 public class Builder {
 	public final static Gson gson = new Gson();
@@ -86,6 +87,18 @@ public class Builder {
 		}
 	}
 
+	private static void build_wrench(Iron_pickaxe iron_pickaxe) {
+		File file = new File(dropper_shop_models_dir + "tools");
+		if (!file.exists()) {
+			file.mkdirs();
+		}
+		String file_path = dropper_shop_models_dir + "tools/wrench.json";
+		String js = new com.piggest.minecraft.bukkit.resourcepacks.dropper_shop.Wrench().to_json();
+		write_json(file_path, js);
+		iron_pickaxe.add_custom_model_override(Dropper_shop_plugin.custom_model_data_offset + 1,
+				"dropper_shop:tools/wrench");
+	}
+	
 	private static void build_vanilla(Vanilla_model model) {
 		File file = new File(minecraft_item_models_dir);
 		if (!file.exists()) {
@@ -100,15 +113,20 @@ public class Builder {
 		System.out.println("dropper_shop_models_dir:" + dropper_shop_models_dir);
 		Brick brick = new Brick();
 		Sugar sugar = new Sugar();
+		Iron_pickaxe iron_pickaxe = new Iron_pickaxe();
 		com.piggest.minecraft.bukkit.grinder.Powder.init_powder_config();
 		com.piggest.minecraft.bukkit.grinder.Ingot.init_ingot_config();
+		com.piggest.minecraft.bukkit.tools.Tools.init_tools_config();
+		
 		// dropper_shop文件夹
 		build_elements(sugar);
 		build_powder(sugar);
 		build_ingot(brick);
+		build_wrench(iron_pickaxe);
 		// minecraft文件夹
 		build_vanilla(sugar);
 		build_vanilla(brick);
+		build_vanilla(iron_pickaxe);
 		/*
 		 * System.out.println("Java 运行时环境版本:"+System.getProperty("java.version"));
 		 * System.out.println("Java 运行时环境供应商:"+System.getProperty("java.vendor"));

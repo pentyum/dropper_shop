@@ -38,8 +38,7 @@ public class Powder extends Material_ext {
 		powder_config.add(new Powder("coal", "煤粉", Material.COAL.getKey()));
 		powder_config.add(new Powder("lapis", "青金石粉", Material.LAPIS_LAZULI.getKey()));
 		powder_config.add(new Powder("copper", "铜粉", Dropper_shop_plugin.get_key("copper_ingot")));
-		powder_config
-				.add(new Powder("aluminium", "铝粉", Dropper_shop_plugin.get_key("aluminium_ingot")));
+		powder_config.add(new Powder("aluminium", "铝粉", Dropper_shop_plugin.get_key("aluminium_ingot")));
 		powder_config.add(new Powder("tin", "锡粉", Dropper_shop_plugin.get_key("tin_ingot")));
 		powder_config.add(new Powder("silver", "银粉", Dropper_shop_plugin.get_key("silver_ingot")));
 		powder_config.add(new Powder("bronze", "青铜粉", Dropper_shop_plugin.get_key("bronze_ingot")));
@@ -49,6 +48,7 @@ public class Powder extends Material_ext {
 
 	public static void init_powder() {
 		init_powder_config();
+		Dropper_shop_plugin.instance.getLogger().info("注册粉末，原型:" + model_base.getKey().toString());
 		for (int i = 1; i < powder_config.size(); i++) {
 			String id_name = powder_config.get(i).material_name + "_powder";
 			NamespacedKey key = Dropper_shop_plugin.get_key(id_name);

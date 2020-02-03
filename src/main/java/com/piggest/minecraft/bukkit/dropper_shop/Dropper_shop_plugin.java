@@ -78,6 +78,7 @@ import com.piggest.minecraft.bukkit.teleport_machine.Radio_manager;
 import com.piggest.minecraft.bukkit.teleport_machine.Teleport_machine;
 import com.piggest.minecraft.bukkit.teleport_machine.Teleport_machine_command_executer;
 import com.piggest.minecraft.bukkit.teleport_machine.Teleport_machine_manager;
+import com.piggest.minecraft.bukkit.tools.Tools;
 import com.piggest.minecraft.bukkit.trees_felling_machine.Trees_felling_machine;
 import com.piggest.minecraft.bukkit.trees_felling_machine.Trees_felling_machine_manager;
 import com.piggest.minecraft.bukkit.utils.Tab_list;
@@ -329,6 +330,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		// 初始化插件特有物品
 		Powder.init_powder();
 		Ingot.init_ingot();
+		Tools.init_tools();
 		Reader.init_reader_item();
 		Reader.set_recipe();
 		Upgrade_component.init_component();

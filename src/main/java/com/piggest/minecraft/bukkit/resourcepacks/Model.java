@@ -1,7 +1,7 @@
 package com.piggest.minecraft.bukkit.resourcepacks;
 
 public abstract class Model {
-	private String parent = "item/generated";
+	protected String parent = "item/generated";
 	private Textures textures = null;
 	
 	public Model(String parent,Textures textures) {

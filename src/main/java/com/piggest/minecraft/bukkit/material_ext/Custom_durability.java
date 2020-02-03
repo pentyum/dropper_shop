@@ -44,6 +44,10 @@ public class Custom_durability implements Listener {
 		event.setCancelled(true);
 	}
 
+	public static void init_custom_durability(ItemStack item) {
+		set_durability(item, 0);
+	}
+
 	public static boolean has_custom_durability(ItemStack item) {
 		ItemMeta meta = item.getItemMeta();
 		PersistentDataContainer tag_container = meta.getPersistentDataContainer();
@@ -72,6 +76,13 @@ public class Custom_durability implements Listener {
 		} else {
 			return custom_durability;
 		}
+	}
+
+	public static void set_custom_durability(ItemStack item, int damage) {
+		ItemMeta meta = item.getItemMeta();
+		PersistentDataContainer tag_container = meta.getPersistentDataContainer();
+		tag_container.set(custom_durability_namespacedkey, PersistentDataType.INTEGER, damage);
+		item.setItemMeta(meta);
 	}
 
 	public static void set_durability(ItemStack item, int damage) {
