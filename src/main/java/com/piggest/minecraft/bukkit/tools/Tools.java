@@ -33,11 +33,11 @@ public class Tools implements Listener {
 	public static final int tool_model_offset = 100;
 
 	private Tool_type tool_type;
-	private Tool_material tool_material;
+	private Tool_material.Custom_material tool_material;
 	private String id_name;
 	private Material raw_material;
 
-	public Tools(Tool_material tool_material, Tool_type tool_type) {
+	public Tools(Tool_material.Custom_material tool_material, Tool_type tool_type) {
 		this.tool_type = tool_type;
 		this.tool_material = tool_material;
 		this.id_name = tool_material.name().toLowerCase() + "_" + tool_type.name().toLowerCase();
@@ -63,7 +63,7 @@ public class Tools implements Listener {
 		return this.tool_type;
 	}
 
-	public Tool_material get_tool_material() {
+	public Tool_material.Custom_material get_tool_material() {
 		return this.tool_material;
 	}
 

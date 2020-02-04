@@ -45,7 +45,7 @@ public class Custom_durability implements Listener {
 	}
 
 	public static void init_custom_durability(ItemStack item) {
-		set_durability(item, 0);
+		set_custom_durability(item, 0);
 	}
 
 	public static boolean has_custom_durability(ItemStack item) {
