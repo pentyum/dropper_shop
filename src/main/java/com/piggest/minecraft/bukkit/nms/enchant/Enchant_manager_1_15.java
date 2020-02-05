@@ -77,7 +77,7 @@ public class Enchant_manager_1_15 implements Enchant_manager {
 				}
 			}
 		}
-		for (j = 0; j <= 3; j++) {
+		for (j = 0; j < 3; j++) {
 			if (offers[j] != null) {
 				offers[j].setCost(costs[j]);
 				Enchantment enchantment = (enchantments[j] >= 0) ? Enchantment.getByKey(CraftNamespacedKey
@@ -125,7 +125,6 @@ public class Enchant_manager_1_15 implements Enchant_manager {
 	public static int getEnchantmentCost(Random rand, int j, int bonus, ItemStack item) {
 		Tool_material tool_material = Tool_material.get_tool_material(item);
 		int enchantment_ability = tool_material.get_enchantment_ability();
-
 		if (enchantment_ability <= 0) {
 			return 0;
 		}

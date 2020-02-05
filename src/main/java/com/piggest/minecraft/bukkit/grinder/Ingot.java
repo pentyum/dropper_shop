@@ -7,24 +7,31 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.material_ext.Tool_material;
 
 public class Ingot extends Material_ext {
 	public final static int ingot_model_offset = 100;
 	public final static Material model_base = Material.BRICK;
 	public final static ArrayList<Ingot> ingot_config = new ArrayList<>();
 	public final static HashMap<String, Ingot> ingot_map = new HashMap<>();
+	private Tool_material.Custom_material tool_material;
 
-	public Ingot(String material_name, String chinese_name) {
-		super(material_name, chinese_name);
+	public Ingot(Tool_material.Custom_material tool_material) {
+		super(tool_material.name().toLowerCase(), tool_material.get_display_name() + "锭");
+		this.tool_material = tool_material;
+	}
+
+	public Tool_material.Custom_material get_tool_material() {
+		return this.tool_material;
 	}
 
 	public static void init_ingot_config() {
 		ingot_config.add(null);
-		ingot_config.add(new Ingot("copper", "铜锭"));
-		ingot_config.add(new Ingot("aluminium", "铝锭"));
-		ingot_config.add(new Ingot("tin", "锡锭"));
-		ingot_config.add(new Ingot("silver", "银锭"));
-		ingot_config.add(new Ingot("bronze", "青铜锭"));
+		ingot_config.add(new Ingot(Tool_material.Custom_material.COPPER));
+		ingot_config.add(new Ingot(Tool_material.Custom_material.ALUMINUM));
+		ingot_config.add(new Ingot(Tool_material.Custom_material.TIN));
+		ingot_config.add(new Ingot(Tool_material.Custom_material.SILVER));
+		ingot_config.add(new Ingot(Tool_material.Custom_material.BRONZE));
 	}
 
 	public static void init_ingot() {
@@ -38,5 +45,4 @@ public class Ingot extends Material_ext {
 			ingot_map.put(key.toString(), ingot_config.get(i));
 		}
 	}
-
 }

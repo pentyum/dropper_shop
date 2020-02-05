@@ -117,7 +117,7 @@ public class Watersheep_runner extends BukkitRunnable {
 			}
 		}
 		String msg = "[植物羊]在加载的 " + counter_how_many_sheep_proceesed + " 只植物羊里面，有 " + counter_how_many_sheep_not_sheared
-				+ "本身有毛，有 " + counter_how_many_sheep_no_grass + " 只脚下没有草，有 " + counter_how_many_sheep_succeed
+				+ " 只本身有毛，有 " + counter_how_many_sheep_no_grass + " 只脚下没有草，有 " + counter_how_many_sheep_succeed
 				+ " 只成功长出了毛。";
 
 		if (server.getPlayer("weikeng") != null && server.getPlayer("weikeng").isOnline()) {

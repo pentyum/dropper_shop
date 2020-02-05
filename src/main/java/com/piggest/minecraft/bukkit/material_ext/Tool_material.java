@@ -1,5 +1,8 @@
 package com.piggest.minecraft.bukkit.material_ext;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -9,18 +12,23 @@ public interface Tool_material {
 	public int get_level();
 
 	public int get_enchantment_ability();
-	
+
 	public String get_display_name();
-	
+
 	public String name();
-	
+
 	public Raw_material get_raw();
 	
-	public static boolean is_raw_tool(ItemStack item) {
+	public static boolean is_tool(@Nullable ItemStack item) {
+		if(item==null) {
+			return false;
+		}
 		return Raw_material.get_raw_material(item) != null;
 	}
-
-	public static boolean is_custom_tool(ItemStack item) {
+	public static boolean is_custom_tool(@Nullable ItemStack item) {
+		if(item==null) {
+			return false;
+		}
 		return Custom_material.get_custom_material(item) != null;
 	}
 
@@ -33,8 +41,6 @@ public interface Tool_material {
 		}
 	}
 
-	
-	
 	public static enum Raw_material implements Tool_material {
 		WOODEN(59, 1, 15, "木"), GOLDEN(32, 1, 22, "金"), STONE(131, 2, 5, "石"), IRON(250, 3, 14, "铁"),
 		DIAMOND(1561, 2, 10, "钻石");
@@ -63,7 +69,7 @@ public interface Tool_material {
 			return this.enchantment_ability;
 		}
 
-		public static Raw_material get_raw_material(ItemStack item) {
+		public static Raw_material get_raw_material(@Nonnull ItemStack item) {
 			Material material = item.getType();
 			switch (material) {
 			case DIAMOND_AXE:
@@ -124,19 +130,21 @@ public interface Tool_material {
 	}
 
 	public static enum Custom_material implements Tool_material {
-		ALUMINUM(225, Raw_material.STONE, "铝"), COPPER(175, Raw_material.STONE, "铜"), TIN(150, Raw_material.STONE, "锡"),
-		SILVER(75, Raw_material.IRON, "银"), BRONZE(325, Raw_material.IRON, "青铜"), NICKEL(300, Raw_material.IRON, "镍"),
-		LEAD(100, Raw_material.STONE, "铅");
-		
+		ALUMINUM(225, Raw_material.STONE, 14, "铝"), COPPER(175, Raw_material.STONE, 6, "铜"),
+		TIN(150, Raw_material.STONE, 7, "锡"), SILVER(75, Raw_material.IRON, 20, "银"),
+		BRONZE(325, Raw_material.IRON, 15, "青铜"), NICKEL(300, Raw_material.IRON, 18, "镍"),
+		LEAD(100, Raw_material.STONE, 9, "铅");
+
 		private int max_durbility;
 		private Raw_material raw_model;
 		private int enchantment_ability = 0;
 		private String name;
 
-		Custom_material(int max_durbility, Raw_material raw_model, String name) {
+		Custom_material(int max_durbility, Raw_material raw_model, int enchantment_ability, String name) {
 			this.max_durbility = max_durbility;
 			this.raw_model = raw_model;
 			this.name = name;
+			this.enchantment_ability = enchantment_ability;
 		}
 
 		@Override
@@ -153,7 +161,7 @@ public interface Tool_material {
 			return this.raw_model;
 		}
 
-		public static Custom_material get_custom_material(ItemStack item) {
+		public static Custom_material get_custom_material(@Nonnull ItemStack item) {
 			String id_name = Material_ext.get_id_name(item);
 			String[] id_name_head = id_name.split("_");
 			try {

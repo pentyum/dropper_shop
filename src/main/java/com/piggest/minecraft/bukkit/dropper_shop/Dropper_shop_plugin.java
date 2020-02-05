@@ -63,6 +63,7 @@ import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_command_executor;
 import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_gui_listener;
 import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_manager;
 import com.piggest.minecraft.bukkit.material_ext.Custom_durability;
+import com.piggest.minecraft.bukkit.material_ext.Prepare_enchant_listener;
 import com.piggest.minecraft.bukkit.music_stick.Note_stick_listener;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.pigman_switch.Pigman_spawn_listener;
@@ -78,6 +79,7 @@ import com.piggest.minecraft.bukkit.teleport_machine.Radio_manager;
 import com.piggest.minecraft.bukkit.teleport_machine.Teleport_machine;
 import com.piggest.minecraft.bukkit.teleport_machine.Teleport_machine_command_executer;
 import com.piggest.minecraft.bukkit.teleport_machine.Teleport_machine_manager;
+import com.piggest.minecraft.bukkit.tools.Tool_craft_listener;
 import com.piggest.minecraft.bukkit.tools.Tools;
 import com.piggest.minecraft.bukkit.trees_felling_machine.Trees_felling_machine;
 import com.piggest.minecraft.bukkit.trees_felling_machine.Trees_felling_machine_manager;
@@ -130,7 +132,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private final Flying_item_listener flying_item_listener = new Flying_item_listener();
 	private final Lottery_pool_gui_listener lottery_pool_gui_listener = new Lottery_pool_gui_listener();
 	private final Custom_durability custom_durability_listener = new Custom_durability();
-
+	private final Tool_craft_listener tool_craft_listener = new Tool_craft_listener();
+	private final Prepare_enchant_listener prepare_enchant_listener = new Prepare_enchant_listener();
+	
 	private HashMap<String, Integer> sync_realtime_worlds = new HashMap<String, Integer>();
 
 	private Listener[] structure_listeners = { new Depository_listener(), new Dropper_shop_listener(),
@@ -256,11 +260,11 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		pm.registerEvents(this.flying_item_listener, this);
 		pm.registerEvents(this.lottery_pool_gui_listener, this);
 		pm.registerEvents(this.custom_durability_listener, this);
-		// pm.registerEvents(this.powder_listener, this);
+		pm.registerEvents(this.tool_craft_listener, this);
+		//pm.registerEvents(this.prepare_enchant_listener, this);
 		for (Listener listener : this.structure_listeners) {
 			pm.registerEvents(listener, this);
 		}
-
 	}
 
 	private void init_command() {
@@ -335,6 +339,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		Reader.set_recipe();
 		Upgrade_component.init_component();
 		Upgrade_component.set_recipe();
+		Tools.init_recipe();
 		grinder_manager.init_recipe();
 		compressor_manager.init_recipe();
 		Gas_bottle.init_gas_bottle();

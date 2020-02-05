@@ -15,22 +15,27 @@ import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Diamond_axe;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Diamond_hoe;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Diamond_pickaxe;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Diamond_shovel;
+import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Diamond_sword;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Golden_axe;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Golden_hoe;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Golden_pickaxe;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Golden_shovel;
+import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Golden_sword;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Iron_axe;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Iron_hoe;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Iron_pickaxe;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Iron_shovel;
+import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Iron_sword;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Stone_axe;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Stone_hoe;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Stone_pickaxe;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Stone_shovel;
+import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Stone_sword;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Wooden_axe;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Wooden_hoe;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Wooden_pickaxe;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Wooden_shovel;
+import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Wooden_sword;
 import com.piggest.minecraft.bukkit.tools.Tools;
 
 public class Builder {
@@ -196,7 +201,13 @@ public class Builder {
 		Stone_shovel stone_shovel = new Stone_shovel();
 		Iron_shovel iron_shovel = new Iron_shovel();
 		Diamond_shovel diamond_shovel = new Diamond_shovel();
-
+		
+		Wooden_sword wooden_sword = new Wooden_sword();
+		Golden_sword golden_sword = new Golden_sword();
+		Stone_sword stone_sword = new Stone_sword();
+		Iron_sword iron_sword = new Iron_sword();
+		Diamond_sword diamond_sword = new Diamond_sword();
+		
 		com.piggest.minecraft.bukkit.grinder.Powder.init_powder_config();
 		com.piggest.minecraft.bukkit.grinder.Ingot.init_ingot_config();
 		com.piggest.minecraft.bukkit.tools.Tools.init_tools_config();
@@ -210,6 +221,7 @@ public class Builder {
 		build_tool(Tools.axe_config, wooden_axe, golden_axe, stone_axe, iron_axe, diamond_axe);
 		build_tool(Tools.hoe_config, wooden_hoe, golden_hoe, stone_hoe, iron_hoe, diamond_hoe);
 		build_tool(Tools.shovel_config, wooden_shovel, golden_shovel, stone_shovel, iron_shovel, diamond_shovel);
+		build_tool(Tools.sword_config, wooden_sword, golden_sword, stone_sword, iron_sword, diamond_sword);
 
 		// minecraft文件夹
 		build_vanilla(sugar);
@@ -237,6 +249,12 @@ public class Builder {
 		build_vanilla(stone_shovel);
 		build_vanilla(iron_shovel);
 		build_vanilla(diamond_shovel);
+		
+		build_vanilla(wooden_sword);
+		build_vanilla(golden_sword);
+		build_vanilla(stone_sword);
+		build_vanilla(iron_sword);
+		build_vanilla(diamond_sword);
 		/*
 		 * System.out.println("Java 运行时环境版本:"+System.getProperty("java.version"));
 		 * System.out.println("Java 运行时环境供应商:"+System.getProperty("java.vendor"));
