@@ -7,13 +7,16 @@ import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.CraftingInventory;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
@@ -112,7 +115,25 @@ public class Tool_craft_listener implements Listener {
 		AnvilInventory inventory = event.getInventory();
 		ItemStack item1 = inventory.getItem(0);
 		ItemStack item2 = inventory.getItem(1);
-		Dropper_shop_plugin.instance.getLogger().info(inventory.getRenameText());
+		String rename_text = inventory.getRenameText();
+		ItemStack result = event.getResult();
+		if (item1 != null) {
+			ItemMeta meta1 = item1.getItemMeta();
+			if (meta1.hasDisplayName()) {
+				if (meta1.getDisplayName().substring(1).equals(rename_text)) {
+					if (Grinder.is_empty(item2)) {
+						event.setResult(null);
+						return;
+					} else {
+						if (!Grinder.is_empty(result)) {
+							ItemMeta result_meta = result.getItemMeta();
+							result_meta.setDisplayName(meta1.getDisplayName());
+							result.setItemMeta(result_meta);
+						}
+					}
+				}
+			}
+		}
 		if (Tool_material.is_custom_tool(item1)) {// 铁砧处理自定义工具
 			Custom_material custom_material = Custom_material.get_custom_material(item1);
 			if (!Grinder.is_empty(item2)) {
@@ -125,20 +146,42 @@ public class Tool_craft_listener implements Listener {
 				if (ingot != null) {
 					if (ingot.get_tool_material() == custom_material) {
 						event.setResult(item1.clone());
-						inventory.setRepairCost(2);
-						Dropper_shop_plugin.instance.getLogger().info("暂不支持");
+						inventory.setRepairCost(20);
+						Dropper_shop_plugin.instance.getLogger().info("暂不支持金属锭修复");
 						return;
 					}
 				}
-				Custom_material custom_material2 = Custom_material.get_custom_material(item2);
-				if (custom_material2 != null && custom_material != custom_material2) {
+				Tool_material material2 = Tool_material.get_tool_material(item2);
+				if (material2 != null && custom_material != material2) {
 					event.setResult(null);
 					return;
+				} else if (custom_material == material2) {// 物品合并
+					int max_durbility = custom_material.get_max_durbility();
+					int tool1_left = max_durbility - Custom_durability.get_custom_durability(item1);
+					int tool2_left = max_durbility - Custom_durability.get_custom_durability(item2);
+					int left = tool1_left + tool2_left + (int) (max_durbility * 0.12);
+					if (left > max_durbility) {
+						left = max_durbility;
+					}
+					int new_damage = max_durbility - left;
+					Custom_durability.set_custom_durability(result, new_damage);
 				}
-			} else {
-
 			}
+		}
+	}
 
+	@EventHandler
+	public void on_anvil_result_click(InventoryClickEvent event) {
+		Inventory inventory = event.getClickedInventory();
+		if (inventory instanceof AnvilInventory) {
+			AnvilInventory anvil_inv = (AnvilInventory) inventory;
+			int repair_cost = anvil_inv.getRepairCost();
+			// Dropper_shop_plugin.instance.getLogger().info("你点击了铁砧,repair_cost:" +
+			// repair_cost);
+
+			if (event.getSlot() == 2) {
+				// Dropper_shop_plugin.instance.getLogger().info("取出结果");
+			}
 		}
 	}
 }

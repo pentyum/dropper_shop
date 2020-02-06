@@ -25,13 +25,15 @@ public interface Tool_material {
 		}
 		return Raw_material.get_raw_material(item) != null;
 	}
+	
 	public static boolean is_custom_tool(@Nullable ItemStack item) {
 		if(item==null) {
 			return false;
 		}
 		return Custom_material.get_custom_material(item) != null;
 	}
-
+	
+	@Nullable
 	public static Tool_material get_tool_material(ItemStack item) {
 		Tool_material tool_material = Custom_material.get_custom_material(item);
 		if (tool_material == null) {
@@ -68,7 +70,8 @@ public interface Tool_material {
 		public int get_enchantment_ability() {
 			return this.enchantment_ability;
 		}
-
+		
+		@Nullable
 		public static Raw_material get_raw_material(@Nonnull ItemStack item) {
 			Material material = item.getType();
 			switch (material) {
@@ -160,7 +163,8 @@ public interface Tool_material {
 		public Raw_material get_raw() {
 			return this.raw_model;
 		}
-
+		
+		@Nullable
 		public static Custom_material get_custom_material(@Nonnull ItemStack item) {
 			String id_name = Material_ext.get_id_name(item);
 			String[] id_name_head = id_name.split("_");
