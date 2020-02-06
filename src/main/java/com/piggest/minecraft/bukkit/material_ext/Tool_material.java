@@ -130,9 +130,9 @@ public interface Tool_material {
 	}
 
 	public static enum Custom_material implements Tool_material {
-		ALUMINUM(225, Raw_material.STONE, 14, "铝"), COPPER(175, Raw_material.STONE, 6, "铜"),
-		TIN(150, Raw_material.STONE, 7, "锡"), SILVER(75, Raw_material.IRON, 20, "银"),
-		BRONZE(325, Raw_material.IRON, 15, "青铜"), NICKEL(300, Raw_material.IRON, 18, "镍"),
+		ALUMINUM(250, Raw_material.STONE, 14, "铝"), COPPER(225, Raw_material.IRON, 6, "铜"),
+		TIN(150, Raw_material.STONE, 7, "锡"), SILVER(100, Raw_material.IRON, 20, "银"),
+		BRONZE(350, Raw_material.IRON, 15, "青铜"), NICKEL(300, Raw_material.IRON, 18, "镍"),
 		LEAD(100, Raw_material.STONE, 9, "铅");
 
 		private int max_durbility;

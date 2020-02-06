@@ -92,6 +92,13 @@ public class Tools {
 		hoe_recipe.setIngredient('s', Material.STICK);
 		hoe_recipe.setIngredient('a', Material.AIR);
 		Dropper_shop_plugin.instance.add_recipe(hoe_recipe);
+		
+		ShapedRecipe sword_recipe = new ShapedRecipe(sword_recipe_namespace, new ItemStack(Material.STONE_SWORD));
+		sword_recipe.shape("aba", "aba", "asa");
+		sword_recipe.setIngredient('b', Material.BRICK);
+		sword_recipe.setIngredient('s', Material.STICK);
+		sword_recipe.setIngredient('a', Material.AIR);
+		Dropper_shop_plugin.instance.add_recipe(sword_recipe);
 
 	}
 

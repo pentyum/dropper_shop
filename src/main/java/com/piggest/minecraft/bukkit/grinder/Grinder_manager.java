@@ -85,7 +85,7 @@ public class Grinder_manager extends Gui_structure_manager<Grinder> {
 		this.add_recipe(Material.CLAY, Material.CLAY_BALL, 4, 400); // 粘土块
 		this.add_recipe(Material.TERRACOTTA, Material.CLAY_BALL, 4, 500); // 陶瓦
 
-		this.add_recipe(Material.NETHERRACK, Material.GRAVEL.getKey().getKey(), 2, "copper_powder", 1, 3, 400); // 地狱岩
+		this.add_recipe(Material.NETHERRACK, Material.GRAVEL.getKey().getKey(), 2, "copper_powder", 1, 5, 400); // 地狱岩
 		this.add_recipe(Material.NETHER_BRICK, Material.NETHERRACK, 1, 100); // 地狱砖
 		this.add_recipe(Material.NETHER_BRICKS, Material.NETHERRACK, 4, 400); // 地狱砖块
 		this.add_recipe(Material.MAGMA_BLOCK, Material.SOUL_SAND, 2, 400); // 岩浆块
