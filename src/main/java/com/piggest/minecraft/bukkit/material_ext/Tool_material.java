@@ -1,5 +1,7 @@
 package com.piggest.minecraft.bukkit.material_ext;
 
+import java.util.HashMap;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -18,21 +20,21 @@ public interface Tool_material {
 	public String name();
 
 	public Raw_material get_raw();
-	
+
 	public static boolean is_tool(@Nullable ItemStack item) {
-		if(item==null) {
+		if (item == null) {
 			return false;
 		}
 		return Raw_material.get_raw_material(item) != null;
 	}
-	
+
 	public static boolean is_custom_tool(@Nullable ItemStack item) {
-		if(item==null) {
+		if (item == null) {
 			return false;
 		}
 		return Custom_material.get_custom_material(item) != null;
 	}
-	
+
 	@Nullable
 	public static Tool_material get_tool_material(ItemStack item) {
 		Tool_material tool_material = Custom_material.get_custom_material(item);
@@ -46,6 +48,53 @@ public interface Tool_material {
 	public static enum Raw_material implements Tool_material {
 		WOODEN(59, 1, 15, "木"), GOLDEN(32, 1, 22, "金"), STONE(131, 2, 5, "石"), IRON(250, 3, 14, "铁"),
 		DIAMOND(1561, 2, 10, "钻石");
+
+		public static final HashMap<Material, Raw_material> raw_material_map = new HashMap<Material, Raw_material>() {
+			private static final long serialVersionUID = -3631472477554673517L;
+			{
+				put(Material.WOODEN_AXE, WOODEN);
+				put(Material.WOODEN_HOE, WOODEN);
+				put(Material.WOODEN_PICKAXE, WOODEN);
+				put(Material.WOODEN_SHOVEL, WOODEN);
+				put(Material.WOODEN_SWORD, WOODEN);
+
+				put(Material.GOLDEN_AXE, GOLDEN);
+				put(Material.GOLDEN_BOOTS, GOLDEN);
+				put(Material.GOLDEN_CHESTPLATE, GOLDEN);
+				put(Material.GOLDEN_HELMET, GOLDEN);
+				put(Material.GOLDEN_HOE, GOLDEN);
+				put(Material.GOLDEN_LEGGINGS, GOLDEN);
+				put(Material.GOLDEN_PICKAXE, GOLDEN);
+				put(Material.GOLDEN_SHOVEL, GOLDEN);
+				put(Material.GOLDEN_SWORD, GOLDEN);
+
+				put(Material.STONE_AXE, STONE);
+				put(Material.STONE_HOE, STONE);
+				put(Material.STONE_PICKAXE, STONE);
+				put(Material.STONE_SHOVEL, STONE);
+				put(Material.STONE_SWORD, STONE);
+
+				put(Material.IRON_AXE, IRON);
+				put(Material.IRON_BOOTS, IRON);
+				put(Material.IRON_CHESTPLATE, IRON);
+				put(Material.IRON_HELMET, IRON);
+				put(Material.IRON_HOE, IRON);
+				put(Material.IRON_LEGGINGS, IRON);
+				put(Material.IRON_PICKAXE, IRON);
+				put(Material.IRON_SHOVEL, IRON);
+				put(Material.IRON_SWORD, IRON);
+
+				put(Material.DIAMOND_AXE, DIAMOND);
+				put(Material.DIAMOND_BOOTS, DIAMOND);
+				put(Material.DIAMOND_CHESTPLATE, DIAMOND);
+				put(Material.DIAMOND_HELMET, DIAMOND);
+				put(Material.DIAMOND_HOE, DIAMOND);
+				put(Material.DIAMOND_LEGGINGS, DIAMOND);
+				put(Material.DIAMOND_PICKAXE, DIAMOND);
+				put(Material.DIAMOND_SHOVEL, DIAMOND);
+				put(Material.DIAMOND_SWORD, DIAMOND);
+			}
+		};
 
 		private int max_durbility;
 		private int level;
@@ -70,56 +119,11 @@ public interface Tool_material {
 		public int get_enchantment_ability() {
 			return this.enchantment_ability;
 		}
-		
+
 		@Nullable
 		public static Raw_material get_raw_material(@Nonnull ItemStack item) {
 			Material material = item.getType();
-			switch (material) {
-			case DIAMOND_AXE:
-			case DIAMOND_HOE:
-			case DIAMOND_PICKAXE:
-			case DIAMOND_SHOVEL:
-			case DIAMOND_SWORD:
-			case DIAMOND_HELMET:
-			case DIAMOND_CHESTPLATE:
-			case DIAMOND_LEGGINGS:
-			case DIAMOND_BOOTS:
-				return Raw_material.DIAMOND;
-			case IRON_AXE:
-			case IRON_HOE:
-			case IRON_PICKAXE:
-			case IRON_SHOVEL:
-			case IRON_SWORD:
-			case IRON_HELMET:
-			case IRON_CHESTPLATE:
-			case IRON_LEGGINGS:
-			case IRON_BOOTS:
-				return Raw_material.IRON;
-			case STONE_AXE:
-			case STONE_HOE:
-			case STONE_PICKAXE:
-			case STONE_SHOVEL:
-			case STONE_SWORD:
-				return Raw_material.STONE;
-			case GOLDEN_AXE:
-			case GOLDEN_HOE:
-			case GOLDEN_PICKAXE:
-			case GOLDEN_SHOVEL:
-			case GOLDEN_SWORD:
-			case GOLDEN_HELMET:
-			case GOLDEN_CHESTPLATE:
-			case GOLDEN_LEGGINGS:
-			case GOLDEN_BOOTS:
-				return Raw_material.GOLDEN;
-			case WOODEN_AXE:
-			case WOODEN_HOE:
-			case WOODEN_PICKAXE:
-			case WOODEN_SHOVEL:
-			case WOODEN_SWORD:
-				return Raw_material.WOODEN;
-			default:
-				return null;
-			}
+			return raw_material_map.get(material);
 		}
 
 		public String get_display_name() {
@@ -163,7 +167,7 @@ public interface Tool_material {
 		public Raw_material get_raw() {
 			return this.raw_model;
 		}
-		
+
 		@Nullable
 		public static Custom_material get_custom_material(@Nonnull ItemStack item) {
 			String id_name = Material_ext.get_id_name(item);
