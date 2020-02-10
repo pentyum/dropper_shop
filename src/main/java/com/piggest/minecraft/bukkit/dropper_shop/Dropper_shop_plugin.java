@@ -63,7 +63,6 @@ import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_command_executor;
 import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_gui_listener;
 import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_manager;
 import com.piggest.minecraft.bukkit.material_ext.Custom_durability;
-import com.piggest.minecraft.bukkit.material_ext.Prepare_enchant_listener;
 import com.piggest.minecraft.bukkit.music_stick.Note_stick_listener;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.pigman_switch.Pigman_spawn_listener;
@@ -133,7 +132,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private final Lottery_pool_gui_listener lottery_pool_gui_listener = new Lottery_pool_gui_listener();
 	private final Custom_durability custom_durability_listener = new Custom_durability();
 	private final Tool_craft_listener tool_craft_listener = new Tool_craft_listener();
-	private final Prepare_enchant_listener prepare_enchant_listener = new Prepare_enchant_listener();
+	//private final Prepare_enchant_listener prepare_enchant_listener = new Prepare_enchant_listener();
 	
 	private HashMap<String, Integer> sync_realtime_worlds = new HashMap<String, Integer>();
 

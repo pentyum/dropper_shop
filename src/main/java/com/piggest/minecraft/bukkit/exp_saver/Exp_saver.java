@@ -15,6 +15,7 @@ import org.bukkit.inventory.meta.Repairable;
 
 import com.piggest.minecraft.bukkit.config.Price_config;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.material_ext.Custom_durability;
 import com.piggest.minecraft.bukkit.structure.Auto_io;
 import com.piggest.minecraft.bukkit.structure.Capacity_upgradable;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
@@ -174,14 +175,13 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	public void repair_mending_slot() {
 		ItemStack mending = this.get_mending();
 		if (mending == null) {
 			return;
 		}
 		synchronized (mending) {
-			mending.setDurability((short) (mending.getDurability() - this.remove_exp(1)));
+			Custom_durability.add_durability(mending, -this.remove_exp(1));
 		}
 	}
 

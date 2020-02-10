@@ -5,6 +5,7 @@ import org.bukkit.inventory.ItemStack;
 import com.piggest.minecraft.bukkit.depository.Upgrade_component;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
+import com.piggest.minecraft.bukkit.material_ext.Custom_durability;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
 public class Exp_saver_runner extends Structure_runner {
@@ -14,7 +15,6 @@ public class Exp_saver_runner extends Structure_runner {
 		this.exp_saver = exp_saver;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void run() {
 		if (this.exp_saver.is_loaded() == false) {
@@ -23,7 +23,7 @@ public class Exp_saver_runner extends Structure_runner {
 		ItemStack mending = exp_saver.get_mending();
 		if (!Grinder.is_empty(mending)) {
 			if (!Upgrade_component.is_component(mending)) {
-				if (mending.getDurability() > 0) {
+				if (Custom_durability.get_durability(mending) > 0) {
 					exp_saver.repair_mending_slot();
 				} else {
 					if (mending.getType() == Material.ANVIL) {

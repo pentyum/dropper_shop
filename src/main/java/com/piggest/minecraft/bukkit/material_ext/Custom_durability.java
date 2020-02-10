@@ -4,6 +4,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemDamageEvent;
+import org.bukkit.event.player.PlayerItemMendEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -11,6 +12,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.material_ext.Tool_material.Custom_material;
 
 public class Custom_durability implements Listener {
 	public static final NamespacedKey custom_durability_namespacedkey = Dropper_shop_plugin
@@ -41,6 +43,20 @@ public class Custom_durability implements Listener {
 		if (new_raw_durbility > raw_max_durbility) {// 耐久超出
 			return;
 		}
+		event.setCancelled(true);
+	}
+
+	@EventHandler
+	public void on_item_mending(PlayerItemMendEvent event) {
+		if (event.isCancelled()) {
+			return;
+		}
+		int repair = 2 * event.getExperienceOrb().getExperience();
+		ItemStack item = event.getItem();
+		if (!has_custom_durability(item)) {
+			return;
+		}
+		add_durability(item, -repair);
 		event.setCancelled(true);
 	}
 
@@ -85,7 +101,7 @@ public class Custom_durability implements Listener {
 		item.setItemMeta(meta);
 	}
 
-	public static void set_durability(ItemStack item, int damage) {
+	public static void add_durability(ItemStack item, int damage) {
 		ItemMeta meta = item.getItemMeta();
 		if (meta == null) {
 			return;
@@ -97,14 +113,19 @@ public class Custom_durability implements Listener {
 		PersistentDataContainer tag_container = meta.getPersistentDataContainer();
 		Integer custom_durability = tag_container.get(custom_durability_namespacedkey, PersistentDataType.INTEGER);
 		if (custom_durability == null) {// 一般工具
-			damageable.setDamage(damage);
+			int new_durbility = Math.max(0, damageable.getDamage() + damage);
+			damageable.setDamage(new_durbility);
 		} else {// 自定义耐久工具
-			Tool_material.Custom_material custom_material = Tool_material.Custom_material.get_custom_material(item);
-			int raw_damage = custom_material.get_raw().get_max_durbility() * damage
-					/ custom_material.get_max_durbility();
-			damageable.setDamage(raw_damage);
-			tag_container.set(custom_durability_namespacedkey, PersistentDataType.INTEGER, damage);
+			int new_custom_durbility = Math.max(0, custom_durability + damage);
+			Custom_material custom_material = Custom_material.get_custom_material(item);
+			int raw_max_durbility = custom_material.get_raw().get_max_durbility();
+			int custom_max_durbility = custom_material.get_max_durbility();
+			new_custom_durbility = Math.min(custom_max_durbility, new_custom_durbility);
+			int new_raw_durbility = raw_max_durbility * new_custom_durbility / custom_max_durbility;
+			damageable.setDamage(new_raw_durbility);
+			tag_container.set(custom_durability_namespacedkey, PersistentDataType.INTEGER, new_custom_durbility);
 		}
 		item.setItemMeta(meta);
 	}
+
 }

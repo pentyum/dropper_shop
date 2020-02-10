@@ -1,5 +1,7 @@
 package com.piggest.minecraft.bukkit.utils;
 
+import java.util.HashSet;
+
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
@@ -8,59 +10,65 @@ import org.bukkit.block.Container;
 import org.bukkit.block.data.type.Lectern;
 
 public class Use_block {
+	private static final HashSet<Material> use_set = new HashSet<Material>() {
+		private static final long serialVersionUID = -80343265520227606L;
+		{
+			add(Material.ACACIA_FENCE_GATE);
+			add(Material.BIRCH_FENCE_GATE);
+			add(Material.DARK_OAK_FENCE_GATE);
+			add(Material.JUNGLE_FENCE_GATE);
+			add(Material.OAK_FENCE_GATE);
+			add(Material.SPRUCE_FENCE_GATE);
+			add(Material.LEVER);
+			add(Material.REPEATER);
+			add(Material.COMMAND_BLOCK);
+			add(Material.COMPARATOR);
+			add(Material.DAYLIGHT_DETECTOR);
+			add(Material.CRAFTING_TABLE);
+			add(Material.STONECUTTER);
+			add(Material.JUKEBOX);
+			add(Material.NOTE_BLOCK);
+			add(Material.BELL);
+			add(Material.GRINDSTONE);
+			add(Material.LOOM);
+			add(Material.FLETCHING_TABLE);
+			add(Material.CARTOGRAPHY_TABLE);
+			add(Material.SMITHING_TABLE);
+			add(Material.ENCHANTING_TABLE);
+			add(Material.BEACON);
+			add(Material.ENDER_CHEST);
+			add(Material.FLOWER_POT);
+		}
+	};
+
 	public static boolean is_use_block(Block block) {
 		Material type = block.getType();
-		if(Tag.DOORS.isTagged(type)) {
+		if (Tag.DOORS.isTagged(type)) {
 			return true;
 		}
-		if(Tag.TRAPDOORS.isTagged(type)) {
+		if (Tag.TRAPDOORS.isTagged(type)) {
 			return true;
 		}
-		if(Tag.ANVIL.isTagged(type)) {
+		if (Tag.ANVIL.isTagged(type)) {
 			return true;
 		}
-		if(Tag.BEDS.isTagged(type)) {
+		if (Tag.BEDS.isTagged(type)) {
 			return true;
 		}
-		if(Tag.BUTTONS.isTagged(type)) {
+		if (Tag.BUTTONS.isTagged(type)) {
 			return true;
 		}
 		BlockState block_state = block.getState();
-		if(block_state instanceof Container) {
+		if (block_state instanceof Container) {
 			return true;
 		}
-		switch (type) {
-		case ACACIA_FENCE_GATE:
-		case BIRCH_FENCE_GATE:
-		case DARK_OAK_FENCE_GATE:
-		case JUNGLE_FENCE_GATE:
-		case OAK_FENCE_GATE:
-		case SPRUCE_FENCE_GATE:
-		case LEVER:
-		case REPEATER:
-		case COMMAND_BLOCK:
-		case COMPARATOR:
-		case DAYLIGHT_DETECTOR:
-		case CRAFTING_TABLE:
-		case STONECUTTER:
-		case JUKEBOX:
-		case NOTE_BLOCK:
-		case BELL:
-		case GRINDSTONE:
-		case LOOM:
-		case FLETCHING_TABLE:
-		case CARTOGRAPHY_TABLE:
-		case SMITHING_TABLE:
-		case ENCHANTING_TABLE:
-		case BEACON:
-		case ENDER_CHEST:
-		case FLOWER_POT:
+		if (use_set.contains(type)) {
 			return true;
-		case LECTERN:
+		}
+		if (type == Material.LECTERN) {
 			Lectern lectern = (Lectern) block.getBlockData();
 			return lectern.hasBook();
-		default:
-			return false;
 		}
+		return false;
 	}
 }
