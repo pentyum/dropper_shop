@@ -44,6 +44,8 @@ import com.piggest.minecraft.bukkit.depository.Depository_manager;
 import com.piggest.minecraft.bukkit.depository.Reader;
 import com.piggest.minecraft.bukkit.depository.Upgrade_component;
 import com.piggest.minecraft.bukkit.depository.Upgrade_component_listener;
+import com.piggest.minecraft.bukkit.electric_spawner.Electric_spawner;
+import com.piggest.minecraft.bukkit.electric_spawner.Electric_spawner_manager;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver_command_executor;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver_listener;
@@ -114,7 +116,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private Anti_thunder_manager anti_thunder_manager = null;
 	private Teleport_machine_manager teleport_machine_manager = null;
 	private Compressor_manager compressor_manager = null;
-
+	private Electric_spawner_manager electric_spawner_manager = null;
+	
 	private HashMap<Class<? extends Structure>, Structure_manager<? extends Structure>> structure_manager_map = new HashMap<Class<? extends Structure>, Structure_manager<? extends Structure>>();
 
 	private HashMap<String, Integer> price_map = new HashMap<String, Integer>();
@@ -229,6 +232,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.anti_thunder_manager = new Anti_thunder_manager();
 		this.teleport_machine_manager = new Teleport_machine_manager();
 		this.compressor_manager = new Compressor_manager();
+		this.electric_spawner_manager = new Electric_spawner_manager();
 
 		this.structure_manager_map.put(Dropper_shop.class, shop_manager);
 		this.structure_manager_map.put(Depository.class, depository_manager);
@@ -241,6 +245,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.structure_manager_map.put(Anti_thunder.class, anti_thunder_manager);
 		this.structure_manager_map.put(Teleport_machine.class, teleport_machine_manager);
 		this.structure_manager_map.put(Compressor.class, compressor_manager);
+		//this.structure_manager_map.put(Electric_spawner.class, electric_spawner_manager);
 		
 		for(Structure_manager<? extends Structure> manager : this.structure_manager_map.values()) {
 			manager.load_config();

@@ -1,7 +1,7 @@
 name: dropper_shop
 main: com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin
 api-version: 1.15
-version: 0.1.7
+version: 0.1.8
 author: Pentyum
 commands:
   dropper_shop:
