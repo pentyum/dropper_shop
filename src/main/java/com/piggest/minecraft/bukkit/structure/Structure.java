@@ -7,6 +7,8 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Nameable;
+import org.bukkit.World;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -16,14 +18,21 @@ import com.piggest.minecraft.bukkit.teleport_machine.Elements_container;
 import com.piggest.minecraft.bukkit.teleport_machine.Unique;
 import com.piggest.minecraft.bukkit.utils.Chunk_location;
 
-public abstract class Structure {
+public abstract class Structure implements ConfigurationSerializable {
 	protected String world_name = null;
 	protected int x;
 	protected int y;
 	protected int z;
 
+	@Override
+	public Map<String, Object> serialize() {
+		synchronized (this) {
+			return this.get_save();
+		}
+	}
+
 	@SuppressWarnings("unchecked")
-	protected void set_from_save(Map<?, ?> save) {
+	protected void set_from_save(Map<String, Object> save) {
 		if (this instanceof Unique) {
 			Unique unique = (Unique) this;
 			UUID uuid = UUID.fromString((String) save.get("UUID"));
@@ -158,10 +167,14 @@ public abstract class Structure {
 	public String get_display_name() {
 		return this.getClass().getSimpleName();
 	}
-	
+
 	public abstract ItemStack[] get_drop_items();
 
 	public String get_world_name() {
 		return this.world_name;
+	}
+
+	public World get_world() {
+		return Bukkit.getServer().getWorld(this.world_name);
 	}
 }

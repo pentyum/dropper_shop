@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Stack;
 
+import javax.annotation.Nonnull;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -296,7 +298,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	}
 
 	@Override
-	protected void set_from_save(Map<?, ?> shop_save) {
+	protected void set_from_save(Map<String, Object> shop_save) {
 		super.set_from_save(shop_save);
 		this.current_x = ((int) shop_save.get("current-x"));
 		this.current_z = ((int) shop_save.get("current-z"));
@@ -435,4 +437,11 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	public ItemStack[] get_drop_items() {
 		return new ItemStack[] { this.get_axe() };
 	}
+	
+	@Nonnull
+    public static Trees_felling_machine deserialize(@Nonnull Map<String, Object> args) {
+		Trees_felling_machine structure = new Trees_felling_machine();
+		structure.set_from_save(args);
+		return structure;
+    }
 }

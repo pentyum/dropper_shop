@@ -1,6 +1,8 @@
-package com.piggest.minecraft.bukkit.dropper_shop;
+package com.piggest.minecraft.bukkit.config;
 
 import org.bukkit.scheduler.BukkitRunnable;
+
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 
 public class Config_auto_saver extends BukkitRunnable {
 	Dropper_shop_plugin plugin = null;

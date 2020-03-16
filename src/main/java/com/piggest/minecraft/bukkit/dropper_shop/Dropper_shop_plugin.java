@@ -9,7 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
@@ -35,9 +34,9 @@ import com.piggest.minecraft.bukkit.anti_thunder.Anti_thunder_manager;
 import com.piggest.minecraft.bukkit.biome_modify.Biome_modify;
 import com.piggest.minecraft.bukkit.compressor.Compressor;
 import com.piggest.minecraft.bukkit.compressor.Compressor_manager;
+import com.piggest.minecraft.bukkit.config.Config_auto_saver;
 import com.piggest.minecraft.bukkit.config.Lottery_config;
 import com.piggest.minecraft.bukkit.config.Price_config;
-import com.piggest.minecraft.bukkit.config.World_structure_config;
 import com.piggest.minecraft.bukkit.depository.Depository;
 import com.piggest.minecraft.bukkit.depository.Depository_command_executor;
 import com.piggest.minecraft.bukkit.depository.Depository_listener;
@@ -96,7 +95,6 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public static Dropper_shop_plugin instance = null;
 	private Economy economy = null;
 	private FileConfiguration config = null;
-	private HashMap<String, World_structure_config> all_shop_config = new HashMap<String, World_structure_config>();
 	private Lottery_config lottery_config = null;
 
 	private int exp_saver_max_structure_level = 0;
@@ -155,7 +153,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		saveDefaultConfig();
 
 		saveResource("lottery_pool.yml", false);
-		this.config = getConfig();
+		this.config = this.getConfig();
 
 		this.price_config.load_price();
 		this.exp_saver_max_structure_level = this.config.getInt("exp-saver-max-structure-level");
@@ -188,10 +186,6 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		Item_zh_cn.init();
 
 		this.nms_manager = new NMS_manager(Bukkit.getBukkitVersion());
-	}
-
-	public HashMap<String, World_structure_config> get_shop_config() {
-		return this.all_shop_config;
 	}
 
 	public Lottery_config get_lottery_config() {
@@ -247,6 +241,11 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.structure_manager_map.put(Anti_thunder.class, anti_thunder_manager);
 		this.structure_manager_map.put(Teleport_machine.class, teleport_machine_manager);
 		this.structure_manager_map.put(Compressor.class, compressor_manager);
+		
+		for(Structure_manager<? extends Structure> manager : this.structure_manager_map.values()) {
+			manager.load_config();
+			manager.backup_config();
+		}
 	}
 
 	private void init_listener() {
@@ -297,19 +296,6 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 		}
 		// 处理冬天模式完成
-
-		// 加载各世界的结构配置文件
-		for (World world : this.getServer().getWorlds()) {
-			World_structure_config config = new World_structure_config(world);
-			this.all_shop_config.put(world.getName(), config);
-			config.load();
-			this.getLogger().info("加载" + world.getName());
-		}
-		for (Entry<String, World_structure_config> entry : this.all_shop_config.entrySet()) {
-			entry.getValue().load();
-			entry.getValue().backup();
-		}
-		// 各世界的结构配置文件加载完成
 
 		Tab_list.init();
 
@@ -374,9 +360,6 @@ public class Dropper_shop_plugin extends JavaPlugin {
 				.entrySet()) {
 			Structure_manager<? extends Structure> manager = entry.getValue();
 			manager.save_structures();
-		}
-		for (Entry<String, World_structure_config> entry : this.all_shop_config.entrySet()) {
-			entry.getValue().save();
 		}
 		return true;
 	}

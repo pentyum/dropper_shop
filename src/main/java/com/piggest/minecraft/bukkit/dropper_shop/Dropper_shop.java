@@ -3,6 +3,8 @@ package com.piggest.minecraft.bukkit.dropper_shop;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -85,7 +87,7 @@ public class Dropper_shop extends Single_block_structure implements Ownable {
 	}
 
 	@Override
-	public void set_from_save(Map<?, ?> shop_save) {
+	public void set_from_save(Map<String, Object> shop_save) {
 		String world_name = (String) shop_save.get("world");
 		int x = (Integer) shop_save.get("x");
 		int y = (Integer) shop_save.get("y");
@@ -156,4 +158,11 @@ public class Dropper_shop extends Single_block_structure implements Ownable {
 	public ItemStack[] get_drop_items() {
 		return null;
 	}
+	
+	@Nonnull
+    public static Dropper_shop deserialize(@Nonnull Map<String, Object> args) {
+		Dropper_shop structure = new Dropper_shop();
+		structure.set_from_save(args);
+		return structure;
+    }
 }

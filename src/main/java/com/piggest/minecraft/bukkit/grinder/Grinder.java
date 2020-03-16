@@ -8,6 +8,8 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Hopper;
@@ -17,7 +19,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.Auto_io;
 import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
@@ -191,24 +192,10 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 	}
 
 	@Override
-	protected void set_from_save(Map<?, ?> shop_save) {
+	protected void set_from_save(Map<String, Object> shop_save) {
 		super.set_from_save(shop_save);
 		this.set_flint_storage((Integer) shop_save.get("flint-storge"));
 		this.runner.working_ticks = (Integer) shop_save.get("working-ticks");
-		if (shop_save.get("raw") != null) {
-			ItemStack raw_item = Material_ext.new_item((String) shop_save.get("raw"), (int) shop_save.get("raw-num"));
-			this.set_raw(raw_item);
-		}
-		if (shop_save.get("flint") != null) {
-			ItemStack flint_item = Material_ext.new_item((String) shop_save.get("flint"),
-					(int) shop_save.get("flint-num"));
-			this.set_flint(flint_item);
-		}
-		if (shop_save.get("product") != null) {
-			ItemStack product_item = Material_ext.new_item((String) shop_save.get("product"),
-					(int) shop_save.get("product-num"));
-			this.set_main_product(product_item);
-		}
 	}
 
 	@Override
@@ -216,18 +203,6 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 		HashMap<String, Object> save = super.get_save();
 		save.put("flint-storge", this.get_flint_storage());
 		save.put("working-ticks", this.runner.working_ticks);
-		if (!Grinder.is_empty(this.get_raw())) {
-			save.put("raw", Material_ext.get_id_name(this.get_raw()));
-			save.put("raw-num", this.get_raw().getAmount());
-		}
-		if (!Grinder.is_empty(this.get_flint())) {
-			save.put("flint", this.get_flint().getType().name());
-			save.put("flint-num", this.get_flint().getAmount());
-		}
-		if (!Grinder.is_empty(this.get_main_product())) {
-			save.put("product", Material_ext.get_id_name(this.get_main_product()));
-			save.put("product-num", this.get_main_product().getAmount());
-		}
 		return save;
 	}
 
@@ -287,4 +262,11 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 	public ItemStack[] get_drop_items() {
 		return new ItemStack[] { this.get_raw(), this.get_flint(), this.get_main_product(), this.get_minor_product() };
 	}
+	
+	@Nonnull
+    public static Grinder deserialize(@Nonnull Map<String, Object> args) {
+		Grinder structure = new Grinder();
+		structure.set_from_save(args);
+		return structure;
+    }
 }

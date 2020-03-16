@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import org.bukkit.Material;
 import org.bukkit.block.Hopper;
 import org.bukkit.entity.Player;
@@ -86,7 +88,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 	}
 
 	@Override
-	protected void set_from_save(Map<?, ?> shop_save) {
+	protected void set_from_save(Map<String, Object> shop_save) {
 		super.set_from_save(shop_save);
 
 		this.add_exp((int) shop_save.get("saved-exp"));
@@ -364,4 +366,11 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 	public ItemStack[] get_drop_items() {
 		return new ItemStack[] { this.get_mending() };
 	}
+	
+	@Nonnull
+    public static Exp_saver deserialize(@Nonnull Map<String, Object> args) {
+		Exp_saver structure = new Exp_saver();
+		structure.set_from_save(args);
+		return structure;
+    }
 }

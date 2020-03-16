@@ -2,8 +2,11 @@ package com.piggest.minecraft.bukkit.lottery_pool;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.function.Predicate;
+
+import javax.annotation.Nonnull;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -203,4 +206,11 @@ public class Lottery_pool extends Multi_block_structure {
 	public ItemStack[] get_drop_items() {
 		return null;
 	}
+	
+	@Nonnull
+    public static Lottery_pool deserialize(@Nonnull Map<String, Object> args) {
+		Lottery_pool structure = new Lottery_pool();
+		structure.set_from_save(args);
+		return structure;
+    }
 }

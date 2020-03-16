@@ -3,6 +3,8 @@ package com.piggest.minecraft.bukkit.anti_thunder;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -139,7 +141,7 @@ public class Anti_thunder extends Multi_block_structure implements Ownable {
 	}
 
 	@Override
-	protected void set_from_save(Map<?, ?> shop_save) {
+	protected void set_from_save(Map<String, Object> shop_save) {
 		super.set_from_save(shop_save);
 		boolean active = (boolean) shop_save.get("active");
 		this.activate(active);
@@ -166,4 +168,11 @@ public class Anti_thunder extends Multi_block_structure implements Ownable {
 	public ItemStack[] get_drop_items() {
 		return null;
 	}
+	
+	@Nonnull
+    public static Anti_thunder deserialize(@Nonnull Map<String, Object> args) {
+		Anti_thunder structure = new Anti_thunder();
+		structure.set_from_save(args);
+		return structure;
+    }
 }

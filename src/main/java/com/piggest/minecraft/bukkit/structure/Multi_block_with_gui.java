@@ -177,7 +177,7 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 	}
 
 	@Override
-	protected void set_from_save(Map<?, ?> save) {
+	protected void set_from_save(Map<String, Object> save) {
 		super.set_from_save(save);
 		HashMap<Integer, Slot_config> locked_slots = this.get_manager().get_locked_slots();
 		for (Entry<Integer, Slot_config> entry : locked_slots.entrySet()) {

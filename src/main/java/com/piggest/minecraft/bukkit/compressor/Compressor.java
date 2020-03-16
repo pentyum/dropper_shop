@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import org.bukkit.block.Chest;
 import org.bukkit.block.Hopper;
 import org.bukkit.entity.Player;
@@ -121,7 +123,7 @@ public class Compressor extends Multi_block_with_gui implements HasRunner, Auto_
 	}
 
 	@Override
-	protected void set_from_save(Map<?, ?> save) {
+	protected void set_from_save(Map<String, Object> save) {
 		this.set_piston_storage((Integer) save.get("piston-storage"));
 		this.runner.working_ticks = (Integer) save.get("working-ticks");
 		super.set_from_save(save);
@@ -184,4 +186,11 @@ public class Compressor extends Multi_block_with_gui implements HasRunner, Auto_
 	public boolean add_a_piston(ItemStack item) {
 		return Inventory_io.move_item_to_slot(item, 1, gui, Compressor.piston_slot);
 	}
+	
+	@Nonnull
+    public static Compressor deserialize(@Nonnull Map<String, Object> args) {
+		Compressor structure = new Compressor();
+		structure.set_from_save(args);
+		return structure;
+    }
 }

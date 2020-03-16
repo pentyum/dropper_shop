@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import javax.annotation.Nonnull;
+
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -170,7 +173,7 @@ public class Depository extends Multi_block_with_gui implements Ownable, HasRunn
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void set_from_save(Map<?, ?> shop_save) {
+	protected void set_from_save(Map<String, Object> shop_save) {
 		super.set_from_save(shop_save);
 		this.owner = (String) shop_save.get("owner");
 		this.contents = (HashMap<String, Integer>) shop_save.get("contents");
@@ -267,4 +270,11 @@ public class Depository extends Multi_block_with_gui implements Ownable, HasRunn
 	public ItemStack[] get_drop_items() {
 		return null;
 	}
+	
+	@Nonnull
+    public static Depository deserialize(@Nonnull Map<String, Object> args) {
+		Depository structure = new Depository();
+		structure.set_from_save(args);
+		return structure;
+    }
 }

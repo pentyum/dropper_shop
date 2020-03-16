@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.Nonnull;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -19,7 +21,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
 import com.piggest.minecraft.bukkit.depository.Upgrade_component;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver;
@@ -149,7 +150,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	}
 
 	@Override
-	protected void set_from_save(Map<?, ?> shop_save) {
+	protected void set_from_save(Map<String, Object> shop_save) {
 		super.set_from_save(shop_save);
 		this.set_temperature((double) shop_save.get("temperature"));
 		this.fuel_info.fuel_ticks = ((int) shop_save.get("fuel-ticks"));
@@ -721,4 +722,11 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	public String get_owner_name() {
 		return this.owner;
 	}
+	
+	@Nonnull
+    public static Advanced_furnace deserialize(@Nonnull Map<String, Object> args) {
+		Advanced_furnace structure = new Advanced_furnace();
+		structure.set_from_save(args);
+		return structure;
+    }
 }

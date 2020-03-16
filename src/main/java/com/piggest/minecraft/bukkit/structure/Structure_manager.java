@@ -3,40 +3,49 @@ package com.piggest.minecraft.bukkit.structure;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.List;
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.piggest.minecraft.bukkit.config.World_structure_config;
+import com.piggest.minecraft.bukkit.config.Structure_config;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Chunk_location;
 
-public abstract class Structure_manager<T extends Structure> implements Iterable<T> {
+public abstract class Structure_manager<T extends Structure> {
 	protected Class<T> structure_class = null;
 	protected Constructor<T> constructor = null;
 	protected HashMap<Chunk_location, HashSet<T>> chunk_structure_map = new HashMap<Chunk_location, HashSet<T>>();
-	protected HashMap<Location, T> structure_map = new HashMap<Location, T>();
+	protected HashMap<World, HashMap<Location, T>> structure_map = new HashMap<World, HashMap<Location, T>>();
+	protected HashMap<World, Structure_config> config_map = new HashMap<World, Structure_config>();
 	protected Structure_manager_runner structure_manager_runner;
 
 	public Structure_manager(Class<T> structure_class) {
 		this.structure_class = structure_class;
+		ConfigurationSerialization.registerClass(this.structure_class);
 		try {
 			this.constructor = structure_class.getConstructor();
 		} catch (NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
 		}
+		for (World world : Bukkit.getServer().getWorlds()) {
+			this.structure_map.put(world, new HashMap<Location, T>());
+			Structure_config config = new Structure_config(world, this.get_permission_head());
+			this.config_map.put(world, config);
+		}
 	}
 
 	public T get(Location loc) {
-		return this.structure_map.get(loc);
+		return this.structure_map.get(loc.getWorld()).get(loc);
 	}
 
 	private void add_to_chunk_structure_map(T new_structure) {
@@ -77,7 +86,8 @@ public abstract class Structure_manager<T extends Structure> implements Iterable
 			}
 		}
 		this.add_to_chunk_structure_map((T) new_structure);
-		this.structure_map.put(new_structure.get_location(), (T) new_structure);
+		Location loc = new_structure.get_location();
+		this.structure_map.get(loc.getWorld()).put(new_structure.get_location(), (T) new_structure);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -89,22 +99,14 @@ public abstract class Structure_manager<T extends Structure> implements Iterable
 			}
 		}
 		this.remove_from_chunk_structure_map((T) structure);
-		this.structure_map.remove(structure.get_location());
+		this.structure_map.get(structure.get_world()).remove(structure.get_location());
 	}
 
 	public void load_structures() {
-		String structure_name = this.structure_class.getName().replace('.', '-');
-		ArrayList<Map<?, ?>> save_list = new ArrayList<Map<?, ?>>();
-		for (World_structure_config config : Dropper_shop_plugin.instance.get_shop_config().values()) {
-			save_list.addAll(config.getMapList(structure_name));
-		}
 		int i = 0;
-		// List<Map<?, ?>> save_list =
-		// Dropper_shop_plugin.instance.get_shop_config().getMapList(structure_name);
-		for (Map<?, ?> shop_save : save_list) {
-			try {
-				T shop = this.constructor.newInstance();
-				shop.set_from_save(shop_save);
+		for (Structure_config config : this.config_map.values()) {
+			List<Structure> list = config.getList();
+			for (Structure shop : list) {
 				if (shop instanceof Multi_block_structure) {
 					Multi_block_structure multi_block_struct = (Multi_block_structure) shop;
 					if (multi_block_struct.get_location().getWorld() != null) {
@@ -117,9 +119,6 @@ public abstract class Structure_manager<T extends Structure> implements Iterable
 					this.add(shop);
 					i++;
 				}
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				e.printStackTrace();
 			}
 		}
 		if (this.structure_manager_runner != null) {
@@ -135,26 +134,13 @@ public abstract class Structure_manager<T extends Structure> implements Iterable
 	}
 
 	public void save_structures() {
-		String structure_name = this.structure_class.getName().replace('.', '-');
-		HashMap<String, ArrayList<HashMap<String, Object>>> world_structure_list = new HashMap<>();
-		for (World world : Dropper_shop_plugin.instance.getServer().getWorlds()) {
-			world_structure_list.put(world.getName(), new ArrayList<HashMap<String, Object>>());
+		for (Entry<World, HashMap<Location, T>> entry : structure_map.entrySet()) {
+			World world = entry.getKey();
+			Collection<T> structures = entry.getValue().values();
+			Structure_config config = this.config_map.get(world);
+			config.set(new ArrayList<>(structures));
+			config.save();
 		}
-		// ArrayList<HashMap<String, Object>> structure_list = new
-		// ArrayList<HashMap<String, Object>>();
-		for (Entry<Location, T> entry : structure_map.entrySet()) {
-			Structure structure = entry.getValue();
-			synchronized (structure) {
-				ArrayList<HashMap<String, Object>> structure_list = world_structure_list
-						.get(structure.get_world_name());
-				structure_list.add(structure.get_save());
-			}
-		}
-		for (Entry<String, ArrayList<HashMap<String, Object>>> entry : world_structure_list.entrySet()) {
-			Dropper_shop_plugin.instance.get_shop_config().get(entry.getKey()).set(structure_name, entry.getValue());
-		}
-		// Dropper_shop_plugin.instance.get_shop_config().set(structure_name,
-		// structure_list);
 	}
 
 	public T find_existed(Location loc) {
@@ -248,13 +234,25 @@ public abstract class Structure_manager<T extends Structure> implements Iterable
 
 	public abstract int[] get_center();
 
-	public Iterator<T> iterator() {
-		return this.structure_map.values().iterator();
-	}
-
 	public void stop_runner() {
 		if (this.structure_manager_runner != null) {
 			this.structure_manager_runner.cancel();
+		}
+	}
+
+	public Collection<T> get_all_structures_in_world(World world) {
+		return this.structure_map.get(world).values();
+	}
+
+	public void load_config() {
+		for (Structure_config config : this.config_map.values()) {
+			config.load();
+		}
+	}
+
+	public void backup_config() {
+		for (Structure_config config : this.config_map.values()) {
+			config.backup();
 		}
 	}
 }

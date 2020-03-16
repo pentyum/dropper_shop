@@ -28,6 +28,9 @@ public class Grinder_manager extends Gui_structure_manager<Grinder> {
 		this.set_gui(10, Material.BLUE_STAINED_GLASS_PANE, "§r左边放原料", Gui_slot_type.Indicator);
 		this.set_gui(12, Material.BLUE_STAINED_GLASS_PANE, "§r左边放燧石或者黑曜石", Gui_slot_type.Indicator);
 		this.set_gui(14, Material.BLUE_STAINED_GLASS_PANE, "§r左边为产品，右边为副产品", Gui_slot_type.Indicator);
+		this.set_gui(Grinder.raw_slot, null, "raw-slot", Gui_slot_type.Item_store);
+		this.set_gui(Grinder.flint_slot, null, "flint-slot", Gui_slot_type.Item_store);
+		this.set_gui(Grinder.main_product_slot, null, "main-product", Gui_slot_type.Item_store);
 		this.set_gui(Grinder.minor_product_slot, null, "minor-product", Gui_slot_type.Item_store);
 		this.set_gui(16, Material.BLUE_STAINED_GLASS_PANE, "§r右边为燧石单元储量", Gui_slot_type.Indicator);
 		this.set_gui(17, Material.FLINT, "§e燧石单元", Gui_slot_type.Indicator);

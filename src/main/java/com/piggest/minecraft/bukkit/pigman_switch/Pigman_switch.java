@@ -1,5 +1,9 @@
 package com.piggest.minecraft.bukkit.pigman_switch;
 
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -47,4 +51,11 @@ public class Pigman_switch extends Multi_block_structure {
 	public ItemStack[] get_drop_items() {
 		return null;
 	}
+	
+	@Nonnull
+    public static Pigman_switch deserialize(@Nonnull Map<String, Object> args) {
+		Pigman_switch structure = new Pigman_switch();
+		structure.set_from_save(args);
+		return structure;
+    }
 }

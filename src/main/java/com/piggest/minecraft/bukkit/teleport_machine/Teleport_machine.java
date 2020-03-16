@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Predicate;
 
+import javax.annotation.Nonnull;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -474,7 +476,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void set_from_save(Map<?, ?> save) {
+	protected void set_from_save(Map<String, Object> save) {
 		super.set_from_save(save);
 		if (save.get("auto-teleport-to") != null) {
 			this.auto_teleport_to = UUID.fromString((String) save.get("auto-teleport-to"));
@@ -879,6 +881,13 @@ class Name_tag_remover extends BukkitRunnable {
 			item.setAmount(item.getAmount() - 1);
 		}
 	}
+	
+	@Nonnull
+    public static Teleport_machine deserialize(@Nonnull Map<String, Object> args) {
+		Teleport_machine structure = new Teleport_machine();
+		structure.set_from_save(args);
+		return structure;
+    }
 }
 
 class Item_remover extends BukkitRunnable {
