@@ -4,6 +4,8 @@ import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.nms.biome.Biome_modifier;
 import com.piggest.minecraft.bukkit.nms.biome.Biome_modifier_1_15;
 import com.piggest.minecraft.bukkit.nms.biome.Packet_map_chunk_listener_1_15;
+import com.piggest.minecraft.bukkit.nms.difficulty.Local_difficulty;
+import com.piggest.minecraft.bukkit.nms.difficulty.Local_difficulty_1_15;
 import com.piggest.minecraft.bukkit.nms.enchant.Enchant_manager;
 import com.piggest.minecraft.bukkit.nms.enchant.Enchant_manager_1_15;
 import com.piggest.minecraft.bukkit.nms.nbt.Ext_id;
@@ -15,6 +17,7 @@ public class NMS_manager {
 	public static Biome_modifier biome_modifier = null;
 	public static Packet_map_chunk_listener_1_15 packet_map_chunk_listener = null;
 	public static Enchant_manager enchant_manager = null;
+	public static Local_difficulty local_difficulty = null;
 	public NMS_manager(String version) {
 		Dropper_shop_plugin.instance.getLogger().info("当前NMS:" + version);
 		NMS_version nms_version = NMS_version.parse_version(version);
@@ -26,6 +29,7 @@ public class NMS_manager {
 			biome_modifier = new Biome_modifier_1_15();
 			packet_map_chunk_listener = new Packet_map_chunk_listener_1_15();
 			enchant_manager = new Enchant_manager_1_15();
+			local_difficulty = new Local_difficulty_1_15();
 			break;
 		default:
 			Dropper_shop_plugin.instance.getLogger().warning("NMS未能适配!");
@@ -34,6 +38,7 @@ public class NMS_manager {
 			biome_modifier = new Biome_modifier_1_15();
 			packet_map_chunk_listener = new Packet_map_chunk_listener_1_15();
 			enchant_manager = new Enchant_manager_1_15();
+			local_difficulty = new Local_difficulty_1_15();
 			break;
 		}
 	}

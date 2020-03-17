@@ -22,7 +22,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/Dynmap-3.0-beta-9-spigot.jar"/>
 	<classpathentry kind="lib" path="lib/spigot-1.15.2.jar"/>
+	<classpathentry kind="lib" path="lib/Dynmap-3.0-beta-10-spigot.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

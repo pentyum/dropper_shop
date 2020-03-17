@@ -3,6 +3,8 @@ package com.piggest.minecraft.bukkit.dropper_shop;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -14,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import com.piggest.minecraft.bukkit.config.Price_config;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.teleport_machine.Elements_composition;
 import com.piggest.minecraft.bukkit.utils.Server_date;
 
@@ -131,6 +134,29 @@ public class Dropper_shop_command_executor implements TabExecutor {
 				if (!Grinder.is_empty(item)) {
 					player.sendMessage(Elements_composition.get_element_composition(item).toString());
 				}
+				return true;
+			} else if (args[0].equalsIgnoreCase("show_inhabited_time")) {
+				Location loc = player.getLocation();
+				Chunk chunk = loc.getChunk();
+				long time = chunk.getInhabitedTime();
+				float local_difficulty = NMS_manager.local_difficulty.get_local_difficulty(loc);
+				player.sendMessage("当前区块inhabited_time: " + time + ", Local Difficulty: " + local_difficulty);
+				return true;
+			} else if (args[0].equalsIgnoreCase("set_inhabited_time")) {
+				if (!player.hasPermission("dropper_shop.set_inhabited_time")) {
+					player.sendMessage("你没有权限设置inhabited_time");
+					return true;
+				}
+				Location loc = player.getLocation();
+				Chunk chunk = loc.getChunk();
+				long ticks = chunk.getInhabitedTime();
+				try {
+					ticks = Long.parseLong(args[1]);
+				} catch (Exception e) {
+					player.sendMessage("时间参数错误");
+					return true;
+				}
+				chunk.setInhabitedTime(ticks);
 				return true;
 			} else if (args[0].equalsIgnoreCase("get_item")) {
 				if (!player.hasPermission("dropper_shop.get_item")) {

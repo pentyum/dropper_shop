@@ -81,6 +81,9 @@ permissions:
   dropper_shop.get_item:
     description: get a dropper_shop item.
     default: op
+  dropper_shop.set_inhabited_time:
+    description: set chunk inhabited time.
+    default: op
   depository.make:
     description: Make or remove a depository.
     default: true
