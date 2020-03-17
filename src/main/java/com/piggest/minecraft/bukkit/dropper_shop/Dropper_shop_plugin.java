@@ -245,7 +245,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.structure_manager_map.put(Anti_thunder.class, anti_thunder_manager);
 		this.structure_manager_map.put(Teleport_machine.class, teleport_machine_manager);
 		this.structure_manager_map.put(Compressor.class, compressor_manager);
-		//this.structure_manager_map.put(Electric_spawner.class, electric_spawner_manager);
+		this.structure_manager_map.put(Electric_spawner.class, electric_spawner_manager);
 		
 		for(Structure_manager<? extends Structure> manager : this.structure_manager_map.values()) {
 			manager.load_config();

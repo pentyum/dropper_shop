@@ -1,7 +1,6 @@
 package com.piggest.minecraft.bukkit.grinder;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -199,8 +198,8 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 	}
 
 	@Override
-	protected HashMap<String, Object> get_save() {
-		HashMap<String, Object> save = super.get_save();
+	public Map<String, Object> serialize() {
+		Map<String, Object> save = super.serialize();
 		save.put("flint-storge", this.get_flint_storage());
 		save.put("working-ticks", this.runner.working_ticks);
 		return save;

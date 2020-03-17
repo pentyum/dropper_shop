@@ -308,8 +308,8 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	}
 
 	@Override
-	protected HashMap<String, Object> get_save() {
-		HashMap<String, Object> save = super.get_save();
+	public Map<String, Object> serialize() {
+		Map<String, Object> save = super.serialize();
 		save.put("working", this.is_working());
 		save.put("current-x", this.current_x);
 		save.put("current-z", this.current_z);

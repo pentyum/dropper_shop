@@ -1,7 +1,6 @@
 package com.piggest.minecraft.bukkit.compressor;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -130,8 +129,8 @@ public class Compressor extends Multi_block_with_gui implements HasRunner, Auto_
 	}
 
 	@Override
-	protected HashMap<String, Object> get_save() {
-		HashMap<String, Object> save = super.get_save();
+	public Map<String, Object> serialize() {
+		Map<String, Object> save = super.serialize();
 		save.put("piston-storage", this.get_piston_storage());
 		save.put("working-ticks", this.runner.working_ticks);
 		return save;

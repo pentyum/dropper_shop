@@ -1,6 +1,5 @@
 package com.piggest.minecraft.bukkit.dropper_shop;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -65,11 +64,9 @@ public class Dropper_shop extends Single_block_structure implements Ownable {
 		return this.dropper_block.getLocation();
 	}
 
-	public HashMap<String, Object> get_save() {
-		HashMap<String, Object> save = super.get_save();
-		// save.put("assoc-x", this.assoc.get_location().getBlockX());
-		// save.put("assoc-y", this.assoc.get_location().getBlockY());
-		// save.put("assoc-z", this.assoc.get_location().getBlockZ());
+	@Override
+	public Map<String, Object> serialize() {
+		Map<String, Object> save = super.serialize();
 		save.put("item", this.sell_item.name());
 		return save;
 	}

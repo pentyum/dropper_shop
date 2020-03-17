@@ -186,9 +186,9 @@ public class Depository extends Multi_block_with_gui implements Ownable, HasRunn
 	}
 
 	@Override
-	protected HashMap<String, Object> get_save() {
+	public Map<String, Object> serialize() {
+		Map<String, Object> save = super.serialize();
 		ArrayList<int[]> levels = new ArrayList<int[]>();
-		HashMap<String, Object> save = super.get_save();
 		save.put("contents", this.contents);
 		for (ItemStack item : this.getInventory().getContents()) {
 			if (Upgrade_component.get_type(item) == Upgrade_component_type.depository_upgrade) {
@@ -220,8 +220,6 @@ public class Depository extends Multi_block_with_gui implements Ownable, HasRunn
 
 	@Override
 	public void on_button_pressed(Player player, int slot) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

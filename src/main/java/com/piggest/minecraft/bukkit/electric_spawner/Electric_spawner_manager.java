@@ -6,7 +6,8 @@ import org.bukkit.event.inventory.InventoryType;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 
 public class Electric_spawner_manager extends Gui_structure_manager<Electric_spawner> {
-
+	private int[] center = new int[] {1,1,1};
+	
 	public Electric_spawner_manager() {
 		super(Electric_spawner.class);
 	}
@@ -44,8 +45,7 @@ public class Electric_spawner_manager extends Gui_structure_manager<Electric_spa
 
 	@Override
 	public int[] get_center() {
-		// TODO 自动生成的方法存根
-		return null;
+		return this.center;
 	}
 
 }

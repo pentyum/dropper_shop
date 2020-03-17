@@ -27,7 +27,35 @@ public abstract class Structure implements ConfigurationSerializable {
 	@Override
 	public Map<String, Object> serialize() {
 		synchronized (this) {
-			return this.get_save();
+			HashMap<String, Object> save = new HashMap<String, Object>();
+			save.put("world", this.world_name);
+			save.put("x", this.x);
+			save.put("y", this.y);
+			save.put("z", this.z);
+			if (this instanceof Ownable) {
+				Ownable ownable = (Ownable) this;
+				save.put("owner", ownable.get_owner_name());
+			}
+			if (this instanceof Unique) {
+				save.put("UUID", ((Unique) this).get_uuid().toString());
+			}
+			if (this instanceof Capacity_upgradable) {
+				Capacity_upgradable upgradable = (Capacity_upgradable) this;
+				save.put("structure-level", upgradable.get_capacity_level());
+			}
+			if (this instanceof Nameable) {
+				Nameable nameable = (Nameable) this;
+				save.put("name", nameable.getCustomName());
+			}
+			if (this instanceof Elements_container) {
+				Elements_container elements_container = (Elements_container) this;
+				HashMap<String, Integer> elements_map = new HashMap<String, Integer>();
+				for (Element element : Element.values()) {
+					elements_map.put(element.name(), elements_container.get_amount(element));
+				}
+				save.put("elements", elements_map);
+			}
+			return save;
 		}
 	}
 
@@ -102,38 +130,6 @@ public abstract class Structure implements ConfigurationSerializable {
 		return this.get_chunk_location().is_loaded();
 	}
 
-	protected HashMap<String, Object> get_save() {
-		HashMap<String, Object> save = new HashMap<String, Object>();
-		save.put("world", this.world_name);
-		save.put("x", this.x);
-		save.put("y", this.y);
-		save.put("z", this.z);
-		if (this instanceof Ownable) {
-			Ownable ownable = (Ownable) this;
-			save.put("owner", ownable.get_owner_name());
-		}
-		if (this instanceof Unique) {
-			save.put("UUID", ((Unique) this).get_uuid().toString());
-		}
-		if (this instanceof Capacity_upgradable) {
-			Capacity_upgradable upgradable = (Capacity_upgradable) this;
-			save.put("structure-level", upgradable.get_capacity_level());
-		}
-		if (this instanceof Nameable) {
-			Nameable nameable = (Nameable) this;
-			save.put("name", nameable.getCustomName());
-		}
-		if (this instanceof Elements_container) {
-			Elements_container elements_container = (Elements_container) this;
-			HashMap<String, Integer> elements_map = new HashMap<String, Integer>();
-			for (Element element : Element.values()) {
-				elements_map.put(element.name(), elements_container.get_amount(element));
-			}
-			save.put("elements", elements_map);
-		}
-		return save;
-	}
-
 	public Structure_manager<? extends Structure> get_manager() {
 		return Dropper_shop_plugin.instance.get_structure_manager().get(this.getClass());
 	}
@@ -148,12 +144,15 @@ public abstract class Structure implements ConfigurationSerializable {
 	 */
 	protected abstract void init_after_set_location();
 
+	/**
+	 * 从结构管理器中移除本结构
+	 */
 	public void remove() {
 		this.get_manager().remove(this);
 	}
 
 	/**
-	 * 破坏方块时调用的函数，返回true表面允许破坏。
+	 * 破坏方块时调用的函数，返回true表明允许破坏。
 	 */
 	protected abstract boolean on_break(Player player);
 

@@ -1,6 +1,5 @@
 package com.piggest.minecraft.bukkit.anti_thunder;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -148,8 +147,8 @@ public class Anti_thunder extends Multi_block_structure implements Ownable {
 	}
 
 	@Override
-	protected HashMap<String, Object> get_save() {
-		HashMap<String, Object> save = super.get_save();
+	public Map<String, Object> serialize() {
+		Map<String, Object> save = super.serialize();
 		save.put("active", this.is_active());
 		return save;
 	}

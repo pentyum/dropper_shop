@@ -1,7 +1,6 @@
 package com.piggest.minecraft.bukkit.exp_saver;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
@@ -103,8 +102,8 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 	}
 
 	@Override
-	protected HashMap<String, Object> get_save() {
-		HashMap<String, Object> save = super.get_save();
+	public Map<String, Object> serialize() {
+		Map<String, Object> save = super.serialize();
 		save.put("saved-exp", this.saved_exp);
 		save.put("anvil-count", this.anvil_count);
 		save.put("chipped-anvil-count", this.chipped_anvil_count);

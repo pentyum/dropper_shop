@@ -23,7 +23,7 @@ public class Lottery_pool_gui_holder implements Paged_inventory_holder {
 	public Lottery_pool_gui_holder() {
 		int current_price = Dropper_shop_plugin.instance.get_price_config().get_lottery_price();
 		this.gui = Bukkit.createInventory(this, 36, "奖品列表 - 当前抽奖费用: " + current_price);
-		this.init(last_slot,indicator_slot,next_slot);
+		this.init(last_slot, indicator_slot, next_slot);
 	}
 
 	@Override
@@ -47,7 +47,8 @@ public class Lottery_pool_gui_holder implements Paged_inventory_holder {
 		List<Integer> possibility_list = config.getIntegerList("possibility");
 		List<Boolean> broadcast_list = config.getBooleanList("broadcast");
 		int total_pages = (item_list.size() - 1) / page_size + 1;
-		//msg += "\n------------抽奖概率公示 第" + String.format("%2d /%2d", page, total_pages) + " 页------------\n";
+		// msg += "\n------------抽奖概率公示 第" + String.format("%2d /%2d", page,
+		// total_pages) + " 页------------\n";
 		int total = 0;
 		int gui_index = -1;
 		for (int i = 0; i < item_list.size(); i++) {
@@ -76,11 +77,11 @@ public class Lottery_pool_gui_holder implements Paged_inventory_holder {
 		for (int i = gui_index + 1; i < page_size; i++) {
 			this.getInventory().setItem(i, null);
 		}
-		ItemStack indicator_item = this.getInventory()
-				.getItem(this.get_page_indicator_slot());
+		ItemStack indicator_item = this.getInventory().getItem(this.get_page_indicator_slot());
 		ItemMeta meta = indicator_item.getItemMeta();
 		ArrayList<String> lore = new ArrayList<>();
-		lore.add("§7总中奖概率" + String.format("%5.1f", (float) total / 10) + "%");
+		lore.add("§7总中奖概率: " + String.format("%5.1f", (float) total / 10) + "%");
+		lore.add("§7总页数: " + total_pages);
 		meta.setLore(lore);
 		indicator_item.setItemMeta(meta);
 		this.current_page = page;

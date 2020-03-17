@@ -163,8 +163,8 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 	}
 
 	@Override
-	protected HashMap<String, Object> get_save() {
-		HashMap<String, Object> save = super.get_save();
+	public Map<String, Object> serialize() {
+		Map<String, Object> save = super.serialize();
 		HashMap<Integer, Slot_config> locked_slots = this.get_manager().get_locked_slots();
 		for (Entry<Integer, Slot_config> entry : locked_slots.entrySet()) {
 			int slot = entry.getKey();

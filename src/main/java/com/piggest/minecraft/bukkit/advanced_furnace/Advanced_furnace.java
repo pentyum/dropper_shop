@@ -214,8 +214,8 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	}
 
 	@Override
-	protected HashMap<String, Object> get_save() {
-		HashMap<String, Object> save = super.get_save();
+	public Map<String, Object> serialize() {
+		Map<String, Object> save = super.serialize();
 		HashMap<String, Integer> contents = new HashMap<String, Integer>();
 		save.put("temperature", this.get_temperature());
 		save.put("fuel-ticks", this.fuel_info.fuel_ticks);

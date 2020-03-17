@@ -152,11 +152,11 @@ public class Dropper_shop_command_executor implements TabExecutor {
 				long ticks = chunk.getInhabitedTime();
 				try {
 					ticks = Long.parseLong(args[1]);
+					chunk.setInhabitedTime(ticks);
 				} catch (Exception e) {
 					player.sendMessage("时间参数错误");
 					return true;
 				}
-				chunk.setInhabitedTime(ticks);
 				return true;
 			} else if (args[0].equalsIgnoreCase("get_item")) {
 				if (!player.hasPermission("dropper_shop.get_item")) {

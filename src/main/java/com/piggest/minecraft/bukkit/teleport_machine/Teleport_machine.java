@@ -2,7 +2,6 @@ package com.piggest.minecraft.bukkit.teleport_machine;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -451,8 +450,8 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	}
 
 	@Override
-	protected HashMap<String, Object> get_save() {
-		HashMap<String, Object> save = super.get_save();
+	public Map<String, Object> serialize() {
+		Map<String, Object> save = super.serialize();
 		if (this.teleport_task != null) {
 			save.put("total-bytes", this.teleport_task.get_total_byte());
 			save.put("completed-bytes", this.teleport_task.get_completed_byte());

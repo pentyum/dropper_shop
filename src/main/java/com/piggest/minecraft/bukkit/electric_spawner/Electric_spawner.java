@@ -1,5 +1,9 @@
 package com.piggest.minecraft.bukkit.electric_spawner;
 
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -60,5 +64,11 @@ public class Electric_spawner extends Multi_block_with_gui {
 		// TODO 自动生成的方法存根
 		return null;
 	}
-
+	
+	@Nonnull
+    public static Electric_spawner deserialize(@Nonnull Map<String, Object> args) {
+		Electric_spawner structure = new Electric_spawner();
+		structure.set_from_save(args);
+		return structure;
+    }
 }
