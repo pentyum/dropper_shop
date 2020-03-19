@@ -1,5 +1,7 @@
 package com.piggest.minecraft.bukkit.structure;
 
+import javax.annotation.Nonnull;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -8,7 +10,8 @@ import org.bukkit.entity.Player;
 public abstract class Multi_block_structure extends Structure {
 
 	protected abstract void on_right_click(Player player);
-
+	
+	@Nonnull
 	public Block get_block(int relative_x, int relative_y, int relative_z) {
 		Location loc = this.get_location().add(relative_x, relative_y, relative_z);
 		return loc.getBlock();

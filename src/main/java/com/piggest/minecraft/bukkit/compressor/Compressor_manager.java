@@ -23,11 +23,12 @@ public class Compressor_manager extends Gui_structure_manager<Compressor> {
 			{ { Material.STONE_BRICKS, Material.IRON_BLOCK, Material.STONE_BRICKS },
 					{ Material.IRON_BLOCK, Material.DIAMOND_BLOCK, Material.IRON_BLOCK },
 					{ Material.STONE_BRICKS, Material.IRON_BLOCK, Material.STONE_BRICKS } },
-			{ { Material.IRON_BLOCK, Material.PISTON, Material.IRON_BLOCK }, { Material.PISTON, null, Material.PISTON },
+			{ { Material.IRON_BLOCK, Material.PISTON, Material.IRON_BLOCK }, 
+					{ Material.PISTON, null, Material.PISTON },
 					{ Material.IRON_BLOCK, Material.PISTON, Material.IRON_BLOCK } },
 			{ { Material.STONE_BRICKS, Material.IRON_BLOCK, Material.STONE_BRICKS },
 					{ Material.IRON_BLOCK, Material.DIAMOND_BLOCK, Material.IRON_BLOCK },
-					{ Material.STONE_BRICKS, Material.IRON_BLOCK, Material.STONE_BRICKS } } };;
+					{ Material.STONE_BRICKS, Material.IRON_BLOCK, Material.STONE_BRICKS } } };
 	private String gui_name = "压缩机";
 	private int[] center = new int[] { 1, 0, 1 };
 

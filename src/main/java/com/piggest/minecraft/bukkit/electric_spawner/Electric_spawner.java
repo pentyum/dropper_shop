@@ -1,15 +1,43 @@
 package com.piggest.minecraft.bukkit.electric_spawner;
 
+import java.util.HashSet;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 
 public class Electric_spawner extends Multi_block_with_gui {
+
+	@Override
+	public boolean completed() {
+		boolean base_structure = super.completed();
+		if (base_structure == false) {
+			return false;
+		}
+		HashSet<Material> block_set = new HashSet<>();
+		block_set.add(this.get_block(0, 2, 1).getType());
+		block_set.add(this.get_block(0, 2, -1).getType());
+		block_set.add(this.get_block(1, 2, 0).getType());
+		block_set.add(this.get_block(-1, 2, 0).getType());
+		if (!block_set.contains(Material.CREEPER_HEAD)) {
+			return false;
+		}
+		if (!block_set.contains(Material.ZOMBIE_HEAD)) {
+			return false;
+		}
+		if (!block_set.contains(Material.SKELETON_SKULL)) {
+			return false;
+		}
+		if (!block_set.contains(Material.WITHER_SKELETON_SKULL)) {
+			return false;
+		}
+		return true;
+	}
 
 	@Override
 	public void on_button_pressed(Player player, int slot) {
@@ -64,11 +92,11 @@ public class Electric_spawner extends Multi_block_with_gui {
 		// TODO 自动生成的方法存根
 		return null;
 	}
-	
+
 	@Nonnull
-    public static Electric_spawner deserialize(@Nonnull Map<String, Object> args) {
+	public static Electric_spawner deserialize(@Nonnull Map<String, Object> args) {
 		Electric_spawner structure = new Electric_spawner();
 		structure.set_from_save(args);
 		return structure;
-    }
+	}
 }

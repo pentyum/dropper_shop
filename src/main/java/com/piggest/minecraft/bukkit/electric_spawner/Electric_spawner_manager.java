@@ -6,7 +6,20 @@ import org.bukkit.event.inventory.InventoryType;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 
 public class Electric_spawner_manager extends Gui_structure_manager<Electric_spawner> {
-	private int[] center = new int[] {1,1,1};
+	private Material[][][] model = {
+			{ { Material.CHISELED_STONE_BRICKS, Material.BOOKSHELF, Material.CHISELED_STONE_BRICKS },
+					{ Material.BOOKSHELF, Material.DIAMOND_BLOCK, Material.BOOKSHELF },
+					{ Material.CHISELED_STONE_BRICKS, Material.BOOKSHELF, Material.CHISELED_STONE_BRICKS } },
+			{ { Material.IRON_BARS, Material.IRON_BARS, Material.IRON_BARS }, 
+					{ Material.IRON_BARS, Material.BEACON, Material.IRON_BARS },
+					{ Material.IRON_BARS, Material.IRON_BARS, Material.IRON_BARS } },
+			{ { Material.BRICK_STAIRS, Material.BRICK_STAIRS, Material.BRICK_STAIRS },
+					{ Material.BRICK_STAIRS, Material.DIAMOND_BLOCK, Material.BRICK_STAIRS },
+					{ Material.BRICK_STAIRS, Material.BRICK_STAIRS, Material.BRICK_STAIRS } },
+			{ { null, null, null },
+					{ null, Material.ENCHANTING_TABLE, null },
+					{ null, null, null } }};
+	private int[] center = new int[] {1, 1, 1};
 	
 	public Electric_spawner_manager() {
 		super(Electric_spawner.class);
@@ -39,8 +52,7 @@ public class Electric_spawner_manager extends Gui_structure_manager<Electric_spa
 
 	@Override
 	public Material[][][] get_model() {
-		// TODO 自动生成的方法存根
-		return null;
+		return this.model;
 	}
 
 	@Override

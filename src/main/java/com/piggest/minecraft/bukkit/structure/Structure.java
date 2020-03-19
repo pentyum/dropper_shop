@@ -107,6 +107,9 @@ public abstract class Structure implements ConfigurationSerializable {
 		this.z = z;
 	}
 
+	/**
+	 * 获得一个新的Location对象
+	 */
 	public Location get_location() {
 		return new Location(Bukkit.getWorld(this.world_name), this.x, this.y, this.z);
 	}
