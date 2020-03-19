@@ -1,9 +1,9 @@
 make-price: 4000
 make-grinder-price: 5000
-make-lottery-pool-price: 10000
+make-lottery-pool-price: 20000
 make-trees-felling-machine-price: 1000
 start-trees-felling-machine-price: 4000
-lottery-price: 800
+lottery-price: 1000
 music-stick-price: 10
 exp-saver-upgrade-base-price: 5000
 exp-saver-upgrade-level-price: 1000
@@ -14,6 +14,9 @@ exp-saver-remove-repaircost-price: 10000
 anti-thunder-price: 60
 anti-thunder-cycle: 3600
 adv-furnace-price: 1000
+make-teleport-machine-price: 10000
+make-electric-spawner-price: 50000
+
 winter-mode: false
 sync-realtime-worlds:
   new_world: 0

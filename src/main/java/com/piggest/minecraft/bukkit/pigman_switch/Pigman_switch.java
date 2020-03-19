@@ -19,7 +19,7 @@ public class Pigman_switch extends Multi_block_structure {
 		} else {
 			msg += "关,猪人正常生成";
 		}
-		player.sendMessage(msg);
+		this.send_message(player, msg);
 		return;
 	}
 

@@ -80,7 +80,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	@Override
 	public void on_button_pressed(Player player, int slot) {
 		if (this.get_state() == Radio_state.WORKING) {
-			player.sendMessage("[传送机]当前传送机处于运行中，无法进行该操作！请等待传送完成或者重启传送机。");
+			this.send_message(player, "当前传送机处于运行中，无法进行该操作！请等待传送完成或者重启传送机。");
 			return;
 		}
 		switch (slot) {
@@ -92,7 +92,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			break;
 		case 28:// 搜台
 			if (!player.hasPermission("teleport_machine.search")) {
-				player.sendMessage("[传送机]你没有搜台的权限!");
+				this.send_message(player, "你没有搜台的权限!");
 				break;
 			}
 			this.known_terminal_list = this.search(player, false);
@@ -124,7 +124,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 					entity.remove();
 				}
 			}
-			player.sendMessage("[传送机]总共转化元素: " + total_elements_add.toString());
+			this.send_message(player, "总共转化元素: " + total_elements_add.toString());
 			this.add(total_elements_add);
 			break;
 		case 40:// 玩家经验转化为魔力
@@ -136,7 +136,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			int add_magic = use_exp * exp_magic_exchange_rate / 1000;
 			SetExpFix.setTotalExperience(player, total_exp - use_exp);
 			this.set_amount(Element.Magic, this.get_amount(Element.Magic) + add_magic);
-			player.sendMessage("[传送机]成功将" + use_exp + "点经验转化为" + add_magic + "点魔力");
+			this.send_message(player, "成功将" + use_exp + "点经验转化为" + add_magic + "点魔力");
 			break;
 		case 50:// 降低待机电压
 			if (this.online_voltage <= 0) {
@@ -161,7 +161,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		default:
 			if (slot >= 9 && slot <= 25) {
 				if (this.get_state() == Radio_state.OFF) {
-					player.sendMessage("[传送机]关机状态不能传送");
+					this.send_message(player, "关机状态不能传送");
 					break;
 				}
 				ItemStack item = this.gui.getItem(slot);
@@ -175,11 +175,11 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 						int index = slot + 16 * (this.current_page - 1);
 						Radio_terminal terminal = Radio_manager.instance.get(this.known_terminal_list.get(index));
 						if (terminal == null) {
-							player.sendMessage("[传送机]目标传送机已经丢失");
+							this.send_message(player, "目标传送机已经丢失");
 						} else {
 							if (this.is_setting_mode() == true) {// 自动模式，选择传送对象
 								this.auto_teleport_to = terminal.get_uuid();
-								player.sendMessage("[传送机]已经设置为自动传送至" + terminal.getCustomName());
+								this.send_message(player, "已经设置为自动传送至" + terminal.getCustomName());
 							} else {
 								this.start_teleport_to(player, terminal);
 							}
@@ -246,24 +246,24 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 
 	private void start_teleport_to(Player operator, Radio_terminal terminal) {
 		if (terminal == null) {
-			operator.sendMessage("[传送机]目标已经丢失");
+			this.send_message(operator, "目标已经丢失");
 			return;
 		}
 		if (terminal.get_location().getWorld() == null) {
-			operator.sendMessage("[传送机]目标世界未加载");
+			this.send_message(operator, "目标世界未加载");
 			return;
 		}
 		if (terminal.get_state() == Radio_state.OFF) {
-			operator.sendMessage("[传送机]目标没有开机");
+			this.send_message(operator, "目标没有开机");
 			return;
 		}
 		if (this.get_state() == Radio_state.WORKING) {
-			operator.sendMessage("[传送机]当前传送机已经在工作了");
+			this.send_message(operator, "当前传送机已经在工作了");
 			return;
 		}
 
 		Teleporting_task task_to_do = new Teleporting_task();
-		operator.sendMessage("[传送机]开始传送至" + terminal.getCustomName());
+		this.send_message(operator, "开始传送至" + terminal.getCustomName());
 		task_to_do.set_entities(this.get_entities_in_stage());
 		Elements_composition total_elements_cost = new Elements_composition();
 		if (!operator.hasPermission("teleport_machine.no_consume")) {
@@ -273,7 +273,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 			operator.sendMessage("待传送实体数量: " + task_to_do.get_entities().size());
 			operator.sendMessage("总共需要: " + total_elements_cost.toString());
 			if (!terminal.has_enough(total_elements_cost)) {
-				operator.sendMessage("[传送机]目标元素材料不足");
+				this.send_message(operator, "目标元素材料不足");
 				return;
 			}
 		}
@@ -287,7 +287,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		boolean task_submit_result = this.set_current_task(task_to_do);
 		this.set_state(Radio_state.WORKING);
 		if (task_submit_result == false) {
-			operator.sendMessage("[传送机]不支持目标接收频段或者目标信息有误");
+			this.send_message(operator, "不支持目标接收频段或者目标信息有误");
 			return;
 		}
 	}
@@ -295,9 +295,9 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	public void complete_teleport_to(Radio_terminal terminal) {
 		this.teleport_task.runTaskLater(Dropper_shop_plugin.instance, 1);
 		this.add(this.teleport_task.get_elements());
-		Player operater = this.teleport_task.get_operater();
-		if (operater != null) {
-			operater.sendMessage("[传送机]已完成传送");
+		Player operator = this.teleport_task.get_operater();
+		if (operator != null) {
+			this.send_message(operator, "已完成传送");
 		}
 		this.set_state(Radio_state.ONLINE);
 		this.set_process(0);
@@ -400,7 +400,14 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 
 	@Override
 	public boolean create_condition(Player player) {
-		return true;
+		int price = Dropper_shop_plugin.instance.get_price_config().get_make_teleport_machine_price();
+		if (Dropper_shop_plugin.instance.cost_player_money(price, player)) {
+			this.send_message(player, "已扣除" + price);
+			return true;
+		} else {
+			this.send_message(player, "建立传送机所需的钱不够，需要" + price);
+			return false;
+		}
 	}
 
 	@Override

@@ -59,7 +59,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	@Override
 	public void on_button_pressed(Player player, int slot) {
 		if (slot == 10) {
-			player.sendMessage("已复位");
+			this.send_message(player, "已复位");
 			this.scanned_blocks = 0;
 			this.init_after_set_location();
 		}
@@ -69,10 +69,10 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	public boolean create_condition(Player player) {
 		int price = Dropper_shop_plugin.instance.get_price_config().get_make_trees_felling_machine_price();
 		if (Dropper_shop_plugin.instance.cost_player_money(price, player)) {
-			player.sendMessage("已扣除" + price);
+			this.send_message(player, "已扣除" + price);
 			return true;
 		} else {
-			player.sendMessage("建立伐木机所需的钱不够，需要" + price);
+			this.send_message(player, "建立伐木机所需的钱不够，需要" + price);
 			return false;
 		}
 	}
@@ -351,14 +351,14 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 						Dropper_shop_plugin.instance.get_price_config().get_start_trees_felling_machine_price(),
 						player)) {
 					this.set_owner(player.getName());
-					player.sendMessage("开启成功");
+					this.send_message(player, "开启成功");
 					return true;
 				} else {
-					player.sendMessage("开启失败，你的金币不够");
+					this.send_message(player, "开启失败，你的金币不够");
 					return false;
 				}
 			} else {
-				player.sendMessage("关闭成功");
+				this.send_message(player, "关闭成功");
 				return true;
 			}
 		}
@@ -437,11 +437,11 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	public ItemStack[] get_drop_items() {
 		return new ItemStack[] { this.get_axe() };
 	}
-	
+
 	@Nonnull
-    public static Trees_felling_machine deserialize(@Nonnull Map<String, Object> args) {
+	public static Trees_felling_machine deserialize(@Nonnull Map<String, Object> args) {
 		Trees_felling_machine structure = new Trees_felling_machine();
 		structure.set_from_save(args);
 		return structure;
-    }
+	}
 }

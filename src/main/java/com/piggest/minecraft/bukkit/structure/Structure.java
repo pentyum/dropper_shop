@@ -8,11 +8,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Nameable;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 import com.piggest.minecraft.bukkit.teleport_machine.Element;
 import com.piggest.minecraft.bukkit.teleport_machine.Elements_container;
 import com.piggest.minecraft.bukkit.teleport_machine.Unique;
@@ -178,5 +180,27 @@ public abstract class Structure implements ConfigurationSerializable {
 
 	public World get_world() {
 		return Bukkit.getServer().getWorld(this.world_name);
+	}
+
+	public void send_message(CommandSender sender, String message) {
+		String name;
+		Structure_manager<? extends Structure> manager = this.get_manager();
+		if (manager instanceof Gui_structure_manager) {
+			name = ((Gui_structure_manager<? extends Structure>) manager).get_gui_name();
+		} else {
+			name = manager.get_permission_head();
+		}
+		sender.sendMessage("[" + name + "]" + message);
+	}
+
+	public void broadcast_message(String message) {
+		String name;
+		Structure_manager<? extends Structure> manager = this.get_manager();
+		if (manager instanceof Gui_structure_manager) {
+			name = ((Gui_structure_manager<? extends Structure>) manager).get_gui_name();
+		} else {
+			name = manager.get_permission_head();
+		}
+		Bukkit.getServer().broadcastMessage("[" + name + "]" + message);
 	}
 }

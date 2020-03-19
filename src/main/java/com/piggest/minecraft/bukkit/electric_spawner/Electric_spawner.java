@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 
 public class Electric_spawner extends Multi_block_with_gui {
@@ -54,26 +55,29 @@ public class Electric_spawner extends Multi_block_with_gui {
 
 	@Override
 	public boolean on_put_item(Player player, ItemStack cursor_item, int slot) {
-		// TODO 自动生成的方法存根
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean on_take_item(Player player, ItemStack in_item, int slot) {
-		// TODO 自动生成的方法存根
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean on_exchange_item(Player player, ItemStack in_item, ItemStack cursor_item, int slot) {
-		// TODO 自动生成的方法存根
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean create_condition(Player player) {
-		// TODO 自动生成的方法存根
-		return false;
+		int price = Dropper_shop_plugin.instance.get_price_config().get_make_electric_spawner_price();
+		if (Dropper_shop_plugin.instance.cost_player_money(price, player)) {
+			this.send_message(player, "已扣除" + price);
+			return true;
+		} else {
+			this.send_message(player, "建立刷怪机所需的钱不够，需要" + price);
+			return false;
+		}
 	}
 
 	@Override
@@ -84,13 +88,11 @@ public class Electric_spawner extends Multi_block_with_gui {
 
 	@Override
 	protected boolean on_break(Player player) {
-		// TODO 自动生成的方法存根
-		return false;
+		return true;
 	}
 
 	@Override
 	public ItemStack[] get_drop_items() {
-		// TODO 自动生成的方法存根
 		return null;
 	}
 

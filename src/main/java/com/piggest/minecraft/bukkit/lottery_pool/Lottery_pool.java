@@ -36,7 +36,7 @@ public class Lottery_pool extends Multi_block_structure {
 		}
 		if (this.running == false) {
 			if (!player.hasPermission("lottery.use")) {
-				player.sendMessage("[抽奖机]你没有进行抽奖的权限");
+				this.send_message(player, "你没有进行抽奖的权限");
 				return;
 			}
 			this.start_lottery(player);
@@ -84,7 +84,7 @@ public class Lottery_pool extends Multi_block_structure {
 			}
 		};
 		Collection<Entity> crystals = world.getNearbyEntities(this.get_location(), 6, 2, 6, predicate);
-		//Dropper_shop_plugin.instance.getLogger().info("末影水晶数量" + crystals.size());
+		// Dropper_shop_plugin.instance.getLogger().info("末影水晶数量" + crystals.size());
 		if (crystals.size() != 8) {
 			return false;
 		} else {
@@ -94,7 +94,7 @@ public class Lottery_pool extends Multi_block_structure {
 				i++;
 			}
 		}
-		//Dropper_shop_plugin.instance.getLogger().info("检测通过");
+		// Dropper_shop_plugin.instance.getLogger().info("检测通过");
 		return true;
 	}
 
@@ -116,10 +116,10 @@ public class Lottery_pool extends Multi_block_structure {
 	public boolean create_condition(Player player) {
 		int price = Dropper_shop_plugin.instance.get_price_config().get_make_lottery_pool_price();
 		if (Dropper_shop_plugin.instance.cost_player_money(price, player)) {
-			player.sendMessage("[抽奖机]已扣除" + price);
+			this.send_message(player, "已扣除" + price);
 			return true;
 		} else {
-			player.sendMessage("[抽奖机]建立抽奖机所需的钱不够，需要" + price);
+			this.send_message(player, "建立抽奖机所需的钱不够，需要" + price);
 			return false;
 		}
 	}
@@ -127,10 +127,10 @@ public class Lottery_pool extends Multi_block_structure {
 	public boolean use_condition(Player player) {
 		int price = Dropper_shop_plugin.instance.get_price_config().get_lottery_price();
 		if (Dropper_shop_plugin.instance.cost_player_money(price, player)) {
-			player.sendMessage("[抽奖机]已扣除" + price);
+			this.send_message(player, "已扣除" + price);
 			return true;
 		} else {
-			player.sendMessage("[抽奖机]抽奖钱不够，需要" + price);
+			this.send_message(player, "抽奖钱不够，需要" + price);
 			return false;
 		}
 	}
@@ -138,12 +138,12 @@ public class Lottery_pool extends Multi_block_structure {
 	public void start_lottery(Player player) {
 		for (EnderCrystal ender_crystal : ender_crystal_list) {
 			if (ender_crystal == null) {
-				player.sendMessage("[抽奖机]末影水晶结构错误");
+				this.send_message(player, "末影水晶结构错误");
 				return;
 			}
 		}
 		if (this.running == true) {
-			player.sendMessage("[抽奖机]抽奖机已经在运行了");
+			this.send_message(player, "抽奖机已经在运行了");
 			return;
 		}
 		if (!this.use_condition(player)) {
@@ -182,16 +182,16 @@ public class Lottery_pool extends Multi_block_structure {
 			ItemStack item = item_list.get(pool[num]).clone();
 			world.spawnParticle(Particle.VILLAGER_HAPPY, this.get_location(), 50, 1, 1, 1);
 			if (player != null) {
-				player.sendMessage("[抽奖机]恭喜你抽到了" + item.getAmount() + "个" + Material_ext.get_display_name(item));
+				this.send_message(player, "恭喜你抽到了" + item.getAmount() + "个" + Material_ext.get_display_name(item));
 			}
 			world.dropItem(this.get_location().add(0, 1, 0), item);
 			if (broadcast_list.get(pool[num]) == true) {
-				Dropper_shop_plugin.instance.getServer().broadcastMessage(
-						"[抽奖机]恭喜" + player.getName() + "抽到了" + item.getAmount() + "个" + Material_ext.get_display_name(item));
+				this.broadcast_message(
+						"恭喜" + player.getName() + "抽到了" + item.getAmount() + "个" + Material_ext.get_display_name(item));
 			}
 		} else {
 			if (player != null) {
-				player.sendMessage("[抽奖机]很遗憾你没有抽到任何物品");
+				this.send_message(player, "很遗憾你没有抽到任何物品");
 			}
 		}
 		this.running = false;
@@ -206,11 +206,11 @@ public class Lottery_pool extends Multi_block_structure {
 	public ItemStack[] get_drop_items() {
 		return null;
 	}
-	
+
 	@Nonnull
-    public static Lottery_pool deserialize(@Nonnull Map<String, Object> args) {
+	public static Lottery_pool deserialize(@Nonnull Map<String, Object> args) {
 		Lottery_pool structure = new Lottery_pool();
 		structure.set_from_save(args);
 		return structure;
-    }
+	}
 }

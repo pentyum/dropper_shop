@@ -457,10 +457,10 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	public boolean create_condition(Player player) {
 		int price = Dropper_shop_plugin.instance.get_price_config().get_make_adv_furnace_price();
 		if (Dropper_shop_plugin.instance.cost_player_money(price, player)) {
-			player.sendMessage("[高级熔炉]已扣除" + price);
+			this.send_message(player, "已扣除" + price);
 			return true;
 		} else {
-			player.sendMessage("[高级熔炉]建立高级熔炉所需的钱不够，需要" + price);
+			this.send_message(player, "建立高级熔炉所需的钱不够，需要" + price);
 			return false;
 		}
 	}
@@ -514,7 +514,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 			if (player.hasPermission("adv_furnace.make_money")) {
 				return true;
 			} else {
-				player.sendMessage("[高级熔炉]你没有启动火力发钱的权限");
+				this.send_message(player, "你没有启动火力发钱的权限");
 				return false;
 			}
 		default:
@@ -548,17 +548,17 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	public boolean capacity_upgrade_by(Player player) {
 		int current_level = this.get_capacity_level();
 		if (current_level >= Dropper_shop_plugin.instance.get_exp_saver_max_structure_level()) {
-			player.sendMessage("[高级熔炉]已经升级至满级");
+			this.send_message(player, "已经升级至满级");
 			return false;
 		}
 		int need_price = Exp_saver.get_upgrade_price(current_level);
 		if (Dropper_shop_plugin.instance.cost_player_money(need_price, player)) {
 			this.set_capacity_level(current_level + 1);
-			player.sendMessage("[高级熔炉]消耗了" + need_price + "金币把高级熔炉升级至" + (current_level + 1) + "级");
+			this.send_message(player, "消耗了" + need_price + "金币把高级熔炉升级至" + (current_level + 1) + "级");
 			return true;
 		} else {
-			player.sendMessage(
-					"[高级熔炉]你的钱不够，高级熔炉由" + current_level + "升级至" + (current_level + 1) + "级需要" + need_price + "金币");
+			this.send_message(player,
+					"你的钱不够，高级熔炉由" + current_level + "升级至" + (current_level + 1) + "级需要" + need_price + "金币");
 			return false;
 		}
 	}
@@ -722,11 +722,11 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	public String get_owner_name() {
 		return this.owner;
 	}
-	
+
 	@Nonnull
-    public static Advanced_furnace deserialize(@Nonnull Map<String, Object> args) {
+	public static Advanced_furnace deserialize(@Nonnull Map<String, Object> args) {
 		Advanced_furnace structure = new Advanced_furnace();
 		structure.set_from_save(args);
 		return structure;
-    }
+	}
 }

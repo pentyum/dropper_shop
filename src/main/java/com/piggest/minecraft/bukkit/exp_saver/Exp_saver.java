@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.Hopper;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -54,6 +55,14 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 	public boolean completed() {
 		if (this.get_block(0, 0, 0).getType() != Material.DIAMOND_BLOCK) {
 			return false;
+		}
+		Material[] support = new Material[] { this.get_block(0, 1, 0).getType(), this.get_block(0, 2, 0).getType(),
+				this.get_block(1, 2, 0).getType(), this.get_block(-1, 2, 0).getType(),
+				this.get_block(0, 2, 1).getType(), this.get_block(0, 2, -1).getType() };
+		for (Material material : support) {
+			if (!Tag.WOODEN_FENCES.isTagged(material)) {
+				return false;
+			}
 		}
 		HashSet<Material> block_set = new HashSet<Material>();
 		for (int i = -1; i <= 1; i++) {
@@ -136,7 +145,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 	public void output_exp(int exp, Player player) {
 		int need_exp = exp;
 		need_exp = this.remove_exp(exp);
-		player.sendMessage("[经验存储器]取出了" + need_exp + "点经验");
+		this.send_message(player, "取出了" + need_exp + "点经验");
 		player.giveExp(need_exp);
 	}
 
@@ -147,7 +156,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 			remove_exp = rest_exp;
 		}
 		remove_exp = this.add_exp(remove_exp);
-		player.sendMessage("[经验存储器]存入了" + remove_exp + "点经验");
+		this.send_message(player, "存入了" + remove_exp + "点经验");
 		player.giveExp(-remove_exp);
 	}
 
@@ -188,38 +197,38 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 
 	public void remove_repaircost_tag(Player player) {
 		if (!this.has_anvil()) {
-			player.sendMessage("[经验存储器]没有进行铁砧升级，无法移除铁砧惩罚标签");
+			this.send_message(player, "没有进行铁砧升级，无法移除铁砧惩罚标签");
 			return;
 		}
 		ItemStack item = this.get_mending();
 		if (item == null) {
-			player.sendMessage("[经验存储器]物品为空");
+			this.send_message(player, "物品为空");
 			return;
 		}
 		synchronized (item) {
 			if (item.getType() == Material.AIR) {
-				player.sendMessage("[经验存储器]物品为空");
+				this.send_message(player, "物品为空");
 				return;
 			}
 			ItemMeta meta = item.getItemMeta();
 			if (!(meta instanceof Repairable)) {
-				player.sendMessage("[经验存储器]该物品无法被修理");
+				this.send_message(player, "该物品无法被修理");
 				return;
 			}
 			Repairable repairable_meta = (Repairable) meta;
 			if (!repairable_meta.hasRepairCost()) {
-				player.sendMessage("[经验存储器]该物品没有铁砧惩罚标签");
+				this.send_message(player, "该物品没有铁砧惩罚标签");
 				return;
 			}
 			int need_exp = Dropper_shop_plugin.instance.get_exp_saver_remove_repaircost_exp();
 			if (this.get_saved_exp() < need_exp) {
-				player.sendMessage("[经验存储器]存储器经验不足，需要" + need_exp + "点经验");
+				this.send_message(player, "存储器经验不足，需要" + need_exp + "点经验");
 				return;
 			}
 			this.remove_exp(need_exp);
 			repairable_meta.setRepairCost(0);
 			item.setItemMeta(meta);
-			player.sendMessage("[经验存储器]已移除铁砧惩罚标签");
+			this.send_message(player, "已移除铁砧惩罚标签");
 		}
 	}
 
@@ -264,17 +273,16 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 	public boolean capacity_upgrade_by(Player player) {
 		int current_level = this.get_capacity_level();
 		if (current_level >= Dropper_shop_plugin.instance.get_exp_saver_max_structure_level()) {
-			player.sendMessage("[经验存储器]已经升级至满级");
+			this.send_message(player, "已经升级至满级");
 			return false;
 		}
 		int need_price = Exp_saver.get_upgrade_price(current_level);
 		if (Dropper_shop_plugin.instance.cost_player_money(need_price, player)) {
 			this.set_capacity_level(current_level + 1);
-			player.sendMessage("[经验存储器]消耗了" + need_price + "金币把经验存储器升级至" + (current_level + 1) + "级");
+			this.send_message(player, "消耗了" + need_price + "金币把经验存储器升级至" + (current_level + 1) + "级");
 			return true;
 		} else {
-			player.sendMessage(
-					"[经验存储器]你的钱不够，经验存储器由" + current_level + "升级至" + (current_level + 1) + "级需要" + need_price + "金币");
+			this.send_message(player, "你的钱不够，经验存储器由" + current_level + "升级至" + (current_level + 1) + "级需要" + need_price + "金币");
 			return false;
 		}
 	}
@@ -365,11 +373,11 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 	public ItemStack[] get_drop_items() {
 		return new ItemStack[] { this.get_mending() };
 	}
-	
+
 	@Nonnull
-    public static Exp_saver deserialize(@Nonnull Map<String, Object> args) {
+	public static Exp_saver deserialize(@Nonnull Map<String, Object> args) {
 		Exp_saver structure = new Exp_saver();
 		structure.set_from_save(args);
 		return structure;
-    }
+	}
 }

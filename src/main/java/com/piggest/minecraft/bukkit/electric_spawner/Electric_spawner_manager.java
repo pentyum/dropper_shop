@@ -8,15 +8,15 @@ import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 
 public class Electric_spawner_manager extends Gui_structure_manager<Electric_spawner> {
 	private Material[][][] model = {
-			{ { Material.CHISELED_STONE_BRICKS, Material.BOOKSHELF, Material.CHISELED_STONE_BRICKS },
+			{ { Material.CHISELED_QUARTZ_BLOCK, Material.BOOKSHELF, Material.CHISELED_QUARTZ_BLOCK },
 					{ Material.BOOKSHELF, Material.DIAMOND_BLOCK, Material.BOOKSHELF },
-					{ Material.CHISELED_STONE_BRICKS, Material.BOOKSHELF, Material.CHISELED_STONE_BRICKS } },
+					{ Material.CHISELED_QUARTZ_BLOCK, Material.BOOKSHELF, Material.CHISELED_QUARTZ_BLOCK } },
 			{ { Material.IRON_BARS, Material.IRON_BARS, Material.IRON_BARS }, 
 					{ Material.IRON_BARS, Material.BEACON, Material.IRON_BARS },
 					{ Material.IRON_BARS, Material.IRON_BARS, Material.IRON_BARS } },
-			{ { Material.BRICK_STAIRS, Material.BRICK_STAIRS, Material.BRICK_STAIRS },
-					{ Material.BRICK_STAIRS, Material.DIAMOND_BLOCK, Material.BRICK_STAIRS },
-					{ Material.BRICK_STAIRS, Material.BRICK_STAIRS, Material.BRICK_STAIRS } },
+			{ { Material.SMOOTH_QUARTZ_STAIRS, Material.SMOOTH_QUARTZ_STAIRS, Material.SMOOTH_QUARTZ_STAIRS },
+					{ Material.SMOOTH_QUARTZ_STAIRS, Material.DIAMOND_BLOCK, Material.SMOOTH_QUARTZ_STAIRS },
+					{ Material.SMOOTH_QUARTZ_STAIRS, Material.SMOOTH_QUARTZ_STAIRS, Material.SMOOTH_QUARTZ_STAIRS } },
 			{ { null, null, null },
 					{ null, Material.ENCHANTING_TABLE, null },
 					{ null, null, null } }};

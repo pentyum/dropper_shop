@@ -209,10 +209,10 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 	public boolean create_condition(Player player) {
 		int price = Dropper_shop_plugin.instance.get_price_config().get_make_grinder_price();
 		if (Dropper_shop_plugin.instance.cost_player_money(price, player)) {
-			player.sendMessage("[磨粉机]已扣除" + price);
+			this.send_message(player, "已扣除" + price);
 			return true;
 		} else {
-			player.sendMessage("[磨粉机]建立磨粉机所需的钱不够，需要" + price);
+			this.send_message(player, "建立磨粉机所需的钱不够，需要" + price);
 			return false;
 		}
 	}
