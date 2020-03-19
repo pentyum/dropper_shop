@@ -12,7 +12,8 @@ import org.bukkit.inventory.ItemStack;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 
 public class Electric_spawner extends Multi_block_with_gui {
-
+	public static final int info_indicator_slot = 9;
+	public static final int synthesis_button_slot = 17;
 	@Override
 	public boolean completed() {
 		boolean base_structure = super.completed();
