@@ -34,7 +34,7 @@ public class Electric_spawner_manager extends Gui_structure_manager<Electric_spa
 		this.set_gui(15, Material.BLUE_STAINED_GLASS_PANE, "§e左边放合成召唤物", Gui_slot_type.Indicator);
 		this.set_gui(Electric_spawner.look_button_slot, Material.ENCHANTED_BOOK, "§e查看召唤概率", Gui_slot_type.Button);
 		this.set_gui(Electric_spawner.info_indicator_slot, Material.SPAWNER, "§e刷怪信息", Gui_slot_type.Indicator);
-		this.set_gui(Electric_spawner.synthesis_button_slot, Material.CRAFTING_TABLE, "§e合成", Gui_slot_type.Button);
+		this.set_gui(Electric_spawner.synthesis_button_slot, Material.CRAFTING_TABLE, "§e召唤", Gui_slot_type.Button);
 
 		this.init_recipe();
 	}

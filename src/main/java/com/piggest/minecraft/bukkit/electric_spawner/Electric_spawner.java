@@ -25,6 +25,8 @@ public class Electric_spawner extends Multi_block_with_gui {
 	public static final int synthesis_button_slot = 17;
 	public static final int look_button_slot = 16;
 	private Random rand = new Random();
+	private EntityType entity_type = null;
+
 	@Override
 	public boolean completed() {
 		boolean base_structure = super.completed();
@@ -91,16 +93,29 @@ public class Electric_spawner extends Multi_block_with_gui {
 			}
 		}
 		if (slot == synthesis_button_slot) {
-			int r = rand.nextInt(1000);
+			int i = 0, j = 0, k = 0;
+			int[] pool = new int[1000];
+			for (k = 0; k < new_probability_list.size(); k++) {
+				for (j = 0; j < new_probability_list.get(k).second && i < 1000; j++) {
+					pool[i] = k;
+					i++;
+				}
+			}
+			int num = rand.nextInt(1000);
+			if (num < i) {
+				this.entity_type = new_probability_list.get(pool[num]).first;
+			} else {
+				this.send_message(player, "召唤失败");
+			}
 		} else if (slot == look_button_slot) {
 			int price = Dropper_shop_plugin.instance.get_price_config().get_look_electric_spawner_price();
 			if (Dropper_shop_plugin.instance.cost_player_money(price, player)) {
 				this.send_message(player, "已扣除" + price);
 			} else {
-				this.send_message(player, "查看合成概率所需的钱不够，需要" + price);
+				this.send_message(player, "查看召唤概率所需的钱不够，需要" + price);
 				return;
 			}
-			String msg = String.format("总成功概率: %.1f%%", (float) total_probability / 10);
+			String msg = String.format("总召唤成功概率: %.1f%%", (float) total_probability / 10);
 			for (Entity_probability probability : new_probability_list) {
 				msg += String.format("%s: %.1f%%", probability.first.name(), (float) probability.second / 10);
 			}

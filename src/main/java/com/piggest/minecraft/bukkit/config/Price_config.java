@@ -117,7 +117,7 @@ public class Price_config {
 		str += "高级熔炉金币容量升级:" + this.exp_saver_upgrade_base_price + "金币+"
 				+ this.exp_saver_upgrade_level_price + "金币/级\n";
 		str += "魔力刷怪机建立:" + this.make_electric_spawner_price + "金币\n";
-		str += "魔力刷怪机查看概率:" + this.look_electric_spawner_price + "金币/次\n";
+		str += "魔力刷怪机查看召唤概率:" + this.look_electric_spawner_price + "金币/次\n";
 		str += "传送机建立:" + this.make_teleport_machine_price + "金币\n";
 		return str;
 	}
