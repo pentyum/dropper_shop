@@ -27,7 +27,8 @@ public class Lottery_pool extends Multi_block_structure {
 	Lottery_pool_timer timer = null;
 	EnderCrystal[] ender_crystal_list = new EnderCrystal[8];
 	boolean running = false;
-
+	private Random rand = new Random();
+	
 	@Override
 	protected void on_right_click(Player player) {
 		if (this.completed() == false) {
@@ -176,7 +177,6 @@ public class Lottery_pool extends Multi_block_structure {
 				i++;
 			}
 		}
-		Random rand = new Random();
 		int num = rand.nextInt(1000);
 		if (num < i) {
 			ItemStack item = item_list.get(pool[num]).clone();
