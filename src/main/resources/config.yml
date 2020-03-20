@@ -16,6 +16,7 @@ anti-thunder-cycle: 3600
 adv-furnace-price: 1000
 make-teleport-machine-price: 10000
 make-electric-spawner-price: 50000
+look-electric-spawner-price: 5000
 
 winter-mode: false
 sync-realtime-worlds:

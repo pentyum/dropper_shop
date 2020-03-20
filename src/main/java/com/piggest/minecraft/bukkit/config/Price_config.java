@@ -16,7 +16,8 @@ public class Price_config {
 	private int anti_thunder_price = 0;
 	private int adv_furnace_price = 0;
 	private int exp_saver_remove_repaircost_price = 0;
-	private int electric_spawner_price = 0;
+	private int make_electric_spawner_price = 0;
+	private int look_electric_spawner_price = 0;
 	private int make_teleport_machine_price = 0;
 	
 	public Price_config(Dropper_shop_plugin dropper_shop_plugin) {
@@ -35,7 +36,8 @@ public class Price_config {
 		this.anti_thunder_price = this.plugin.get_config().getInt("anti-thunder-price");
 		this.adv_furnace_price = this.plugin.get_config().getInt("adv-furnace-price");
 		this.exp_saver_remove_repaircost_price = this.plugin.get_config().getInt("exp-saver-remove-repaircost-price");
-		this.electric_spawner_price = this.plugin.get_config().getInt("make-electric-spawner-price");
+		this.make_electric_spawner_price = this.plugin.get_config().getInt("make-electric-spawner-price");
+		this.look_electric_spawner_price = this.plugin.get_config().getInt("look-electric-spawner-price");
 		this.make_teleport_machine_price = this.plugin.get_config().getInt("make-teleport-machine-price");
 	}
 
@@ -114,7 +116,8 @@ public class Price_config {
 		str += "高级熔炉建立:" + this.adv_furnace_price + "金币\n";
 		str += "高级熔炉金币容量升级:" + this.exp_saver_upgrade_base_price + "金币+"
 				+ this.exp_saver_upgrade_level_price + "金币/级\n";
-		str += "魔力刷怪机建立:" + this.electric_spawner_price + "金币\n";
+		str += "魔力刷怪机建立:" + this.make_electric_spawner_price + "金币\n";
+		str += "魔力刷怪机查看概率:" + this.look_electric_spawner_price + "金币/次\n";
 		str += "传送机建立:" + this.make_teleport_machine_price + "金币\n";
 		return str;
 	}
@@ -124,6 +127,10 @@ public class Price_config {
 	}
 
 	public int get_make_electric_spawner_price() {
-		return this.electric_spawner_price;
+		return this.make_electric_spawner_price;
+	}
+
+	public int get_look_electric_spawner_price() {
+		return this.look_electric_spawner_price;
 	}
 }

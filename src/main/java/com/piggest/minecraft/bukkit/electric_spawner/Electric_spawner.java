@@ -1,11 +1,13 @@
 package com.piggest.minecraft.bukkit.electric_spawner;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
 
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -15,6 +17,8 @@ import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 public class Electric_spawner extends Multi_block_with_gui {
 	public static final int info_indicator_slot = 9;
 	public static final int synthesis_button_slot = 17;
+	public static final int look_button_slot = 16;
+
 	@Override
 	public boolean completed() {
 		boolean base_structure = super.completed();
@@ -43,8 +47,20 @@ public class Electric_spawner extends Multi_block_with_gui {
 
 	@Override
 	public void on_button_pressed(Player player, int slot) {
-		// TODO 自动生成的方法存根
+		HashMap<EntityType, Integer> map = new HashMap<>();
+		if (slot == synthesis_button_slot) {
+			
 
+		} else if (slot == look_button_slot) {
+			int price = Dropper_shop_plugin.instance.get_price_config().get_look_electric_spawner_price();
+			if (Dropper_shop_plugin.instance.cost_player_money(price, player)) {
+				this.send_message(player, "已扣除" + price);
+			} else {
+				this.send_message(player, "查看合成概率所需的钱不够，需要" + price);
+				return;
+			}
+
+		}
 	}
 
 	@Override
