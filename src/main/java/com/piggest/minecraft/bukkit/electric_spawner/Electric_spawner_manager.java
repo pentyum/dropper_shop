@@ -85,7 +85,7 @@ public class Electric_spawner_manager extends Gui_structure_manager<Electric_spa
 				new Entity_probability(EntityType.ENDERMITE, 1) };
 		this.probability_map.put(Material.ENDER_PEARL.getKey().toString(), probability_list);
 
-		probability_list = new Entity_probability[] { new Entity_probability(EntityType.SLIME, 2) };
+		probability_list = new Entity_probability[] { new Entity_probability(EntityType.SLIME, 1) };
 		this.probability_map.put(Material.SLIME_BALL.getKey().toString(), probability_list);
 
 		probability_list = new Entity_probability[] { new Entity_probability(EntityType.SLIME, 2) };

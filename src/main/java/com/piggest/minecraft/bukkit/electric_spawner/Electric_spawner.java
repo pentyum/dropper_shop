@@ -19,6 +19,7 @@ import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
+import com.piggest.minecraft.bukkit.utils.language.Entity_zh_cn;
 
 public class Electric_spawner extends Multi_block_with_gui {
 	public static final int info_indicator_slot = 9;
@@ -26,6 +27,10 @@ public class Electric_spawner extends Multi_block_with_gui {
 	public static final int look_button_slot = 16;
 	private Random rand = new Random();
 	private EntityType entity_type = null;
+
+	public Electric_spawner() {
+		this.set_process(0);
+	}
 
 	@Override
 	public boolean completed() {
@@ -60,15 +65,16 @@ public class Electric_spawner extends Multi_block_with_gui {
 		for (int i = 11; i < 15; i++) {
 			ItemStack item = this.gui.getItem(i);
 			if (!Grinder.is_empty(item)) {
+				int quantity = item.getAmount();
 				Entity_probability[] probabilities = manager.probability_map.get(Material_ext.get_full_name(item));
 				if (probabilities != null) {
 					for (Entity_probability probability : probabilities) {
 						EntityType type = probability.first;
 						int p = probability.second;
 						if (probability_map.containsKey(type)) {
-							probability_map.put(probability.first, probability_map.get(type) + p);
+							probability_map.put(probability.first, probability_map.get(type) + p * quantity);
 						} else {
-							probability_map.put(probability.first, p);
+							probability_map.put(probability.first, p * quantity);
 						}
 					}
 				}
@@ -117,8 +123,10 @@ public class Electric_spawner extends Multi_block_with_gui {
 			}
 			String msg = String.format("总召唤成功概率: %.1f%%", (float) total_probability / 10);
 			for (Entity_probability probability : new_probability_list) {
-				msg += String.format("%s: %.1f%%", probability.first.name(), (float) probability.second / 10);
+				msg += String.format("\n%s: %.1f%%", Entity_zh_cn.get_entity_name(probability.first),
+						(float) probability.second / 10);
 			}
+			player.closeInventory();
 			this.send_message(player, msg);
 		}
 	}
@@ -169,7 +177,12 @@ public class Electric_spawner extends Multi_block_with_gui {
 
 	@Override
 	public ItemStack[] get_drop_items() {
-		return null;
+		return new ItemStack[] { this.gui.getItem(11), this.gui.getItem(12), this.gui.getItem(13),
+				this.gui.getItem(14) };
+	}
+
+	public synchronized void set_process(int process) {
+		this.set_process(0, process, "§e生成进度: %d %%", process);
 	}
 
 	@Nonnull

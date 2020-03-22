@@ -85,6 +85,7 @@ import com.piggest.minecraft.bukkit.trees_felling_machine.Trees_felling_machine;
 import com.piggest.minecraft.bukkit.trees_felling_machine.Trees_felling_machine_manager;
 import com.piggest.minecraft.bukkit.utils.Tab_list;
 import com.piggest.minecraft.bukkit.utils.language.Enchantments_zh_cn;
+import com.piggest.minecraft.bukkit.utils.language.Entity_zh_cn;
 import com.piggest.minecraft.bukkit.utils.language.Item_zh_cn;
 import com.piggest.minecraft.bukkit.watersheep.Watersheep_command_executor;
 import com.piggest.minecraft.bukkit.watersheep.Watersheep_runner;
@@ -187,7 +188,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 		Enchantments_zh_cn.init();
 		Item_zh_cn.init();
-
+		Entity_zh_cn.init();
+		
 		this.nms_manager = new NMS_manager(Bukkit.getBukkitVersion());
 	}
 
