@@ -21,16 +21,19 @@ import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
+import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
+import com.piggest.minecraft.bukkit.structure.Structure_runner;
 import com.piggest.minecraft.bukkit.utils.language.Entity_zh_cn;
 
-public class Electric_spawner extends Multi_block_with_gui {
+public class Electric_spawner extends Multi_block_with_gui implements HasRunner {
 	public static final int info_indicator_slot = 9;
 	public static final int synthesis_button_slot = 17;
 	public static final int look_button_slot = 16;
 	private Random rand = new Random();
 	private EntityType entity_type = null;
 	private int money = 0;
+	private Electric_spawner_runner runner = new Electric_spawner_runner(this);
 
 	public Electric_spawner() {
 		this.set_process(0);
@@ -69,7 +72,16 @@ public class Electric_spawner extends Multi_block_with_gui {
 	public int get_money() {
 		return this.money;
 	}
-
+	
+	public EntityType get_spawn_entity() {
+		return this.entity_type;
+	}
+	
+	public void spawn() {
+		// TODO 自动生成的方法存根
+		
+	}
+	
 	@Override
 	protected void set_from_save(Map<String, Object> save) {
 		super.set_from_save(save);
@@ -199,7 +211,6 @@ public class Electric_spawner extends Multi_block_with_gui {
 
 	@Override
 	public boolean on_switch_pressed(Player player, int slot, boolean on) {
-		// TODO 自动生成的方法存根
 		return false;
 	}
 
@@ -265,11 +276,17 @@ public class Electric_spawner extends Multi_block_with_gui {
 		}
 		return false;
 	}
-
+	
+	@Override
+	public Structure_runner[] get_runner() {
+		return new Structure_runner[] { this.runner };
+	}
+	
 	@Nonnull
 	public static Electric_spawner deserialize(@Nonnull Map<String, Object> args) {
 		Electric_spawner structure = new Electric_spawner();
 		structure.set_from_save(args);
 		return structure;
 	}
+
 }
