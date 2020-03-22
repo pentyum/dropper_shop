@@ -20,6 +20,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.utils.language.Entity_zh_cn;
 
@@ -29,6 +30,7 @@ public class Electric_spawner extends Multi_block_with_gui {
 	public static final int look_button_slot = 16;
 	private Random rand = new Random();
 	private EntityType entity_type = null;
+	private int money = 0;
 
 	public Electric_spawner() {
 		this.set_process(0);
@@ -44,6 +46,30 @@ public class Electric_spawner extends Multi_block_with_gui {
 		indicator.setItemMeta(meta);
 	}
 
+	public void set_money(int money) {
+		this.money = money;
+		ItemStack indicator = this.gui.getItem(info_indicator_slot);
+		ItemMeta meta = indicator.getItemMeta();
+		List<String> lore = meta.getLore();
+		lore.set(1, "§r剩余金币: " + money);
+		meta.setLore(lore);
+		indicator.setItemMeta(meta);
+	}
+
+	public void update_local_difficulty() {
+		float local_difficulty = NMS_manager.local_difficulty.get_local_difficulty(this.get_location());
+		ItemStack indicator = this.gui.getItem(info_indicator_slot);
+		ItemMeta meta = indicator.getItemMeta();
+		List<String> lore = meta.getLore();
+		lore.set(2, String.format("§r区域难度: %.3f", local_difficulty));
+		meta.setLore(lore);
+		indicator.setItemMeta(meta);
+	}
+
+	public int get_money() {
+		return this.money;
+	}
+
 	@Override
 	protected void set_from_save(Map<String, Object> save) {
 		super.set_from_save(save);
@@ -51,6 +77,7 @@ public class Electric_spawner extends Multi_block_with_gui {
 		if (spawn_entity_name != null) {
 			this.set_spawn_entity(EntityType.valueOf(spawn_entity_name));
 		}
+		this.set_money((int) save.get("money"));
 	}
 
 	@Override
@@ -59,6 +86,7 @@ public class Electric_spawner extends Multi_block_with_gui {
 		if (this.entity_type != null) {
 			save.put("spawn-entity", this.entity_type.name());
 		}
+		save.put("money", this.money);
 		return save;
 	}
 
@@ -204,8 +232,7 @@ public class Electric_spawner extends Multi_block_with_gui {
 
 	@Override
 	protected void init_after_set_location() {
-		// TODO 自动生成的方法存根
-
+		this.update_local_difficulty();
 	}
 
 	@Override
@@ -221,6 +248,22 @@ public class Electric_spawner extends Multi_block_with_gui {
 
 	public synchronized void set_process(int process) {
 		this.set_process(0, process, "§e生成进度: %d %%", process);
+	}
+
+	public boolean is_active() {
+		if (this.get_block(-1, -1, 0).isBlockPowered()) {
+			return true;
+		}
+		if (this.get_block(1, -1, 0).isBlockPowered()) {
+			return true;
+		}
+		if (this.get_block(0, -1, -1).isBlockPowered()) {
+			return true;
+		}
+		if (this.get_block(0, -1, 1).isBlockPowered()) {
+			return true;
+		}
+		return false;
 	}
 
 	@Nonnull

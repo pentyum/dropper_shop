@@ -37,7 +37,7 @@ public class Electric_spawner_manager extends Gui_structure_manager<Electric_spa
 				new String[] { "§7需要消耗"
 						+ Dropper_shop_plugin.instance.get_price_config().get_look_electric_spawner_price() + "金币" },
 				Gui_slot_type.Button);
-		this.set_gui(Electric_spawner.info_indicator_slot, Material.SPAWNER, "§e刷怪信息", new String[] { "§r生成: 无" },
+		this.set_gui(Electric_spawner.info_indicator_slot, Material.SPAWNER, "§e刷怪信息", new String[] { "§r生成: 无","§r剩余金币: 0","§r区域难度: 0" },
 				Gui_slot_type.Indicator);
 		this.set_gui(Electric_spawner.synthesis_button_slot, Material.CRAFTING_TABLE, "§e召唤", Gui_slot_type.Button);
 
@@ -134,7 +134,7 @@ public class Electric_spawner_manager extends Gui_structure_manager<Electric_spa
 
 	@Override
 	public String get_gui_name() {
-		return "魔力刷怪笼";
+		return "魔力刷怪机";
 	}
 
 	@Override

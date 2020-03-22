@@ -17,6 +17,7 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.utils.Tab_list;
 import com.piggest.minecraft.bukkit.utils.language.Enchantments_zh_cn;
 
 enum Lottery_sub_cmd {
@@ -252,9 +253,6 @@ public class Lottery_pool_command_executor implements TabExecutor {
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-		ArrayList<String> tf_list = new ArrayList<String>();
-		tf_list.add("false");
-		tf_list.add("true");
 		if (args.length == 1) {
 			return Lottery_sub_cmd.get_list(sender);
 		} else if (args.length == 2) {
@@ -270,11 +268,11 @@ public class Lottery_pool_command_executor implements TabExecutor {
 			}
 		} else if (args.length == 4) {
 			if (args[0].equalsIgnoreCase("set")) {
-				return tf_list;
+				return Tab_list.true_false_list;
 			}
 		} else if (args.length == 3) {
 			if (args[0].equalsIgnoreCase("add")) {
-				return tf_list;
+				return Tab_list.true_false_list;
 			}
 		}
 		return new ArrayList<String>();

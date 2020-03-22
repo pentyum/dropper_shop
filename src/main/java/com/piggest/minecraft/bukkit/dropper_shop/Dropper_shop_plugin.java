@@ -45,6 +45,7 @@ import com.piggest.minecraft.bukkit.depository.Reader;
 import com.piggest.minecraft.bukkit.depository.Upgrade_component;
 import com.piggest.minecraft.bukkit.depository.Upgrade_component_listener;
 import com.piggest.minecraft.bukkit.electric_spawner.Electric_spawner;
+import com.piggest.minecraft.bukkit.electric_spawner.Electric_spawner_command_executor;
 import com.piggest.minecraft.bukkit.electric_spawner.Electric_spawner_manager;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver_command_executor;
@@ -118,7 +119,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private Teleport_machine_manager teleport_machine_manager = null;
 	private Compressor_manager compressor_manager = null;
 	private Electric_spawner_manager electric_spawner_manager = null;
-	
+
 	private HashMap<Class<? extends Structure>, Structure_manager<? extends Structure>> structure_manager_map = new HashMap<Class<? extends Structure>, Structure_manager<? extends Structure>>();
 
 	private HashMap<String, Integer> price_map = new HashMap<String, Integer>();
@@ -134,8 +135,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private final Lottery_pool_gui_listener lottery_pool_gui_listener = new Lottery_pool_gui_listener();
 	private final Custom_durability custom_durability_listener = new Custom_durability();
 	private final Tool_craft_listener tool_craft_listener = new Tool_craft_listener();
-	//private final Prepare_enchant_listener prepare_enchant_listener = new Prepare_enchant_listener();
-	
+	// private final Prepare_enchant_listener prepare_enchant_listener = new
+	// Prepare_enchant_listener();
+
 	private HashMap<String, Integer> sync_realtime_worlds = new HashMap<String, Integer>();
 
 	private Listener[] structure_listeners = { new Depository_listener(), new Dropper_shop_listener(),
@@ -189,7 +191,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		Enchantments_zh_cn.init();
 		Item_zh_cn.init();
 		Entity_zh_cn.init();
-		
+
 		this.nms_manager = new NMS_manager(Bukkit.getBukkitVersion());
 	}
 
@@ -248,8 +250,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.structure_manager_map.put(Teleport_machine.class, teleport_machine_manager);
 		this.structure_manager_map.put(Compressor.class, compressor_manager);
 		this.structure_manager_map.put(Electric_spawner.class, electric_spawner_manager);
-		
-		for(Structure_manager<? extends Structure> manager : this.structure_manager_map.values()) {
+
+		for (Structure_manager<? extends Structure> manager : this.structure_manager_map.values()) {
 			manager.load_config();
 			manager.backup_config();
 		}
@@ -266,7 +268,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		pm.registerEvents(this.lottery_pool_gui_listener, this);
 		pm.registerEvents(this.custom_durability_listener, this);
 		pm.registerEvents(this.tool_craft_listener, this);
-		//pm.registerEvents(this.prepare_enchant_listener, this);
+		// pm.registerEvents(this.prepare_enchant_listener, this);
 		for (Listener listener : this.structure_listeners) {
 			pm.registerEvents(listener, this);
 		}
@@ -284,6 +286,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.getCommand("teleport_machine").setExecutor(new Teleport_machine_command_executer());
 		this.getCommand("watersheep").setExecutor(new Watersheep_command_executor());
 		this.getCommand("biome_modify").setExecutor(this.biome_modify);
+		this.getCommand("electric_spawner").setExecutor(new Electric_spawner_command_executor());
 	}
 
 	@Override
@@ -517,7 +520,11 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public Biome_modify get_biome_modify() {
 		return this.biome_modify;
 	}
-
+	
+	public Electric_spawner_manager get_electric_spawner_manager() {
+		return this.electric_spawner_manager;
+	}
+	
 	public void add_recipe(Recipe recipe) {
 		this.getServer().addRecipe(recipe);
 		if (recipe instanceof ShapedRecipe) {
@@ -526,4 +533,5 @@ public class Dropper_shop_plugin extends JavaPlugin {
 			this.fr.add((FurnaceRecipe) recipe);
 		}
 	}
+
 }

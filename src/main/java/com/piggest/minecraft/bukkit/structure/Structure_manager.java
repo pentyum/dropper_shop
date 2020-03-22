@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -145,7 +147,8 @@ public abstract class Structure_manager<T extends Structure> {
 			config.save();
 		}
 	}
-
+	
+	@Nullable
 	public T find_existed(Location loc) {
 		int x;
 		int y;
@@ -172,7 +175,8 @@ public abstract class Structure_manager<T extends Structure> {
 		}
 		return null;
 	}
-
+	
+	@Nullable
 	public T find_and_make(Player player, Location loc) {
 		int x;
 		int y;

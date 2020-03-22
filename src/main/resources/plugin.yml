@@ -59,6 +59,11 @@ commands:
     usage: /<command> show_biome_temp|set_biome_temp
     permission: biome_modify.use
     permission-message: You don't have permission
+  electric_spawner:
+    description: commands relate to electric spawner.
+    usage: /<command> charge
+    permission: electric_spawner.use
+    permission-message: You don't have permission
 permissions:
   dropper_shop.*:
     description: Gives access to all dropper shop commands.
@@ -212,6 +217,12 @@ permissions:
     default: true
   compressor.use:
     description: Use compressor.
+    default: true
+  electric_spawner.make:
+    description: Make electric spawner.
+    default: true
+  electric_spawner.use:
+    description: Use electric spawner.
     default: true
 depend: [Vault]
 softdepend: [ProtocolLib]
