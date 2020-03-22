@@ -40,6 +40,8 @@ public class Electric_spawner extends Multi_block_with_gui {
 		ItemMeta meta = indicator.getItemMeta();
 		List<String> lore = meta.getLore();
 		lore.set(0, "§r生成: " + Entity_zh_cn.get_entity_name(type));
+		meta.setLore(lore);
+		indicator.setItemMeta(meta);
 	}
 
 	@Override
@@ -137,7 +139,9 @@ public class Electric_spawner extends Multi_block_with_gui {
 			}
 			int num = rand.nextInt(1000);
 			if (num < i) {
-				this.set_spawn_entity(new_probability_list.get(pool[num]).first);
+				EntityType type = new_probability_list.get(pool[num]).first;
+				this.set_spawn_entity(type);
+				this.send_message(player, "成功召唤" + Entity_zh_cn.get_entity_name(type));
 			} else {
 				this.send_message(player, "召唤失败");
 			}
