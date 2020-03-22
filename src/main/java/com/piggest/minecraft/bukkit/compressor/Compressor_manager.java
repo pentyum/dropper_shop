@@ -34,7 +34,7 @@ public class Compressor_manager extends Gui_structure_manager<Compressor> {
 
 	public Compressor_manager() {
 		super(Compressor.class);
-		this.set_gui(10, Material.BLUE_STAINED_GLASS_PANE, "§r左边放原料，", new String[] { "§7在第3层中间放置漏斗可以自动添加" },
+		this.set_gui(10, Material.BLUE_STAINED_GLASS_PANE, "§r左边放原料", new String[] { "§7在第3层中间放置漏斗可以自动添加" },
 				Gui_slot_type.Indicator);
 		this.set_gui(12, Material.BLUE_STAINED_GLASS_PANE, "§r左边放活塞", new String[] { "§7在第1层中间放置漏斗可以自动添加" },
 				Gui_slot_type.Indicator);
