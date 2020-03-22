@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -14,6 +15,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
@@ -30,6 +32,32 @@ public class Electric_spawner extends Multi_block_with_gui {
 
 	public Electric_spawner() {
 		this.set_process(0);
+	}
+
+	public void set_spawn_entity(EntityType type) {
+		this.entity_type = type;
+		ItemStack indicator = this.gui.getItem(info_indicator_slot);
+		ItemMeta meta = indicator.getItemMeta();
+		List<String> lore = meta.getLore();
+		lore.set(0, "§r生成: " + Entity_zh_cn.get_entity_name(type));
+	}
+
+	@Override
+	protected void set_from_save(Map<String, Object> save) {
+		super.set_from_save(save);
+		String spawn_entity_name = (String) save.get("spawn-entity");
+		if (spawn_entity_name != null) {
+			this.set_spawn_entity(EntityType.valueOf(spawn_entity_name));
+		}
+	}
+
+	@Override
+	public Map<String, Object> serialize() {
+		Map<String, Object> save = super.serialize();
+		if (this.entity_type != null) {
+			save.put("spawn-entity", this.entity_type.name());
+		}
+		return save;
 	}
 
 	@Override
@@ -109,7 +137,7 @@ public class Electric_spawner extends Multi_block_with_gui {
 			}
 			int num = rand.nextInt(1000);
 			if (num < i) {
-				this.entity_type = new_probability_list.get(pool[num]).first;
+				this.set_spawn_entity(new_probability_list.get(pool[num]).first);
 			} else {
 				this.send_message(player, "召唤失败");
 			}
