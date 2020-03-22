@@ -145,6 +145,12 @@ public class Electric_spawner extends Multi_block_with_gui {
 			} else {
 				this.send_message(player, "召唤失败");
 			}
+			for (i = 11; i < 15; i++) {
+				ItemStack item = this.gui.getItem(i);
+				if (!Grinder.is_empty(item)) {
+					this.gui.setItem(i, null);
+				}
+			}
 		} else if (slot == look_button_slot) {
 			int price = Dropper_shop_plugin.instance.get_price_config().get_look_electric_spawner_price();
 			if (Dropper_shop_plugin.instance.cost_player_money(price, player)) {

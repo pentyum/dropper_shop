@@ -60,6 +60,7 @@ public class Entity_zh_cn {
 		add(EntityType.DONKEY, "驴");
 		add(EntityType.MULE, "骡");
 		add(EntityType.VILLAGER, "村民");
+		add(EntityType.WANDERING_TRADER, "流浪商人");
 		
 		add(EntityType.DOLPHIN, "海豚");
 		add(EntityType.SQUID, "鱿鱼");
@@ -76,7 +77,7 @@ public class Entity_zh_cn {
 		add(EntityType.MINECART_COMMAND, "命令方块矿车");
 		add(EntityType.MINECART_MOB_SPAWNER, "刷怪箱矿车");
 		add(EntityType.BOAT, "船");
-		
+		add(EntityType.ARMOR_STAND, "盔甲架");
 	}
 
 	private static void add(EntityType type, String trans_name) {

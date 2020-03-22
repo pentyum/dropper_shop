@@ -93,8 +93,8 @@ public class Item_zh_cn {
 		add("minecraft:bookshelf", "书架");
 		add("minecraft:shulker_shell", "潜影壳");
 		add("minecraft:panda_spawn_egg", "熊猫刷怪蛋");
-		add("minecraft:turtle_helmet", "海龟壳");
-		add("minecraft:sticky_piston", "粘性活塞");
+		add(Material.TURTLE_HELMET, "海龟壳");
+		add(Material.STICKY_PISTON, "粘性活塞");
 		add(Material.DISPENSER, "发射器");
 		add(Material.SPIDER_EYE, "蜘蛛眼");
 		add(Material.PHANTOM_MEMBRANE, "幻翼膜");
