@@ -106,6 +106,9 @@ public abstract class Structure_manager<T extends Structure> {
 		int i = 0;
 		for (Structure_config config : this.config_map.values()) {
 			List<Structure> list = config.getList();
+			if (list == null) {
+				continue;
+			}
 			for (Structure shop : list) {
 				if (shop instanceof Multi_block_structure) {
 					Multi_block_structure multi_block_struct = (Multi_block_structure) shop;
