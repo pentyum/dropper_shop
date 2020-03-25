@@ -106,6 +106,7 @@ public class Grinder_manager extends Gui_structure_manager<Grinder> {
 		this.add_recipe(Material.DARK_PRISMARINE_SLAB, Material.PRISMARINE_SHARD, 4, 400); // 暗海晶石砖半砖
 
 		this.add_recipe(Material.BONE, Material.BONE_MEAL, 4, 200); // 骨头
+		this.add_recipe(Material.BONE_BLOCK, Material.BONE_MEAL, 9, 200); // 骨块
 		this.add_recipe(Material.BLAZE_ROD, Material.BLAZE_POWDER, 3, 200); // 烈焰粉
 		this.add_recipe(Material.MELON, Material.MELON_SEEDS, 9, 400); // 西瓜
 		this.add_recipe(Material.PUMPKIN, Material.PUMPKIN_SEEDS, 4, 200); // 南瓜
