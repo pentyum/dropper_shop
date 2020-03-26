@@ -64,7 +64,7 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 		ItemStack indicator = this.gui.getItem(info_indicator_slot);
 		ItemMeta meta = indicator.getItemMeta();
 		List<String> lore = meta.getLore();
-		lore.set(2, String.format("§r区域难度: %.3f", local_difficulty));
+		lore.set(2, String.format("§r区域难度: %.4f", local_difficulty));
 		meta.setLore(lore);
 		indicator.setItemMeta(meta);
 	}

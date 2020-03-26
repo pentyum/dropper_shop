@@ -17,6 +17,9 @@ public class Electric_spawner_runner extends Structure_runner {
 
 	@Override
 	public void run() {
+		if (spawner.is_loaded() == false) {
+			return;
+		}
 		spawner.update_local_difficulty();
 		if (spawner.is_active()) {
 			EntityType spawn_entity_type = spawner.get_spawn_entity();
