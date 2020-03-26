@@ -25,7 +25,7 @@ public class Compressor_runner extends Structure_runner {
 			if (compressor.get_piston_storage() <= 1000) {
 				ItemStack piston_slot = compressor.get_piston();
 				Material material = piston_slot.getType();
-				int unit = Dropper_shop_plugin.instance.get_unit(material);
+				int unit = Dropper_shop_plugin.instance.get_piston_unit(material);
 				if (unit != 0) {
 					compressor.set_piston_storage(compressor.get_piston_storage() + unit);
 					piston_slot.setAmount(piston_slot.getAmount() - 1);

@@ -123,7 +123,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private HashMap<Class<? extends Structure>, Structure_manager<? extends Structure>> structure_manager_map = new HashMap<Class<? extends Structure>, Structure_manager<? extends Structure>>();
 
 	private HashMap<String, Integer> price_map = new HashMap<String, Integer>();
-	private HashMap<String, Integer> unit_map = new HashMap<String, Integer>();
+	private HashMap<String, Integer> flint_unit_map = new HashMap<String, Integer>();
+	private HashMap<String, Integer> piston_unit_map = new HashMap<String, Integer>();
 	private HashMap<String, HashMap<Gas, Integer>> air_map = new HashMap<String, HashMap<Gas, Integer>>();
 	private ArrayList<ShapedRecipe> sr = new ArrayList<ShapedRecipe>();
 	private ArrayList<FurnaceRecipe> fr = new ArrayList<FurnaceRecipe>();
@@ -178,10 +179,15 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		for (String material_name : price_keys) {
 			this.price_map.put(material_name, price_section.getInt(material_name));
 		}
-		ConfigurationSection unit_section = this.config.getConfigurationSection("flint-unit");
-		Set<String> unit_keys = unit_section.getKeys(false);
-		for (String material_name : unit_keys) {
-			this.unit_map.put(material_name, unit_section.getInt(material_name));
+		ConfigurationSection flint_unit_section = this.config.getConfigurationSection("flint-unit");
+		Set<String> flint_unit_keys = flint_unit_section.getKeys(false);
+		for (String material_name : flint_unit_keys) {
+			this.flint_unit_map.put(material_name, flint_unit_section.getInt(material_name));
+		}
+		ConfigurationSection piston_unit_section = this.config.getConfigurationSection("piston-unit");
+		Set<String> piston_unit_keys = piston_unit_section.getKeys(false);
+		for (String material_name : piston_unit_keys) {
+			this.piston_unit_map.put(material_name, piston_unit_section.getInt(material_name));
 		}
 		this.lottery_config = new Lottery_config();
 		this.lottery_config.load();
@@ -435,8 +441,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		}
 	}
 
-	public int get_unit(Material material) {
-		Integer unit = this.unit_map.get(material.name());
+	public int get_flint_unit(Material material) {
+		Integer unit = this.flint_unit_map.get(material.name());
 		if (unit == null) {
 			return 0;
 		} else {
@@ -531,6 +537,15 @@ public class Dropper_shop_plugin extends JavaPlugin {
 			this.sr.add((ShapedRecipe) recipe);
 		} else if (recipe instanceof FurnaceRecipe) {
 			this.fr.add((FurnaceRecipe) recipe);
+		}
+	}
+
+	public int get_piston_unit(Material material) {
+		Integer unit = this.piston_unit_map.get(material.name());
+		if (unit == null) {
+			return 0;
+		} else {
+			return unit;
 		}
 	}
 

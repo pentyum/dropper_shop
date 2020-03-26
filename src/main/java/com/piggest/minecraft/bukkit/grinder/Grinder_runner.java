@@ -19,7 +19,7 @@ public class Grinder_runner extends Structure_runner {
 		if (!Grinder.is_empty(grinder.get_flint())) {
 			if (grinder.get_flint_storage() <= 1000) {
 				Material material = grinder.get_flint().getType();
-				int unit = Dropper_shop_plugin.instance.get_unit(material);
+				int unit = Dropper_shop_plugin.instance.get_flint_unit(material);
 				if (unit != 0) {
 					grinder.set_flint_storage(grinder.get_flint_storage() + unit);
 					grinder.get_flint().setAmount(grinder.get_flint().getAmount() - 1);

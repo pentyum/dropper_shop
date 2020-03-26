@@ -35,7 +35,7 @@ public class Grinder_io_runner extends Structure_runner {
 							break;
 						}
 					}
-					if (Dropper_shop_plugin.instance.get_unit(item.getType()) != 0) {
+					if (Dropper_shop_plugin.instance.get_flint_unit(item.getType()) != 0) {
 						if (grinder.add_a_flint(item) == true) {
 							break;
 						}
