@@ -59,7 +59,7 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 		indicator.setItemMeta(meta);
 	}
 
-	public void update_local_difficulty() {
+	public float update_local_difficulty() {
 		float local_difficulty = this.get_local_difficulty();
 		ItemStack indicator = this.gui.getItem(info_indicator_slot);
 		ItemMeta meta = indicator.getItemMeta();
@@ -67,6 +67,7 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 		lore.set(2, String.format("§r区域难度: %.4f", local_difficulty));
 		meta.setLore(lore);
 		indicator.setItemMeta(meta);
+		return local_difficulty;
 	}
 
 	public float get_local_difficulty() {

@@ -20,13 +20,15 @@ public class Electric_spawner_runner extends Structure_runner {
 		if (spawner.is_loaded() == false) {
 			return;
 		}
-		spawner.update_local_difficulty();
+		float local_difficulty = spawner.update_local_difficulty();
+		if (Math.abs(local_difficulty) < 1e-3) {
+			return;
+		}
 		if (spawner.is_active()) {
 			EntityType spawn_entity_type = spawner.get_spawn_entity();
 			if (spawn_entity_type != null) {
 				Entity_spawn_config spawn_config = manager.spawn_config_map.get(spawn_entity_type);
 				int spawn_period = spawn_config.get_spawn_ticks() / this.get_cycle();
-				float local_difficulty = spawner.get_local_difficulty();
 				spawn_period = (int) ((float) spawn_period / (local_difficulty / 2.5));
 				if (this.completed_period >= spawn_period) {// 生成完成
 					this.completed_period = 0;
