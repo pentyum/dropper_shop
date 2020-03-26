@@ -60,7 +60,7 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 	}
 
 	public void update_local_difficulty() {
-		float local_difficulty = NMS_manager.local_difficulty.get_local_difficulty(this.get_location());
+		float local_difficulty = this.get_local_difficulty();
 		ItemStack indicator = this.gui.getItem(info_indicator_slot);
 		ItemMeta meta = indicator.getItemMeta();
 		List<String> lore = meta.getLore();
@@ -69,19 +69,23 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 		indicator.setItemMeta(meta);
 	}
 
+	public float get_local_difficulty() {
+		return NMS_manager.local_difficulty.get_local_difficulty(this.get_location());
+	}
+
 	public int get_money() {
 		return this.money;
 	}
-	
+
 	public EntityType get_spawn_entity() {
 		return this.entity_type;
 	}
-	
+
 	public void spawn() {
 		// TODO 自动生成的方法存根
-		
+
 	}
-	
+
 	@Override
 	protected void set_from_save(Map<String, Object> save) {
 		super.set_from_save(save);
@@ -276,12 +280,12 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 		}
 		return false;
 	}
-	
+
 	@Override
 	public Structure_runner[] get_runner() {
 		return new Structure_runner[] { this.runner };
 	}
-	
+
 	@Nonnull
 	public static Electric_spawner deserialize(@Nonnull Map<String, Object> args) {
 		Electric_spawner structure = new Electric_spawner();
