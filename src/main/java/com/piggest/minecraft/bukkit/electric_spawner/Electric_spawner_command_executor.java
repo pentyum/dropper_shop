@@ -170,7 +170,7 @@ public class Electric_spawner_command_executor implements TabExecutor {
 					EntityType new_entity_type;
 					try {
 						String entity_name = args[1].split(":")[1];
-						new_entity_type = EntityType.valueOf(entity_name);
+						new_entity_type = EntityType.valueOf(entity_name.toUpperCase());
 					} catch (Exception e) {
 						electric_spawner.send_message(player, "实体名称错误");
 						return true;
