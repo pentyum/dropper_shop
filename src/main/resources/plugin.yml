@@ -224,5 +224,8 @@ permissions:
   electric_spawner.use:
     description: Use electric spawner.
     default: true
+  electric_spawner.set:
+    description: Set electric spawner.
+    default: op
 depend: [Vault]
 softdepend: [ProtocolLib]
