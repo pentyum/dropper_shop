@@ -2,6 +2,7 @@ package com.piggest.minecraft.bukkit.electric_spawner;
 
 import java.util.HashMap;
 
+import org.bukkit.Difficulty;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.inventory.InventoryType;
@@ -26,6 +27,17 @@ public class Electric_spawner_manager extends Gui_structure_manager<Electric_spa
 	public final HashMap<String, Entity_probability[]> probability_map = new HashMap<>();
 	public final HashMap<EntityType, Entity_spawn_config> spawn_config_map = new HashMap<>();
 	
+	public static final HashMap<Difficulty, Integer> difficulty_values = new HashMap<>() {
+		private static final long serialVersionUID = -99433125231642375L;
+
+		{
+			put(Difficulty.PEACEFUL, 0);
+			put(Difficulty.EASY, 1);
+			put(Difficulty.NORMAL, 2);
+			put(Difficulty.HARD, 3);
+		}
+	};
+
 	public Electric_spawner_manager() {
 		super(Electric_spawner.class);
 		this.set_gui(10, Material.BLUE_STAINED_GLASS_PANE, "§e右边放合成召唤物", Gui_slot_type.Indicator);
@@ -38,8 +50,8 @@ public class Electric_spawner_manager extends Gui_structure_manager<Electric_spa
 				new String[] { "§7需要消耗"
 						+ Dropper_shop_plugin.instance.get_price_config().get_look_electric_spawner_price() + "金币" },
 				Gui_slot_type.Button);
-		this.set_gui(Electric_spawner.info_indicator_slot, Material.SPAWNER, "§e刷怪信息", new String[] { "§r生成: 无","§r剩余金币: 0","§r区域难度: 0" },
-				Gui_slot_type.Indicator);
+		this.set_gui(Electric_spawner.info_indicator_slot, Material.SPAWNER, "§e刷怪信息",
+				new String[] { "§r生成: 无", "§r剩余金币: 0", "§r区域难度: 0" }, Gui_slot_type.Indicator);
 		this.set_gui(Electric_spawner.synthesis_button_slot, Material.CRAFTING_TABLE, "§e召唤", Gui_slot_type.Button);
 
 		this.init_recipe();
@@ -133,11 +145,11 @@ public class Electric_spawner_manager extends Gui_structure_manager<Electric_spa
 		probability_list = new Entity_probability[] { new Entity_probability(EntityType.POLAR_BEAR, 1) };
 		this.probability_map.put(Material.SALMON.getKey().toString(), probability_list);
 	}
-	
+
 	private void init_spawn_config() {
 		this.spawn_config_map.put(EntityType.SLIME, new Entity_spawn_config(500, 100));
 	}
-	
+
 	@Override
 	public String get_gui_name() {
 		return "魔力刷怪机";

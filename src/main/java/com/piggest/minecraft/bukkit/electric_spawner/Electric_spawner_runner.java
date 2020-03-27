@@ -1,6 +1,7 @@
 package com.piggest.minecraft.bukkit.electric_spawner;
 
 import org.bukkit.Chunk;
+import org.bukkit.Difficulty;
 import org.bukkit.entity.EntityType;
 
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
@@ -20,8 +21,13 @@ public class Electric_spawner_runner extends Structure_runner {
 		if (spawner.is_loaded() == false) {
 			return;
 		}
+		Difficulty world_difficulty = spawner.get_location().getWorld().getDifficulty();
+		int default_difficulty = Electric_spawner_manager.difficulty_values.get(world_difficulty);
 		float local_difficulty = spawner.update_local_difficulty();
 		if (Math.abs(local_difficulty) < 1e-3) {
+			return;
+		}
+		if (local_difficulty < default_difficulty) {
 			return;
 		}
 		if (spawner.is_active()) {
@@ -29,7 +35,7 @@ public class Electric_spawner_runner extends Structure_runner {
 			if (spawn_entity_type != null) {
 				Entity_spawn_config spawn_config = manager.spawn_config_map.get(spawn_entity_type);
 				int spawn_period = spawn_config.get_spawn_ticks() / this.get_cycle();
-				spawn_period = (int) ((float) spawn_period / (local_difficulty / 2.5));
+				spawn_period = (int) (spawn_period * default_difficulty / local_difficulty);
 				if (this.completed_period >= spawn_period) {// 生成完成
 					this.completed_period = 0;
 					spawner.set_process(0);
