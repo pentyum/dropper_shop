@@ -11,6 +11,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.utils.language.Entity_zh_cn;
 
 public class Electric_spawner_command_executor implements TabExecutor {
 	public static final int max_money = 100000000;
@@ -176,6 +177,7 @@ public class Electric_spawner_command_executor implements TabExecutor {
 						return true;
 					}
 					electric_spawner.set_spawn_entity(new_entity_type);
+					electric_spawner.send_message(player, "成功设置刷怪机为" + Entity_zh_cn.get_entity_name(new_entity_type));
 				}
 			} else {
 				player.sendMessage("/electric_spawner charge <数量> 给刷怪机充钱");
