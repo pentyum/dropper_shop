@@ -57,7 +57,7 @@ public class Electric_spawner_runner extends Structure_runner {
 			}
 		}
 
-		if (this.money_cost_period >= 4) {
+		if (this.money_cost_period >= 2) {
 			this.money_cost_period = 0;
 			spawner.set_money(spawner.get_money() - 1);
 		} else {

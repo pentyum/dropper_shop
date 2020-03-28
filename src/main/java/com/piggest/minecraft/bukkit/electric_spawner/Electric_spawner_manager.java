@@ -147,7 +147,7 @@ public class Electric_spawner_manager extends Gui_structure_manager<Electric_spa
 	}
 
 	private void init_spawn_config() {
-		this.spawn_config_map.put(EntityType.SLIME, new Entity_spawn_config(500, 100));
+		this.spawn_config_map.put(EntityType.SLIME, new Entity_spawn_config(500, 1000));
 	}
 
 	@Override
