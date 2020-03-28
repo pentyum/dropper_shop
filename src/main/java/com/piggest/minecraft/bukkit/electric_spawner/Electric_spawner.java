@@ -163,7 +163,8 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 		return probability_map;
 	}
 
-	private ArrayList<Entity_probability> get_probability_list(Map<EntityType, Integer> probability_map) {
+	private ArrayList<Entity_probability> get_probability_list(Map<EntityType, Integer> probability_map,
+			double total_modifier) {
 		ArrayList<Entry<EntityType, Integer>> probability_list = new ArrayList<Entry<EntityType, Integer>>(
 				probability_map.entrySet());
 		probability_list.sort(new Comparator<Entry<EntityType, Integer>>() {
@@ -174,21 +175,40 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 		ArrayList<Entity_probability> new_probability_list = new ArrayList<Entity_probability>();
 		int total_probability = 0;
 		for (Entry<EntityType, Integer> entry : probability_list) {
-			total_probability += entry.getValue();
+			int item_probability = (int) (entry.getValue() * total_modifier);
+			total_probability += item_probability;
+			if (item_probability == 0) {
+				break;
+			}
 			if (total_probability > 1000) {
 				new_probability_list
-						.add(new Entity_probability(entry.getKey(), entry.getValue() + 1000 - total_probability));
+						.add(new Entity_probability(entry.getKey(), item_probability + 1000 - total_probability));
 			} else {
-				new_probability_list.add(new Entity_probability(entry.getKey(), entry.getValue()));
+				new_probability_list.add(new Entity_probability(entry.getKey(), item_probability));
 			}
 		}
 		return new_probability_list;
 	}
 
+	private double get_total_probability_modifier() {
+		double total_modifier = 0.2;
+		for (int i = 11; i < 15; i++) {
+			ItemStack item = this.gui.getItem(i);
+			if (!Grinder.is_empty(item)) {
+				if (item.getType() == Material.LAPIS_BLOCK) {
+					int quantity = item.getAmount();
+					total_modifier += quantity * 0.03;
+				}
+			}
+		}
+		return total_modifier;
+	}
+
 	@Override
 	public void on_button_pressed(Player player, int slot) {
 		HashMap<EntityType, Integer> probability_map = this.get_probability_map();
-		ArrayList<Entity_probability> new_probability_list = this.get_probability_list(probability_map);
+		ArrayList<Entity_probability> new_probability_list = this.get_probability_list(probability_map,
+				this.get_total_probability_modifier());
 		if (slot == synthesis_button_slot) {
 			int i = 0, j = 0, k = 0;
 			int[] pool = new int[1000];
@@ -225,8 +245,9 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 			for (Entity_probability probability : new_probability_list) {
 				msg += String.format("\n%s: %.1f%%", Entity_zh_cn.get_entity_name(probability.first),
 						(float) probability.second / 10);
+				total_probability += probability.second;
 			}
-			msg += String.format("总召唤成功概率: %.1f%%", (float) total_probability / 10);
+			msg += String.format("\n总召唤成功概率: %.1f%%", (float) total_probability / 10);
 			player.closeInventory();
 			this.send_message(player, msg);
 		}
