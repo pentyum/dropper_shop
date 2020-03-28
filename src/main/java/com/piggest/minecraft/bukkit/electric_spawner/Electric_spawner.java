@@ -183,6 +183,7 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 			if (total_probability >= 1000) {
 				new_probability_list
 						.add(new Entity_probability(entry.getKey(), item_probability + 1000 - total_probability));
+				break;
 			} else {
 				new_probability_list.add(new Entity_probability(entry.getKey(), item_probability));
 			}
