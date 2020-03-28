@@ -180,7 +180,7 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 			if (item_probability == 0) {
 				break;
 			}
-			if (total_probability > 1000) {
+			if (total_probability >= 1000) {
 				new_probability_list
 						.add(new Entity_probability(entry.getKey(), item_probability + 1000 - total_probability));
 			} else {
@@ -191,13 +191,13 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 	}
 
 	private double get_total_probability_modifier() {
-		double total_modifier = 0.2;
+		double total_modifier = 0.15;
 		for (int i = 11; i < 15; i++) {
 			ItemStack item = this.gui.getItem(i);
 			if (!Grinder.is_empty(item)) {
 				if (item.getType() == Material.LAPIS_BLOCK) {
 					int quantity = item.getAmount();
-					total_modifier += quantity * 0.03;
+					total_modifier += quantity * 0.02;
 				}
 			}
 		}
