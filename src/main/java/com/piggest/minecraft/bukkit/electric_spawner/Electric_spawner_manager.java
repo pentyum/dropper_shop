@@ -26,7 +26,7 @@ public class Electric_spawner_manager extends Gui_structure_manager<Electric_spa
 	private int[] center = new int[] { 1, 1, 1 };
 	public final HashMap<String, Entity_probability[]> probability_map = new HashMap<>();
 	public final HashMap<EntityType, Entity_spawn_config> spawn_config_map = new HashMap<>();
-	
+
 	public static final HashMap<Difficulty, Integer> difficulty_values = new HashMap<>() {
 		private static final long serialVersionUID = -99433125231642375L;
 
@@ -152,7 +152,7 @@ public class Electric_spawner_manager extends Gui_structure_manager<Electric_spa
 
 	@Override
 	public String get_gui_name() {
-		return "魔力刷怪机";
+		return "刷怪机";
 	}
 
 	@Override

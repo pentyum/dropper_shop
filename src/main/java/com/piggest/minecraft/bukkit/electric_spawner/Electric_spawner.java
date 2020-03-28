@@ -133,10 +133,10 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 		return true;
 	}
 
-	@Override
-	public void on_button_pressed(Player player, int slot) {
+	private HashMap<EntityType, Integer> get_probability_map() {
 		Electric_spawner_manager manager = (Electric_spawner_manager) this.get_manager();
 		HashMap<EntityType, Integer> probability_map = new HashMap<>();
+		Random rand = new Random(this.get_chunk_location().get_slime_seed());
 		for (int i = 11; i < 15; i++) {
 			ItemStack item = this.gui.getItem(i);
 			if (!Grinder.is_empty(item)) {
@@ -145,16 +145,25 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 				if (probabilities != null) {
 					for (Entity_probability probability : probabilities) {
 						EntityType type = probability.first;
-						int p = probability.second;
+						double p = probability.second;
+						double offset = rand.nextGaussian();
+						p = p + p / 2 * offset;
+						if (p < 0) {
+							p = 0;
+						}
 						if (probability_map.containsKey(type)) {
-							probability_map.put(probability.first, probability_map.get(type) + p * quantity);
+							probability_map.put(probability.first, probability_map.get(type) + (int) (p * quantity));
 						} else {
-							probability_map.put(probability.first, p * quantity);
+							probability_map.put(probability.first, (int) (p * quantity));
 						}
 					}
 				}
 			}
 		}
+		return probability_map;
+	}
+
+	private ArrayList<Entity_probability> get_probability_list(Map<EntityType, Integer> probability_map) {
 		ArrayList<Entry<EntityType, Integer>> probability_list = new ArrayList<Entry<EntityType, Integer>>(
 				probability_map.entrySet());
 		probability_list.sort(new Comparator<Entry<EntityType, Integer>>() {
@@ -173,6 +182,13 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 				new_probability_list.add(new Entity_probability(entry.getKey(), entry.getValue()));
 			}
 		}
+		return new_probability_list;
+	}
+
+	@Override
+	public void on_button_pressed(Player player, int slot) {
+		HashMap<EntityType, Integer> probability_map = this.get_probability_map();
+		ArrayList<Entity_probability> new_probability_list = this.get_probability_list(probability_map);
 		if (slot == synthesis_button_slot) {
 			int i = 0, j = 0, k = 0;
 			int[] pool = new int[1000];
@@ -204,11 +220,13 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 				this.send_message(player, "查看召唤概率所需的钱不够，需要" + price);
 				return;
 			}
-			String msg = String.format("总召唤成功概率: %.1f%%", (float) total_probability / 10);
+			int total_probability = 0;
+			String msg = "--------以下为可能召唤出的实体的概率--------";
 			for (Entity_probability probability : new_probability_list) {
 				msg += String.format("\n%s: %.1f%%", Entity_zh_cn.get_entity_name(probability.first),
 						(float) probability.second / 10);
 			}
+			msg += String.format("总召唤成功概率: %.1f%%", (float) total_probability / 10);
 			player.closeInventory();
 			this.send_message(player, msg);
 		}

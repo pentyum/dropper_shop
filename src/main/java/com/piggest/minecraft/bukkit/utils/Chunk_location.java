@@ -72,4 +72,11 @@ public class Chunk_location {
 	public String toString() {
 		return "(" + this.world_name + "," + this.x + "," + this.z + ")";
 	}
+
+	public long get_slime_seed() {
+		long seed = this.get_world().getSeed();
+		seed = seed + (long) (x * x * 0x4c1906) + (long) (x * 0x5ac0db) + (long) (z * z) * 0x4307a7L
+				+ (long) (z * 0x5f24f) ^ 0x3ad8025f;
+		return seed;
+	}
 }

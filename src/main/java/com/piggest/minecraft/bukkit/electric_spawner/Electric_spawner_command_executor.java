@@ -126,7 +126,7 @@ public class Electric_spawner_command_executor implements TabExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
-			sender.sendMessage("[魔力刷怪机]必须由玩家执行该命令");
+			sender.sendMessage("[刷怪机]必须由玩家执行该命令");
 			return true;
 		}
 		Player player = (Player) sender;
@@ -134,13 +134,13 @@ public class Electric_spawner_command_executor implements TabExecutor {
 			if (args.length > 0) {
 				Block look_block = player.getTargetBlockExact(4);
 				if (look_block == null) {
-					player.sendMessage("[魔力刷怪机]请指向方块");
+					player.sendMessage("[刷怪机]请指向方块");
 					return true;
 				}
 				Electric_spawner electric_spawner = Dropper_shop_plugin.instance.get_electric_spawner_manager()
 						.find_existed(look_block.getLocation());
 				if (electric_spawner == null) {
-					player.sendMessage("[魔力刷怪机]没有检测到完整的刷怪机结构");
+					player.sendMessage("[刷怪机]没有检测到完整的刷怪机结构");
 					return true;
 				}
 				if (args[0].equalsIgnoreCase("charge")) {
