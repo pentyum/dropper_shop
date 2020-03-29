@@ -1,17 +1,23 @@
 package com.piggest.minecraft.bukkit.electric_spawner;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Predicate;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -34,6 +40,7 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 	private EntityType entity_type = null;
 	private int money = 0;
 	private Electric_spawner_runner runner = new Electric_spawner_runner(this);
+	private boolean minecart_upgrade = false;
 
 	public Electric_spawner() {
 		this.set_process(0);
@@ -83,8 +90,41 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 	}
 
 	public void spawn() {
-		// TODO 自动生成的方法存根
-
+		Location loc = this.get_location();
+		World world = loc.getWorld();
+		if (this.minecart_upgrade == true) {
+			Collection<Entity> nearby_minecart_list = world.getNearbyEntities(loc, 3, 2, 3, new Predicate<Entity>() {
+				@Override
+				public boolean test(Entity e) {
+					if (e.getType() != EntityType.MINECART && e.getType() != EntityType.BOAT) {
+						return false;
+					}
+					List<Entity> passengers = e.getPassengers();
+					if (passengers != null) {
+						if (passengers.size() > 0) {
+							return false;
+						}
+					}
+					return true;
+				}
+			});
+		}
+		ArrayList<Location> nearby_air_list = new ArrayList<Location>();
+		for (int x = -3; x <= 3; x++) {
+			for (int y = -2; y <= 2; y++) {
+				for (int z = -3; z <= 3; z++) {
+					Block block = world.getBlockAt(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+					if (block.getType() == Material.AIR || block.getType() == Material.CAVE_AIR) {
+						nearby_air_list.add(block.getLocation());
+					}
+				}
+			}
+		}
+		int size = nearby_air_list.size();
+		if (size > 0) {
+			int spawn_loc_index = this.rand.nextInt(size);
+			world.spawnEntity(nearby_air_list.get(spawn_loc_index), this.entity_type);
+		}
 	}
 
 	@Override

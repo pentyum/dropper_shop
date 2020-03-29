@@ -148,6 +148,34 @@ public class Electric_spawner_manager extends Gui_structure_manager<Electric_spa
 
 	private void init_spawn_config() {
 		this.spawn_config_map.put(EntityType.SLIME, new Entity_spawn_config(500, 1000));
+		this.spawn_config_map.put(EntityType.MAGMA_CUBE, new Entity_spawn_config(600, 1200));
+		
+		this.spawn_config_map.put(EntityType.ZOMBIE, new Entity_spawn_config(500, 1200));
+		this.spawn_config_map.put(EntityType.ZOMBIE_VILLAGER, new Entity_spawn_config(600, 1200));
+		this.spawn_config_map.put(EntityType.HUSK, new Entity_spawn_config(600, 1500));
+		this.spawn_config_map.put(EntityType.DROWNED, new Entity_spawn_config(1500, 5000));
+
+		this.spawn_config_map.put(EntityType.SKELETON, new Entity_spawn_config(600, 1500));
+		this.spawn_config_map.put(EntityType.STRAY, new Entity_spawn_config(1000, 2200));
+		this.spawn_config_map.put(EntityType.WITHER_SKELETON, new Entity_spawn_config(10000, 25000));
+
+		this.spawn_config_map.put(EntityType.SPIDER, new Entity_spawn_config(800, 1600));
+		this.spawn_config_map.put(EntityType.CAVE_SPIDER, new Entity_spawn_config(700, 1500));
+		
+		this.spawn_config_map.put(EntityType.CREEPER, new Entity_spawn_config(2000, 5000));
+		this.spawn_config_map.put(EntityType.GUARDIAN, new Entity_spawn_config(2400, 6000));
+		this.spawn_config_map.put(EntityType.SHULKER, new Entity_spawn_config(2400, 6000));
+		this.spawn_config_map.put(EntityType.ENDERMAN, new Entity_spawn_config(1600, 4000));
+		this.spawn_config_map.put(EntityType.PHANTOM, new Entity_spawn_config(1100, 2000));
+		this.spawn_config_map.put(EntityType.BLAZE, new Entity_spawn_config(2000, 4200));
+		
+		this.spawn_config_map.put(EntityType.PILLAGER, new Entity_spawn_config(2000, 4200));
+		this.spawn_config_map.put(EntityType.VINDICATOR, new Entity_spawn_config(1600, 3600));
+		this.spawn_config_map.put(EntityType.RAVAGER, new Entity_spawn_config(3000, 7000));
+		this.spawn_config_map.put(EntityType.EVOKER, new Entity_spawn_config(6000, 16000));
+		
+		this.spawn_config_map.put(EntityType.SILVERFISH, new Entity_spawn_config(500, 1000));
+		this.spawn_config_map.put(EntityType.ENDERMITE, new Entity_spawn_config(800, 1600));
 	}
 
 	@Override
