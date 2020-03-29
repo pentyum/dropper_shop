@@ -158,8 +158,9 @@ public abstract class Material_ext {
 		// namespacedkey.toString());
 		ItemMeta meta = item.getItemMeta();
 		PersistentDataContainer container = meta.getPersistentDataContainer();
-		container.set(new NamespacedKey(Dropper_shop_plugin.instance, "ext_id"), PersistentDataType.STRING,
+		container.set(Dropper_shop_plugin.get_key("ext_id"), PersistentDataType.STRING,
 				namespacedkey.toString());
+		item.setItemMeta(meta);
 		Material_ext.ext_material_map.put(namespacedkey, item.clone());
 	}
 
