@@ -123,6 +123,7 @@ public class Electric_spawner_command_executor implements TabExecutor {
 		return Dropper_shop_plugin.instance.get_electric_spawner_manager().get_permission_head();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (!(sender instanceof Player)) { // 如果sender与Player类不匹配

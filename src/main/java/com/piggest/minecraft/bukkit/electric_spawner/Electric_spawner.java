@@ -134,7 +134,12 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 		if (spawn_entity_name != null) {
 			this.set_spawn_entity(EntityType.valueOf(spawn_entity_name));
 		}
+		this.set_minecart_upgrade((boolean) save.get("minecart-upgrade"));
 		this.set_money((int) save.get("money"));
+	}
+
+	public void set_minecart_upgrade(boolean minecart_upgrade) {
+		this.minecart_upgrade = minecart_upgrade;
 	}
 
 	@Override
@@ -142,6 +147,7 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 		Map<String, Object> save = super.serialize();
 		if (this.entity_type != null) {
 			save.put("spawn-entity", this.entity_type.name());
+			save.put("minecart-upgrade", this.minecart_upgrade);
 		}
 		save.put("money", this.money);
 		return save;
@@ -232,7 +238,7 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 	}
 
 	private double get_total_probability_modifier() {
-		double total_modifier = 0.15;
+		double total_modifier = 0.12;
 		for (int i = 11; i < 15; i++) {
 			ItemStack item = this.gui.getItem(i);
 			if (!Grinder.is_empty(item)) {
@@ -241,6 +247,9 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 					total_modifier += quantity * 0.02;
 				}
 			}
+		}
+		if(total_modifier > 1.4) {
+			total_modifier = 1.4;
 		}
 		return total_modifier;
 	}
