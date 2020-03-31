@@ -3,7 +3,9 @@ package com.piggest.minecraft.bukkit.electric_spawner;
 import org.bukkit.Chunk;
 import org.bukkit.Difficulty;
 import org.bukkit.entity.EntityType;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
 public class Electric_spawner_runner extends Structure_runner {
@@ -51,6 +53,12 @@ public class Electric_spawner_runner extends Structure_runner {
 					new_inhabited_time = 0;
 				}
 				chunk.setInhabitedTime(new_inhabited_time);
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						spawner.spawn();
+					}
+				}.runTaskLater(Dropper_shop_plugin.instance, 1);
 			} else {// 继续生成
 				this.completed_period++;
 				spawner.set_process(100 * this.completed_period / spawn_period);

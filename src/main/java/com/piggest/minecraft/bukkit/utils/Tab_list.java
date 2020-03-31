@@ -1,6 +1,10 @@
 package com.piggest.minecraft.bukkit.utils;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -15,5 +19,22 @@ public class Tab_list {
 		for (World world : Bukkit.getWorlds()) {
 			world_name_list.add(world.getName());
 		}
+	}
+
+	@Nonnull
+	public static List<String> contains(@Nonnull List<String> string_list, @Nullable String str) {
+		ArrayList<String> result = new ArrayList<String>();
+		if (str == null) {
+			return string_list;
+		}
+		if (str.length() == 0) {
+			return string_list;
+		}
+		for (String s : string_list) {
+			if (s.contains(str)) {
+				result.add(s);
+			}
+		}
+		return result;
 	}
 }

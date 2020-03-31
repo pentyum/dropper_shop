@@ -51,7 +51,11 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 		ItemStack indicator = this.gui.getItem(info_indicator_slot);
 		ItemMeta meta = indicator.getItemMeta();
 		List<String> lore = meta.getLore();
-		lore.set(0, "§r生成: " + Entity_zh_cn.get_entity_name(type));
+		if (type == null) {
+			lore.set(1, "§r生成: 无");
+		} else {
+			lore.set(1, "§r生成: " + Entity_zh_cn.get_entity_name(type));
+		}
 		meta.setLore(lore);
 		indicator.setItemMeta(meta);
 	}
@@ -61,7 +65,7 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 		ItemStack indicator = this.gui.getItem(info_indicator_slot);
 		ItemMeta meta = indicator.getItemMeta();
 		List<String> lore = meta.getLore();
-		lore.set(1, "§r剩余金币: " + money);
+		lore.set(2, "§r剩余金币: " + money);
 		meta.setLore(lore);
 		indicator.setItemMeta(meta);
 	}
@@ -71,7 +75,8 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 		ItemStack indicator = this.gui.getItem(info_indicator_slot);
 		ItemMeta meta = indicator.getItemMeta();
 		List<String> lore = meta.getLore();
-		lore.set(2, String.format("§r区域难度: %.4f", local_difficulty));
+		lore.set(0, String.format("§r运行状态: %s", this.is_active() ? "开启" : "关闭"));
+		lore.set(3, String.format("§r区域难度: %.4f", local_difficulty));
 		meta.setLore(lore);
 		indicator.setItemMeta(meta);
 		return local_difficulty;
@@ -90,6 +95,9 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 	}
 
 	public void spawn() {
+		if (this.entity_type == null) {
+			return;
+		}
 		Location loc = this.get_location();
 		World world = loc.getWorld();
 		if (this.minecart_upgrade == true) {
@@ -113,7 +121,7 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 		for (int x = -3; x <= 3; x++) {
 			for (int y = -2; y <= 2; y++) {
 				for (int z = -3; z <= 3; z++) {
-					Block block = world.getBlockAt(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+					Block block = world.getBlockAt(loc.getBlockX() + x, loc.getBlockY() + y, loc.getBlockZ() + z);
 					if (block.getType() == Material.AIR || block.getType() == Material.CAVE_AIR) {
 						nearby_air_list.add(block.getLocation());
 					}
@@ -124,6 +132,8 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 		if (size > 0) {
 			int spawn_loc_index = this.rand.nextInt(size);
 			world.spawnEntity(nearby_air_list.get(spawn_loc_index), this.entity_type);
+		} else {
+			// world.spawnParticle(particle, location, count);
 		}
 	}
 
@@ -147,8 +157,8 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 		Map<String, Object> save = super.serialize();
 		if (this.entity_type != null) {
 			save.put("spawn-entity", this.entity_type.name());
-			save.put("minecart-upgrade", this.minecart_upgrade);
 		}
+		save.put("minecart-upgrade", this.minecart_upgrade);
 		save.put("money", this.money);
 		return save;
 	}
@@ -248,7 +258,7 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 				}
 			}
 		}
-		if(total_modifier > 1.4) {
+		if (total_modifier > 1.4) {
 			total_modifier = 1.4;
 		}
 		return total_modifier;

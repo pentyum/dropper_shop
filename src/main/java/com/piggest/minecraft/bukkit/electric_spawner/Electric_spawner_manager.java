@@ -51,7 +51,7 @@ public class Electric_spawner_manager extends Gui_structure_manager<Electric_spa
 						+ Dropper_shop_plugin.instance.get_price_config().get_look_electric_spawner_price() + "金币" },
 				Gui_slot_type.Button);
 		this.set_gui(Electric_spawner.info_indicator_slot, Material.SPAWNER, "§e刷怪信息",
-				new String[] { "§r生成: 无", "§r剩余金币: 0", "§r区域难度: 0" }, Gui_slot_type.Indicator);
+				new String[] { "§r运行状态: 关闭", "§r生成: 无", "§r剩余金币: 0", "§r区域难度: 0" }, Gui_slot_type.Indicator);
 		this.set_gui(Electric_spawner.synthesis_button_slot, Material.CRAFTING_TABLE, "§e召唤", Gui_slot_type.Button);
 
 		this.init_recipe();
@@ -147,35 +147,35 @@ public class Electric_spawner_manager extends Gui_structure_manager<Electric_spa
 	}
 
 	private void init_spawn_config() {
-		this.spawn_config_map.put(EntityType.SLIME, new Entity_spawn_config(500, 1000));
-		this.spawn_config_map.put(EntityType.MAGMA_CUBE, new Entity_spawn_config(600, 1200));
+		this.spawn_config_map.put(EntityType.SLIME, new Entity_spawn_config(500, 1400));
+		this.spawn_config_map.put(EntityType.MAGMA_CUBE, new Entity_spawn_config(600, 1600));
 		
-		this.spawn_config_map.put(EntityType.ZOMBIE, new Entity_spawn_config(500, 1200));
-		this.spawn_config_map.put(EntityType.ZOMBIE_VILLAGER, new Entity_spawn_config(600, 1200));
-		this.spawn_config_map.put(EntityType.HUSK, new Entity_spawn_config(600, 1500));
-		this.spawn_config_map.put(EntityType.DROWNED, new Entity_spawn_config(1500, 5000));
+		this.spawn_config_map.put(EntityType.ZOMBIE, new Entity_spawn_config(500, 1800));
+		this.spawn_config_map.put(EntityType.ZOMBIE_VILLAGER, new Entity_spawn_config(600, 1800));
+		this.spawn_config_map.put(EntityType.HUSK, new Entity_spawn_config(600, 2000));
+		this.spawn_config_map.put(EntityType.DROWNED, new Entity_spawn_config(1500, 6000));
 
-		this.spawn_config_map.put(EntityType.SKELETON, new Entity_spawn_config(600, 1500));
-		this.spawn_config_map.put(EntityType.STRAY, new Entity_spawn_config(1000, 2200));
-		this.spawn_config_map.put(EntityType.WITHER_SKELETON, new Entity_spawn_config(10000, 25000));
+		this.spawn_config_map.put(EntityType.SKELETON, new Entity_spawn_config(600, 2000));
+		this.spawn_config_map.put(EntityType.STRAY, new Entity_spawn_config(1000, 3000));
+		this.spawn_config_map.put(EntityType.WITHER_SKELETON, new Entity_spawn_config(10000, 30000));
 
-		this.spawn_config_map.put(EntityType.SPIDER, new Entity_spawn_config(800, 1600));
-		this.spawn_config_map.put(EntityType.CAVE_SPIDER, new Entity_spawn_config(700, 1500));
+		this.spawn_config_map.put(EntityType.SPIDER, new Entity_spawn_config(800, 2200));
+		this.spawn_config_map.put(EntityType.CAVE_SPIDER, new Entity_spawn_config(700, 2200));
 		
-		this.spawn_config_map.put(EntityType.CREEPER, new Entity_spawn_config(2000, 5000));
-		this.spawn_config_map.put(EntityType.GUARDIAN, new Entity_spawn_config(2400, 6000));
-		this.spawn_config_map.put(EntityType.SHULKER, new Entity_spawn_config(2400, 6000));
-		this.spawn_config_map.put(EntityType.ENDERMAN, new Entity_spawn_config(1600, 4000));
-		this.spawn_config_map.put(EntityType.PHANTOM, new Entity_spawn_config(1100, 2000));
-		this.spawn_config_map.put(EntityType.BLAZE, new Entity_spawn_config(2000, 4200));
+		this.spawn_config_map.put(EntityType.CREEPER, new Entity_spawn_config(2000, 6000));
+		this.spawn_config_map.put(EntityType.GUARDIAN, new Entity_spawn_config(2400, 10000));
+		this.spawn_config_map.put(EntityType.SHULKER, new Entity_spawn_config(2400, 10000));
+		this.spawn_config_map.put(EntityType.ENDERMAN, new Entity_spawn_config(1600, 5000));
+		this.spawn_config_map.put(EntityType.PHANTOM, new Entity_spawn_config(1100, 3000));
+		this.spawn_config_map.put(EntityType.BLAZE, new Entity_spawn_config(2000, 6400));
 		
-		this.spawn_config_map.put(EntityType.PILLAGER, new Entity_spawn_config(2000, 4200));
-		this.spawn_config_map.put(EntityType.VINDICATOR, new Entity_spawn_config(1600, 3600));
-		this.spawn_config_map.put(EntityType.RAVAGER, new Entity_spawn_config(3000, 7000));
-		this.spawn_config_map.put(EntityType.EVOKER, new Entity_spawn_config(6000, 16000));
+		this.spawn_config_map.put(EntityType.PILLAGER, new Entity_spawn_config(2000, 6000));
+		this.spawn_config_map.put(EntityType.VINDICATOR, new Entity_spawn_config(1600, 5400));
+		this.spawn_config_map.put(EntityType.RAVAGER, new Entity_spawn_config(3000, 12000));
+		this.spawn_config_map.put(EntityType.EVOKER, new Entity_spawn_config(6000, 20000));
 		
-		this.spawn_config_map.put(EntityType.SILVERFISH, new Entity_spawn_config(500, 1000));
-		this.spawn_config_map.put(EntityType.ENDERMITE, new Entity_spawn_config(800, 1600));
+		this.spawn_config_map.put(EntityType.SILVERFISH, new Entity_spawn_config(500, 1600));
+		this.spawn_config_map.put(EntityType.ENDERMITE, new Entity_spawn_config(800, 2000));
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Nameable;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -190,7 +191,11 @@ public abstract class Structure implements ConfigurationSerializable {
 		} else {
 			name = manager.get_permission_head();
 		}
-		sender.sendMessage("[" + name + "]" + message);
+		String message_head = String.format("[%s]", name);
+		if (sender instanceof ConsoleCommandSender) {
+			message_head = String.format("[%s](%s,%d,%d,%d)", name, this.world_name, this.x, this.y, this.z);
+		}
+		sender.sendMessage(message_head + message);
 	}
 
 	public void broadcast_message(String message) {

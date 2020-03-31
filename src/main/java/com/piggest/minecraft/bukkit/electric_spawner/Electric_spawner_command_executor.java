@@ -11,6 +11,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.utils.Tab_list;
 import com.piggest.minecraft.bukkit.utils.language.Entity_zh_cn;
 
 public class Electric_spawner_command_executor implements TabExecutor {
@@ -21,6 +22,7 @@ public class Electric_spawner_command_executor implements TabExecutor {
 		{
 			add("charge");
 			add("set_entity");
+			add("unset_entity");
 		}
 	};
 
@@ -112,7 +114,7 @@ public class Electric_spawner_command_executor implements TabExecutor {
 			}
 			if (args[0].equalsIgnoreCase("set_entity")) {
 				if (sender.hasPermission(this.get_permission_head() + ".set")) {
-					return entity_type;
+					return Tab_list.contains(entity_type, args[1]);
 				}
 			}
 		}
@@ -157,10 +159,12 @@ public class Electric_spawner_command_executor implements TabExecutor {
 						charge_quantity = max_money - current_money;
 						electric_spawner.send_message(player, "金币充值超出上限，数量修改为" + charge_quantity);
 					}
-					boolean cost_result = Dropper_shop_plugin.instance.cost_player_money(charge_quantity, player);
-					if (cost_result == false) {
-						electric_spawner.send_message(player, "你的金币不足" + charge_quantity);
-						return true;
+					if (!player.hasPermission(this.get_permission_head() + ".set")) {
+						boolean cost_result = Dropper_shop_plugin.instance.cost_player_money(charge_quantity, player);
+						if (cost_result == false) {
+							electric_spawner.send_message(player, "你的金币不足" + charge_quantity);
+							return true;
+						}
 					}
 					electric_spawner.set_money(current_money + charge_quantity);
 					electric_spawner.send_message(player, "成功给刷怪机充值" + charge_quantity + "金币");
@@ -179,6 +183,13 @@ public class Electric_spawner_command_executor implements TabExecutor {
 					}
 					electric_spawner.set_spawn_entity(new_entity_type);
 					electric_spawner.send_message(player, "成功设置刷怪机为" + Entity_zh_cn.get_entity_name(new_entity_type));
+				} else if (args[0].equalsIgnoreCase("unset_entity")) {
+					if (!sender.hasPermission(this.get_permission_head() + ".set")) {
+						electric_spawner.send_message(player, "你没有权限直接设置生成实体!");
+						return true;
+					}
+					electric_spawner.set_spawn_entity(null);
+					electric_spawner.send_message(player, "成功设置刷怪机为无");
 				}
 			} else {
 				player.sendMessage("/electric_spawner charge <数量> 给刷怪机充钱");

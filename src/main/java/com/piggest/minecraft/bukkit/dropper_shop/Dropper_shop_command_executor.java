@@ -1,8 +1,10 @@
 package com.piggest.minecraft.bukkit.dropper_shop;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,18 +14,28 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.MapMeta;
+import org.bukkit.map.MapRenderer;
+import org.bukkit.map.MapView;
 
 import com.piggest.minecraft.bukkit.config.Price_config;
+import com.piggest.minecraft.bukkit.custom_map.Custom_map_render;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.teleport_machine.Elements_composition;
 import com.piggest.minecraft.bukkit.utils.Server_date;
+import com.piggest.minecraft.bukkit.utils.Tab_list;
 
 public class Dropper_shop_command_executor implements TabExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
 		if (cmd.getName().equalsIgnoreCase("dropper_shop")) {
+			if(args.length==0) {
+				sender.sendMessage("欢迎使用Dropper_shop插件，当前版本:");
+				return true;
+			}
 			if (args[0].equalsIgnoreCase("list_structure")) {
 				Price_config price_config = Dropper_shop_plugin.instance.get_price_config();
 				sender.sendMessage(price_config.get_info());
@@ -158,6 +170,38 @@ public class Dropper_shop_command_executor implements TabExecutor {
 					return true;
 				}
 				return true;
+			} else if (args[0].equalsIgnoreCase("get_map")) {
+				ItemStack item = new ItemStack(Material.MAP);
+				ItemMeta meta = item.getItemMeta();
+				MapMeta mapmeta = (MapMeta) meta;
+				MapView mapview = Bukkit.getServer().createMap(player.getWorld());
+				List<MapRenderer> renders = mapview.getRenderers();
+				for (MapRenderer render : renders) {
+					player.sendMessage(render.getClass().getName());
+					mapview.removeRenderer(render);
+				}
+				mapview.addRenderer(new Custom_map_render());
+				mapmeta.setMapView(mapview);
+			} else if (args[0].equalsIgnoreCase("test_map")) {
+				ItemStack item = player.getInventory().getItemInMainHand();
+				if (item == null) {
+					player.sendMessage("空手");
+					return true;
+				}
+				if (item.getType() == Material.MAP) {
+					ItemMeta meta = item.getItemMeta();
+					MapMeta mapmeta = (MapMeta) meta;
+					if (mapmeta.hasMapView()) {
+						MapView mapview = mapmeta.getMapView();
+						List<MapRenderer> renders = mapview.getRenderers();
+						for (MapRenderer render : renders) {
+							player.sendMessage(render.getClass().getName());
+						}
+					} else {
+						player.sendMessage("没有MapView");
+					}
+				}
+
 			} else if (args[0].equalsIgnoreCase("get_item")) {
 				if (!player.hasPermission("dropper_shop.get_item")) {
 					player.sendMessage("你没有权限获得物品");
@@ -202,7 +246,9 @@ public class Dropper_shop_command_executor implements TabExecutor {
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 		if (args[0].equalsIgnoreCase("get_item")) {
 			if (args.length == 2) {
-				return Material_ext.get_ext_full_name_list();
+				ArrayList<String> ext_item_list = Material_ext.get_ext_full_name_list();
+				Dropper_shop_plugin.instance.getLogger().info(args[1]);
+				return Tab_list.contains(ext_item_list, args[1]);
 			}
 		}
 		return null;
