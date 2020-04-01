@@ -1,8 +1,10 @@
 package com.piggest.minecraft.bukkit.dropper_shop;
 
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -20,7 +22,7 @@ import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 
 import com.piggest.minecraft.bukkit.config.Price_config;
-import com.piggest.minecraft.bukkit.custom_map.Custom_map_render;
+import com.piggest.minecraft.bukkit.custom_map.Character_map_render;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
@@ -32,7 +34,7 @@ public class Dropper_shop_command_executor implements TabExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
 		if (cmd.getName().equalsIgnoreCase("dropper_shop")) {
-			if(args.length==0) {
+			if (args.length == 0) {
 				sender.sendMessage("欢迎使用Dropper_shop插件，当前版本:");
 				return true;
 			}
@@ -171,6 +173,9 @@ public class Dropper_shop_command_executor implements TabExecutor {
 				}
 				return true;
 			} else if (args[0].equalsIgnoreCase("get_map")) {
+				if (args.length < 3) {
+					return true;
+				}
 				ItemStack item = new ItemStack(Material.FILLED_MAP);
 				ItemMeta meta = item.getItemMeta();
 				MapMeta mapmeta = (MapMeta) meta;
@@ -179,30 +184,12 @@ public class Dropper_shop_command_executor implements TabExecutor {
 				for (MapRenderer render : renders) {
 					mapview.removeRenderer(render);
 				}
-				mapview.addRenderer(new Custom_map_render());
+				Font font = Dropper_shop_plugin.instance.get_fonts_manager().get_font(args[2]);
+				char c = args[1].charAt(0);
+				mapview.addRenderer(new Character_map_render(c, font));
 				mapmeta.setMapView(mapview);
 				item.setItemMeta(meta);
 				player.getInventory().addItem(item);
-			} else if (args[0].equalsIgnoreCase("test_map")) {
-				ItemStack item = player.getInventory().getItemInMainHand();
-				if (item == null) {
-					player.sendMessage("空手");
-					return true;
-				}
-				if (item.getType() == Material.FILLED_MAP) {
-					ItemMeta meta = item.getItemMeta();
-					MapMeta mapmeta = (MapMeta) meta;
-					if (mapmeta.hasMapView()) {
-						MapView mapview = mapmeta.getMapView();
-						List<MapRenderer> renders = mapview.getRenderers();
-						for (MapRenderer render : renders) {
-							player.sendMessage(render.getClass().getName());
-						}
-					} else {
-						player.sendMessage("没有MapView");
-					}
-				}
-
 			} else if (args[0].equalsIgnoreCase("get_item")) {
 				if (!player.hasPermission("dropper_shop.get_item")) {
 					player.sendMessage("你没有权限获得物品");
@@ -248,8 +235,13 @@ public class Dropper_shop_command_executor implements TabExecutor {
 		if (args[0].equalsIgnoreCase("get_item")) {
 			if (args.length == 2) {
 				ArrayList<String> ext_item_list = Material_ext.get_ext_full_name_list();
-				Dropper_shop_plugin.instance.getLogger().info(args[1]);
 				return Tab_list.contains(ext_item_list, args[1]);
+			}
+		} else if (args[0].equalsIgnoreCase("get_map")) {
+			if (args.length == 3) {
+				Set<String> fonts_set = Dropper_shop_plugin.instance.get_fonts_manager().get_all_name();
+				ArrayList<String> fonts_list = new ArrayList<String>(fonts_set);
+				return Tab_list.contains(fonts_list, args[2]);
 			}
 		}
 		return null;

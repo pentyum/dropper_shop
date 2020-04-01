@@ -37,6 +37,7 @@ import com.piggest.minecraft.bukkit.compressor.Compressor_manager;
 import com.piggest.minecraft.bukkit.config.Config_auto_saver;
 import com.piggest.minecraft.bukkit.config.Lottery_config;
 import com.piggest.minecraft.bukkit.config.Price_config;
+import com.piggest.minecraft.bukkit.custom_map.Fonts_manager;
 import com.piggest.minecraft.bukkit.depository.Depository;
 import com.piggest.minecraft.bukkit.depository.Depository_command_executor;
 import com.piggest.minecraft.bukkit.depository.Depository_listener;
@@ -153,6 +154,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private Radio_manager radio_manager = null;
 	private Watersheep_runner watersheep_runner = null;
 	private ProtocolManager protocol_manager = null;
+	private Fonts_manager fonts_manager = null;
 
 	public Dropper_shop_plugin() {
 		Dropper_shop_plugin.instance = this;
@@ -199,6 +201,10 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		Entity_zh_cn.init();
 
 		this.nms_manager = new NMS_manager(Bukkit.getBukkitVersion());
+
+		fonts_manager = new Fonts_manager();
+		fonts_manager.register_all_fonts();
+		this.getLogger().info("字体注册完成");
 	}
 
 	public Lottery_config get_lottery_config() {
@@ -526,11 +532,11 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public Biome_modify get_biome_modify() {
 		return this.biome_modify;
 	}
-	
+
 	public Electric_spawner_manager get_electric_spawner_manager() {
 		return this.electric_spawner_manager;
 	}
-	
+
 	public void add_recipe(Recipe recipe) {
 		this.getServer().addRecipe(recipe);
 		if (recipe instanceof ShapedRecipe) {
@@ -547,6 +553,10 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		} else {
 			return unit;
 		}
+	}
+
+	public Fonts_manager get_fonts_manager() {
+		return this.fonts_manager;
 	}
 
 }

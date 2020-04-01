@@ -27,7 +27,7 @@ public class Electric_spawner_manager extends Gui_structure_manager<Electric_spa
 	public final HashMap<String, Entity_probability[]> probability_map = new HashMap<>();
 	public final HashMap<EntityType, Entity_spawn_config> spawn_config_map = new HashMap<>();
 
-	public static final HashMap<Difficulty, Integer> difficulty_values = new HashMap<>() {
+	public static final HashMap<Difficulty, Integer> difficulty_values = new HashMap<Difficulty, Integer>() {
 		private static final long serialVersionUID = -99433125231642375L;
 
 		{
