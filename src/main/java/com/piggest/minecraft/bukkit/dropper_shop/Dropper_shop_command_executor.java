@@ -171,24 +171,25 @@ public class Dropper_shop_command_executor implements TabExecutor {
 				}
 				return true;
 			} else if (args[0].equalsIgnoreCase("get_map")) {
-				ItemStack item = new ItemStack(Material.MAP);
+				ItemStack item = new ItemStack(Material.FILLED_MAP);
 				ItemMeta meta = item.getItemMeta();
 				MapMeta mapmeta = (MapMeta) meta;
 				MapView mapview = Bukkit.getServer().createMap(player.getWorld());
 				List<MapRenderer> renders = mapview.getRenderers();
 				for (MapRenderer render : renders) {
-					player.sendMessage(render.getClass().getName());
 					mapview.removeRenderer(render);
 				}
 				mapview.addRenderer(new Custom_map_render());
 				mapmeta.setMapView(mapview);
+				item.setItemMeta(meta);
+				player.getInventory().addItem(item);
 			} else if (args[0].equalsIgnoreCase("test_map")) {
 				ItemStack item = player.getInventory().getItemInMainHand();
 				if (item == null) {
 					player.sendMessage("空手");
 					return true;
 				}
-				if (item.getType() == Material.MAP) {
+				if (item.getType() == Material.FILLED_MAP) {
 					ItemMeta meta = item.getItemMeta();
 					MapMeta mapmeta = (MapMeta) meta;
 					if (mapmeta.hasMapView()) {
