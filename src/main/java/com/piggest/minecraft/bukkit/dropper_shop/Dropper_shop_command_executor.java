@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -21,6 +22,7 @@ import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 
+import com.piggest.minecraft.bukkit.config.Map_config;
 import com.piggest.minecraft.bukkit.config.Price_config;
 import com.piggest.minecraft.bukkit.custom_map.Character_map_render;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
@@ -173,23 +175,30 @@ public class Dropper_shop_command_executor implements TabExecutor {
 				}
 				return true;
 			} else if (args[0].equalsIgnoreCase("get_map")) {
-				if (args.length < 3) {
+				if (args.length < 4) {
 					return true;
 				}
-				ItemStack item = new ItemStack(Material.FILLED_MAP);
-				ItemMeta meta = item.getItemMeta();
-				MapMeta mapmeta = (MapMeta) meta;
-				MapView mapview = Bukkit.getServer().createMap(player.getWorld());
-				List<MapRenderer> renders = mapview.getRenderers();
-				for (MapRenderer render : renders) {
-					mapview.removeRenderer(render);
+				String background_color_string = args[1];
+				for (int i = 0; i < args[1].length(); i++) {
+					char c = args[2].charAt(i);
+					ItemStack item = new ItemStack(Material.FILLED_MAP);
+					ItemMeta meta = item.getItemMeta();
+					MapMeta mapmeta = (MapMeta) meta;
+					MapView mapview = Bukkit.getServer().createMap(player.getWorld());
+					List<MapRenderer> renders = mapview.getRenderers();
+					for (MapRenderer render : renders) {
+						mapview.removeRenderer(render);
+					}
+					Font font = Dropper_shop_plugin.instance.get_fonts_manager().get_font(args[3]);
+					Character_map_render render = new Character_map_render(Color.WHITE, c, font, Color.BLACK);
+					mapview.addRenderer(render);
+					mapmeta.setMapView(mapview);
+					mapmeta.setDisplayName(String.valueOf(c));
+					item.setItemMeta(meta);
+					player.getInventory().addItem(item);
+					Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
+					map_config.get_config().set("map_" + (mapview.getId()), render);
 				}
-				Font font = Dropper_shop_plugin.instance.get_fonts_manager().get_font(args[2]);
-				char c = args[1].charAt(0);
-				mapview.addRenderer(new Character_map_render(c, font));
-				mapmeta.setMapView(mapview);
-				item.setItemMeta(meta);
-				player.getInventory().addItem(item);
 			} else if (args[0].equalsIgnoreCase("get_item")) {
 				if (!player.hasPermission("dropper_shop.get_item")) {
 					player.sendMessage("你没有权限获得物品");
@@ -238,10 +247,12 @@ public class Dropper_shop_command_executor implements TabExecutor {
 				return Tab_list.contains(ext_item_list, args[1]);
 			}
 		} else if (args[0].equalsIgnoreCase("get_map")) {
-			if (args.length == 3) {
+			if (args.length == 2) {
+				return Tab_list.color_list;
+			} else if (args.length == 4) {
 				Set<String> fonts_set = Dropper_shop_plugin.instance.get_fonts_manager().get_all_name();
 				ArrayList<String> fonts_list = new ArrayList<String>(fonts_set);
-				return Tab_list.contains(fonts_list, args[2]);
+				return Tab_list.contains(fonts_list, args[3]);
 			}
 		}
 		return null;

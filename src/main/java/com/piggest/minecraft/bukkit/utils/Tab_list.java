@@ -12,6 +12,7 @@ import org.bukkit.World;
 public class Tab_list {
 	public static final ArrayList<String> true_false_list = new ArrayList<String>();
 	public static final ArrayList<String> world_name_list = new ArrayList<String>();
+	public static final ArrayList<String> color_list = new ArrayList<String>();
 
 	public static void init() {
 		true_false_list.add("true");
@@ -19,6 +20,11 @@ public class Tab_list {
 		for (World world : Bukkit.getWorlds()) {
 			world_name_list.add(world.getName());
 		}
+		color_list.add("BLACK");
+		color_list.add("WHITE");
+		color_list.add("GREEN");
+		color_list.add("BLUE");
+		color_list.add("YELLOW");
 	}
 
 	@Nonnull
