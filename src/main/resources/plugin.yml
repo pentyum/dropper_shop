@@ -64,6 +64,11 @@ commands:
     usage: /<command> charge
     permission: electric_spawner.use
     permission-message: You don't have permission
+  custom_map:
+    description: commands relate to custom map.
+    usage: /<command> get_map backgroundcolor string font fontcolor
+    permission: custom_map.get
+    permission-message: You don't have permission
 permissions:
   dropper_shop.*:
     description: Gives access to all dropper shop commands.
@@ -226,6 +231,9 @@ permissions:
     default: true
   electric_spawner.set:
     description: Set electric spawner.
+    default: op
+  custom_map.get:
+    description: Get a custom map.
     default: op
 depend: [Vault]
 softdepend: [ProtocolLib]

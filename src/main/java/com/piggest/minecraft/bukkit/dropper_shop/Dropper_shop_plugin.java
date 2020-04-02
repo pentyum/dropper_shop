@@ -38,6 +38,7 @@ import com.piggest.minecraft.bukkit.config.Config_auto_saver;
 import com.piggest.minecraft.bukkit.config.Lottery_config;
 import com.piggest.minecraft.bukkit.config.Map_config;
 import com.piggest.minecraft.bukkit.config.Price_config;
+import com.piggest.minecraft.bukkit.custom_map.Custom_map_command_executor;
 import com.piggest.minecraft.bukkit.custom_map.Fonts_manager;
 import com.piggest.minecraft.bukkit.custom_map.Map_init_listener;
 import com.piggest.minecraft.bukkit.depository.Depository;
@@ -307,6 +308,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.getCommand("watersheep").setExecutor(new Watersheep_command_executor());
 		this.getCommand("biome_modify").setExecutor(this.biome_modify);
 		this.getCommand("electric_spawner").setExecutor(new Electric_spawner_command_executor());
+		this.getCommand("custom_map").setExecutor(new Custom_map_command_executor());
 	}
 
 	@Override
