@@ -3,6 +3,7 @@ package com.piggest.minecraft.bukkit.custom_map;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -54,7 +55,7 @@ public class Custom_map_command_executor implements TabExecutor {
 			String font_color_string = args[4];
 			Color background_color = Color_utils.string_color_map.get(background_color_string);
 			Color font_color = Color_utils.string_color_map.get(font_color_string);
-
+			int font_size = 100;
 			for (int i = 0; i < args[2].length(); i++) {
 				char c = args[2].charAt(i);
 				ItemStack item = new ItemStack(Material.FILLED_MAP);
@@ -66,15 +67,27 @@ public class Custom_map_command_executor implements TabExecutor {
 					mapview.removeRenderer(render);
 				}
 				Font font = Dropper_shop_plugin.instance.get_fonts_manager().get_font(args[3]);
-				Character_map_render render = new Character_map_render(background_color, c, font, font_color);
+				Character_map_render render = new Character_map_render(background_color, c, font, font_size,
+						font_color);
 				mapview.addRenderer(render);
 				mapmeta.setMapView(mapview);
 				mapmeta.setDisplayName(String.valueOf(c));
+				ArrayList<String> lore = new ArrayList<String>();
+				lore.add(String.format("§r背景颜色: (%d,%d,%d)", background_color.getRed(), background_color.getGreen(),
+						background_color.getBlue()));
+				lore.add("§r字体: " + font.getFontName(Locale.SIMPLIFIED_CHINESE));
+				lore.add("§r字号: " + font_size);
+				lore.add(String.format("§r文字颜色: (%d,%d,%d)", font_color.getRed(), font_color.getGreen(),
+						font_color.getBlue()));
+				lore.add("§r部分: " + 1);
+				mapmeta.setLore(lore);
 				item.setItemMeta(meta);
 				player.getInventory().addItem(item);
 				Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
 				map_config.get_config().set("map_" + (mapview.getId()), render);
 			}
+			player.sendMessage("成功获得\"" + args[2] + "\"");
+			return true;
 		}
 		return false;
 	}
