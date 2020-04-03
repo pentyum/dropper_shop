@@ -147,6 +147,15 @@ public class Custom_map_command_executor implements TabExecutor {
 			mapview.addRenderer(render);
 			mapmeta.setMapView(mapview);
 			mapmeta.setDisplayName("时钟");
+			ArrayList<String> lore = new ArrayList<String>();
+			lore.add(String.format("§r背景颜色: (%d,%d,%d)", background_color.getRed(), background_color.getGreen(),
+					background_color.getBlue()));
+			lore.add(String.format("§r格式: %s", args[2]));
+			lore.add("§r字体: " + font.getFontName(Locale.SIMPLIFIED_CHINESE));
+			lore.add("§r字号: " + font_size);
+			lore.add(String.format("§r文字颜色: (%d,%d,%d)", font_color.getRed(), font_color.getGreen(),
+					font_color.getBlue()));
+			mapmeta.setLore(lore);
 			item.setItemMeta(meta);
 			Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
 			map_config.get_config().set("map_" + (mapview.getId()), render);

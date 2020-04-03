@@ -21,6 +21,10 @@ public class Tab_list {
 		for (World world : Bukkit.getWorlds()) {
 			world_name_list.add(world.getName());
 		}
+		time_format.add("yyyy年");
+		time_format.add("yyyy-MM-dd");
+		time_format.add("MM-dd");
+		time_format.add("MM月dd日");
 		time_format.add("HH:mm:ss");
 		time_format.add("HH:mm");
 	}
