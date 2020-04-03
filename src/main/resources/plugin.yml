@@ -66,7 +66,7 @@ commands:
     permission-message: You don't have permission
   custom_map:
     description: commands relate to custom map.
-    usage: /<command> get_map backgroundcolor string font fontcolor
+    usage: /<command> [get_map|get_clock] backgroundcolor string font fontsize fontcolor
     permission: custom_map.get
     permission-message: You don't have permission
 permissions:

@@ -160,6 +160,7 @@ public class Custom_map_command_executor implements TabExecutor {
 			Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
 			map_config.get_config().set("map_" + (mapview.getId()), render);
 			player.getInventory().addItem(item);
+			return true;
 		}
 		return false;
 	}
