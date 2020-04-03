@@ -28,13 +28,15 @@ public class Custom_map_command_executor implements TabExecutor {
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-		if (args[0].equalsIgnoreCase("get_map")) {
+		if (args[0].equalsIgnoreCase("get_map") || args[0].equalsIgnoreCase("get_clock")) {
 			if (args.length == 2 || args.length == 6) {
 				return Tab_list.color_list;
 			} else if (args.length == 4) {
 				Set<String> fonts_set = Dropper_shop_plugin.instance.get_fonts_manager().get_all_name();
 				ArrayList<String> fonts_list = new ArrayList<String>(fonts_set);
 				return Tab_list.contains(fonts_list, args[3]);
+			} else if (args.length == 3 && args[0].equalsIgnoreCase("get_clock")) {
+				return Tab_list.time_format;
 			}
 		}
 		return null;
@@ -116,6 +118,39 @@ public class Custom_map_command_executor implements TabExecutor {
 			}
 			player.sendMessage("成功获得\"" + args[2] + "\"，共" + total + "张图");
 			return true;
+		} else if (args[0].equalsIgnoreCase("get_clock")) {
+			if (args.length < 6) {
+				player.sendMessage("/custom_map get_clock <背景色> <格式> <字体> <字号> <文字颜色>。");
+				return true;
+			}
+			String background_color_string = args[1];
+			Font font = Dropper_shop_plugin.instance.get_fonts_manager().get_font(args[3]);
+			int font_size = 28;
+			try {
+				font_size = Integer.parseInt(args[4]);
+			} catch (NumberFormatException e) {
+				player.sendMessage("字号格式错误，已设置为28");
+			}
+			String font_color_string = args[5];
+			Color background_color = Color_utils.string_color_map.get(background_color_string);
+			Color font_color = Color_utils.string_color_map.get(font_color_string);
+
+			ItemStack item = new ItemStack(Material.FILLED_MAP);
+			ItemMeta meta = item.getItemMeta();
+			MapMeta mapmeta = (MapMeta) meta;
+			MapView mapview = Bukkit.getServer().createMap(player.getWorld());
+			List<MapRenderer> renders = mapview.getRenderers();
+			for (MapRenderer render : renders) {
+				mapview.removeRenderer(render);
+			}
+			Clock_map_render render = new Clock_map_render(background_color, args[2], font, font_size, font_color);
+			mapview.addRenderer(render);
+			mapmeta.setMapView(mapview);
+			mapmeta.setDisplayName("时钟");
+			item.setItemMeta(meta);
+			Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
+			map_config.get_config().set("map_" + (mapview.getId()), render);
+			player.getInventory().addItem(item);
 		}
 		return false;
 	}

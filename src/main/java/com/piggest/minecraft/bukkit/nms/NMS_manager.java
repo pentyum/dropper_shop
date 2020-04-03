@@ -8,6 +8,8 @@ import com.piggest.minecraft.bukkit.nms.difficulty.Local_difficulty;
 import com.piggest.minecraft.bukkit.nms.difficulty.Local_difficulty_1_15;
 import com.piggest.minecraft.bukkit.nms.enchant.Enchant_manager;
 import com.piggest.minecraft.bukkit.nms.enchant.Enchant_manager_1_15;
+import com.piggest.minecraft.bukkit.nms.map.Map_editor;
+import com.piggest.minecraft.bukkit.nms.map.Map_editor_1_15;
 import com.piggest.minecraft.bukkit.nms.nbt.Ext_id;
 import com.piggest.minecraft.bukkit.nms.nbt.Ext_id_1_15;
 
@@ -18,6 +20,8 @@ public class NMS_manager {
 	public static Packet_map_chunk_listener_1_15 packet_map_chunk_listener = null;
 	public static Enchant_manager enchant_manager = null;
 	public static Local_difficulty local_difficulty = null;
+	public static Map_editor map_editor = null;
+
 	public NMS_manager(String version) {
 		Dropper_shop_plugin.instance.getLogger().info("当前NMS:" + version);
 		NMS_version nms_version = NMS_version.parse_version(version);
@@ -30,6 +34,7 @@ public class NMS_manager {
 			packet_map_chunk_listener = new Packet_map_chunk_listener_1_15();
 			enchant_manager = new Enchant_manager_1_15();
 			local_difficulty = new Local_difficulty_1_15();
+			map_editor = new Map_editor_1_15();
 			break;
 		default:
 			Dropper_shop_plugin.instance.getLogger().warning("NMS未能适配!");
@@ -39,6 +44,7 @@ public class NMS_manager {
 			packet_map_chunk_listener = new Packet_map_chunk_listener_1_15();
 			enchant_manager = new Enchant_manager_1_15();
 			local_difficulty = new Local_difficulty_1_15();
+			map_editor = new Map_editor_1_15();
 			break;
 		}
 	}

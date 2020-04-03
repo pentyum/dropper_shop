@@ -1,6 +1,7 @@
 package com.piggest.minecraft.bukkit.custom_map;
 
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
@@ -12,33 +13,26 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.Player;
-import org.bukkit.map.MapCanvas;
-import org.bukkit.map.MapRenderer;
-import org.bukkit.map.MapView;
-
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Color_utils;
 
-public class Character_map_render extends MapRenderer implements ConfigurationSerializable {
+public class Character_map_render extends Static_image_map_render implements ConfigurationSerializable {
 	protected char character;
-	protected BufferedImage image;
 	protected String font_name;
 	protected org.bukkit.Color background_color;
 	protected org.bukkit.Color font_color;
 	protected int font_size;
+	
 	public static final int pic_size = 128;
 
-	public static void draw_mid_char(Graphics2D g, char character, Font font, int pic_size, int font_size) {
+	public static void draw_mid_string(Graphics2D g, String str, Font font, int pic_size, int font_size) {
 		font = font.deriveFont(Font.PLAIN, font_size);
 		g.setFont(font);
-
-		String str = String.valueOf(character);
-
 		FontRenderContext context = g.getFontRenderContext();
 		LineMetrics lineMetrics = font.getLineMetrics(str, context);
-
-		float offset = (pic_size - font_size) / 2;
+		FontMetrics fm = g.getFontMetrics(font);
+		int textWidth = fm.stringWidth(str);
+		float offset = (pic_size - textWidth) / 2;
 		float y = (pic_size + lineMetrics.getAscent() - lineMetrics.getDescent() - lineMetrics.getLeading()) / 2;
 
 		g.drawString(str, offset, y);
@@ -59,7 +53,7 @@ public class Character_map_render extends MapRenderer implements ConfigurationSe
 
 		g.setColor(awt_font_color);
 
-		draw_mid_char(g, character, font, pic_size, font_size);
+		draw_mid_string(g, String.valueOf(character), font, pic_size, font_size);
 
 		g.dispose();
 		return bi;
@@ -67,7 +61,6 @@ public class Character_map_render extends MapRenderer implements ConfigurationSe
 
 	public Character_map_render(org.bukkit.Color background_color, char character, Font font, int font_size,
 			org.bukkit.Color font_color) {
-
 		BufferedImage bi = char_to_image(background_color, character, font, font_size, font_color);
 		this.character = character;
 		this.image = bi;
@@ -75,17 +68,6 @@ public class Character_map_render extends MapRenderer implements ConfigurationSe
 		this.background_color = background_color;
 		this.font_size = font_size;
 		this.font_name = font.getPSName();
-	}
-
-	@Override
-	public void render(MapView map, MapCanvas canvas, Player player) {
-		canvas.drawImage(0, 0, image);
-	}
-
-	@Override
-	public void initialize(MapView map) {
-		super.initialize(map);
-		map.setLocked(true);
 	}
 
 	@Override

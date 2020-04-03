@@ -12,6 +12,7 @@ import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 
 public class Fonts_manager {
 	private final HashMap<String, Font> font_map = new HashMap<>();
+	private Font default_font = null;
 
 	public void register_font(String file_name) throws FontFormatException, IOException {
 		File font_file = new File(Dropper_shop_plugin.instance.getDataFolder(), "./fonts/" + file_name);
@@ -31,7 +32,12 @@ public class Fonts_manager {
 	}
 
 	public Font get_font(String font_name) {
-		return font_map.get(font_name);
+		Font font = font_map.get(font_name);
+		if (font == null) {
+			return this.default_font;
+		} else {
+			return font;
+		}
 	}
 
 	private static class Font_filter implements FilenameFilter {
@@ -60,5 +66,14 @@ public class Fonts_manager {
 				Dropper_shop_plugin.instance.getLogger().warning(file.getName() + "字体错误");
 			}
 		}
+		this.set_default_font(this.get_font("MicrosoftYaHei"));
+	}
+
+	public Font get_default_font() {
+		return this.default_font;
+	}
+
+	public void set_default_font(Font font) {
+		this.default_font = font;
 	}
 }

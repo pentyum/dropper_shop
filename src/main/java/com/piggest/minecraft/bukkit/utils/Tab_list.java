@@ -13,6 +13,7 @@ public class Tab_list {
 	public static final ArrayList<String> true_false_list = new ArrayList<String>();
 	public static final ArrayList<String> world_name_list = new ArrayList<String>();
 	public static final ArrayList<String> color_list = new ArrayList<String>(Color_utils.string_color_map.keySet());
+	public static final List<String> time_format = new ArrayList<String>();
 
 	public static void init() {
 		true_false_list.add("true");
@@ -20,6 +21,8 @@ public class Tab_list {
 		for (World world : Bukkit.getWorlds()) {
 			world_name_list.add(world.getName());
 		}
+		time_format.add("HH:mm:ss");
+		time_format.add("HH:mm");
 	}
 
 	@Nonnull
