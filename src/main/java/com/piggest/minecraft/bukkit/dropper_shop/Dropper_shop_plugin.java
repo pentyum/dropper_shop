@@ -323,9 +323,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		try {
 			this.protocol_manager = ProtocolLibrary.getProtocolManager();
 			protocol_manager.addPacketListener(NMS_manager.packet_map_chunk_listener);
-			this.getLogger().info("生物群系伪装开启成功");
+			this.getLogger().info("生物群系伪装开启成功！");
 		} catch (Exception e) {
-
+			this.getLogger().info("生物群系伪装开启失败，请检查ProtocalLib是否安装！");
 		}
 		// 处理冬天模式完成
 
