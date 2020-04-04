@@ -28,6 +28,7 @@ public class Clock_map_render extends Custom_map_render implements Configuration
 	protected java.awt.Color awt_background_color;
 	protected java.awt.Color awt_font_color;
 	protected int font_size;
+	protected String str_cache;
 
 	public Clock_map_render(org.bukkit.Color background_color, String format, Font font, int font_size,
 			org.bukkit.Color font_color) {
@@ -39,19 +40,27 @@ public class Clock_map_render extends Custom_map_render implements Configuration
 		this.background_color = background_color;
 		this.font_size = font_size;
 		this.font_name = font.getPSName();
-		
+
 		awt_background_color = Color_utils.bukkit_to_awt(background_color);
 		awt_font_color = Color_utils.bukkit_to_awt(font_color);
 	}
 
-	@Override
-	public void render(MapView map, MapCanvas canvas, Player player) {
-		image = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
-
+	public String get_current_string() {
 		Date d = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		return sdf.format(d);
+	}
 
-		String time_str = sdf.format(d);
+	@Override
+	public void render(MapView map, MapCanvas canvas, Player player) {
+		String current_time_string = this.get_current_string();
+		if (current_time_string.equals(this.str_cache)) {
+			return;
+		}
+		this.str_cache = current_time_string;
+
+		image = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
+
 		Graphics2D g = image.createGraphics();
 
 		g.setBackground(awt_background_color);
@@ -60,7 +69,7 @@ public class Clock_map_render extends Custom_map_render implements Configuration
 
 		g.setColor(awt_font_color);
 		Font font = Dropper_shop_plugin.instance.get_fonts_manager().get_font(font_name);
-		Character_map_render.draw_mid_string(g, time_str, font, 128, font_size);
+		Character_map_render.draw_mid_string(g, str_cache, font, 128, font_size);
 
 		g.dispose();
 		canvas.drawImage(0, 0, image);
