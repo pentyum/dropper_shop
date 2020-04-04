@@ -23,10 +23,41 @@ import com.piggest.minecraft.bukkit.utils.Color_utils;
 import com.piggest.minecraft.bukkit.utils.Tab_list;
 
 public class Custom_map_command_executor implements TabExecutor {
+	private static final ArrayList<String> sub_cmd = new ArrayList<String>() {
+		private static final long serialVersionUID = -6116323601639805386L;
+		{
+			add("get_char");
+			add("get_clock");
+		}
+	};
+	private static final ArrayList<String> size_list = new ArrayList<String>() {
+		private static final long serialVersionUID = -4372329620166289408L;
+		{
+			add("18");
+			add("20");
+			add("22");
+			add("24");
+			add("26");
+			add("28");
+			add("32");
+			add("36");
+			add("48");
+			add("60");
+			add("72");
+			add("86");
+			add("100");
+			add("120");
+			add("150");
+			add("200");
+		}
+	};
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-		if (args[0].equalsIgnoreCase("get_map") || args[0].equalsIgnoreCase("get_clock")) {
+		if (args.length == 1) {
+			return Tab_list.contains(sub_cmd, args[0]);
+		}
+		if (args[0].equalsIgnoreCase("get_char") || args[0].equalsIgnoreCase("get_clock")) {
 			if (args.length == 2 || args.length == 6) {
 				return Tab_list.color_list;
 			} else if (args.length == 4) {
@@ -35,6 +66,8 @@ public class Custom_map_command_executor implements TabExecutor {
 				return Tab_list.contains(fonts_list, args[3]);
 			} else if (args.length == 3 && args[0].equalsIgnoreCase("get_clock")) {
 				return Tab_list.time_format;
+			} else if (args.length == 5) {
+				return size_list;
 			}
 		}
 		return null;
@@ -70,7 +103,6 @@ public class Custom_map_command_executor implements TabExecutor {
 			}
 			mapmeta.setLore(lore);
 			item.setItemMeta(meta);
-			map_config.set("map_" + (mapview.getId()), render);
 			maps[i] = item;
 		}
 		return maps;
@@ -78,14 +110,14 @@ public class Custom_map_command_executor implements TabExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (args[0].equalsIgnoreCase("get_map")) {
+		if (args[0].equalsIgnoreCase("get_char")) {
 			if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
 				sender.sendMessage("必须由玩家执行该命令");
 				return true;
 			}
 			Player player = (Player) sender;
 			if (args.length < 6) {
-				player.sendMessage("/custom_map get_map <背景色> <文字内容> <字体> <字号> <文字颜色>。一张图为128*128");
+				player.sendMessage("/custom_map get_char <背景色> <文字内容> <字体> <字号> <文字颜色>。一张图为128*128");
 				return true;
 			}
 			String background_color_string = args[1];
@@ -151,7 +183,6 @@ public class Custom_map_command_executor implements TabExecutor {
 					font_color.getBlue()));
 			mapmeta.setLore(lore);
 			item.setItemMeta(meta);
-			map_config.get_config().set("map_" + (mapview.getId()), render);
 			player.getInventory().addItem(item);
 			return true;
 		} else if (args[0].equalsIgnoreCase("reload")) {

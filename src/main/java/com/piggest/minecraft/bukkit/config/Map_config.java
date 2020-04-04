@@ -28,6 +28,7 @@ public class Map_config extends Ext_config {
 	public MapView create_new_map(Player player, Custom_map_render new_render) {
 		MapView mapview = Bukkit.getServer().createMap(player.getWorld());
 		replace_render(mapview, new_render);
+		this.set("map_" + (mapview.getId()), new_render);
 		return mapview;
 	}
 
