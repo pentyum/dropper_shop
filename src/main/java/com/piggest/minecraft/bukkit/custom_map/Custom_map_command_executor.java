@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -16,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.MapMeta;
-import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 
 import com.piggest.minecraft.bukkit.config.Map_config;
@@ -51,14 +49,10 @@ public class Custom_map_command_executor implements TabExecutor {
 			ItemStack item = new ItemStack(Material.FILLED_MAP);
 			ItemMeta meta = item.getItemMeta();
 			MapMeta mapmeta = (MapMeta) meta;
-			MapView mapview = Bukkit.getServer().createMap(player.getWorld());
-			List<MapRenderer> renders = mapview.getRenderers();
-			for (MapRenderer render : renders) {
-				mapview.removeRenderer(render);
-			}
 			Character_map_render render = new Character_section_map_render(background_color, c, font, font_size,
 					font_color, i);
-			mapview.addRenderer(render);
+			Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
+			MapView mapview = map_config.create_new_map(player, render);
 			mapmeta.setMapView(mapview);
 			mapmeta.setDisplayName(String.valueOf(c));
 			ArrayList<String> lore = new ArrayList<String>();
@@ -76,8 +70,7 @@ public class Custom_map_command_executor implements TabExecutor {
 			}
 			mapmeta.setLore(lore);
 			item.setItemMeta(meta);
-			Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
-			map_config.get_config().set("map_" + (mapview.getId()), render);
+			map_config.set("map_" + (mapview.getId()), render);
 			maps[i] = item;
 		}
 		return maps;
@@ -85,12 +78,12 @@ public class Custom_map_command_executor implements TabExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
-			sender.sendMessage("必须由玩家执行该命令");
-			return true;
-		}
-		Player player = (Player) sender;
 		if (args[0].equalsIgnoreCase("get_map")) {
+			if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
+				sender.sendMessage("必须由玩家执行该命令");
+				return true;
+			}
+			Player player = (Player) sender;
 			if (args.length < 6) {
 				player.sendMessage("/custom_map get_map <背景色> <文字内容> <字体> <字号> <文字颜色>。一张图为128*128");
 				return true;
@@ -119,6 +112,11 @@ public class Custom_map_command_executor implements TabExecutor {
 			player.sendMessage("成功获得\"" + args[2] + "\"，共" + total + "张图");
 			return true;
 		} else if (args[0].equalsIgnoreCase("get_clock")) {
+			if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
+				sender.sendMessage("必须由玩家执行该命令");
+				return true;
+			}
+			Player player = (Player) sender;
 			if (args.length < 6) {
 				player.sendMessage("/custom_map get_clock <背景色> <格式> <字体> <字号> <文字颜色>。");
 				return true;
@@ -138,13 +136,9 @@ public class Custom_map_command_executor implements TabExecutor {
 			ItemStack item = new ItemStack(Material.FILLED_MAP);
 			ItemMeta meta = item.getItemMeta();
 			MapMeta mapmeta = (MapMeta) meta;
-			MapView mapview = Bukkit.getServer().createMap(player.getWorld());
-			List<MapRenderer> renders = mapview.getRenderers();
-			for (MapRenderer render : renders) {
-				mapview.removeRenderer(render);
-			}
 			Clock_map_render render = new Clock_map_render(background_color, args[2], font, font_size, font_color);
-			mapview.addRenderer(render);
+			Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
+			MapView mapview = map_config.create_new_map(player, render);
 			mapmeta.setMapView(mapview);
 			mapmeta.setDisplayName("时钟");
 			ArrayList<String> lore = new ArrayList<String>();
@@ -157,9 +151,12 @@ public class Custom_map_command_executor implements TabExecutor {
 					font_color.getBlue()));
 			mapmeta.setLore(lore);
 			item.setItemMeta(meta);
-			Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
 			map_config.get_config().set("map_" + (mapview.getId()), render);
 			player.getInventory().addItem(item);
+			return true;
+		} else if (args[0].equalsIgnoreCase("reload")) {
+			Dropper_shop_plugin.instance.get_map_config().reload();
+			sender.sendMessage("自定义地图配置重载成功");
 			return true;
 		}
 		return false;

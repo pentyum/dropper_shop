@@ -209,7 +209,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		fonts_manager = new Fonts_manager();
 		fonts_manager.register_all_fonts();
 		this.getLogger().info("字体注册完成");
-		
+
 		this.map_config = new Map_config();
 		this.map_config.load();
 		this.getLogger().info("自定义地图渲染器加载完成");
@@ -325,7 +325,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 			protocol_manager.addPacketListener(NMS_manager.packet_map_chunk_listener);
 			this.getLogger().info("生物群系伪装开启成功！");
 		} catch (Exception e) {
-			this.getLogger().info("生物群系伪装开启失败，请检查ProtocalLib是否安装！");
+			this.getLogger().warning("生物群系伪装开启失败，请检查ProtocalLib是否安装！");
 		}
 		// 处理冬天模式完成
 
@@ -410,7 +410,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	public void onDisable() {
 		this.stop_structure_runner();
 		this.save_structure();
-		
+
 		this.map_config.save();
 		this.lottery_config.save();
 

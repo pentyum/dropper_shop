@@ -21,6 +21,10 @@ public abstract class Ext_config {
 		return this.config;
 	}
 
+	public void set(String key, Object value) {
+		this.config.set(key, value);
+	}
+
 	public void load() {
 		this.config_file = new File(Dropper_shop_plugin.instance.getDataFolder(), file_name);
 		if (!config_file.exists()) {
