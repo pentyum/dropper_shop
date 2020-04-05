@@ -10,10 +10,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 
+import com.piggest.minecraft.bukkit.custom_map.Analog_clock_map_render;
 import com.piggest.minecraft.bukkit.custom_map.Character_map_render;
 import com.piggest.minecraft.bukkit.custom_map.Character_section_map_render;
-import com.piggest.minecraft.bukkit.custom_map.Clock_map_render;
 import com.piggest.minecraft.bukkit.custom_map.Custom_map_render;
+import com.piggest.minecraft.bukkit.custom_map.Digital_clock_map_render;
 
 public class Map_config extends Ext_config {
 	private HashMap<Integer, MapView> custom_map_map = new HashMap<>();
@@ -22,7 +23,8 @@ public class Map_config extends Ext_config {
 		super("maps.yml");
 		ConfigurationSerialization.registerClass(Character_map_render.class);
 		ConfigurationSerialization.registerClass(Character_section_map_render.class);
-		ConfigurationSerialization.registerClass(Clock_map_render.class);
+		ConfigurationSerialization.registerClass(Digital_clock_map_render.class);
+		ConfigurationSerialization.registerClass(Analog_clock_map_render.class);
 	}
 
 	public MapView create_new_map(Player player, Custom_map_render new_render) {

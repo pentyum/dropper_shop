@@ -22,7 +22,7 @@ public class Character_map_render extends Static_image_map_render implements Con
 	protected org.bukkit.Color background_color;
 	protected org.bukkit.Color font_color;
 	protected int font_size;
-	
+
 	public static final int pic_size = 128;
 
 	public static void draw_mid_string(Graphics2D g, String str, Font font, int pic_size, int font_size) {
@@ -92,4 +92,5 @@ public class Character_map_render extends Static_image_map_render implements Con
 				font_color);
 		return new_render;
 	}
+
 }

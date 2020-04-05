@@ -40,12 +40,15 @@ public abstract class Dynamic_string_map_render extends Custom_map_render {
 
 	@Override
 	public void render(MapView map, MapCanvas canvas, Player player) {
-		String current_time_string = this.get_current_string();
-		if (current_time_string.equals(this.str_cache)) {
+		String current_string = this.get_current_string();
+		if (current_string.equals(this.str_cache)) {
 			return;
 		}
-		this.str_cache = current_time_string;
+		this.str_cache = current_string;
+		this.refresh(map, canvas, player);
+	}
 
+	public void refresh(MapView map, MapCanvas canvas, Player player) {
 		image = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
 
 		Graphics2D g = image.createGraphics();
@@ -61,5 +64,4 @@ public abstract class Dynamic_string_map_render extends Custom_map_render {
 		g.dispose();
 		canvas.drawImage(0, 0, image);
 	}
-
 }
