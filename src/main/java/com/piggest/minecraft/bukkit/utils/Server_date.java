@@ -20,14 +20,22 @@ public class Server_date {
 		return start_date;
 	}
 
-	public static String formatDate(Calendar date) {
-		SimpleDateFormat timeFt = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+	public static String formatDate(Calendar date, String format) {
+		SimpleDateFormat timeFt = new SimpleDateFormat(format);
 		String timeStr = (date == null ? "" : timeFt.format(date.getTime()));
 		return timeStr;
 	}
 
+	public static String formatDate(Calendar date) {
+		return formatDate(date, "yyyy-MM-dd HH:mm");
+	}
+
 	public static String get_format_world_date(World world) {
 		return formatDate(get_world_date(world));
+	}
+
+	public static String get_format_world_date(World world, String format) {
+		return formatDate(get_world_date(world), format);
 	}
 
 	public static double get_solar_dec(World world) {

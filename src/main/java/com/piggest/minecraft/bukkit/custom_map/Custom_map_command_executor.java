@@ -68,6 +68,8 @@ public class Custom_map_command_executor implements TabExecutor {
 				return Tab_list.time_format;
 			} else if (args.length == 5) {
 				return size_list;
+			} else if (args.length == 7) {
+				return Tab_list.world_name_list;
 			}
 		}
 		return null;
@@ -150,7 +152,7 @@ public class Custom_map_command_executor implements TabExecutor {
 			}
 			Player player = (Player) sender;
 			if (args.length < 6) {
-				player.sendMessage("/custom_map get_clock <背景色> <格式> <字体> <字号> <文字颜色>。");
+				player.sendMessage("/custom_map get_clock <背景色> <格式> <字体> <字号> <文字颜色> <世界名称(可选)>。");
 				return true;
 			}
 			String background_color_string = args[1];
@@ -164,11 +166,15 @@ public class Custom_map_command_executor implements TabExecutor {
 			String font_color_string = args[5];
 			Color background_color = Color_utils.string_color_map.get(background_color_string);
 			Color font_color = Color_utils.string_color_map.get(font_color_string);
-
+			String world_name = null;
+			if (args.length >= 7) {
+				world_name = args[6];
+			}
 			ItemStack item = new ItemStack(Material.FILLED_MAP);
 			ItemMeta meta = item.getItemMeta();
 			MapMeta mapmeta = (MapMeta) meta;
-			Clock_map_render render = new Clock_map_render(background_color, args[2], font, font_size, font_color);
+			Clock_map_render render = new Clock_map_render(background_color, args[2], font, font_size, font_color,
+					world_name);
 			Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
 			MapView mapview = map_config.create_new_map(player, render);
 			mapmeta.setMapView(mapview);
