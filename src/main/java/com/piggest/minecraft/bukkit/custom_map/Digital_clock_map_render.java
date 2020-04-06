@@ -2,7 +2,7 @@ package com.piggest.minecraft.bukkit.custom_map;
 
 import java.awt.Font;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +17,7 @@ import com.piggest.minecraft.bukkit.utils.Server_date;
 public class Digital_clock_map_render extends Dynamic_string_map_render implements ConfigurationSerializable {
 	protected String world_name = null;
 	protected String format = "HH:mm:ss";
+	protected Calendar date;
 
 	public Digital_clock_map_render(org.bukkit.Color background_color, String format, Font font, int font_size,
 			org.bukkit.Color font_color, String world_name) {
@@ -33,14 +34,15 @@ public class Digital_clock_map_render extends Dynamic_string_map_render implemen
 
 	@Override
 	public String get_current_string() {
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		if (this.world_name == null) {
-			Date d = new Date();
-			SimpleDateFormat sdf = new SimpleDateFormat(format);
-			return sdf.format(d);
+			this.date = Calendar.getInstance();
+			return sdf.format(date.getTime());
 		} else {
 			World world = Bukkit.getWorld(world_name);
 			if (world != null) {
-				return Server_date.get_format_world_date(world, format);
+				this.date = Server_date.get_world_date(world);
+				return sdf.format(date.getTime());
 			}
 		}
 		return format;

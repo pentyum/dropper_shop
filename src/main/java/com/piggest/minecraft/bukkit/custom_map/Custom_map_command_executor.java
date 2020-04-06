@@ -136,7 +136,31 @@ public class Custom_map_command_executor implements TabExecutor {
 		item.setItemMeta(meta);
 		return item;
 	}
-
+	
+	public static ItemStack generate_analog_clock_map(Player player, Color background_color, String style, Font font,
+			int font_size, Color font_color, String world_name) {
+		ItemStack item = new ItemStack(Material.FILLED_MAP);
+		ItemMeta meta = item.getItemMeta();
+		MapMeta mapmeta = (MapMeta) meta;
+		Digital_clock_map_render render = new Analog_clock_map_render(background_color, style, font, font_size,
+				font_color, world_name);
+		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
+		MapView mapview = map_config.create_new_map(player, render);
+		mapmeta.setMapView(mapview);
+		mapmeta.setDisplayName("时钟");
+		ArrayList<String> lore = new ArrayList<String>();
+		lore.add(String.format("§r背景颜色: (%d,%d,%d)", background_color.getRed(), background_color.getGreen(),
+				background_color.getBlue()));
+		lore.add(String.format("§r样式: %s", style));
+		lore.add("§r字体: " + font.getFontName(Locale.SIMPLIFIED_CHINESE));
+		lore.add("§r字号: " + font_size);
+		lore.add(String.format("§r文字颜色: (%d,%d,%d)", font_color.getRed(), font_color.getGreen(), font_color.getBlue()));
+		lore.add(String.format("§r世界: %s", world_name == null ? "真实世界" : world_name));
+		mapmeta.setLore(lore);
+		item.setItemMeta(meta);
+		return item;
+	}
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (args[0].equalsIgnoreCase("get_char")) {
@@ -216,6 +240,44 @@ public class Custom_map_command_executor implements TabExecutor {
 				world_name = args[6];
 			}
 			ItemStack item = generate_digital_clock_map(player, background_color, args[2], font, font_size, font_color,
+					world_name);
+			player.getInventory().addItem(item);
+			return true;
+		} else if (args[0].equalsIgnoreCase("get_analog_clock")) {
+			if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
+				sender.sendMessage("必须由玩家执行该命令");
+				return true;
+			}
+			Player player = (Player) sender;
+			if (args.length < 6) {
+				player.sendMessage("/custom_map get_analog_clock <背景色> <样式种类> <字体> <字号> <文字颜色> <世界名称(可选)>。");
+				return true;
+			}
+			String background_color_string = args[1];
+			Font font = Dropper_shop_plugin.instance.get_fonts_manager().get_font(args[3]);
+			int font_size = 28;
+			try {
+				font_size = Integer.parseInt(args[4]);
+			} catch (NumberFormatException e) {
+				player.sendMessage("字号格式错误，已设置为" + font_size);
+			}
+			String font_color_string = args[5];
+			Color background_color = Color_utils.string_color_map.get(background_color_string);
+			Color font_color = Color_utils.string_color_map.get(font_color_string);
+			if (background_color == null) {
+				player.sendMessage("背景颜色错误");
+				return true;
+			}
+			if (font_color == null) {
+				player.sendMessage("字体颜色错误");
+				return true;
+			}
+
+			String world_name = null;
+			if (args.length >= 7) {
+				world_name = args[6];
+			}
+			ItemStack item = generate_analog_clock_map(player, background_color, args[2], font, font_size, font_color,
 					world_name);
 			player.getInventory().addItem(item);
 			return true;
