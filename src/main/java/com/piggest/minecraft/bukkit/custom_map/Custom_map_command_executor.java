@@ -60,15 +60,20 @@ public class Custom_map_command_executor implements TabExecutor {
 		if (args.length == 1) {
 			return Tab_list.contains(sub_cmd, args[0]);
 		}
-		if (args[0].equalsIgnoreCase("get_char") || args[0].equalsIgnoreCase("get_digital_clock")) {
+		if (args[0].equalsIgnoreCase("get_char") || args[0].equalsIgnoreCase("get_digital_clock")
+				|| args[0].equalsIgnoreCase("get_analog_clock")) {
 			if (args.length == 2 || args.length == 6) {
 				return Tab_list.color_list;
 			} else if (args.length == 4) {
 				Set<String> fonts_set = Dropper_shop_plugin.instance.get_fonts_manager().get_all_name();
 				ArrayList<String> fonts_list = new ArrayList<String>(fonts_set);
 				return Tab_list.contains(fonts_list, args[3]);
-			} else if (args.length == 3 && args[0].equalsIgnoreCase("get_digital_clock")) {
-				return Tab_list.time_format;
+			} else if (args.length == 3) {
+				if (args[0].equalsIgnoreCase("get_digital_clock")) {
+					return Tab_list.time_format;
+				} else if (args[0].equalsIgnoreCase("get_analog_clock")) {
+					return null;
+				}
 			} else if (args.length == 5) {
 				return size_list;
 			} else if (args.length == 7) {
@@ -136,7 +141,7 @@ public class Custom_map_command_executor implements TabExecutor {
 		item.setItemMeta(meta);
 		return item;
 	}
-	
+
 	public static ItemStack generate_analog_clock_map(Player player, Color background_color, String style, Font font,
 			int font_size, Color font_color, String world_name) {
 		ItemStack item = new ItemStack(Material.FILLED_MAP);
@@ -160,7 +165,7 @@ public class Custom_map_command_executor implements TabExecutor {
 		item.setItemMeta(meta);
 		return item;
 	}
-	
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (args[0].equalsIgnoreCase("get_char")) {

@@ -6,12 +6,16 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.Calendar;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
 
 import org.bukkit.Color;
 import org.bukkit.entity.Player;
 import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapView;
 
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Clock_utils;
 
 public class Analog_clock_map_render extends Digital_clock_map_render {
@@ -42,7 +46,7 @@ public class Analog_clock_map_render extends Digital_clock_map_render {
 		int hr = this.date.get(Calendar.HOUR);
 		int min = this.date.get(Calendar.MINUTE);
 		int sec = this.date.get(Calendar.SECOND);
-		Clock_utils.Clock_pos_data pos_data = new Clock_utils.Clock_pos_data(hr, min, sec, pic_size, 0.4, 0.3, 0.2,
+		Clock_utils.Clock_pos_data pos_data = new Clock_utils.Clock_pos_data(hr, min, sec, pic_size, 0.2, 0.3, 0.4,
 				0.05);
 
 		g.setStroke(bstroke_hr);
@@ -58,5 +62,25 @@ public class Analog_clock_map_render extends Digital_clock_map_render {
 
 		g.dispose();
 		canvas.drawImage(0, 0, image);
+	}
+
+	@Override
+	public Map<String, Object> serialize() {
+		Map<String, Object> save = super.serialize();
+		save.put("style", this.style);
+		return save;
+	}
+
+	public static Analog_clock_map_render deserialize(@Nonnull Map<String, Object> args) {
+		org.bukkit.Color background_color = (org.bukkit.Color) args.get("background-color");
+		org.bukkit.Color font_color = (org.bukkit.Color) args.get("font-color");
+		String font_name = (String) args.get("font-name");
+		Font font = Dropper_shop_plugin.instance.get_fonts_manager().get_font(font_name);
+		int font_size = (int) args.get("font-size");
+		String world_name = (String) args.get("world");
+		String style = null;
+		Analog_clock_map_render new_render = new Analog_clock_map_render(background_color, style, font, font_size,
+				font_color, world_name);
+		return new_render;
 	}
 }
