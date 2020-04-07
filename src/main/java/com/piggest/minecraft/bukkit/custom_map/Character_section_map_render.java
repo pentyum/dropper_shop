@@ -13,13 +13,13 @@ public class Character_section_map_render extends Character_map_render {
 	private int section;
 
 	public static int get_side_amount(int font_size) {
-		return font_size / Character_map_render.pic_size + 1;
+		return font_size / Custom_map_render.pic_size + 1;
 	}
 
 	public static BufferedImage get_section_of_image(BufferedImage bi, int side_amount, int section) {
-		int start_y = (section / side_amount) * Character_map_render.pic_size;
-		int start_x = (section % side_amount) * Character_map_render.pic_size;
-		return bi.getSubimage(start_x, start_y, Character_map_render.pic_size, Character_map_render.pic_size);
+		int start_y = (section / side_amount) * Custom_map_render.pic_size;
+		int start_x = (section % side_amount) * Custom_map_render.pic_size;
+		return bi.getSubimage(start_x, start_y, Custom_map_render.pic_size, Custom_map_render.pic_size);
 	}
 
 	public Character_section_map_render(Color background_color, char character, Font font, int font_size,

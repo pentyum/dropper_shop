@@ -23,8 +23,6 @@ public class Character_map_render extends Static_image_map_render implements Con
 	protected org.bukkit.Color font_color;
 	protected int font_size;
 
-	public static final int pic_size = 128;
-
 	public static void draw_mid_string(Graphics2D g, String str, Font font, int pic_size, int font_size) {
 		font = font.deriveFont(Font.PLAIN, font_size);
 		g.setFont(font);
@@ -41,7 +39,7 @@ public class Character_map_render extends Static_image_map_render implements Con
 	public static BufferedImage char_to_image(org.bukkit.Color background_color, char character, Font font,
 			int font_size, org.bukkit.Color font_color) {
 		int side_amount = Character_section_map_render.get_side_amount(font_size);
-		int pic_size = Character_map_render.pic_size * side_amount;
+		int pic_size = Custom_map_render.pic_size * side_amount;
 		BufferedImage bi = new BufferedImage(pic_size, pic_size, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = bi.createGraphics();
 		java.awt.Color awt_background_color = Color_utils.bukkit_to_awt(background_color);

@@ -20,7 +20,7 @@ import com.piggest.minecraft.bukkit.utils.Clock_utils;
 
 public class Analog_clock_map_render extends Digital_clock_map_render {
 	private String style;
-	private int pic_size = Character_map_render.pic_size;
+	private int pic_size = Custom_map_render.pic_size;
 	public final BasicStroke bstroke_sec = new BasicStroke((float)pic_size/100);
 	public final BasicStroke bstroke_min = new BasicStroke((float)pic_size/64);
 	public final BasicStroke bstroke_hr = new BasicStroke((float)pic_size/43);

@@ -24,7 +24,7 @@ public abstract class Dynamic_string_map_render extends Custom_map_render {
 
 	public Dynamic_string_map_render(org.bukkit.Color background_color, Font font, int font_size,
 			org.bukkit.Color font_color) {
-		BufferedImage bi = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage bi = new BufferedImage(Custom_map_render.pic_size, Custom_map_render.pic_size, BufferedImage.TYPE_INT_ARGB);
 		this.image = bi;
 
 		this.font_color = font_color;
@@ -49,12 +49,12 @@ public abstract class Dynamic_string_map_render extends Custom_map_render {
 	}
 
 	public void refresh(MapView map, MapCanvas canvas, Player player) {
-		image = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
+		image = new BufferedImage(Custom_map_render.pic_size, Custom_map_render.pic_size, BufferedImage.TYPE_INT_ARGB);
 
 		Graphics2D g = image.createGraphics();
 
 		g.setBackground(awt_background_color);
-		g.clearRect(0, 0, 128, 128);
+		g.clearRect(0, 0, Custom_map_render.pic_size, Custom_map_render.pic_size);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		g.setColor(awt_font_color);

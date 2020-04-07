@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.MapMeta;
+import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 
 import com.piggest.minecraft.bukkit.config.Map_config;
@@ -29,7 +30,8 @@ public class Custom_map_command_executor implements TabExecutor {
 			add("get_char");
 			add("get_digital_clock");
 			add("get_analog_clock");
-			add("get_command_def_map");
+			add("get_cdm");
+			add("set_cdm");
 			add("reload");
 		}
 	};
@@ -79,6 +81,20 @@ public class Custom_map_command_executor implements TabExecutor {
 			} else if (args.length == 7) {
 				return Tab_list.world_name_list;
 			}
+		} else if (args[0].equalsIgnoreCase("set_cdm")) {
+			if (sender instanceof Player) {
+				Player player = (Player) sender;
+				try {
+					ItemStack item = player.getInventory().getItemInMainHand();
+					MapMeta meta = (MapMeta) item.getItemMeta();
+					int id = meta.getMapView().getId();
+					ArrayList<String> id_list = new ArrayList<String>();
+					id_list.add(String.valueOf(id));
+					return id_list;
+				} catch (Exception e) {
+					return null;
+				}
+			}
 		}
 		return null;
 	}
@@ -95,7 +111,7 @@ public class Custom_map_command_executor implements TabExecutor {
 			Character_map_render render = new Character_section_map_render(background_color, c, font, font_size,
 					font_color, i);
 			Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
-			MapView mapview = map_config.create_new_map(player, render, null);
+			MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
 			mapmeta.setMapView(mapview);
 			mapmeta.setDisplayName(String.valueOf(c));
 			ArrayList<String> lore = new ArrayList<String>();
@@ -126,7 +142,7 @@ public class Custom_map_command_executor implements TabExecutor {
 		Digital_clock_map_render render = new Digital_clock_map_render(background_color, format, font, font_size,
 				font_color, world_name);
 		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
-		MapView mapview = map_config.create_new_map(player, render, null);
+		MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
 		mapmeta.setMapView(mapview);
 		mapmeta.setDisplayName("时钟");
 		ArrayList<String> lore = new ArrayList<String>();
@@ -150,7 +166,7 @@ public class Custom_map_command_executor implements TabExecutor {
 		Digital_clock_map_render render = new Analog_clock_map_render(background_color, style, font, font_size,
 				font_color, world_name);
 		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
-		MapView mapview = map_config.create_new_map(player, render, null);
+		MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
 		mapmeta.setMapView(mapview);
 		mapmeta.setDisplayName("时钟");
 		ArrayList<String> lore = new ArrayList<String>();
@@ -164,6 +180,23 @@ public class Custom_map_command_executor implements TabExecutor {
 		mapmeta.setLore(lore);
 		item.setItemMeta(meta);
 		return item;
+	}
+
+	public static void set_command_def_map(ItemStack item, Player player) {
+		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
+		MapMeta meta = (MapMeta) item.getItemMeta();
+		MapView map;
+		if (meta.hasMapView()) {
+			map = meta.getMapView();
+			map_config.replace_render(map, new Command_map_render(), null);
+		} else {
+			map = map_config.create_new_map(player.getWorld(), new Command_map_render(), null);
+		}
+		meta.setMapView(map);
+		ArrayList<String> lore = new ArrayList<String>();
+		lore.add("§r输入指令/custom_map set_cdm id X Y color可以设置地图像素");
+		meta.setLore(lore);
+		item.setItemMeta(meta);
 	}
 
 	@Override
@@ -285,6 +318,60 @@ public class Custom_map_command_executor implements TabExecutor {
 			ItemStack item = generate_analog_clock_map(player, background_color, args[2], font, font_size, font_color,
 					world_name);
 			player.getInventory().addItem(item);
+			return true;
+		} else if (args[0].equalsIgnoreCase("get_cdm")) {
+			if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
+				sender.sendMessage("必须由玩家执行该命令");
+				return true;
+			}
+			Player player = (Player) sender;
+			ItemStack item = player.getInventory().getItemInMainHand();
+			try {
+				set_command_def_map(item, player);
+			} catch (Exception e) {
+				item = new ItemStack(Material.FILLED_MAP);
+				set_command_def_map(item, player);
+				player.getInventory().addItem(item);
+			}
+			return true;
+		} else if (args[0].equalsIgnoreCase("set_cdm")) {
+			Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
+			if (args.length < 5) {
+				sender.sendMessage("参数数量错误");
+				return true;
+			}
+			int id = 0;
+			int x;
+			int y;
+			byte color;
+			try {
+				id = Integer.parseInt(args[1]);
+			} catch (NumberFormatException e) {
+				sender.sendMessage("地图编号不是数字");
+				return true;
+			}
+			MapRenderer content_render = map_config.get_content_from_map(id);
+			if (content_render == null) {
+				sender.sendMessage("地图不存在");
+				return true;
+			} else if (!(content_render instanceof Command_map_render)) {
+				sender.sendMessage("该地图不是命令控制地图");
+				return true;
+			}
+			Command_map_render cmr = (Command_map_render) content_render;
+			try {
+				x = Integer.parseInt(args[2]);
+				y = Integer.parseInt(args[3]);
+				color = Byte.parseByte(args[4]);
+			} catch (NumberFormatException e) {
+				sender.sendMessage("坐标或颜色不是数字");
+				return true;
+			}
+			if (x >= Custom_map_render.pic_size || y >= Custom_map_render.pic_size || x < 0 || y < 0) {
+				sender.sendMessage("坐标必须在0~127的范围内");
+				return true;
+			}
+			cmr.set_pixel(x, y, color);
 			return true;
 		} else if (args[0].equalsIgnoreCase("reload")) {
 			Dropper_shop_plugin.instance.get_map_config().reload();

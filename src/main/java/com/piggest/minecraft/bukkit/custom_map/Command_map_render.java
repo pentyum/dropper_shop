@@ -22,6 +22,11 @@ public class Command_map_render extends Custom_map_render {
 		}
 	}
 
+	public void set_pixel(int x, int y, byte color) {
+		Pixel_setting setting = new Pixel_setting(x, y, color);
+		this.command_queue.add(setting);
+	}
+
 	@Override
 	public void render(MapView map, MapCanvas canvas, Player player) {
 		Pixel_setting new_setting = this.command_queue.poll();
