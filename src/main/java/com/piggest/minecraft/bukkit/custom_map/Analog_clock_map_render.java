@@ -4,14 +4,12 @@ import java.awt.BasicStroke;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
 import java.util.Calendar;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
 
 import org.bukkit.Color;
-import org.bukkit.entity.Player;
 import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapView;
 
@@ -21,24 +19,25 @@ import com.piggest.minecraft.bukkit.utils.Clock_utils;
 public class Analog_clock_map_render extends Digital_clock_map_render {
 	private String style;
 	private int pic_size = Custom_map_render.pic_size;
-	public final BasicStroke bstroke_sec = new BasicStroke((float)pic_size/100);
-	public final BasicStroke bstroke_min = new BasicStroke((float)pic_size/64);
-	public final BasicStroke bstroke_hr = new BasicStroke((float)pic_size/43);
+	private BasicStroke bstroke_sec;
+	private BasicStroke bstroke_min;
+	private BasicStroke bstroke_hr;
 
-	public Analog_clock_map_render(Color background_color, String style, Font font, int font_size, Color font_color,
-			String world_name) {
-		super(background_color, "HH:mm:ss", font, font_size, font_color, world_name);
+	public Analog_clock_map_render(Analog_clock_background_map_render background, String style, Font font,
+			int font_size, Color font_color, String world_name) {
+		super(background, "HH:mm:ss", font, font_size, font_color, world_name);
 		this.style = style;
+		bstroke_sec = new BasicStroke((float) pic_size / 100);
+		bstroke_min = new BasicStroke((float) pic_size / 64);
+		bstroke_hr = new BasicStroke((float) pic_size / 43);
 	}
 
 	@Override
-	public void refresh(MapView map, MapCanvas canvas, Player player) {
-		image = new BufferedImage(pic_size, pic_size, BufferedImage.TYPE_INT_ARGB);
+	public void refresh(MapView map, MapCanvas canvas) {
+		image = this.background.get_image(pic_size, pic_size);
 
 		Graphics2D g = image.createGraphics();
 
-		g.setBackground(awt_background_color);
-		g.clearRect(0, 0, pic_size, pic_size);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		g.setColor(awt_font_color);
@@ -59,9 +58,9 @@ public class Analog_clock_map_render extends Digital_clock_map_render {
 			g.setStroke(bstroke_sec);
 			g.drawLine(pos_data.sec_tail_x, pos_data.sec_tail_y, pos_data.sec_head_x, pos_data.sec_head_y); // 画秒针
 		}
-		
+
 		g.dispose();
-		canvas.drawImage(0, 0, image);
+		Static_image_map_render.draw_image(canvas, 0, 0, image);
 	}
 
 	@Override
@@ -72,15 +71,15 @@ public class Analog_clock_map_render extends Digital_clock_map_render {
 	}
 
 	public static Analog_clock_map_render deserialize(@Nonnull Map<String, Object> args) {
-		org.bukkit.Color background_color = (org.bukkit.Color) args.get("background-color");
 		org.bukkit.Color font_color = (org.bukkit.Color) args.get("font-color");
 		String font_name = (String) args.get("font-name");
 		Font font = Dropper_shop_plugin.instance.get_fonts_manager().get_font(font_name);
 		int font_size = (int) args.get("font-size");
 		String world_name = (String) args.get("world");
 		String style = null;
-		Analog_clock_map_render new_render = new Analog_clock_map_render(background_color, style, font, font_size,
-				font_color, world_name);
+		Analog_clock_background_map_render background = (Analog_clock_background_map_render) args.get("background");
+		Analog_clock_map_render new_render = new Analog_clock_map_render(background, style, font, font_size, font_color,
+				world_name);
 		return new_render;
 	}
 }

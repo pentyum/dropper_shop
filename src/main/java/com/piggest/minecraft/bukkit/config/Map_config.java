@@ -13,7 +13,9 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 
+import com.piggest.minecraft.bukkit.custom_map.Analog_clock_background_map_render;
 import com.piggest.minecraft.bukkit.custom_map.Analog_clock_map_render;
+import com.piggest.minecraft.bukkit.custom_map.Background_map_render;
 import com.piggest.minecraft.bukkit.custom_map.Character_map_render;
 import com.piggest.minecraft.bukkit.custom_map.Character_section_map_render;
 import com.piggest.minecraft.bukkit.custom_map.Custom_map_render;
@@ -30,6 +32,9 @@ public class Map_config extends Ext_config {
 		ConfigurationSerialization.registerClass(Character_section_map_render.class);
 		ConfigurationSerialization.registerClass(Digital_clock_map_render.class);
 		ConfigurationSerialization.registerClass(Analog_clock_map_render.class);
+
+		ConfigurationSerialization.registerClass(Background_map_render.class);
+		ConfigurationSerialization.registerClass(Analog_clock_background_map_render.class);
 	}
 
 	public MapView create_new_map(World world, Custom_map_render content_render, Custom_map_render edge_render) {
@@ -45,7 +50,7 @@ public class Map_config extends Ext_config {
 	}
 
 	@Nullable
-	public MapRenderer get_background_from_map(int id) {
+	public MapRenderer get_content_from_map(int id) {
 		MapView map = this.custom_map_map.get(id);
 		if (map == null) {
 			return null;
@@ -55,7 +60,7 @@ public class Map_config extends Ext_config {
 	}
 
 	@Nullable
-	public MapRenderer get_content_from_map(int id) {
+	public MapRenderer get_edge_from_map(int id) {
 		MapView map = this.custom_map_map.get(id);
 		if (map == null) {
 			return null;
@@ -64,30 +69,12 @@ public class Map_config extends Ext_config {
 		return renders.get(1);
 	}
 
-	@Nullable
-	public MapRenderer get_edge_from_map(int id) {
-		MapView map = this.custom_map_map.get(id);
-		if (map == null) {
-			return null;
-		}
-		List<MapRenderer> renders = map.getRenderers();
-		return renders.get(2);
-	}
-
-	public void set_background_to_save(int id, Custom_map_render background_render) {
-		this.set("map_" + id + ".background", background_render);
-	}
-
 	public void set_content_to_save(int id, Custom_map_render content_render) {
 		this.set("map_" + id + ".content", content_render);
 	}
 
 	public void set_edge_to_save(int id, Custom_map_render edge_render) {
 		this.set("map_" + id + ".edge", edge_render);
-	}
-
-	public Custom_map_render get_background_from_config(int id) {
-		return (Custom_map_render) this.config.get("map_" + id + ".background");
 	}
 
 	public Custom_map_render get_content_from_config(int id) {
@@ -103,7 +90,6 @@ public class Map_config extends Ext_config {
 		for (Entry<Integer, MapView> entry : this.custom_map_map.entrySet()) {
 			int id = entry.getKey();
 			MapView map = entry.getValue();
-			Custom_map_render background_render = this.get_background_from_config(id);
 			Custom_map_render content_render = this.get_content_from_config(id);
 			Custom_map_render edge_render = this.get_edge_from_config(id);
 			if (content_render != null) {
@@ -123,8 +109,6 @@ public class Map_config extends Ext_config {
 		if (edge_render == null) {
 			edge_render = new Empty_map_render();
 		}
-		MapRenderer background_render = new Empty_map_render();
-		map.addRenderer(background_render);
 		map.addRenderer(content_render);
 		map.addRenderer(edge_render);
 		if (content_render instanceof Custom_map_render) {

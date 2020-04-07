@@ -19,9 +19,9 @@ public class Digital_clock_map_render extends Dynamic_string_map_render implemen
 	protected String format = "HH:mm:ss";
 	protected Calendar date;
 
-	public Digital_clock_map_render(org.bukkit.Color background_color, String format, Font font, int font_size,
+	public Digital_clock_map_render(Background_map_render background, String format, Font font, int font_size,
 			org.bukkit.Color font_color, String world_name) {
-		super(background_color, font, font_size, font_color);
+		super(background, font, font_size, font_color);
 		this.format = format;
 		this.format = this.format.replace('S', '_');
 		if (world_name != null) {
@@ -52,23 +52,23 @@ public class Digital_clock_map_render extends Dynamic_string_map_render implemen
 	public @Nonnull Map<String, Object> serialize() {
 		HashMap<String, Object> save = new HashMap<String, Object>();
 		save.put("format", this.format);
-		save.put("background-color", this.background_color);
 		save.put("font-color", this.font_color);
 		save.put("font-name", this.font_name);
 		save.put("font-size", this.font_size);
 		save.put("world", this.world_name);
+		save.put("background", this.background);
 		return save;
 	}
 
 	public static Digital_clock_map_render deserialize(@Nonnull Map<String, Object> args) {
-		org.bukkit.Color background_color = (org.bukkit.Color) args.get("background-color");
 		org.bukkit.Color font_color = (org.bukkit.Color) args.get("font-color");
 		String format = ((String) args.get("format"));
 		String font_name = (String) args.get("font-name");
 		Font font = Dropper_shop_plugin.instance.get_fonts_manager().get_font(font_name);
 		int font_size = (int) args.get("font-size");
 		String world_name = (String) args.get("world");
-		Digital_clock_map_render new_render = new Digital_clock_map_render(background_color, format, font, font_size,
+		Background_map_render background = (Background_map_render) args.get("background");
+		Digital_clock_map_render new_render = new Digital_clock_map_render(background, format, font, font_size,
 				font_color, world_name);
 		return new_render;
 	}

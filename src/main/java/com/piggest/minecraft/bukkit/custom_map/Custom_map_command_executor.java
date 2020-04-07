@@ -79,7 +79,9 @@ public class Custom_map_command_executor implements TabExecutor {
 			} else if (args.length == 5) {
 				return size_list;
 			} else if (args.length == 7) {
-				return Tab_list.world_name_list;
+				if (args[0].equalsIgnoreCase("get_digital_clock") || args[0].equalsIgnoreCase("get_analog_clock")) {
+					return Tab_list.world_name_list;
+				}
 			}
 		} else if (args[0].equalsIgnoreCase("set_cdm")) {
 			if (sender instanceof Player) {
@@ -108,8 +110,9 @@ public class Custom_map_command_executor implements TabExecutor {
 			ItemStack item = new ItemStack(Material.FILLED_MAP);
 			ItemMeta meta = item.getItemMeta();
 			MapMeta mapmeta = (MapMeta) meta;
-			Character_map_render render = new Character_section_map_render(background_color, c, font, font_size,
-					font_color, i);
+			Background_map_render background = new Background_map_render(background_color);
+			Character_map_render render = new Character_section_map_render(background, c, font, font_size, font_color,
+					i);
 			Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
 			MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
 			mapmeta.setMapView(mapview);
@@ -139,8 +142,9 @@ public class Custom_map_command_executor implements TabExecutor {
 		ItemStack item = new ItemStack(Material.FILLED_MAP);
 		ItemMeta meta = item.getItemMeta();
 		MapMeta mapmeta = (MapMeta) meta;
-		Digital_clock_map_render render = new Digital_clock_map_render(background_color, format, font, font_size,
-				font_color, world_name);
+		Background_map_render background = new Background_map_render(background_color);
+		Digital_clock_map_render render = new Digital_clock_map_render(background, format, font, font_size, font_color,
+				world_name);
 		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
 		MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
 		mapmeta.setMapView(mapview);
@@ -163,8 +167,9 @@ public class Custom_map_command_executor implements TabExecutor {
 		ItemStack item = new ItemStack(Material.FILLED_MAP);
 		ItemMeta meta = item.getItemMeta();
 		MapMeta mapmeta = (MapMeta) meta;
-		Digital_clock_map_render render = new Analog_clock_map_render(background_color, style, font, font_size,
-				font_color, world_name);
+		Analog_clock_background_map_render background = new Analog_clock_background_map_render(background_color, 128);
+		Digital_clock_map_render render = new Analog_clock_map_render(background, style, font, font_size, font_color,
+				world_name);
 		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
 		MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
 		mapmeta.setMapView(mapview);

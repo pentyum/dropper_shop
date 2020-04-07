@@ -24,4 +24,8 @@ public class Empty_map_render extends Custom_map_render implements Configuration
 	public static Empty_map_render deserialize(@Nonnull Map<String, Object> args) {
 		return new Empty_map_render();
 	}
+
+	@Override
+	public void refresh(MapView map, MapCanvas canvas) {
+	}
 }

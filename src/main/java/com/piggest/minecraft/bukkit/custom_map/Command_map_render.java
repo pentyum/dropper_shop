@@ -36,4 +36,9 @@ public class Command_map_render extends Custom_map_render {
 		canvas.setPixel(new_setting.x, new_setting.y, new_setting.color);
 	}
 
+	@Override
+	public void refresh(MapView map, MapCanvas canvas) {
+		
+	}
+
 }

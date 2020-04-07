@@ -22,9 +22,9 @@ public class Character_section_map_render extends Character_map_render {
 		return bi.getSubimage(start_x, start_y, Custom_map_render.pic_size, Custom_map_render.pic_size);
 	}
 
-	public Character_section_map_render(Color background_color, char character, Font font, int font_size,
+	public Character_section_map_render(Background_map_render background, char character, Font font, int font_size,
 			Color font_color, int section) {
-		super(background_color, character, font, font_size, font_color);
+		super(background, character, font, font_size, font_color);
 		int side_amount = get_side_amount(font_size);
 		this.image = get_section_of_image(this.image, side_amount, section);
 		this.section = section;
@@ -38,14 +38,14 @@ public class Character_section_map_render extends Character_map_render {
 	}
 
 	public static Character_section_map_render deserialize(@Nonnull Map<String, Object> args) {
-		Color background_color = (Color) args.get("background-color");
 		Color font_color = (Color) args.get("font-color");
 		char character = ((String) args.get("character")).charAt(0);
 		String font_name = (String) args.get("font-name");
 		Font font = Dropper_shop_plugin.instance.get_fonts_manager().get_font(font_name);
 		int font_size = (int) args.get("font-size");
 		int section = (int) args.get("section");
-		Character_section_map_render new_render = new Character_section_map_render(background_color, character, font,
+		Background_map_render background = (Background_map_render) args.get("background");
+		Character_section_map_render new_render = new Character_section_map_render(background, character, font,
 				font_size, font_color, section);
 		return new_render;
 	}
