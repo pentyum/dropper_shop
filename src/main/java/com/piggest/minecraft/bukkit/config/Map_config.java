@@ -27,11 +27,28 @@ public class Map_config extends Ext_config {
 		ConfigurationSerialization.registerClass(Analog_clock_map_render.class);
 	}
 
-	public MapView create_new_map(Player player, Custom_map_render new_render) {
+	public MapView create_new_map(Player player, Custom_map_render content_render, Custom_map_render edge_render) {
 		MapView mapview = Bukkit.getServer().createMap(player.getWorld());
-		replace_render(mapview, new_render);
-		this.set("map_" + (mapview.getId()), new_render);
+		replace_render(mapview, content_render, edge_render);
+		this.set_content(mapview.getId(), content_render);
+		this.set_edge(mapview.getId(), edge_render);
 		return mapview;
+	}
+
+	public void set_content(int id, Custom_map_render content_render) {
+		this.set("map_" + id + ".content", content_render);
+	}
+
+	public void set_edge(int id, Custom_map_render edge_render) {
+		this.set("map_" + id + ".edge", edge_render);
+	}
+
+	public Custom_map_render get_content(int id) {
+		return (Custom_map_render) this.config.get("map_" + id + ".content");
+	}
+
+	public Custom_map_render get_edge(int id) {
+		return (Custom_map_render) this.config.get("map_" + id + ".edge");
 	}
 
 	public void reload() {
@@ -39,18 +56,26 @@ public class Map_config extends Ext_config {
 		for (Entry<Integer, MapView> entry : this.custom_map_map.entrySet()) {
 			int id = entry.getKey();
 			MapView map = entry.getValue();
-			Custom_map_render new_render = (Custom_map_render) this.get_config().get("map_" + id);
-			replace_render(map, new_render);
+			Custom_map_render edge_render = this.get_edge(id);
+			Custom_map_render content_render = this.get_content(id);
+			if (content_render != null) {
+				replace_render(map, content_render, edge_render);
+			}
 		}
 	}
 
-	public void replace_render(MapView map, MapRenderer new_render) {
+	public void replace_render(MapView map, MapRenderer content_render, MapRenderer edge_render) {
 		List<MapRenderer> renders = map.getRenderers();
 		for (MapRenderer render : renders) {
 			map.removeRenderer(render);
 		}
-		map.addRenderer(new_render);
-		if (new_render instanceof Custom_map_render) {
+		if (content_render != null) {
+			map.addRenderer(content_render);
+		}
+		if (edge_render != null) {
+			map.addRenderer(edge_render);
+		}
+		if (content_render instanceof Custom_map_render) {
 			this.custom_map_map.put(map.getId(), map);
 		}
 	}

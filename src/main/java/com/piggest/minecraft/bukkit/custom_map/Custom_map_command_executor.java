@@ -95,7 +95,7 @@ public class Custom_map_command_executor implements TabExecutor {
 			Character_map_render render = new Character_section_map_render(background_color, c, font, font_size,
 					font_color, i);
 			Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
-			MapView mapview = map_config.create_new_map(player, render);
+			MapView mapview = map_config.create_new_map(player, render, null);
 			mapmeta.setMapView(mapview);
 			mapmeta.setDisplayName(String.valueOf(c));
 			ArrayList<String> lore = new ArrayList<String>();
@@ -126,7 +126,7 @@ public class Custom_map_command_executor implements TabExecutor {
 		Digital_clock_map_render render = new Digital_clock_map_render(background_color, format, font, font_size,
 				font_color, world_name);
 		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
-		MapView mapview = map_config.create_new_map(player, render);
+		MapView mapview = map_config.create_new_map(player, render, null);
 		mapmeta.setMapView(mapview);
 		mapmeta.setDisplayName("时钟");
 		ArrayList<String> lore = new ArrayList<String>();
@@ -150,7 +150,7 @@ public class Custom_map_command_executor implements TabExecutor {
 		Digital_clock_map_render render = new Analog_clock_map_render(background_color, style, font, font_size,
 				font_color, world_name);
 		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
-		MapView mapview = map_config.create_new_map(player, render);
+		MapView mapview = map_config.create_new_map(player, render, null);
 		mapmeta.setMapView(mapview);
 		mapmeta.setDisplayName("时钟");
 		ArrayList<String> lore = new ArrayList<String>();
