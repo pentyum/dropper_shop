@@ -20,9 +20,10 @@ import com.piggest.minecraft.bukkit.utils.Clock_utils;
 
 public class Analog_clock_map_render extends Digital_clock_map_render {
 	private String style;
-	public static final BasicStroke bstroke_sec = new BasicStroke(1);
-	public static final BasicStroke bstroke_min = new BasicStroke(2);
-	public static final BasicStroke bstroke_hr = new BasicStroke(3);
+	private int pic_size = Character_map_render.pic_size;
+	public final BasicStroke bstroke_sec = new BasicStroke((float)pic_size/100);
+	public final BasicStroke bstroke_min = new BasicStroke((float)pic_size/64);
+	public final BasicStroke bstroke_hr = new BasicStroke((float)pic_size/43);
 
 	public Analog_clock_map_render(Color background_color, String style, Font font, int font_size, Color font_color,
 			String world_name) {
@@ -32,7 +33,6 @@ public class Analog_clock_map_render extends Digital_clock_map_render {
 
 	@Override
 	public void refresh(MapView map, MapCanvas canvas, Player player) {
-		int pic_size = Character_map_render.pic_size;
 		image = new BufferedImage(pic_size, pic_size, BufferedImage.TYPE_INT_ARGB);
 
 		Graphics2D g = image.createGraphics();
@@ -59,7 +59,7 @@ public class Analog_clock_map_render extends Digital_clock_map_render {
 			g.setStroke(bstroke_sec);
 			g.drawLine(pos_data.sec_tail_x, pos_data.sec_tail_y, pos_data.sec_head_x, pos_data.sec_head_y); // 画秒针
 		}
-
+		
 		g.dispose();
 		canvas.drawImage(0, 0, image);
 	}
