@@ -167,7 +167,8 @@ public class Custom_map_command_executor implements TabExecutor {
 		ItemStack item = new ItemStack(Material.FILLED_MAP);
 		ItemMeta meta = item.getItemMeta();
 		MapMeta mapmeta = (MapMeta) meta;
-		Analog_clock_background_map_render background = new Analog_clock_background_map_render(background_color, 128);
+		Analog_clock_background_map_render background = new Analog_clock_background_map_render(background_color,
+				font_color, 128);
 		Digital_clock_map_render render = new Analog_clock_map_render(background, style, font, font_size, font_color,
 				world_name);
 		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();

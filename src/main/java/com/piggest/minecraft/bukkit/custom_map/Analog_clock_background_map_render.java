@@ -8,19 +8,23 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import org.bukkit.Color;
+import com.piggest.minecraft.bukkit.utils.Color_utils;
 
 public class Analog_clock_background_map_render extends Background_map_render {
 	protected BufferedImage image;
 	protected int size;
+	protected org.bukkit.Color line_color;
+	protected java.awt.Color awt_line_color;
 	public final BasicStroke bstroke1;
 	public final BasicStroke bstroke2;
 	public final BasicStroke bstroke3;
 
-	public Analog_clock_background_map_render(Color background_color, int size) {
+	public Analog_clock_background_map_render(org.bukkit.Color background_color, org.bukkit.Color line_color,
+			int size) {
 		super(background_color);
 		this.size = size;
-
+		this.line_color = line_color;
+		this.awt_line_color = Color_utils.bukkit_to_awt(line_color);
 		bstroke1 = new BasicStroke((float) size / 100);
 		bstroke2 = new BasicStroke((float) size / 60);
 		bstroke3 = new BasicStroke((float) size / 50);
@@ -33,7 +37,7 @@ public class Analog_clock_background_map_render extends Background_map_render {
 		double alfa;
 
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setColor(java.awt.Color.BLACK);
+		g.setColor(this.awt_line_color);
 
 		for (int i = 0; i <= 360; i += 6) {
 			alfa = Math.toRadians(i); // 角度用弧度表示
@@ -64,13 +68,16 @@ public class Analog_clock_background_map_render extends Background_map_render {
 	public @Nonnull Map<String, Object> serialize() {
 		Map<String, Object> save = super.serialize();
 		save.put("size", this.size);
+		save.put("line-color", this.line_color);
 		return save;
 	}
 
 	public static Analog_clock_background_map_render deserialize(@Nonnull Map<String, Object> args) {
 		org.bukkit.Color background_color = (org.bukkit.Color) args.get("background-color");
 		int size = (int) args.get("size");
-		Analog_clock_background_map_render new_render = new Analog_clock_background_map_render(background_color, size);
+		org.bukkit.Color line_color = (org.bukkit.Color) args.get("line-color");
+		Analog_clock_background_map_render new_render = new Analog_clock_background_map_render(background_color,
+				line_color, size);
 		return new_render;
 	}
 
