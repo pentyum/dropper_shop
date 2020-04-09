@@ -103,6 +103,7 @@ public class Custom_map_command_executor implements TabExecutor {
 
 	public static ItemStack[] generate_char_maps(Player player, Color background_color, char c, Font font,
 			int font_size, Color font_color) {
+		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
 		int side_amount = Character_section_map_render.get_side_amount(font_size);
 		int map_amount = side_amount * side_amount;
 		ItemStack[] maps = new ItemStack[map_amount];
@@ -113,7 +114,6 @@ public class Custom_map_command_executor implements TabExecutor {
 			Background_map_render background = new Background_map_render(background_color);
 			Character_map_render render = new Character_section_map_render(background, c, font, font_size, font_color,
 					i);
-			Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
 			MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
 			mapmeta.setMapView(mapview);
 			mapmeta.setDisplayName(String.valueOf(c));
@@ -124,9 +124,9 @@ public class Custom_map_command_executor implements TabExecutor {
 			lore.add("§r字号: " + font_size);
 			lore.add(String.format("§r文字颜色: (%d,%d,%d)", font_color.getRed(), font_color.getGreen(),
 					font_color.getBlue()));
-			int y = (i / side_amount);
-			int x = (i % side_amount);
 			if (map_amount > 1) {
+				int y = (i / side_amount);
+				int x = (i % side_amount);
 				lore.add(String.format("§r部分: (%d,%d)", x, y));
 				lore.add("§r共 " + map_amount + " 张");
 			}
@@ -162,30 +162,43 @@ public class Custom_map_command_executor implements TabExecutor {
 		return item;
 	}
 
-	public static ItemStack generate_analog_clock_map(Player player, Color background_color, String style, Font font,
+	public static ItemStack[] generate_analog_clock_maps(Player player, Color background_color, String style, Font font,
 			int font_size, Color font_color, String world_name) {
-		ItemStack item = new ItemStack(Material.FILLED_MAP);
-		ItemMeta meta = item.getItemMeta();
-		MapMeta mapmeta = (MapMeta) meta;
-		Analog_clock_background_map_render background = new Analog_clock_background_map_render(background_color,
-				font_color, 128);
-		Digital_clock_map_render render = new Analog_clock_map_render(background, style, font, font_size, font_color,
-				world_name);
 		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
-		MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
-		mapmeta.setMapView(mapview);
-		mapmeta.setDisplayName("时钟");
-		ArrayList<String> lore = new ArrayList<String>();
-		lore.add(String.format("§r背景颜色: (%d,%d,%d)", background_color.getRed(), background_color.getGreen(),
-				background_color.getBlue()));
-		lore.add(String.format("§r样式: %s", style));
-		lore.add("§r字体: " + font.getFontName(Locale.SIMPLIFIED_CHINESE));
-		lore.add("§r字号: " + font_size);
-		lore.add(String.format("§r文字颜色: (%d,%d,%d)", font_color.getRed(), font_color.getGreen(), font_color.getBlue()));
-		lore.add(String.format("§r世界: %s", world_name == null ? "真实世界" : world_name));
-		mapmeta.setLore(lore);
-		item.setItemMeta(meta);
-		return item;
+		int side_amount = Character_section_map_render.get_side_amount(font_size);
+		int map_amount = side_amount * side_amount;
+		ItemStack[] maps = new ItemStack[map_amount];
+		for (int i = 0; i < map_amount; i++) {
+			ItemStack item = new ItemStack(Material.FILLED_MAP);
+			ItemMeta meta = item.getItemMeta();
+			MapMeta mapmeta = (MapMeta) meta;
+			Analog_clock_background_map_render background = new Analog_clock_background_map_render(background_color,
+					font_color, font_size);
+			Digital_clock_map_render render = new Analog_clock_map_render(background, style, font, font_size,
+					font_color, world_name, i);
+			MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
+			mapmeta.setMapView(mapview);
+			mapmeta.setDisplayName("时钟");
+			ArrayList<String> lore = new ArrayList<String>();
+			lore.add(String.format("§r背景颜色: (%d,%d,%d)", background_color.getRed(), background_color.getGreen(),
+					background_color.getBlue()));
+			lore.add(String.format("§r样式: %s", style));
+			lore.add("§r字体: " + font.getFontName(Locale.SIMPLIFIED_CHINESE));
+			lore.add("§r字号: " + font_size);
+			lore.add(String.format("§r文字颜色: (%d,%d,%d)", font_color.getRed(), font_color.getGreen(),
+					font_color.getBlue()));
+			lore.add(String.format("§r世界: %s", world_name == null ? "真实世界" : world_name));
+			if (map_amount > 1) {
+				int y = (i / side_amount);
+				int x = (i % side_amount);
+				lore.add(String.format("§r部分: (%d,%d)", x, y));
+				lore.add("§r共 " + map_amount + " 张");
+			}
+			mapmeta.setLore(lore);
+			item.setItemMeta(meta);
+			maps[i] = item;
+		}
+		return maps;
 	}
 
 	public static void set_command_def_map(ItemStack item, Player player) {
@@ -294,16 +307,16 @@ public class Custom_map_command_executor implements TabExecutor {
 			}
 			Player player = (Player) sender;
 			if (args.length < 6) {
-				player.sendMessage("/custom_map get_analog_clock <背景色> <样式种类> <字体> <字号> <文字颜色> <世界名称(可选)>。");
+				player.sendMessage("/custom_map get_analog_clock <背景色> <样式种类> <字体> <尺寸> <线条颜色> <世界名称(可选)>。");
 				return true;
 			}
 			String background_color_string = args[1];
 			Font font = Dropper_shop_plugin.instance.get_fonts_manager().get_font(args[3]);
-			int font_size = 28;
+			int font_size = 128;
 			try {
 				font_size = Integer.parseInt(args[4]);
 			} catch (NumberFormatException e) {
-				player.sendMessage("字号格式错误，已设置为" + font_size);
+				player.sendMessage("尺寸格式错误，已设置为" + font_size);
 			}
 			String font_color_string = args[5];
 			Color background_color = Color_utils.string_color_map.get(background_color_string);
@@ -321,8 +334,8 @@ public class Custom_map_command_executor implements TabExecutor {
 			if (args.length >= 7) {
 				world_name = args[6];
 			}
-			ItemStack item = generate_analog_clock_map(player, background_color, args[2], font, font_size, font_color,
-					world_name);
+			ItemStack[] item = generate_analog_clock_maps(player, background_color, args[2], font, font_size,
+					font_color, world_name);
 			player.getInventory().addItem(item);
 			return true;
 		} else if (args[0].equalsIgnoreCase("get_cdm")) {

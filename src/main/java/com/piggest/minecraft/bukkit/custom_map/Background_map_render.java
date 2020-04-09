@@ -12,6 +12,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import com.piggest.minecraft.bukkit.utils.Color_utils;
 
 public class Background_map_render implements ConfigurationSerializable {
+	protected BufferedImage image_cache;
 	protected org.bukkit.Color background_color;
 	protected java.awt.Color awt_background_color;
 
@@ -37,12 +38,23 @@ public class Background_map_render implements ConfigurationSerializable {
 		return new_render;
 	}
 
+	public BufferedImage get_image_cache_copy() {
+		int w = this.image_cache.getWidth(null);
+		int h = this.image_cache.getHeight(null);
+		BufferedImage new_img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = new_img.createGraphics();
+		g.drawImage(this.image_cache, 0, 0, null);
+		g.dispose();
+		return new_img;
+	}
+
 	public BufferedImage get_image(int pic_size_x, int pic_size_y) {
 		BufferedImage bi = new BufferedImage(pic_size_x, pic_size_y, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = bi.createGraphics();
 		g.setBackground(awt_background_color);
 		g.clearRect(0, 0, pic_size_x, pic_size_y);
 		g.dispose();
+		this.image_cache = bi;
 		return bi;
 	}
 }

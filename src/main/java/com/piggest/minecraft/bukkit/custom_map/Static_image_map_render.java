@@ -25,12 +25,12 @@ public abstract class Static_image_map_render extends Custom_map_render {
 			this.render_completed = true;
 		}
 	}
-	
+
 	@Override
 	public void refresh(MapView map, MapCanvas canvas) {
 		draw_image(canvas, 0, 0, image);
 	}
-	
+
 	public static interface IntToByteFunction {
 		byte applyAsByte(int i);
 	}
@@ -42,6 +42,7 @@ public abstract class Static_image_map_render extends Custom_map_render {
 		});
 	}
 
+	@SuppressWarnings("deprecation")
 	public static byte[] imageToBytes(@Nonnull Image image) {
 		BufferedImage temp = new BufferedImage(image.getWidth(null), image.getHeight(null),
 				BufferedImage.TYPE_INT_ARGB);
@@ -54,13 +55,7 @@ public abstract class Static_image_map_render extends Custom_map_render {
 
 		byte[] result = new byte[temp.getWidth() * temp.getHeight()];
 
-		parallelSetAll_byte(result, new IntToByteFunction() {
-			@SuppressWarnings("deprecation")
-			@Override
-			public byte applyAsByte(int i) {
-				return MapPalette.matchColor(new Color(pixels[i], true));
-			}
-		});
+		parallelSetAll_byte(result, i -> MapPalette.matchColor(new Color(pixels[i], true)));
 		return result;
 	}
 

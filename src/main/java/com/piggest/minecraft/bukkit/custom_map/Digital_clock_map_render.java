@@ -19,6 +19,15 @@ public class Digital_clock_map_render extends Dynamic_string_map_render implemen
 	protected String format = "HH:mm:ss";
 	protected Calendar date;
 
+	/*
+	 * public Digital_clock_map_render(Map<String, Object> args) {
+	 * this((Background_map_render) args.get("background"), (String)
+	 * args.get("format"),
+	 * Dropper_shop_plugin.instance.get_fonts_manager().get_font((String)
+	 * args.get("font-name")), (int) args.get("font-size"), (org.bukkit.Color)
+	 * args.get("font-color"), (String) args.get("world")); }
+	 */
+
 	public Digital_clock_map_render(Background_map_render background, String format, Font font, int font_size,
 			org.bukkit.Color font_color, String world_name) {
 		super(background, font, font_size, font_color);
@@ -62,7 +71,7 @@ public class Digital_clock_map_render extends Dynamic_string_map_render implemen
 
 	public static Digital_clock_map_render deserialize(@Nonnull Map<String, Object> args) {
 		org.bukkit.Color font_color = (org.bukkit.Color) args.get("font-color");
-		String format = ((String) args.get("format"));
+		String format = (String) args.get("format");
 		String font_name = (String) args.get("font-name");
 		Font font = Dropper_shop_plugin.instance.get_fonts_manager().get_font(font_name);
 		int font_size = (int) args.get("font-size");
@@ -72,4 +81,5 @@ public class Digital_clock_map_render extends Dynamic_string_map_render implemen
 				font_color, world_name);
 		return new_render;
 	}
+
 }

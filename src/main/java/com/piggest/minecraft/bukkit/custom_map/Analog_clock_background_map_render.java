@@ -11,7 +11,6 @@ import javax.annotation.Nonnull;
 import com.piggest.minecraft.bukkit.utils.Color_utils;
 
 public class Analog_clock_background_map_render extends Background_map_render {
-	protected BufferedImage image;
 	protected int size;
 	protected org.bukkit.Color line_color;
 	protected java.awt.Color awt_line_color;
@@ -28,11 +27,14 @@ public class Analog_clock_background_map_render extends Background_map_render {
 		bstroke1 = new BasicStroke((float) size / 100);
 		bstroke2 = new BasicStroke((float) size / 60);
 		bstroke3 = new BasicStroke((float) size / 50);
-
-		BufferedImage bi = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
+		
+		int side_amount = Character_section_map_render.get_side_amount(size);
+		int pic_size = Custom_map_render.pic_size * side_amount;
+		
+		BufferedImage bi = new BufferedImage(pic_size, pic_size, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = bi.createGraphics();
 		g.setBackground(awt_background_color);
-		g.clearRect(0, 0, size, size);
+		g.clearRect(0, 0, pic_size, pic_size);
 
 		double alfa;
 
@@ -41,12 +43,12 @@ public class Analog_clock_background_map_render extends Background_map_render {
 
 		for (int i = 0; i <= 360; i += 6) {
 			alfa = Math.toRadians(i); // 角度用弧度表示
-			int xBegin = size / 2 + (int) (0.43 * size * Math.sin(alfa));
-			int yBegin = size / 2 - (int) (0.43 * size * Math.cos(alfa));
-			int xBegin_long = size / 2 + (int) (0.37 * size * Math.sin(alfa));
-			int yBegin_long = size / 2 - (int) (0.37 * size * Math.cos(alfa));
-			int xEnd = size / 2 + (int) (0.47 * size * Math.sin(alfa));
-			int yEnd = size / 2 - (int) (0.47 * size * Math.cos(alfa));
+			int xBegin = pic_size / 2 + (int) (0.43 * size * Math.sin(alfa));
+			int yBegin = pic_size / 2 - (int) (0.43 * size * Math.cos(alfa));
+			int xBegin_long = pic_size / 2 + (int) (0.37 * size * Math.sin(alfa));
+			int yBegin_long = pic_size / 2 - (int) (0.37 * size * Math.cos(alfa));
+			int xEnd = pic_size / 2 + (int) (0.47 * size * Math.sin(alfa));
+			int yEnd = pic_size / 2 - (int) (0.47 * size * Math.cos(alfa));
 
 			g.setStroke(bstroke1);
 			g.drawLine(xBegin, yBegin, xEnd, yEnd);
@@ -61,7 +63,7 @@ public class Analog_clock_background_map_render extends Background_map_render {
 		}
 
 		g.dispose();
-		this.image = bi;
+		this.image_cache = bi;
 	}
 
 	@Override
@@ -83,12 +85,6 @@ public class Analog_clock_background_map_render extends Background_map_render {
 
 	@Override
 	public BufferedImage get_image(int pic_size_x, int pic_size_y) {
-		int w = image.getWidth(null);
-		int h = image.getHeight(null);
-		BufferedImage new_img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = new_img.createGraphics();
-		g.drawImage(image, 0, 0, null);
-		g.dispose();
-		return new_img;
+		return this.get_image_cache_copy();
 	}
 }
