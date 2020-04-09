@@ -59,15 +59,27 @@ public abstract class Static_image_map_render extends Custom_map_render {
 		return result;
 	}
 
-	public static void draw_image(MapCanvas canvas, int x, int y, Image image) {
+	public static void draw_image_not_parallel(MapCanvas canvas, int x, int y, Image image) {
 		byte[] bytes = imageToBytes(image);
-		IntStream.range(0, image.getWidth(null)).parallel().forEach(x2 -> {
+		for (int x2 = 0; x2 < image.getWidth(null); ++x2) {
 			for (int y2 = 0; y2 < image.getHeight(null); ++y2) {
 				byte color = bytes[y2 * image.getWidth(null) + x2];
 				if (color != 0) {
 					canvas.setPixel(x + x2, y + y2, color);
 				}
 			}
+		}
+	}
+
+	public static void draw_image(MapCanvas canvas, int x, int y, Image image) {
+		byte[] bytes = imageToBytes(image);
+		IntStream.range(0, image.getWidth(null)).parallel().forEach(x2 -> {
+			IntStream.range(0, image.getHeight(null)).parallel().forEach(y2 -> {
+				byte color = bytes[y2 * image.getWidth(null) + x2];
+				if (color != 0) {
+					canvas.setPixel(x + x2, y + y2, color);
+				}
+			});
 		});
 	}
 }
