@@ -253,9 +253,9 @@ public class Custom_map_command_executor implements TabExecutor {
 			} catch (ArrayIndexOutOfBoundsException e) {
 				break;
 			}
-			width_n = render.get_width_n();
-			height_n = render.get_height_n();
-			int map_amount = width_n * height_n;
+			int width_n_real = render.get_width_n();
+			int height_n_real = render.get_height_n();
+			int map_amount = width_n_real * height_n_real;
 			MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
 			mapmeta.setMapView(mapview);
 			mapmeta.setDisplayName(pic_name);
