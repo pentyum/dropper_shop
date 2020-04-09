@@ -40,7 +40,7 @@ public class Fonts_manager {
 		}
 	}
 
-	private static class Font_filter implements FilenameFilter {
+	public static class Font_filter implements FilenameFilter {
 		@Override
 		public boolean accept(File dir, String name) {
 			if (name.endsWith(".ttc")) {

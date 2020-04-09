@@ -1,6 +1,8 @@
 package com.piggest.minecraft.bukkit.custom_map;
 
 import java.awt.Font;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -35,6 +37,7 @@ public class Custom_map_command_executor implements TabExecutor {
 			add("get_analog_clock");
 			add("get_cdm");
 			add("set_cdm");
+			add("get_image");
 			add("reload");
 		}
 	};
@@ -57,6 +60,16 @@ public class Custom_map_command_executor implements TabExecutor {
 			add("120");
 			add("150");
 			add("200");
+		}
+	};
+	private static final ArrayList<String> n_list = new ArrayList<String>() {
+		private static final long serialVersionUID = 3906690741866082030L;
+		{
+			add("1");
+			add("2");
+			add("3");
+			add("4");
+			add("5");
 		}
 	};
 
@@ -98,6 +111,21 @@ public class Custom_map_command_executor implements TabExecutor {
 					return id_list;
 				} catch (Exception e) {
 					return null;
+				}
+			}
+		} else if (args[0].equalsIgnoreCase("get_image")) {
+			if (sender instanceof Player) {
+				if (args.length == 2) {
+					File font_folder = new File(Dropper_shop_plugin.instance.getDataFolder(), "images");
+					ArrayList<String> file_name_list = new ArrayList<String>();
+					for (File file : font_folder.listFiles()) {
+						file_name_list.add(file.getName());
+					}
+					return file_name_list;
+				} else if (args.length == 3) {
+					return n_list;
+				} else if (args.length == 4) {
+					return Tab_list.true_false_list;
 				}
 			}
 		}
@@ -204,6 +232,49 @@ public class Custom_map_command_executor implements TabExecutor {
 		return maps;
 	}
 
+	public static ItemStack[] generate_pic_maps(Player player, String pic_name, int n, boolean lock_width)
+			throws IOException {
+		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
+		int width_n = 0;
+		int height_n = 0;
+		if (lock_width == true) {
+			width_n = n;
+		} else {
+			height_n = n;
+		}
+		ArrayList<ItemStack> map_list = new ArrayList<ItemStack>();
+		for (int i = 0; true; i++) {
+			ItemStack item = new ItemStack(Material.FILLED_MAP);
+			ItemMeta meta = item.getItemMeta();
+			MapMeta mapmeta = (MapMeta) meta;
+			Local_image_map_render render;
+			try {
+				render = new Local_image_map_render(pic_name, width_n, height_n, i);
+			} catch (ArrayIndexOutOfBoundsException e) {
+				break;
+			}
+			width_n = render.get_width_n();
+			height_n = render.get_height_n();
+			int map_amount = width_n * height_n;
+			MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
+			mapmeta.setMapView(mapview);
+			mapmeta.setDisplayName(pic_name);
+			ArrayList<String> lore = new ArrayList<String>();
+			lore.add(String.format("§r文件名: %s", pic_name));
+			if (map_amount > 1) {
+				int y = (i / width_n);
+				int x = (i % width_n);
+				lore.add(String.format("§r部分: (%d,%d)", x, y));
+				lore.add("§r共 " + map_amount + " 张");
+			}
+			mapmeta.setLore(lore);
+			item.setItemMeta(meta);
+			map_list.add(item);
+		}
+		ItemStack[] maps = new ItemStack[map_list.size()];
+		return map_list.toArray(maps);
+	}
+
 	public static void set_command_def_map(ItemStack item, Player player) {
 		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
 		MapMeta meta = (MapMeta) item.getItemMeta();
@@ -223,6 +294,9 @@ public class Custom_map_command_executor implements TabExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		if (args.length == 0) {
+			return false;
+		}
 		if (args[0].equalsIgnoreCase("get_char")) {
 			if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
 				sender.sendMessage("必须由玩家执行该命令");
@@ -394,6 +468,39 @@ public class Custom_map_command_executor implements TabExecutor {
 				return true;
 			}
 			cmr.set_pixel(x, y, color);
+			return true;
+		} else if (args[0].equalsIgnoreCase("get_image")) {
+			if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
+				sender.sendMessage("必须由玩家执行该命令");
+				return true;
+			}
+			Player player = (Player) sender;
+			if (args.length < 4) {
+				player.sendMessage("/custom_map get_image <文件名> <格数> <锁定宽度>。锁定宽度表示图片宽度填满格数，否则为图片高度。");
+				return true;
+			}
+			String file_name = args[1];
+			int n = 1;
+			boolean lock_width = true;
+			try {
+				n = Integer.parseInt(args[2]);
+				lock_width = Boolean.parseBoolean(args[3]);
+			} catch (Exception e) {
+				player.sendMessage("格式错误");
+				return true;
+			}
+			if (n > 5) {
+				player.sendMessage("图片格数不能大于5");
+				return true;
+			}
+			ItemStack[] item = null;
+			try {
+				item = generate_pic_maps(player, file_name, n, lock_width);
+			} catch (IOException e) {
+				player.sendMessage("文件错误");
+				return true;
+			}
+			player.getInventory().addItem(item);
 			return true;
 		} else if (args[0].equalsIgnoreCase("reload")) {
 			Dropper_shop_plugin.instance.get_map_config().reload();
