@@ -262,8 +262,8 @@ public class Custom_map_command_executor implements TabExecutor {
 			ArrayList<String> lore = new ArrayList<String>();
 			lore.add(String.format("§r文件名: %s", pic_name));
 			if (map_amount > 1) {
-				int y = (i / width_n);
-				int x = (i % width_n);
+				int y = (i / width_n_real);
+				int x = (i % width_n_real);
 				lore.add(String.format("§r部分: (%d,%d)", x, y));
 				lore.add("§r共 " + map_amount + " 张");
 			}
