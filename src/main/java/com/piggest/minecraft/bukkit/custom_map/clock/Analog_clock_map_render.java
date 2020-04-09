@@ -1,4 +1,4 @@
-package com.piggest.minecraft.bukkit.custom_map;
+package com.piggest.minecraft.bukkit.custom_map.clock;
 
 import java.awt.BasicStroke;
 import java.awt.Font;
@@ -13,6 +13,9 @@ import org.bukkit.Color;
 import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapView;
 
+import com.piggest.minecraft.bukkit.custom_map.Character_section_map_render;
+import com.piggest.minecraft.bukkit.custom_map.Custom_map_render;
+import com.piggest.minecraft.bukkit.custom_map.Static_image_map_render;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Clock_utils;
 

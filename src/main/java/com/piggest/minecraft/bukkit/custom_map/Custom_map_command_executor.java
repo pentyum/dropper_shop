@@ -19,6 +19,9 @@ import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 
 import com.piggest.minecraft.bukkit.config.Map_config;
+import com.piggest.minecraft.bukkit.custom_map.clock.Analog_clock_background_map_render;
+import com.piggest.minecraft.bukkit.custom_map.clock.Analog_clock_map_render;
+import com.piggest.minecraft.bukkit.custom_map.clock.Digital_clock_map_render;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Color_utils;
 import com.piggest.minecraft.bukkit.utils.Tab_list;

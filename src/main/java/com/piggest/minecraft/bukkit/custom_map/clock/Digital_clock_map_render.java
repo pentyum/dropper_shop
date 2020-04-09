@@ -1,4 +1,4 @@
-package com.piggest.minecraft.bukkit.custom_map;
+package com.piggest.minecraft.bukkit.custom_map.clock;
 
 import java.awt.Font;
 import java.text.SimpleDateFormat;
@@ -11,6 +11,9 @@ import javax.annotation.Nonnull;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+
+import com.piggest.minecraft.bukkit.custom_map.Background_map_render;
+import com.piggest.minecraft.bukkit.custom_map.Dynamic_string_map_render;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Server_date;
 

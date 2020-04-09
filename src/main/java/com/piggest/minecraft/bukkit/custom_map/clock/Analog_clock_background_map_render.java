@@ -1,4 +1,4 @@
-package com.piggest.minecraft.bukkit.custom_map;
+package com.piggest.minecraft.bukkit.custom_map.clock;
 
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
@@ -8,6 +8,9 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import com.piggest.minecraft.bukkit.custom_map.Background_map_render;
+import com.piggest.minecraft.bukkit.custom_map.Character_section_map_render;
+import com.piggest.minecraft.bukkit.custom_map.Custom_map_render;
 import com.piggest.minecraft.bukkit.utils.Color_utils;
 
 public class Analog_clock_background_map_render extends Background_map_render {

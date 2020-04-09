@@ -13,14 +13,15 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 
-import com.piggest.minecraft.bukkit.custom_map.Analog_clock_background_map_render;
-import com.piggest.minecraft.bukkit.custom_map.Analog_clock_map_render;
 import com.piggest.minecraft.bukkit.custom_map.Background_map_render;
 import com.piggest.minecraft.bukkit.custom_map.Character_map_render;
 import com.piggest.minecraft.bukkit.custom_map.Character_section_map_render;
 import com.piggest.minecraft.bukkit.custom_map.Custom_map_render;
-import com.piggest.minecraft.bukkit.custom_map.Digital_clock_map_render;
 import com.piggest.minecraft.bukkit.custom_map.Empty_map_render;
+import com.piggest.minecraft.bukkit.custom_map.Local_image_map_render;
+import com.piggest.minecraft.bukkit.custom_map.clock.Analog_clock_background_map_render;
+import com.piggest.minecraft.bukkit.custom_map.clock.Analog_clock_map_render;
+import com.piggest.minecraft.bukkit.custom_map.clock.Digital_clock_map_render;
 
 public class Map_config extends Ext_config {
 	private HashMap<Integer, MapView> custom_map_map = new HashMap<>();
@@ -32,7 +33,8 @@ public class Map_config extends Ext_config {
 		ConfigurationSerialization.registerClass(Character_section_map_render.class);
 		ConfigurationSerialization.registerClass(Digital_clock_map_render.class);
 		ConfigurationSerialization.registerClass(Analog_clock_map_render.class);
-
+		ConfigurationSerialization.registerClass(Local_image_map_render.class);
+		
 		ConfigurationSerialization.registerClass(Background_map_render.class);
 		ConfigurationSerialization.registerClass(Analog_clock_background_map_render.class);
 	}
