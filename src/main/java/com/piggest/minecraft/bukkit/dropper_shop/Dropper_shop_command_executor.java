@@ -1,8 +1,11 @@
 package com.piggest.minecraft.bukkit.dropper_shop;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -17,6 +20,7 @@ import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.teleport_machine.Elements_composition;
+import com.piggest.minecraft.bukkit.utils.Http_download;
 import com.piggest.minecraft.bukkit.utils.Server_date;
 import com.piggest.minecraft.bukkit.utils.Tab_list;
 
@@ -160,6 +164,21 @@ public class Dropper_shop_command_executor implements TabExecutor {
 				} catch (Exception e) {
 					player.sendMessage("时间参数错误");
 					return true;
+				}
+				return true;
+			} else if (args[0].equalsIgnoreCase("download_pic")) {
+				if (args.length < 2) {
+					player.sendMessage("未填写URL");
+					return true;
+				}
+				File images_folder = new File(Dropper_shop_plugin.instance.getDataFolder(), "images");
+				String url = args[1];
+				Http_download downloader = new Http_download(images_folder);
+				try {
+					String result = downloader.download(url);
+					player.sendMessage(result + "已下载");
+				} catch (IOException e) {
+					player.sendMessage(e.getLocalizedMessage());
 				}
 				return true;
 			} else if (args[0].equalsIgnoreCase("get_item")) {

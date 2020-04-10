@@ -82,17 +82,17 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 		return this.gui;
 	}
 
-	/*
+	/**
 	 * Button类型槽位点击时触发
 	 */
 	public abstract void on_button_pressed(Player player, int slot);
 
-	/*
+	/**
 	 * Switch类型槽位点击时触发，on为要切换的状态，返回true表示允许切换
 	 */
 	public abstract boolean on_switch_pressed(Player player, int slot, boolean on);
 
-	/*
+	/**
 	 * Switch类型槽位设置
 	 */
 	public void set_switch(int i, boolean value) {
@@ -109,7 +109,13 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 	}
-
+	
+	/**
+	 * 返回开关状态
+	 * 
+	 * @param i 槽位编号
+	 * @return true表示开启
+	 */
 	public boolean get_switch(int i) {
 		ItemStack item = this.gui.getItem(i);
 		ItemMeta meta = item.getItemMeta();
@@ -191,18 +197,34 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 		}
 	}
 
-	/*
-	 * Item_store类型的槽位放物品时触发，返回true表示允许放入
+	/**
+	 * Item_store类型的槽位放物品时触发。
+	 * 
+	 * @param player 操作的玩家
+	 * @param cursor_item 被放入的物品
+	 * @param slot 槽位编号
+	 * @return 返回true表示允许放入
 	 */
 	public abstract boolean on_put_item(Player player, ItemStack cursor_item, int slot);
 
-	/*
-	 * Item_store类型的槽位取出物品时触发，返回true表示允许放入
+	/**
+	 * Item_store类型的槽位取出物品时触发。
+	 * 
+	 * @param player 操作的玩家
+	 * @param in_item 被取出的物品
+	 * @param slot 槽位编号
+	 * @return 返回true表示允许放入
 	 */
 	public abstract boolean on_take_item(Player player, ItemStack in_item, int slot);
 
-	/*
-	 * Item_store类型的槽位替换物品时触发，返回true表示允许放入
+	/**
+	 * Item_store类型的槽位替换物品时触发
+	 * 
+	 * @param player 操作的玩家
+	 * @param in_item 槽位里面的物品
+	 * @param cursor_item 准备被替换的物品
+	 * @param slot 槽位编号
+	 * @return 返回true表示允许放入
 	 */
 	public abstract boolean on_exchange_item(Player player, ItemStack in_item, ItemStack cursor_item, int slot);
 }

@@ -59,6 +59,10 @@ public class Fonts_manager {
 
 	public void register_all_fonts() {
 		File font_folder = new File(Dropper_shop_plugin.instance.getDataFolder(), "fonts");
+		if (!font_folder.exists()) {
+			font_folder.mkdir();
+			return;
+		}
 		for (File file : font_folder.listFiles(new Font_filter())) {
 			try {
 				register_font(file);

@@ -26,6 +26,12 @@ public class Local_image_map_render extends Static_image_map_render implements C
 		return (int) Math.ceil((double) n * another_length / n_length);
 	}
 
+	/**
+	 * 读取本地图片文件
+	 *
+	 * @throws ArrayIndexOutOfBoundsException
+	 * @throws IOException
+	 */
 	public Local_image_map_render(String path, int width_n, int height_n, int section)
 			throws ArrayIndexOutOfBoundsException, IOException {
 		this.path = path;
@@ -76,15 +82,15 @@ public class Local_image_map_render extends Static_image_map_render implements C
 		g.dispose();
 		this.image = Character_section_map_render.get_section_of_image(image, this.width_n, this.section);
 	}
-	
+
 	public int get_height_n() {
 		return this.height_n;
 	}
-	
+
 	public int get_width_n() {
 		return this.width_n;
 	}
-	
+
 	@Override
 	public @Nonnull Map<String, Object> serialize() {
 		Map<String, Object> save = new HashMap<String, Object>();

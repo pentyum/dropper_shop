@@ -10,13 +10,16 @@ import org.bukkit.entity.Player;
 public abstract class Multi_block_structure extends Structure {
 
 	protected abstract void on_right_click(Player player);
-	
+
 	@Nonnull
 	public Block get_block(int relative_x, int relative_y, int relative_z) {
 		Location loc = this.get_location().add(relative_x, relative_y, relative_z);
 		return loc.getBlock();
 	}
 
+	/**
+	 * 判定该结构是否完整
+	 */
 	public boolean completed() {
 		Structure_manager<? extends Structure> manager = this.get_manager();
 		Material[][][] model = manager.get_model();
@@ -44,6 +47,9 @@ public abstract class Multi_block_structure extends Structure {
 		return true;
 	}
 
+	/**
+	 * 判定某个位置是否在该结构内部
+	 */
 	public boolean in_structure(Location loc) {
 		int[] center = this.get_manager().get_center();
 		int r_x = loc.getBlockX() - this.x + center[0];
