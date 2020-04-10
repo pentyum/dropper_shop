@@ -70,10 +70,12 @@ import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_gui_listener;
 import com.piggest.minecraft.bukkit.lottery_pool.Lottery_pool_manager;
 import com.piggest.minecraft.bukkit.material_ext.Custom_durability;
 import com.piggest.minecraft.bukkit.music_stick.Note_stick_listener;
+import com.piggest.minecraft.bukkit.my_space.My_space_command_executor;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.pigman_switch.Pigman_spawn_listener;
 import com.piggest.minecraft.bukkit.pigman_switch.Pigman_switch;
 import com.piggest.minecraft.bukkit.pigman_switch.Pigman_switch_manager;
+import com.piggest.minecraft.bukkit.printer.Printer_command_executor;
 import com.piggest.minecraft.bukkit.structure.Structure;
 import com.piggest.minecraft.bukkit.structure.Structure_listener;
 import com.piggest.minecraft.bukkit.structure.Structure_manager;
@@ -309,6 +311,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.getCommand("biome_modify").setExecutor(this.biome_modify);
 		this.getCommand("electric_spawner").setExecutor(new Electric_spawner_command_executor());
 		this.getCommand("custom_map").setExecutor(new Custom_map_command_executor());
+		this.getCommand("printer").setExecutor(new Printer_command_executor());
+		this.getCommand("my_space").setExecutor(new My_space_command_executor());
 	}
 
 	@Override

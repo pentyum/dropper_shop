@@ -66,8 +66,18 @@ commands:
     permission-message: You don't have permission
   custom_map:
     description: commands relate to custom map.
-    usage: /<command> [get_char|get_digital_clock|get_analog_clock|get_cdm|set_cdm] backgroundcolor string font fontsize fontcolor
+    usage: /<command> [get_char|get_digital_clock|get_analog_clock|get_cdm|set_cdm|get_image|reload] args
     permission: custom_map.get
+    permission-message: You don't have permission
+  printer:
+    description: commands relate to printer.
+    usage: /<command>
+    permission: printer.use
+    permission-message: You don't have permission
+  my_space:
+    description: commands relate to my space.
+    usage: /<command> cmd args
+    permission: my_space.use
     permission-message: You don't have permission
 permissions:
   dropper_shop.*:
@@ -235,5 +245,14 @@ permissions:
   custom_map.get:
     description: Get a custom map.
     default: op
+  printer.make:
+    description: Make printer.
+    default: true
+  printer.use:
+    description: Use printer.
+    default: true
+  my_space.use:
+    description: Use my space.
+    default: true
 depend: [Vault]
 softdepend: [ProtocolLib]
