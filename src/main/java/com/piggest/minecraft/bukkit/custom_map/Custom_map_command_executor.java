@@ -250,7 +250,7 @@ public class Custom_map_command_executor implements TabExecutor {
 			Local_image_map_render render;
 			try {
 				render = new Local_image_map_render(pic_name, width_n, height_n, i);
-			} catch (ArrayIndexOutOfBoundsException e) {
+			} catch (IndexOutOfBoundsException e) {
 				break;
 			}
 			int width_n_real = render.get_width_n();

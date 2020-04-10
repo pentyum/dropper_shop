@@ -29,11 +29,11 @@ public class Local_image_map_render extends Static_image_map_render implements C
 	/**
 	 * 读取本地图片文件
 	 *
-	 * @throws ArrayIndexOutOfBoundsException
+	 * @throws IndexOutOfBoundsException
 	 * @throws IOException
 	 */
 	public Local_image_map_render(String path, int width_n, int height_n, int section)
-			throws ArrayIndexOutOfBoundsException, IOException {
+			throws IndexOutOfBoundsException, IOException {
 		this.path = path;
 		this.width_n = width_n;
 		this.height_n = height_n;
