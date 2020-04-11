@@ -173,6 +173,12 @@ public class Dropper_shop_command_executor implements TabExecutor {
 				String save_as = null;
 				if (args.length >= 3) {
 					save_as = args[2];
+					if (save_as.contains("/") || save_as.contains("\\") || save_as.contains("<")
+							|| save_as.contains(">") || save_as.contains("|") || save_as.contains(":")
+							|| save_as.contains("\"") || save_as.contains("*") || save_as.contains("?")) {
+						sender.sendMessage("文件名不合法");
+						return true;
+					}
 				}
 				File images_folder = new File(Dropper_shop_plugin.instance.getDataFolder(), "images");
 				String url = args[1];
