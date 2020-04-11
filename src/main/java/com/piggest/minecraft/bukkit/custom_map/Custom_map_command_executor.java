@@ -497,7 +497,7 @@ public class Custom_map_command_executor implements TabExecutor {
 			try {
 				item = generate_pic_maps(player, file_name, n, lock_width);
 			} catch (IOException e) {
-				player.sendMessage("文件错误");
+				player.sendMessage("文件错误" + e.toString());
 				return true;
 			}
 			player.getInventory().addItem(item);

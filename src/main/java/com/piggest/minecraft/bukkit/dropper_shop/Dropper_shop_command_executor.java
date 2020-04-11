@@ -1,8 +1,6 @@
 package com.piggest.minecraft.bukkit.dropper_shop;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -175,12 +173,7 @@ public class Dropper_shop_command_executor implements TabExecutor {
 				File images_folder = new File(Dropper_shop_plugin.instance.getDataFolder(), "images");
 				String url = args[1];
 				Http_download downloader = new Http_download(images_folder);
-				try {
-					String result = downloader.download(url);
-					player.sendMessage(result + "已下载");
-				} catch (IOException | InterruptedException | URISyntaxException e) {
-					player.sendMessage(e.getLocalizedMessage());
-				}
+				downloader.download(sender,url);
 				return true;
 			} else if (args[0].equalsIgnoreCase("get_item")) {
 				if (!player.hasPermission("dropper_shop.get_item")) {
