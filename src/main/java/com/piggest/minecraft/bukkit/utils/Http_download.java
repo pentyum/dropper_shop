@@ -12,6 +12,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -38,14 +41,14 @@ public class Http_download {
 		return paths[paths.length - 1];
 	}
 
-	public void download(CommandSender sender, String url) {
+	public void download(@Nullable CommandSender sender, @Nonnull String url, @Nullable String save_as) {
 		final CommandSender real_sender = sender == null ? Bukkit.getConsoleSender() : sender;
 		real_sender.sendMessage("开始下载" + url);
 		new BukkitRunnable() {
 			@Override
 			public void run() {
 				try {
-					String file_name = Http_download.this.download(url);
+					String file_name = Http_download.this.download(url, save_as);
 					real_sender.sendMessage(file_name + "已完成下载");
 				} catch (IOException | InterruptedException | URISyntaxException e) {
 					real_sender.sendMessage("下载发生错误");
@@ -56,13 +59,16 @@ public class Http_download {
 
 	}
 
-	private String download(String url) throws IOException, InterruptedException, URISyntaxException {
+	private String download(@Nonnull String url, @Nullable String save_as)
+			throws IOException, InterruptedException, URISyntaxException {
 		HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5)).build();
 		URL url_obj = new URL(url);
 		URI uri = url_obj.toURI();
 
-		String file_name = get_file_name(url_obj);
-
+		String file_name = save_as;
+		if (file_name == null) {
+			file_name = get_file_name(url_obj);
+		}
 		HttpRequest request = HttpRequest.newBuilder().uri(uri).GET().build();
 
 		HttpResponse<InputStream> response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());

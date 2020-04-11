@@ -165,15 +165,19 @@ public class Dropper_shop_command_executor implements TabExecutor {
 					return true;
 				}
 				return true;
-			} else if (args[0].equalsIgnoreCase("download_pic")) {
+			} else if (args[0].equalsIgnoreCase("download_img")) {
 				if (args.length < 2) {
-					player.sendMessage("未填写URL");
+					player.sendMessage("未填写URL，格式 download_img <URL> <保存的文件名(可选)>");
 					return true;
+				}
+				String save_as = null;
+				if (args.length >= 3) {
+					save_as = args[2];
 				}
 				File images_folder = new File(Dropper_shop_plugin.instance.getDataFolder(), "images");
 				String url = args[1];
 				Http_download downloader = new Http_download(images_folder);
-				downloader.download(sender,url);
+				downloader.download(sender, url, save_as);
 				return true;
 			} else if (args[0].equalsIgnoreCase("get_item")) {
 				if (!player.hasPermission("dropper_shop.get_item")) {
