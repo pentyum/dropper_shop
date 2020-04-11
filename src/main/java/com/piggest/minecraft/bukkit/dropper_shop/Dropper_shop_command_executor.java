@@ -2,6 +2,7 @@ package com.piggest.minecraft.bukkit.dropper_shop;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -177,7 +178,7 @@ public class Dropper_shop_command_executor implements TabExecutor {
 				try {
 					String result = downloader.download(url);
 					player.sendMessage(result + "已下载");
-				} catch (IOException e) {
+				} catch (IOException | InterruptedException | URISyntaxException e) {
 					player.sendMessage(e.getLocalizedMessage());
 				}
 				return true;
