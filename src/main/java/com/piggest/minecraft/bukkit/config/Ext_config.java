@@ -29,6 +29,9 @@ public abstract class Ext_config {
 		this.config_file = new File(Dropper_shop_plugin.instance.getDataFolder(), file_name);
 		if (!config_file.exists()) {
 			try {
+				if (config_file.getParentFile() != null && !config_file.getParentFile().exists()) {
+					config_file.getParentFile().mkdirs();
+				}
 				config_file.createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();

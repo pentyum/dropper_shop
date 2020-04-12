@@ -7,9 +7,9 @@ import com.piggest.minecraft.bukkit.structure.Structure;
 
 public class Structure_config extends Ext_config {
 	private String structure_type_name;
-	
+
 	public Structure_config(World world, String structure_type_name) {
-		super("structure_" + structure_type_name + "_" + world.getName() + ".yml");
+		super("structures/" + world.getName() + "/" + structure_type_name + ".yml");
 		this.structure_type_name = structure_type_name;
 	}
 
