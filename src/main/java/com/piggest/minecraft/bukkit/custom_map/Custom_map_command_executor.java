@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -20,6 +22,7 @@ import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 
+import com.google.zxing.WriterException;
 import com.piggest.minecraft.bukkit.config.Map_config;
 import com.piggest.minecraft.bukkit.custom_map.clock.Analog_clock_background_map_render;
 import com.piggest.minecraft.bukkit.custom_map.clock.Analog_clock_map_render;
@@ -38,6 +41,7 @@ public class Custom_map_command_executor implements TabExecutor {
 			add("get_cdm");
 			add("set_cdm");
 			add("get_image");
+			add("get_qr_code");
 			add("reload");
 		}
 	};
@@ -275,6 +279,28 @@ public class Custom_map_command_executor implements TabExecutor {
 		return map_list.toArray(maps);
 	}
 
+	public static ItemStack generate_qr_code_map(Player player, @Nullable String title, String text, int margin)
+			throws WriterException {
+		ItemStack item = new ItemStack(Material.FILLED_MAP);
+		ItemMeta meta = item.getItemMeta();
+		MapMeta mapmeta = (MapMeta) meta;
+		Qr_code_map_render render = new Qr_code_map_render(text, margin);
+		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
+		MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
+		mapmeta.setMapView(mapview);
+		if (title == null) {
+			title = "二维码";
+		}
+		mapmeta.setDisplayName(title);
+		ArrayList<String> lore = new ArrayList<String>();
+		String content = text.length() > 16 ? (text.substring(0, 16) + "...") : text;
+		lore.add(String.format("§r内容: %s", content));
+		lore.add(String.format("§r边框宽度: %d", margin));
+		mapmeta.setLore(lore);
+		item.setItemMeta(meta);
+		return item;
+	}
+
 	public static void set_command_def_map(ItemStack item, Player player) {
 		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
 		MapMeta meta = (MapMeta) item.getItemMeta();
@@ -498,6 +524,30 @@ public class Custom_map_command_executor implements TabExecutor {
 				item = generate_pic_maps(player, file_name, n, lock_width);
 			} catch (IOException e) {
 				player.sendMessage("文件错误" + e.toString());
+				return true;
+			}
+			player.getInventory().addItem(item);
+			return true;
+		} else if (args[0].equalsIgnoreCase("get_qr_code")) {
+			if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
+				sender.sendMessage("必须由玩家执行该命令");
+				return true;
+			}
+			Player player = (Player) sender;
+			if (args.length < 2) {
+				player.sendMessage("/custom_map get_qr_code <内容> <标题>");
+				return true;
+			}
+			String text = args[1];
+			String title = null;
+			if (args.length >= 3) {
+				title = args[2];
+			}
+			ItemStack item = null;
+			try {
+				item = generate_qr_code_map(player, title, text, 3);
+			} catch (WriterException e) {
+				player.sendMessage("二维码生成错误" + e.toString());
 				return true;
 			}
 			player.getInventory().addItem(item);
