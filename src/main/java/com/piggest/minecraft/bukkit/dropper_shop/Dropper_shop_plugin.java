@@ -400,6 +400,11 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		return true;
 	}
 
+	public void save_maps() {
+		this.getLogger().info("正在保存自定义地图数据");
+		this.map_config.save();
+	}
+
 	public void remove_recipe() {
 		Iterator<Recipe> i = Bukkit.recipeIterator();
 		while (i.hasNext()) {
@@ -412,12 +417,14 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
+		this.getLogger().info("停止运行结构");
 		this.stop_structure_runner();
 		this.save_structure();
 
-		this.map_config.save();
+		this.save_maps();
 		this.lottery_config.save();
 
+		this.getLogger().info("移除合成表");
 		this.remove_recipe();
 	}
 

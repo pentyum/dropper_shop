@@ -14,5 +14,6 @@ public class Config_auto_saver extends BukkitRunnable {
 	@Override
 	public void run() {
 		plugin.save_structure();
+		plugin.save_maps();
 	}
 }
