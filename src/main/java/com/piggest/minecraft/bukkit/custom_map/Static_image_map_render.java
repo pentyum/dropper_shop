@@ -30,7 +30,11 @@ public abstract class Static_image_map_render extends Custom_map_render {
 	public void refresh(MapView map, MapCanvas canvas) {
 		draw_image(canvas, 0, 0, image);
 	}
-
+	
+	public BufferedImage get_image() {
+		return this.image;
+	}
+	
 	public static interface IntToByteFunction {
 		byte applyAsByte(int i);
 	}

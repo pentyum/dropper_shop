@@ -6,25 +6,16 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.utils.Qr_code_utils;
 
 public class Qr_code_map_render extends Static_image_map_render implements ConfigurationSerializable {
 	private String text;
 	private int margin = 3;
 
 	public Qr_code_map_render(String text, int margin) throws WriterException {
-		QRCodeWriter qrCodeWriter = new QRCodeWriter();
-		HashMap<EncodeHintType, Object> hints = new HashMap<EncodeHintType, Object>();
-		hints.put(EncodeHintType.MARGIN, margin);
-		BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, Custom_map_render.pic_size,
-				Custom_map_render.pic_size, hints);
-		this.image = MatrixToImageWriter.toBufferedImage(bitMatrix);
+		this.image = Qr_code_utils.generate(text, margin);
 		this.text = text;
 		this.margin = margin;
 	}

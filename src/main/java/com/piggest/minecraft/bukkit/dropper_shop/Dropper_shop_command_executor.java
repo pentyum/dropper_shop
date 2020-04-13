@@ -1,9 +1,11 @@
 package com.piggest.minecraft.bukkit.dropper_shop;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -12,14 +14,25 @@ import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.MapMeta;
+import org.bukkit.map.MapRenderer;
+import org.bukkit.util.RayTraceResult;
+import org.bukkit.util.Vector;
+
+import com.google.zxing.NotFoundException;
 import com.piggest.minecraft.bukkit.config.Price_config;
+import com.piggest.minecraft.bukkit.custom_map.Static_image_map_render;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.teleport_machine.Elements_composition;
 import com.piggest.minecraft.bukkit.utils.Http_download;
+import com.piggest.minecraft.bukkit.utils.Qr_code_utils;
 import com.piggest.minecraft.bukkit.utils.Server_date;
 import com.piggest.minecraft.bukkit.utils.Tab_list;
 
@@ -184,6 +197,52 @@ public class Dropper_shop_command_executor implements TabExecutor {
 				String url = args[1];
 				Http_download downloader = new Http_download(images_folder);
 				downloader.download(sender, url, save_as);
+				return true;
+			} else if (args[0].equalsIgnoreCase("scan_qr_code")) {
+				Vector direction = player.getLocation().getDirection();
+				RayTraceResult result = player.getWorld().rayTraceEntities(player.getEyeLocation(), direction, 5,
+						new Predicate<Entity>() {
+							@Override
+							public boolean test(Entity e) {
+								if (e.getType() == EntityType.PLAYER) {
+									return false;
+								}
+								return true;
+							}
+						});
+				if (result == null) {
+					player.sendMessage("未检测到实体");
+					return true;
+				}
+				Entity entity = result.getHitEntity();
+				if (entity == null) {
+					player.sendMessage("未检测到实体");
+					return true;
+				}
+				if (entity instanceof ItemFrame) {
+					ItemFrame item_frame = (ItemFrame) entity;
+					ItemStack item = item_frame.getItem();
+					if (!Grinder.is_empty(item)) {
+						if (item.getType() == Material.FILLED_MAP) {
+							MapMeta meta = (MapMeta) item.getItemMeta();
+							if (meta.hasMapView()) {
+								MapRenderer render = meta.getMapView().getRenderers().get(0);
+								if (render instanceof Static_image_map_render) {
+									Static_image_map_render image_render = (Static_image_map_render) render;
+									BufferedImage image = image_render.get_image();
+									String text = null;
+									try {
+										text = Qr_code_utils.scan(image);
+									} catch (NotFoundException e) {
+										player.sendMessage("没有检测到二维码");
+										return true;
+									}
+									player.sendMessage("二维码扫描结果: " + text);
+								}
+							}
+						}
+					}
+				}
 				return true;
 			} else if (args[0].equalsIgnoreCase("get_item")) {
 				if (!player.hasPermission("dropper_shop.get_item")) {
