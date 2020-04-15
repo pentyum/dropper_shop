@@ -6,7 +6,20 @@ import org.bukkit.event.inventory.InventoryType;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 
 public class Printer_manager extends Gui_structure_manager<Printer> {
-
+	private Material[][][] model = {
+			{ { Material.IRON_BLOCK, Material.IRON_BLOCK, Material.IRON_BLOCK },
+					{ Material.IRON_BLOCK, Material.DIAMOND_BLOCK, Material.IRON_BLOCK },
+					{ Material.IRON_BLOCK, Material.IRON_BLOCK, Material.IRON_BLOCK } },
+			{ { Material.IRON_BLOCK, Material.GLASS, Material.IRON_BLOCK },
+					{ Material.GLASS, Material.CARTOGRAPHY_TABLE, Material.GLASS },
+					{ Material.IRON_BLOCK, Material.GLASS, Material.IRON_BLOCK } },
+			{ { Material.IRON_BLOCK, Material.IRON_BLOCK, Material.IRON_BLOCK },
+					{ Material.IRON_BLOCK,  Material.DIAMOND_BLOCK, Material.IRON_BLOCK },
+					{ Material.IRON_BLOCK, Material.IRON_BLOCK, Material.IRON_BLOCK } } };
+	private int center_x = 1;
+	private int center_y = 1;
+	private int center_z = 1;
+	
 	public Printer_manager() {
 		super(Printer.class);
 	}
@@ -38,14 +51,12 @@ public class Printer_manager extends Gui_structure_manager<Printer> {
 
 	@Override
 	public Material[][][] get_model() {
-		// TODO 自动生成的方法存根
-		return null;
+		return this.model;
 	}
 
 	@Override
 	public int[] get_center() {
-		// TODO 自动生成的方法存根
-		return null;
+		return new int[] { this.center_x, this.center_y, this.center_z };
 	}
 
 }
