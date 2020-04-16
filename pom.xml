@@ -20,9 +20,9 @@
 			<url>https://repo.dmulloy2.net/nexus/repository/public/</url>
 		</repository>
 		<repository>
-            <id>placeholderapi</id>
-            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
-        </repository>
+			<id>placeholderapi</id>
+			<url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+		</repository>
 		<!-- And so on -->
 	</repositories>
 	<dependencies>
