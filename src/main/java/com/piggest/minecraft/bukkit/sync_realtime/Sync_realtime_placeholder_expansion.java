@@ -1,15 +1,20 @@
 package com.piggest.minecraft.bukkit.sync_realtime;
 
+import java.util.Calendar;
+
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.utils.Server_date;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
-public class Sync_realtime_place_holder_expansion extends PlaceholderExpansion {
+public class Sync_realtime_placeholder_expansion extends PlaceholderExpansion {
 	private Dropper_shop_plugin plugin;
 
-	public Sync_realtime_place_holder_expansion(Dropper_shop_plugin plugin) {
+	public Sync_realtime_placeholder_expansion(Dropper_shop_plugin plugin) {
 		this.plugin = plugin;
 	}
 
@@ -38,7 +43,7 @@ public class Sync_realtime_place_holder_expansion extends PlaceholderExpansion {
 	 */
 	@Override
 	public String getIdentifier() {
-		return "droppershop";
+		return "droppershop.syncrealtime";
 	}
 
 	@Override
@@ -59,6 +64,35 @@ public class Sync_realtime_place_holder_expansion extends PlaceholderExpansion {
 	 */
 	@Override
 	public String onPlaceholderRequest(Player player, String identifier) {
+		String[] values = identifier.split(".");
+		if (values.length > 0) {
+			World world = null;
+			if (values.length > 1) {
+				world = Bukkit.getWorld(values[1]);
+				if (world == null) {
+					return null;
+				}
+			}
+			Calendar date = Server_date.get_world_date(world);
+			switch (values[0]) {
+			case "year":
+				return String.valueOf(date.get(Calendar.YEAR));
+			case "month":
+				return String.valueOf(date.get(Calendar.MONTH));
+			case "day":
+				return String.valueOf(date.get(Calendar.DAY_OF_MONTH));
+			case "hour":
+				return String.valueOf(date.get(Calendar.HOUR_OF_DAY));
+			case "hour12":
+				return String.valueOf(date.get(Calendar.HOUR));
+			case "hour24":
+				return String.valueOf(date.get(Calendar.HOUR_OF_DAY));
+			case "minute":
+				return String.valueOf(date.get(Calendar.MINUTE));
+			case "second":
+				return String.valueOf(date.get(Calendar.SECOND));
+			}
+		}
 		return null;
 	}
 

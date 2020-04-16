@@ -3,6 +3,9 @@ package com.piggest.minecraft.bukkit.utils;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.bukkit.World;
 
 public class Server_date {
@@ -10,13 +13,15 @@ public class Server_date {
 		return (int) (world.getFullTime() / 24000);
 	}
 
-	public static int get_world_min(World world) {
+	public static int get_world_min(@Nonnull World world) {
 		return (int) (world.getFullTime() * 60 / 1000);
 	}
 
-	public static Calendar get_world_date(World world) {
+	public static Calendar get_world_date(@Nullable World world) {
 		Calendar start_date = Calendar.getInstance();
-		start_date.set(2000, 1, 1, 6, get_world_min(world), 0);
+		if(world != null) {
+			start_date.set(2000, 1, 1, 6, get_world_min(world), 0);
+		}
 		return start_date;
 	}
 

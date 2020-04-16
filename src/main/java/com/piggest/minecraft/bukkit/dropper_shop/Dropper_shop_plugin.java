@@ -82,7 +82,7 @@ import com.piggest.minecraft.bukkit.structure.Structure_listener;
 import com.piggest.minecraft.bukkit.structure.Structure_manager;
 import com.piggest.minecraft.bukkit.sync_realtime.Sync_realtime;
 import com.piggest.minecraft.bukkit.sync_realtime.Sync_realtime_command_executor;
-import com.piggest.minecraft.bukkit.sync_realtime.Sync_realtime_place_holder_expansion;
+import com.piggest.minecraft.bukkit.sync_realtime.Sync_realtime_placeholder_expansion;
 import com.piggest.minecraft.bukkit.teleport_machine.Elements_listener;
 import com.piggest.minecraft.bukkit.teleport_machine.Radio_manager;
 import com.piggest.minecraft.bukkit.teleport_machine.Teleport_machine;
@@ -253,7 +253,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		if (plugin != null) { // 如果是null，意味着插件没有安装，因为服务器获取不到PAPI
 			this.getLogger().info("启动PlaceholderAPI支持");
 			this.use_placeholder = true;
-			new Sync_realtime_place_holder_expansion(this).register();
+			new Sync_realtime_placeholder_expansion(this).register();
 		} else {
 			this.getLogger().info("未找到PlaceholderAPI!");
 		}
