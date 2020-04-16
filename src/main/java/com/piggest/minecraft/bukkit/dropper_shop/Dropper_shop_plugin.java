@@ -15,6 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -106,6 +107,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private Economy economy = null;
 	private FileConfiguration config = null;
 	private Lottery_config lottery_config = null;
+	private boolean use_placeholder = false;
 
 	private int exp_saver_max_structure_level = 0;
 	private int exp_saver_anvil_upgrade_need = 0;
@@ -245,6 +247,16 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		return !hasNull;
 	}
 
+	private void init_placeholder() {
+		Plugin plugin = Bukkit.getPluginManager().getPlugin("PlaceholderAPI"); // 用服务端获取PAPI插件
+		if (plugin != null) { // 如果是null，意味着插件没有安装，因为服务器获取不到PAPI
+			this.getLogger().info("启动PlaceholderAPI支持");
+			this.use_placeholder = true;
+		} else {
+			this.getLogger().info("未找到PlaceholderAPI!");
+		}
+	}
+
 	private void init_structure_manager() {
 		this.getLogger().info("加载结构管理器");
 		this.shop_manager = new Dropper_shop_manager();
@@ -351,6 +363,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 			getLogger().severe("初始化Vault失败,请检测是否已经安装Vault插件和经济插件");
 			return;
 		}
+
+		this.init_placeholder();
 
 		// 初始化插件特有物品
 		Powder.init_powder();
@@ -585,4 +599,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		return this.map_config;
 	}
 
+	public boolean use_placeholder() {
+		return this.use_placeholder;
+	}
 }

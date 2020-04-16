@@ -33,11 +33,11 @@ public abstract class Dynamic_string_map_render extends Custom_map_render {
 		awt_font_color = Color_utils.bukkit_to_awt(font_color);
 	}
 
-	public abstract String get_current_string();
+	public abstract String get_current_string(Player player);
 
 	@Override
 	public void render(MapView map, MapCanvas canvas, Player player) {
-		String current_string = this.get_current_string();
+		String current_string = this.get_current_string(player);
 		if (current_string.equals(this.str_cache)) {
 			return;
 		}

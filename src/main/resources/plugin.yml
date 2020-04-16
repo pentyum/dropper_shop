@@ -255,4 +255,4 @@ permissions:
     description: Use my space.
     default: true
 depend: [Vault]
-softdepend: [ProtocolLib]
+softdepend: [ProtocolLib,PlaceholderAPI]

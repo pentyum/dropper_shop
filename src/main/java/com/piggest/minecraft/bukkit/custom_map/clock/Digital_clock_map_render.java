@@ -11,6 +11,7 @@ import javax.annotation.Nonnull;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.Player;
 
 import com.piggest.minecraft.bukkit.custom_map.Background_map_render;
 import com.piggest.minecraft.bukkit.custom_map.Dynamic_string_map_render;
@@ -45,7 +46,7 @@ public class Digital_clock_map_render extends Dynamic_string_map_render implemen
 	}
 
 	@Override
-	public String get_current_string() {
+	public String get_current_string(Player player) {
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		if (this.world_name == null) {
 			this.date = Calendar.getInstance();
