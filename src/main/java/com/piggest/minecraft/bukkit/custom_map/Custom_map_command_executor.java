@@ -41,6 +41,7 @@ public class Custom_map_command_executor implements TabExecutor {
 			add("get_cdm");
 			add("set_cdm");
 			add("get_image");
+			add("get_gif");
 			add("get_qr_code");
 			add("reload");
 		}
@@ -130,6 +131,17 @@ public class Custom_map_command_executor implements TabExecutor {
 					return n_list;
 				} else if (args.length == 4) {
 					return Tab_list.true_false_list;
+				}
+			}
+		} else if (args[0].equalsIgnoreCase("get_gif")) {
+			if (sender instanceof Player) {
+				if (args.length == 2) {
+					File font_folder = new File(Dropper_shop_plugin.instance.getDataFolder(), "images");
+					ArrayList<String> file_name_list = new ArrayList<String>();
+					for (File file : font_folder.listFiles()) {
+						file_name_list.add(file.getName());
+					}
+					return file_name_list;
 				}
 			}
 		}
@@ -296,6 +308,23 @@ public class Custom_map_command_executor implements TabExecutor {
 		String content = text.length() > 16 ? (text.substring(0, 16) + "...") : text;
 		lore.add(String.format("§r内容: %s", content));
 		lore.add(String.format("§r边框宽度: %d", margin));
+		mapmeta.setLore(lore);
+		item.setItemMeta(meta);
+		return item;
+	}
+
+	public static ItemStack generate_gif_map(Player player, String pic_name) throws IOException {
+		ItemStack item = new ItemStack(Material.FILLED_MAP);
+		ItemMeta meta = item.getItemMeta();
+		MapMeta mapmeta = (MapMeta) meta;
+		Gif_map_render render = new Gif_map_render(pic_name);
+		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
+		MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
+		mapmeta.setMapView(mapview);
+		mapmeta.setDisplayName(pic_name);
+		ArrayList<String> lore = new ArrayList<String>();
+		lore.add(String.format("§r文件名: %s", pic_name));
+		lore.add(String.format("§r帧数: %d", render.get_total_frames()));
 		mapmeta.setLore(lore);
 		item.setItemMeta(meta);
 		return item;
@@ -548,6 +577,26 @@ public class Custom_map_command_executor implements TabExecutor {
 				item = generate_qr_code_map(player, title, text, 3);
 			} catch (WriterException e) {
 				player.sendMessage("二维码生成错误" + e.toString());
+				return true;
+			}
+			player.getInventory().addItem(item);
+			return true;
+		} else if (args[0].equalsIgnoreCase("get_gif")) {
+			if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
+				sender.sendMessage("必须由玩家执行该命令");
+				return true;
+			}
+			Player player = (Player) sender;
+			if (args.length < 2) {
+				player.sendMessage("/custom_map get_gif <文件名>");
+				return true;
+			}
+			String pic_name = args[1];
+			ItemStack item = null;
+			try {
+				item = generate_gif_map(player, pic_name);
+			} catch (IOException e) {
+				player.sendMessage("文件错误" + e.toString());
 				return true;
 			}
 			player.getInventory().addItem(item);

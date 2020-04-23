@@ -18,6 +18,7 @@ import com.piggest.minecraft.bukkit.custom_map.Character_map_render;
 import com.piggest.minecraft.bukkit.custom_map.Character_section_map_render;
 import com.piggest.minecraft.bukkit.custom_map.Custom_map_render;
 import com.piggest.minecraft.bukkit.custom_map.Empty_map_render;
+import com.piggest.minecraft.bukkit.custom_map.Gif_map_render;
 import com.piggest.minecraft.bukkit.custom_map.Local_image_map_render;
 import com.piggest.minecraft.bukkit.custom_map.Qr_code_map_render;
 import com.piggest.minecraft.bukkit.custom_map.clock.Analog_clock_background_map_render;
@@ -36,6 +37,7 @@ public class Map_config extends Ext_config {
 		ConfigurationSerialization.registerClass(Analog_clock_map_render.class);
 		ConfigurationSerialization.registerClass(Local_image_map_render.class);
 		ConfigurationSerialization.registerClass(Qr_code_map_render.class);
+		ConfigurationSerialization.registerClass(Gif_map_render.class);
 		
 		ConfigurationSerialization.registerClass(Background_map_render.class);
 		ConfigurationSerialization.registerClass(Analog_clock_background_map_render.class);

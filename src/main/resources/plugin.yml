@@ -66,7 +66,7 @@ commands:
     permission-message: You don't have permission
   custom_map:
     description: commands relate to custom map.
-    usage: /<command> [get_char|get_digital_clock|get_analog_clock|get_cdm|set_cdm|get_image|reload] args
+    usage: /<command> [get_char|get_digital_clock|get_analog_clock|get_cdm|set_cdm|get_image|get_gif|reload] args
     permission: custom_map.get
     permission-message: You don't have permission
   printer:

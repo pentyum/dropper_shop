@@ -25,7 +25,12 @@ public class Local_image_map_render extends Static_image_map_render implements C
 	public static int get_another_n(int n, int n_length, int another_length) {
 		return (int) Math.ceil((double) n * another_length / n_length);
 	}
-
+	
+	public static BufferedImage resize(BufferedImage image, int width_n, int height_n) {
+		//TO DO
+		return null;
+	}
+	
 	/**
 	 * 读取本地图片文件
 	 *
