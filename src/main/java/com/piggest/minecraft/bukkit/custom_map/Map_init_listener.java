@@ -1,8 +1,12 @@
 package com.piggest.minecraft.bukkit.custom_map;
 
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.server.MapInitializeEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.map.MapView;
 
 import com.piggest.minecraft.bukkit.config.Map_config;
@@ -19,8 +23,29 @@ public class Map_init_listener implements Listener {
 		if (content_render != null) {
 			Dropper_shop_plugin.instance.getLogger()
 					.info("map_" + id + ": " + content_render.getClass().getSimpleName());
-			Dropper_shop_plugin.instance.get_map_config().replace_render(map, content_render,
-					edge_render);
+			Dropper_shop_plugin.instance.get_map_config().replace_render(map, content_render, edge_render);
+		}
+	}
+
+	@EventHandler
+	public void on_map_click(EntityDamageByEntityEvent event) {
+		if (event.isCancelled() == true) {
+			return;
+		}
+		Entity entity = event.getEntity();
+		if (entity instanceof ItemFrame) {
+			ItemFrame item_frame = (ItemFrame) entity;
+			ItemStack item = item_frame.getItem();
+			Custom_map_render c_render = Custom_map_render.get_render_from_item(item);
+			if (c_render != null) {
+				if (c_render.is_locked() == true) {
+					Entity damager = event.getDamager();
+					if (!damager.hasPermission("custom_map.damage_locked_map")) {
+						event.setCancelled(true);
+						return;
+					}
+				}
+			}
 		}
 	}
 }

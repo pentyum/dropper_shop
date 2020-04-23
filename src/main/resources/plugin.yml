@@ -46,7 +46,7 @@ commands:
     permission-message: You don't have permission
   teleport_machine:
     description: commands relate to teleport_machine.
-    usage: /<command> set_online_voltage|set_working_voltage|set_freq|set_bandwidth value
+    usage: /<command> [set_online_voltage|set_working_voltage|set_freq|set_bandwidth] value
     permission: teleport_machine.use
     permission-message: You don't have permission
   watersheep:
@@ -61,12 +61,12 @@ commands:
     permission-message: You don't have permission
   electric_spawner:
     description: commands relate to electric spawner.
-    usage: /<command> charge
+    usage: /<command> charge money
     permission: electric_spawner.use
     permission-message: You don't have permission
   custom_map:
     description: commands relate to custom map.
-    usage: /<command> [get_char|get_digital_clock|get_analog_clock|get_cdm|set_cdm|get_image|get_gif|reload] args
+    usage: /<command> [get_char|get_digital_clock|get_analog_clock|get_cdm|set_cdm|get_image|get_gif|get_qr_code|reload] args
     permission: custom_map.get
     permission-message: You don't have permission
   printer:
@@ -244,6 +244,9 @@ permissions:
     default: op
   custom_map.get:
     description: Get a custom map.
+    default: op
+  custom_map.damage_locked_map:
+    description: Damage a locked custom map.
     default: op
   printer.make:
     description: Make printer.

@@ -25,18 +25,22 @@ public class Qr_code_map_render extends Static_image_map_render implements Confi
 		HashMap<String, Object> save = new HashMap<String, Object>();
 		save.put("text", this.text);
 		save.put("margin", this.margin);
+		save.put("locked", this.locked);
 		return save;
 	}
 
 	public static Qr_code_map_render deserialize(@Nonnull Map<String, Object> args) {
 		String text = (String) args.get("text");
 		int margin = (int) args.get("margin");
+		boolean locked = (boolean) args.get("locked");
 		Qr_code_map_render new_render = null;
 		try {
 			new_render = new Qr_code_map_render(text, margin);
+			new_render.locked = locked;
 		} catch (WriterException e) {
 			Dropper_shop_plugin.instance.getLogger().severe(e.toString());
 		}
 		return new_render;
 	}
+
 }

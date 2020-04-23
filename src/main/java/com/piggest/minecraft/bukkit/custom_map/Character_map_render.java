@@ -75,6 +75,7 @@ public class Character_map_render extends Static_image_map_render implements Con
 		save.put("font-name", this.font_name);
 		save.put("font-size", this.font_size);
 		save.put("background", this.background);
+		save.put("locked", this.locked);
 		return save;
 	}
 
@@ -85,7 +86,9 @@ public class Character_map_render extends Static_image_map_render implements Con
 		Font font = Dropper_shop_plugin.instance.get_fonts_manager().get_font(font_name);
 		int font_size = (int) args.get("font-size");
 		Background_map_render background = (Background_map_render) args.get("background");
+		boolean locked = (boolean) args.get("locked");
 		Character_map_render new_render = new Character_map_render(background, character, font, font_size, font_color);
+		new_render.locked = locked;
 		return new_render;
 	}
 

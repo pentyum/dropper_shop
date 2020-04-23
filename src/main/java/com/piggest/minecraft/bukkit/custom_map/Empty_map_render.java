@@ -28,4 +28,5 @@ public class Empty_map_render extends Custom_map_render implements Configuration
 	@Override
 	public void refresh(MapView map, MapCanvas canvas) {
 	}
+	
 }

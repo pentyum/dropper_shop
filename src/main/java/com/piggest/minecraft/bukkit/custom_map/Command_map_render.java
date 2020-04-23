@@ -40,5 +40,5 @@ public class Command_map_render extends Custom_map_render {
 	public void refresh(MapView map, MapCanvas canvas) {
 		
 	}
-
+	
 }

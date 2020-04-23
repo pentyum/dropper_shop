@@ -92,9 +92,11 @@ public class Analog_clock_map_render extends Digital_clock_map_render {
 		String world_name = (String) args.get("world");
 		String style = null;
 		int section = (int) args.get("section");
+		boolean locked = (boolean) args.get("locked");
 		Analog_clock_background_map_render background = (Analog_clock_background_map_render) args.get("background");
 		Analog_clock_map_render new_render = new Analog_clock_map_render(background, style, font, font_size, font_color,
 				world_name, section);
+		new_render.locked = locked;
 		return new_render;
 	}
 }

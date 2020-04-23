@@ -89,14 +89,17 @@ public class Gif_map_render extends Static_image_map_render implements Configura
 	public @Nonnull Map<String, Object> serialize() {
 		Map<String, Object> save = new HashMap<String, Object>();
 		save.put("path", this.path);
+		save.put("locked", this.locked);
 		return save;
 	}
 
 	public static Gif_map_render deserialize(@Nonnull Map<String, Object> args) {
 		String path = (String) args.get("path");
+		boolean locked = (boolean) args.get("locked");
 		Gif_map_render render = null;
 		try {
 			render = new Gif_map_render(path);
+			render.locked = locked;
 		} catch (IOException e) {
 			Dropper_shop_plugin.instance.getLogger().severe(e.toString());
 		}
@@ -106,4 +109,5 @@ public class Gif_map_render extends Static_image_map_render implements Configura
 	public int get_total_frames() {
 		return this.images.size();
 	}
+
 }

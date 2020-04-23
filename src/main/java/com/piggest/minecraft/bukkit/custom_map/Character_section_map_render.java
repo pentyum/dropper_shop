@@ -45,8 +45,10 @@ public class Character_section_map_render extends Character_map_render {
 		int font_size = (int) args.get("font-size");
 		int section = (int) args.get("section");
 		Background_map_render background = (Background_map_render) args.get("background");
+		boolean locked = (boolean) args.get("locked");
 		Character_section_map_render new_render = new Character_section_map_render(background, character, font,
 				font_size, font_color, section);
+		new_render.locked = locked;
 		return new_render;
 	}
 }

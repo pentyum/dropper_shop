@@ -25,12 +25,12 @@ public class Local_image_map_render extends Static_image_map_render implements C
 	public static int get_another_n(int n, int n_length, int another_length) {
 		return (int) Math.ceil((double) n * another_length / n_length);
 	}
-	
+
 	public static BufferedImage resize(BufferedImage image, int width_n, int height_n) {
-		//TO DO
+		// TO DO
 		return null;
 	}
-	
+
 	/**
 	 * 读取本地图片文件
 	 *
@@ -103,6 +103,7 @@ public class Local_image_map_render extends Static_image_map_render implements C
 		save.put("width-n", this.width_n);
 		save.put("height-n", this.height_n);
 		save.put("section", this.section);
+		save.put("locked", this.locked);
 		return save;
 	}
 
@@ -111,12 +112,15 @@ public class Local_image_map_render extends Static_image_map_render implements C
 		int section = (int) args.get("section");
 		int width_n = (int) args.get("width-n");
 		int height_n = (int) args.get("height-n");
+		boolean locked = (boolean) args.get("locked");
 		Local_image_map_render new_render = null;
 		try {
 			new_render = new Local_image_map_render(path, width_n, height_n, section);
+			new_render.locked = locked;
 		} catch (ArrayIndexOutOfBoundsException | IOException e) {
 			Dropper_shop_plugin.instance.getLogger().severe(e.toString());
 		}
 		return new_render;
 	}
+
 }

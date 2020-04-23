@@ -19,13 +19,12 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.MapMeta;
-import org.bukkit.map.MapRenderer;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import com.google.zxing.NotFoundException;
 import com.piggest.minecraft.bukkit.config.Price_config;
+import com.piggest.minecraft.bukkit.custom_map.Custom_map_render;
 import com.piggest.minecraft.bukkit.custom_map.Static_image_map_render;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
@@ -222,25 +221,18 @@ public class Dropper_shop_command_executor implements TabExecutor {
 				if (entity instanceof ItemFrame) {
 					ItemFrame item_frame = (ItemFrame) entity;
 					ItemStack item = item_frame.getItem();
-					if (!Grinder.is_empty(item)) {
-						if (item.getType() == Material.FILLED_MAP) {
-							MapMeta meta = (MapMeta) item.getItemMeta();
-							if (meta.hasMapView()) {
-								MapRenderer render = meta.getMapView().getRenderers().get(0);
-								if (render instanceof Static_image_map_render) {
-									Static_image_map_render image_render = (Static_image_map_render) render;
-									BufferedImage image = image_render.get_image();
-									String text = null;
-									try {
-										text = Qr_code_utils.scan(image);
-									} catch (NotFoundException e) {
-										player.sendMessage("没有检测到二维码");
-										return true;
-									}
-									player.sendMessage("二维码扫描结果: " + text);
-								}
-							}
+					Custom_map_render render = Custom_map_render.get_render_from_item(item);
+					if (render instanceof Static_image_map_render) {
+						Static_image_map_render image_render = (Static_image_map_render) render;
+						BufferedImage image = image_render.get_image();
+						String text = null;
+						try {
+							text = Qr_code_utils.scan(image);
+						} catch (NotFoundException e) {
+							player.sendMessage("没有检测到二维码");
+							return true;
 						}
+						player.sendMessage("二维码扫描结果: " + text);
 					}
 				}
 				return true;
