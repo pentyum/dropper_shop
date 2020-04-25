@@ -75,6 +75,12 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	private double locked_temp = 290;
 	private String owner;
 
+	/**
+	 * 获取方块温度，单位为开尔文，自然温度由群系温度+高度温度+维度温度+亮度温度控制
+	 * 
+	 * @param block
+	 * @return
+	 */
 	public static double get_block_temperature(Block block) {
 		double base_temp = block.getTemperature() * 20 + 270;
 		double height_temp = (64 - block.getY()) / 30.0;

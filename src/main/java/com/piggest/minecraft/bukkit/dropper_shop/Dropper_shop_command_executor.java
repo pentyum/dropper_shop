@@ -177,6 +177,13 @@ public class Dropper_shop_command_executor implements TabExecutor {
 					return true;
 				}
 				return true;
+			} else if (args[0].equalsIgnoreCase("show_light")) {
+				Block block = player.getLocation().getBlock();
+				byte light = block.getLightLevel();
+				byte sky_light = block.getLightFromSky();
+				byte block_light = block.getLightFromBlocks();
+				player.sendMessage("真实亮度" + light + ",天空亮度" + sky_light + ",方块亮度" + block_light);
+				return true;
 			} else if (args[0].equalsIgnoreCase("download_img")) {
 				if (args.length < 2) {
 					player.sendMessage("未填写URL，格式 download_img <URL> <保存的文件名(可选)>");
