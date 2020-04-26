@@ -301,15 +301,15 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 				return;
 			}
 			int total_probability = 0;
-			String msg = "--------以下为可能召唤出的实体的概率--------";
+			StringBuilder msg = new StringBuilder("--------以下为可能召唤出的实体的概率--------");
 			for (Entity_probability probability : new_probability_list) {
-				msg += String.format("\n%s: %.1f%%", Entity_zh_cn.get_entity_name(probability.first),
-						(float) probability.second / 10);
+				msg.append(String.format("\n%s: %.1f%%", Entity_zh_cn.get_entity_name(probability.first),
+						(float) probability.second / 10));
 				total_probability += probability.second;
 			}
-			msg += String.format("\n总召唤成功概率: %.1f%%", (float) total_probability / 10);
+			msg.append(String.format("\n总召唤成功概率: %.1f%%", (float) total_probability / 10));
 			player.closeInventory();
-			this.send_message(player, msg);
+			this.send_message(player, msg.toString());
 		}
 	}
 
