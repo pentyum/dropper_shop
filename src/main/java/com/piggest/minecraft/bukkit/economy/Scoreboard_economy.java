@@ -108,11 +108,11 @@ public class Scoreboard_economy implements Economy, ConfigurationSerializable {
 	public String format(double amount) {
 		String show_quantity;
 		if (amount > 1e9) {
-			show_quantity = String.format("%.3f G", amount / 1e9);
+			show_quantity = String.format("%.3g G", amount / 1e9);
 		} else if (amount > 1e6) {
-			show_quantity = String.format("%.3f M", amount / 1e6);
+			show_quantity = String.format("%.3g M", amount / 1e6);
 		} else if (amount > 1e3) {
-			show_quantity = String.format("%.3f k", amount / 1e3);
+			show_quantity = String.format("%.3g k", amount / 1e3);
 		} else {
 			show_quantity = String.format("%d ", (int) amount);
 		}

@@ -1,6 +1,7 @@
 package com.piggest.minecraft.bukkit.config;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import net.milkbowl.vault.economy.Economy;
 
 public class Price_config {
 	private Dropper_shop_plugin plugin;
@@ -103,22 +104,23 @@ public class Price_config {
 	}
 	
 	public String get_info() {
+		Economy eco = Dropper_shop_plugin.instance.get_economy();
 		String str = "结构价格一览表\n";
-		str += "磨粉机建立:" + this.make_grinder_price + "金币\n";
-		str += "经验存储器容量升级:" + this.exp_saver_upgrade_base_price + "金币+"
-				+ this.exp_saver_upgrade_level_price + "金币/级\n";
-		str += "经验存储器移除铁砧惩罚:" + this.exp_saver_remove_repaircost_price + "金币\n";
-		str += "抽奖机建立:" + this.make_lottery_pool_price + "金币\n";
-		str += "抽奖机使用:" + this.lottery_price + "金币/次\n";
-		str += "砍树机建立:" + this.make_trees_felling_machine_price + "金币\n";
-		str += "砍树机启动:" + this.start_trees_felling_machine_price + "金币/次\n";
-		str += "避雷针:" + this.anti_thunder_price + "金币/小时\n";
-		str += "高级熔炉建立:" + this.adv_furnace_price + "金币\n";
-		str += "高级熔炉金币容量升级:" + this.exp_saver_upgrade_base_price + "金币+"
-				+ this.exp_saver_upgrade_level_price + "金币/级\n";
-		str += "魔力刷怪机建立:" + this.make_electric_spawner_price + "金币\n";
-		str += "魔力刷怪机查看召唤概率:" + this.look_electric_spawner_price + "金币/次\n";
-		str += "传送机建立:" + this.make_teleport_machine_price + "金币\n";
+		str += "磨粉机建立:" + eco.format(this.make_grinder_price) + "\n";
+		str += "经验存储器容量升级:" +  eco.format(this.exp_saver_upgrade_base_price) + "+"
+				+  eco.format(this.exp_saver_upgrade_level_price) + "/级\n";
+		str += "经验存储器移除铁砧惩罚:" +  eco.format(this.exp_saver_remove_repaircost_price) + "\n";
+		str += "抽奖机建立:" + eco.format(this.make_lottery_pool_price) + "\n";
+		str += "抽奖机使用:" + eco.format(this.lottery_price) + "/次\n";
+		str += "砍树机建立:" + eco.format(this.make_trees_felling_machine_price) + "\n";
+		str += "砍树机启动:" + eco.format(this.start_trees_felling_machine_price) + "/次\n";
+		str += "避雷针:" + eco.format(this.anti_thunder_price) + "/小时\n";
+		str += "高级熔炉建立:" + eco.format(this.adv_furnace_price) + "\n";
+		str += "高级熔炉货币容量升级:" + eco.format(this.exp_saver_upgrade_base_price) + "+"
+				+  eco.format(this.exp_saver_upgrade_level_price) + "/级\n";
+		str += "魔力刷怪机建立:" + eco.format(this.make_electric_spawner_price) + "\n";
+		str += "魔力刷怪机查看召唤概率:" + eco.format(this.look_electric_spawner_price) + "/次\n";
+		str += "传送机建立:" + eco.format(this.make_teleport_machine_price) + "\n";
 		return str;
 	}
 
