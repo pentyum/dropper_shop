@@ -23,7 +23,7 @@ public class Scoreboard_economy implements Economy, ConfigurationSerializable {
 	private Scoreboard scoreboard = null;
 	private Objective objective;
 	private int id;
-	private final int max_bal = 1000000000;
+	private final int max_bal = 2000000000;
 
 	public Scoreboard_economy(String currency_name, String display_name, int default_balance) {
 		this.name = currency_name;
@@ -31,7 +31,7 @@ public class Scoreboard_economy implements Economy, ConfigurationSerializable {
 		this.default_balance = default_balance;
 	}
 
-	public void register_scoreboard(){
+	public void register_scoreboard() {
 		this.scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
 		this.objective = scoreboard.getObjective(this.name);
 		if (this.objective == null) {
@@ -106,7 +106,18 @@ public class Scoreboard_economy implements Economy, ConfigurationSerializable {
 	 */
 	@Override
 	public String format(double amount) {
-		return String.valueOf((int) amount);
+		String show_quantity;
+		if (amount > 1e9) {
+			show_quantity = String.format("%.3f G", amount / 1e9);
+		} else if (amount > 1e6) {
+			show_quantity = String.format("%.3f M", amount / 1e6);
+		} else if (amount > 1e3) {
+			show_quantity = String.format("%.3f k", amount / 1e3);
+		} else {
+			show_quantity = String.format("%d ", (int) amount);
+		}
+
+		return show_quantity + this.display_name;
 	}
 
 	/**
