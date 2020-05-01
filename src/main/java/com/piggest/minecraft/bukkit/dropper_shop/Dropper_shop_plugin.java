@@ -1,10 +1,10 @@
 package com.piggest.minecraft.bukkit.dropper_shop;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
+
+import com.piggest.minecraft.bukkit.economy.Scoreboard_economy;
+import com.piggest.minecraft.bukkit.economy.Scoreboard_economy_manager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -17,7 +17,6 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.comphenix.protocol.ProtocolLibrary;
@@ -105,7 +104,7 @@ import net.milkbowl.vault.economy.Economy;
 public class Dropper_shop_plugin extends JavaPlugin {
 	public final static int custom_model_data_offset = 15000;
 	public static Dropper_shop_plugin instance = null;
-	private Economy economy = null;
+	private Scoreboard_economy_manager economy = new Scoreboard_economy_manager();
 	private FileConfiguration config = null;
 	private Lottery_config lottery_config = null;
 	private boolean use_placeholder = false;
@@ -151,10 +150,10 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	private HashMap<String, Integer> sync_realtime_worlds = new HashMap<String, Integer>();
 
-	private Listener[] structure_listeners = { new Depository_listener(), new Dropper_shop_listener(),
+	private Listener[] structure_listeners = {new Depository_listener(), new Dropper_shop_listener(),
 			new Upgrade_component_listener(), new Grinder_listener(), new Advanced_furnace_listener(),
 			new Exp_saver_listener(), new Pigman_spawn_listener(), new Anti_thunder_listener(),
-			new Elements_listener() };
+			new Elements_listener()};
 
 	private NMS_manager nms_manager = null;
 	private Config_auto_saver auto_saver = new Config_auto_saver(this);
@@ -233,19 +232,29 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	}
 
 	public Economy get_economy() {
-		return this.economy;
+		return this.economy.get_default_economy();
 	}
 
-	private boolean initVault() {
-		boolean hasNull = false;
-		RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager()
-				.getRegistration(net.milkbowl.vault.economy.Economy.class);
-		if (economyProvider != null) {
-			if ((economy = economyProvider.getProvider()) == null) {
-				hasNull = true;
+	private boolean init_eco() {
+		if (!Bukkit.getPluginManager().isPluginEnabled("Vault")) {
+			return false;
+		}
+		if (this.config.getBoolean("enable-scoreboard-eco")) {
+			this.getLogger().info("计分板货币系统开启");
+			List<?> scoreboard_eco_list = this.config.getList("scoreboard-eco");
+			if (scoreboard_eco_list != null) {
+				for (Object o : scoreboard_eco_list) {
+					if (o instanceof Scoreboard_economy) {
+						Scoreboard_economy eco = (Scoreboard_economy) o;
+						this.economy.register_economy(eco);
+						this.getLogger().info("已注册计分板货币" + eco.getName());
+					}
+				}
 			}
 		}
-		return !hasNull;
+		Economy eco = this.get_economy();
+		this.getLogger().info("经济系统加载完成，目前默认经济系统类型为" + eco.getClass().getName() + "，名称为" + eco.getName() + " " + eco.currencyNameSingular());
+		return true;
 	}
 
 	private void init_placeholder() {
@@ -360,11 +369,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.getCommand("wrench").setExecutor(wrench);
 		// 初始化指令完成
 
-		this.getLogger().info("使用Vault");
-		if (!initVault()) {
-			getLogger().severe("初始化Vault失败,请检测是否已经安装Vault插件和经济插件");
-			return;
-		}
+		this.init_eco();
 
 		this.init_placeholder();
 
@@ -530,8 +535,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	 * 给某玩家扣钱，返回true表示扣钱成功，返回false表示扣钱失败。
 	 */
 	public synchronized boolean cost_player_money(int money, OfflinePlayer player) {
-		if (this.economy.has(player, money)) {
-			this.economy.withdrawPlayer(player, money);
+		if (this.get_economy().has(player, money)) {
+			this.get_economy().withdrawPlayer(player, money);
 			return true;
 		} else {
 			return false;

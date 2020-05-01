@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.Predicate;
 
+import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,6 +21,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
@@ -276,6 +279,12 @@ public class Dropper_shop_command_executor implements TabExecutor {
 				for (ItemStack left_item : left.values()) {
 					player.getWorld().dropItemNaturally(player.getLocation(), left_item);
 				}
+			} else if (args[0].equalsIgnoreCase("get_all_economy")) {
+				for (RegisteredServiceProvider<Economy> eco_provider : Bukkit.getServicesManager().getRegistrations(Economy.class)) {
+					Economy eco = eco_provider.getProvider();
+					player.sendMessage(eco.getClass().getName() + ": " + eco.getName() + " " + eco.currencyNameSingular());
+				}
+				return true;
 			} else {
 				return false;
 			}

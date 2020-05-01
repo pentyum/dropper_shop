@@ -1,30 +1,58 @@
-package com.piggest.minecraft.bukkit.ecomomy;
+package com.piggest.minecraft.bukkit.economy;
 
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.scoreboard.Criterias;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
+import javax.annotation.Nonnull;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class Scoreboard_economy implements Economy {
-	private String name;
-	private String display_name;
-	private Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+public class Scoreboard_economy implements Economy, ConfigurationSerializable {
+	private final String name;
+	private final String display_name;
+	private final int default_balance;
+	private Scoreboard scoreboard = null;
 	private Objective objective;
-	private int max_bal = 1000000000;
+	private int id;
+	private final int max_bal = 1000000000;
 
-	public Scoreboard_economy(String currency_name, String display_name) {
+	public Scoreboard_economy(String currency_name, String display_name, int default_balance) {
 		this.name = currency_name;
 		this.display_name = display_name;
+		this.default_balance = default_balance;
+	}
+
+	public void register_scoreboard(){
+		this.scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
 		this.objective = scoreboard.getObjective(this.name);
 		if (this.objective == null) {
 			this.objective = scoreboard.registerNewObjective(this.name, "dummy", this.display_name);
 		}
+	}
+
+	public void register_service() {
+		Bukkit.getServicesManager().register(Economy.class, this, Dropper_shop_plugin.instance, ServicePriority.Normal);
+	}
+
+	void set_id(int id) {
+		this.id = id;
+	}
+
+	public int get_id() {
+		return this.id;
+	}
+
+	public String get_display_name() {
+		return this.display_name;
 	}
 
 	/**
@@ -34,7 +62,7 @@ public class Scoreboard_economy implements Economy {
 	 */
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return Dropper_shop_plugin.instance.isEnabled();
 	}
 
 	/**
@@ -248,7 +276,7 @@ public class Scoreboard_economy implements Economy {
 	 * @deprecated As of VaultAPI 1.4 use {@link #withdrawPlayer(OfflinePlayer, double)} instead.
 	 */
 	@Override
-	public EconomyResponse withdrawPlayer(String playerName, double amount) {
+	public synchronized EconomyResponse withdrawPlayer(String playerName, double amount) {
 		return this.withdrawPlayer(Bukkit.getOfflinePlayer(playerName), amount);
 	}
 
@@ -260,13 +288,13 @@ public class Scoreboard_economy implements Economy {
 	 * @return Detailed response of transaction
 	 */
 	@Override
-	public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
+	public synchronized EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
 		Score score = this.objective.getScore(player.getName());
 		int bal = score.getScore();
 		if (bal < amount) {
 			return new EconomyResponse(amount, bal, EconomyResponse.ResponseType.FAILURE, "货币不够");
 		}
-		score.setScore(bal - amount);
+		score.setScore((int) (bal - amount));
 		return new EconomyResponse(amount, bal, EconomyResponse.ResponseType.SUCCESS, "成功");
 	}
 
@@ -277,7 +305,7 @@ public class Scoreboard_economy implements Economy {
 	 * @deprecated As of VaultAPI 1.4 use {@link #withdrawPlayer(OfflinePlayer, String, double)} instead.
 	 */
 	@Override
-	public EconomyResponse withdrawPlayer(String playerName, String worldName, double amount) {
+	public synchronized EconomyResponse withdrawPlayer(String playerName, String worldName, double amount) {
 		return this.withdrawPlayer(playerName, amount);
 	}
 
@@ -291,7 +319,7 @@ public class Scoreboard_economy implements Economy {
 	 * @return Detailed response of transaction
 	 */
 	@Override
-	public EconomyResponse withdrawPlayer(OfflinePlayer player, String worldName, double amount) {
+	public synchronized EconomyResponse withdrawPlayer(OfflinePlayer player, String worldName, double amount) {
 		return this.withdrawPlayer(player, amount);
 	}
 
@@ -301,7 +329,7 @@ public class Scoreboard_economy implements Economy {
 	 * @deprecated As of VaultAPI 1.4 use {@link #depositPlayer(OfflinePlayer, double)} instead.
 	 */
 	@Override
-	public EconomyResponse depositPlayer(String playerName, double amount) {
+	public synchronized EconomyResponse depositPlayer(String playerName, double amount) {
 		return this.depositPlayer(Bukkit.getOfflinePlayer(playerName), amount);
 	}
 
@@ -313,7 +341,7 @@ public class Scoreboard_economy implements Economy {
 	 * @return Detailed response of transaction
 	 */
 	@Override
-	public EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
+	public synchronized EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
 		Score score = this.objective.getScore(player.getName());
 		int bal = score.getScore();
 		if (bal + amount > max_bal) {
@@ -330,7 +358,7 @@ public class Scoreboard_economy implements Economy {
 	 * @deprecated As of VaultAPI 1.4 use {@link #depositPlayer(OfflinePlayer, String, double)} instead.
 	 */
 	@Override
-	public EconomyResponse depositPlayer(String playerName, String worldName, double amount) {
+	public synchronized EconomyResponse depositPlayer(String playerName, String worldName, double amount) {
 		return this.depositPlayer(Bukkit.getOfflinePlayer(playerName), amount);
 	}
 
@@ -344,7 +372,7 @@ public class Scoreboard_economy implements Economy {
 	 * @return Detailed response of transaction
 	 */
 	@Override
-	public EconomyResponse depositPlayer(OfflinePlayer player, String worldName, double amount) {
+	public synchronized EconomyResponse depositPlayer(OfflinePlayer player, String worldName, double amount) {
 		return this.depositPlayer(player, amount);
 	}
 
@@ -523,5 +551,30 @@ public class Scoreboard_economy implements Economy {
 	@Override
 	public boolean createPlayerAccount(OfflinePlayer player, String worldName) {
 		return true;
+	}
+
+	/**
+	 * Creates a Map representation of this class.
+	 * <p>
+	 * This class must provide a method to restore this class, as defined in
+	 * the {@link ConfigurationSerializable} interface javadocs.
+	 *
+	 * @return Map containing the current state of this class
+	 */
+	@Nonnull
+	@Override
+	public Map<String, Object> serialize() {
+		HashMap<String, Object> config = new HashMap<>();
+		config.put("name", this.name);
+		config.put("display-name", this.display_name);
+		config.put("default-balance", this.default_balance);
+		return config;
+	}
+
+	public static Scoreboard_economy deserialize(Map<String, Object> args) {
+		String name = (String) args.get("name");
+		String display_name = (String) args.get("display-name");
+		int default_balance = (int) args.get("default-balance");
+		return new Scoreboard_economy(name, display_name, default_balance);
 	}
 }
