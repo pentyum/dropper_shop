@@ -79,6 +79,11 @@ commands:
     usage: /<command> cmd args
     permission: my_space.use
     permission-message: You don't have permission
+  scb_eco:
+    description: commands relate to scoreboard economy.
+    usage: /<command> [pay|collect|give|set]
+    permission: scb_eco.use
+    permission-message: You don't have permission
 permissions:
   dropper_shop.*:
     description: Gives access to all dropper shop commands.

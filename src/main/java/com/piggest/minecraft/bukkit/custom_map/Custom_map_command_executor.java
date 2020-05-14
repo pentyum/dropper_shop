@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import com.piggest.minecraft.bukkit.utils.Inventory_io;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -388,9 +389,9 @@ public class Custom_map_command_executor implements TabExecutor {
 				char c = args[2].charAt(i);
 				ItemStack[] maps = generate_char_maps(player, background_color, c, font, font_size, font_color);
 				for (ItemStack map : maps) {
-					player.getInventory().addItem(map);
 					total++;
 				}
+				Inventory_io.give_item_to_player(player, maps);
 			}
 			player.sendMessage("成功获得\"" + args[2] + "\"，共" + total + "张图");
 			return true;
@@ -430,7 +431,7 @@ public class Custom_map_command_executor implements TabExecutor {
 			}
 			ItemStack item = generate_digital_clock_map(player, background_color, args[2], font, font_size, font_color,
 					world_name);
-			player.getInventory().addItem(item);
+			Inventory_io.give_item_to_player(player, item);
 			return true;
 		} else if (args[0].equalsIgnoreCase("get_analog_clock")) {
 			if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
@@ -468,7 +469,7 @@ public class Custom_map_command_executor implements TabExecutor {
 			}
 			ItemStack[] item = generate_analog_clock_maps(player, background_color, args[2], font, font_size,
 					font_color, world_name);
-			player.getInventory().addItem(item);
+			Inventory_io.give_item_to_player(player, item);
 			return true;
 		} else if (args[0].equalsIgnoreCase("get_cdm")) {
 			if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
@@ -482,7 +483,7 @@ public class Custom_map_command_executor implements TabExecutor {
 			} catch (Exception e) {
 				item = new ItemStack(Material.FILLED_MAP);
 				set_command_def_map(item, player);
-				player.getInventory().addItem(item);
+				Inventory_io.give_item_to_player(player, item);
 			}
 			return true;
 		} else if (args[0].equalsIgnoreCase("set_cdm")) {
@@ -555,7 +556,7 @@ public class Custom_map_command_executor implements TabExecutor {
 				player.sendMessage("文件错误" + e.toString());
 				return true;
 			}
-			player.getInventory().addItem(item);
+			Inventory_io.give_item_to_player(player, item);
 			return true;
 		} else if (args[0].equalsIgnoreCase("get_qr_code")) {
 			if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
@@ -579,7 +580,7 @@ public class Custom_map_command_executor implements TabExecutor {
 				player.sendMessage("二维码生成错误" + e.toString());
 				return true;
 			}
-			player.getInventory().addItem(item);
+			Inventory_io.give_item_to_player(player, item);
 			return true;
 		} else if (args[0].equalsIgnoreCase("get_gif")) {
 			if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
@@ -599,7 +600,7 @@ public class Custom_map_command_executor implements TabExecutor {
 				player.sendMessage("文件错误" + e.toString());
 				return true;
 			}
-			player.getInventory().addItem(item);
+			Inventory_io.give_item_to_player(player, item);
 			return true;
 		} else if (args[0].equalsIgnoreCase("reload")) {
 			Dropper_shop_plugin.instance.get_map_config().reload();

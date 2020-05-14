@@ -67,6 +67,13 @@ public class Scoreboard_economy_manager implements TabExecutor {
 	 */
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		 if (args[0].equalsIgnoreCase("get_all_economy")) {
+			for (RegisteredServiceProvider<Economy> eco_provider : Bukkit.getServicesManager().getRegistrations(Economy.class)) {
+				Economy eco = eco_provider.getProvider();
+				sender.sendMessage(eco.getClass().getName() + ": " + eco.getName() + " " + eco.currencyNameSingular());
+			}
+			return true;
+		}
 		return false;
 	}
 

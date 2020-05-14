@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.Predicate;
 
+import com.piggest.minecraft.bukkit.utils.*;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -33,10 +34,6 @@ import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.teleport_machine.Elements_composition;
-import com.piggest.minecraft.bukkit.utils.Http_download;
-import com.piggest.minecraft.bukkit.utils.Qr_code_utils;
-import com.piggest.minecraft.bukkit.utils.Server_date;
-import com.piggest.minecraft.bukkit.utils.Tab_list;
 
 public class Dropper_shop_command_executor implements TabExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -275,16 +272,7 @@ public class Dropper_shop_command_executor implements TabExecutor {
 				}
 				ItemStack[] items = Material_ext.split_to_max_stack_size(item);
 				// player.sendMessage("长度"+items.length);
-				HashMap<Integer, ItemStack> left = player.getInventory().addItem(items);
-				for (ItemStack left_item : left.values()) {
-					player.getWorld().dropItemNaturally(player.getLocation(), left_item);
-				}
-			} else if (args[0].equalsIgnoreCase("get_all_economy")) {
-				for (RegisteredServiceProvider<Economy> eco_provider : Bukkit.getServicesManager().getRegistrations(Economy.class)) {
-					Economy eco = eco_provider.getProvider();
-					player.sendMessage(eco.getClass().getName() + ": " + eco.getName() + " " + eco.currencyNameSingular());
-				}
-				return true;
+				Inventory_io.give_item_to_player(player, items);
 			} else {
 				return false;
 			}

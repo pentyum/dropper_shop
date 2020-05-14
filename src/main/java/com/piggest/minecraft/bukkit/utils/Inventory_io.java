@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -139,5 +141,14 @@ public class Inventory_io {
 			return depository.get_material_num(full_name) == 0;
 		}
 		return false;
+	}
+
+	public static void give_item_to_player(Player player, ItemStack... items) {
+		Location loc = player.getLocation();
+		World world = player.getWorld();
+		HashMap<Integer, ItemStack> unaddable = player.getInventory().addItem(items);
+		for (ItemStack item : unaddable.values()) {
+			world.dropItemNaturally(loc, item);
+		}
 	}
 }

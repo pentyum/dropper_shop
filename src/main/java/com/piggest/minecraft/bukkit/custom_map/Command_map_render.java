@@ -8,17 +8,58 @@ import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapView;
 
 public class Command_map_render extends Custom_map_render {
-	private Queue<Pixel_setting> command_queue = new LinkedList<Pixel_setting>();
+	private Queue<Map_operation> command_queue = new LinkedList<>();
 
-	public static class Pixel_setting {
+	public abstract static class Map_operation {
+		byte color;
+		public abstract void draw(MapCanvas canvas);
+	}
+
+	public static class Pixel_setting extends Map_operation {
 		int x;
 		int y;
-		byte color;
-
 		public Pixel_setting(int x, int y, byte color) {
 			this.x = x;
 			this.y = y;
 			this.color = color;
+		}
+		@Override
+		public void draw(MapCanvas canvas) {
+			canvas.setPixel(x, y, color);
+		}
+	}
+
+	public static class Line_setting extends Map_operation {
+		int start_x;
+		int start_y;
+		int end_x;
+		int end_y;
+		public Line_setting(int start_x, int start_y, int end_x,int end_y, byte color) {
+			this.start_x = start_x;
+			this.start_y = start_y;
+			this.end_x = end_x;
+			this.end_y = end_y;
+			this.color = color;
+		}
+		@Override
+		public void draw(MapCanvas canvas) {
+			// TO DO
+		}
+	}
+
+	public static class Circle_setting extends Map_operation {
+		int x;
+		int y;
+		int r;
+		public Circle_setting(int x, int y, int r, byte color) {
+			this.x = x;
+			this.y = y;
+			this.r = r;
+			this.color = color;
+		}
+		@Override
+		public void draw(MapCanvas canvas) {
+			// TO DO
 		}
 	}
 
@@ -29,11 +70,11 @@ public class Command_map_render extends Custom_map_render {
 
 	@Override
 	public void render(MapView map, MapCanvas canvas, Player player) {
-		Pixel_setting new_setting = this.command_queue.poll();
-		if (new_setting == null) {
+		Map_operation operation = this.command_queue.poll();
+		if (operation == null) {
 			return;
 		}
-		canvas.setPixel(new_setting.x, new_setting.y, new_setting.color);
+		operation.draw(canvas);
 	}
 
 	@Override

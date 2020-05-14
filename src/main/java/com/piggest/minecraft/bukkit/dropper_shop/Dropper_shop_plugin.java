@@ -104,7 +104,7 @@ import net.milkbowl.vault.economy.Economy;
 public class Dropper_shop_plugin extends JavaPlugin {
 	public final static int custom_model_data_offset = 15000;
 	public static Dropper_shop_plugin instance = null;
-	private Scoreboard_economy_manager economy = new Scoreboard_economy_manager();
+	private Scoreboard_economy_manager economy_manager = new Scoreboard_economy_manager();
 	private FileConfiguration config = null;
 	private Lottery_config lottery_config = null;
 	private boolean use_placeholder = false;
@@ -231,8 +231,16 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		return this.price_map;
 	}
 
+	public Scoreboard_economy_manager get_economy_manager(){
+		return this.economy_manager;
+	}
+
 	public Economy get_economy() {
-		return this.economy.get_default_economy();
+		return this.economy_manager.get_default_economy();
+	}
+
+	public Economy get_economy(String eco_name) {
+		return this.economy_manager.get_economy(eco_name);
 	}
 
 	private boolean init_eco() {
@@ -246,7 +254,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 				for (Object o : scoreboard_eco_list) {
 					if (o instanceof Scoreboard_economy) {
 						Scoreboard_economy eco = (Scoreboard_economy) o;
-						this.economy.register_economy(eco);
+						this.economy_manager.register_economy(eco);
 						this.getLogger().info("已注册计分板货币" + eco.getName());
 					}
 				}
@@ -336,6 +344,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.getCommand("custom_map").setExecutor(new Custom_map_command_executor());
 		this.getCommand("printer").setExecutor(new Printer_command_executor());
 		this.getCommand("my_space").setExecutor(new My_space_command_executor());
+		this.getCommand("scb_eco").setExecutor(this.economy_manager);
 	}
 
 	@Override
