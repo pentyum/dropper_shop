@@ -2,10 +2,12 @@ package com.piggest.minecraft.bukkit.economy;
 
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import javax.annotation.Nullable;
@@ -67,12 +69,39 @@ public class Scoreboard_economy_manager implements TabExecutor {
 	 */
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		 if (args[0].equalsIgnoreCase("get_all_economy")) {
+		if (args.length == 0) {
+			return false;
+		}
+		if (args[0].equalsIgnoreCase("get_all_economy")) {
 			for (RegisteredServiceProvider<Economy> eco_provider : Bukkit.getServicesManager().getRegistrations(Economy.class)) {
 				Economy eco = eco_provider.getProvider();
 				sender.sendMessage(eco.getClass().getName() + ": " + eco.getName() + " " + eco.currencyNameSingular());
 			}
 			return true;
+		} else if (args[0].equalsIgnoreCase("bal")) {
+			OfflinePlayer player;
+			if (args.length < 2) {
+				if (sender instanceof Player) {
+					player = (Player) sender;
+				} else {
+					sender.sendMessage("必须指定玩家");
+					return true;
+				}
+			} else {
+				player = Bukkit.getOfflinePlayer(args[1]);
+			}
+			String msg = "玩家" + player.getName() + "拥有: ";
+			String[] bal_info = new String[this.eco_list.size()];
+			for (int i = 0; i < bal_info.length; i++) {
+				Scoreboard_economy eco = this.eco_list.get(i);
+				double bal = eco.getBalance(player);
+				bal_info[i] = eco.format(bal);
+			}
+			msg += String.join(", ", bal_info);
+			sender.sendMessage(msg);
+			return true;
+		} else if (args[0].equalsIgnoreCase("pay")) {
+
 		}
 		return false;
 	}
