@@ -303,7 +303,7 @@ public class Scoreboard_economy implements Economy, ConfigurationSerializable {
 		Score score = this.objective.getScore(player.getName());
 		int bal = score.getScore();
 		if (bal < amount) {
-			return new EconomyResponse(amount, bal, EconomyResponse.ResponseType.FAILURE, "货币不够");
+			return new EconomyResponse(amount, bal, EconomyResponse.ResponseType.FAILURE, "余额不足，当前余额为" + this.format(bal));
 		}
 		score.setScore((int) (bal - amount));
 		return new EconomyResponse(amount, bal, EconomyResponse.ResponseType.SUCCESS, "成功");
@@ -356,7 +356,7 @@ public class Scoreboard_economy implements Economy, ConfigurationSerializable {
 		Score score = this.objective.getScore(player.getName());
 		int bal = score.getScore();
 		if (bal + amount > max_bal) {
-			return new EconomyResponse(amount, bal, EconomyResponse.ResponseType.FAILURE, "货币超出范围");
+			return new EconomyResponse(amount, bal, EconomyResponse.ResponseType.FAILURE, "余额超出范围(" + max_bal + ")");
 		}
 		score.setScore((int) (bal + amount));
 		return new EconomyResponse(amount, bal, EconomyResponse.ResponseType.SUCCESS, "成功");

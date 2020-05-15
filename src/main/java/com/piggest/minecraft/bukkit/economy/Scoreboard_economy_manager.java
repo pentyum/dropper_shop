@@ -1,6 +1,9 @@
 package com.piggest.minecraft.bukkit.economy;
 
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop;
+import com.piggest.minecraft.bukkit.utils.Tab_list;
 import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -72,36 +75,119 @@ public class Scoreboard_economy_manager implements TabExecutor {
 		if (args.length == 0) {
 			return false;
 		}
-		if (args[0].equalsIgnoreCase("get_all_economy")) {
-			for (RegisteredServiceProvider<Economy> eco_provider : Bukkit.getServicesManager().getRegistrations(Economy.class)) {
-				Economy eco = eco_provider.getProvider();
-				sender.sendMessage(eco.getClass().getName() + ": " + eco.getName() + " " + eco.currencyNameSingular());
-			}
-			return true;
-		} else if (args[0].equalsIgnoreCase("bal")) {
-			OfflinePlayer player;
-			if (args.length < 2) {
-				if (sender instanceof Player) {
-					player = (Player) sender;
-				} else {
-					sender.sendMessage("必须指定玩家");
+		if (command.getName().equalsIgnoreCase("scb_eco")) {
+			if (args[0].equalsIgnoreCase("get_all_economy")) {
+				for (RegisteredServiceProvider<Economy> eco_provider : Bukkit.getServicesManager().getRegistrations(Economy.class)) {
+					Economy eco = eco_provider.getProvider();
+					sender.sendMessage(eco.getClass().getName() + ": " + eco.getName() + " " + eco.currencyNameSingular());
+				}
+				return true;
+			} else if (args[0].equalsIgnoreCase("bal")) {
+				if (!sender.hasPermission("scb_eco.bal")) {
+					sender.sendMessage("你没有权限查看余额");
 					return true;
 				}
-			} else {
-				player = Bukkit.getOfflinePlayer(args[1]);
+				OfflinePlayer player;
+				if (args.length < 2) {
+					if (sender instanceof Player) {
+						player = (Player) sender;
+					} else {
+						sender.sendMessage("必须指定玩家");
+						return true;
+					}
+				} else {
+					player = Bukkit.getOfflinePlayer(args[1]);
+				}
+				String msg = "玩家" + player.getName() + "拥有: ";
+				String[] bal_info = new String[this.eco_list.size()];
+				for (int i = 0; i < bal_info.length; i++) {
+					Scoreboard_economy eco = this.eco_list.get(i);
+					double bal = eco.getBalance(player);
+					bal_info[i] = eco.format(bal);
+				}
+				msg += String.join(", ", bal_info);
+				sender.sendMessage(msg);
+				return true;
+			} else if (args[0].equalsIgnoreCase("pay")) {
+				if (!sender.hasPermission("scb_eco.pay")) {
+					sender.sendMessage("你没有权限转账");
+					return true;
+				}
+				if (!(sender instanceof Player)) {
+					sender.sendMessage("只有玩家才能转账");
+					return true;
+				}
+				Player player = (Player) sender;
+				if (args.length < 3) {
+					player.sendMessage("/scb_eco pay <玩家名称> <数量> <货币名称>");
+					return true;
+				}
+				int amount = 0;
+				try {
+					amount = Integer.parseInt(args[2]);
+				} catch (NumberFormatException e) {
+					player.sendMessage("数量格式不对");
+					return true;
+				}
+				Economy eco = this.get_default_economy();
+				if (args.length > 3) {
+					eco = this.eco_map.get(args[3]);
+				}
+				if (eco == null) {
+					String[] names = new String[this.eco_map.size()];
+					names = this.eco_map.keySet().toArray(names);
+					player.sendMessage("货币类型不正确，可用的货币类型: " + String.join(", ", names));
+					return true;
+				}
+				OfflinePlayer to_player = Bukkit.getOfflinePlayer(args[1]);
+				EconomyResponse withdraw_res = eco.withdrawPlayer(player, amount);
+				if (withdraw_res.type == EconomyResponse.ResponseType.SUCCESS) {
+					EconomyResponse deposit_res = eco.depositPlayer(to_player, amount);
+					if (deposit_res.type == EconomyResponse.ResponseType.SUCCESS) {
+						player.sendMessage("成功向" + to_player.getName() + "转账" + eco.format(amount));
+					} else {
+						eco.depositPlayer(player, amount);
+						player.sendMessage("转账失败，原因: " + deposit_res.errorMessage);
+					}
+				} else {
+					player.sendMessage("转账失败，原因: " + withdraw_res.errorMessage);
+				}
+				return true;
+			} else if (args[0].equalsIgnoreCase("give")) {
+				if (!sender.hasPermission("scb_eco.give")) {
+					sender.sendMessage("你没有权限添加货币");
+					return true;
+				}
+				if (args.length < 3) {
+					sender.sendMessage("/scb_eco give <玩家名称> <数量> <货币名称>");
+					return true;
+				}
+				int amount = 0;
+				try {
+					amount = Integer.parseInt(args[2]);
+				} catch (NumberFormatException e) {
+					sender.sendMessage("数量格式不对");
+					return true;
+				}
+				Economy eco = this.get_default_economy();
+				if (args.length > 3) {
+					eco = this.eco_map.get(args[3]);
+				}
+				if (eco == null) {
+					String[] names = new String[this.eco_map.size()];
+					names = this.eco_map.keySet().toArray(names);
+					sender.sendMessage("货币类型不正确，可用的货币类型: " + String.join(", ", names));
+					return true;
+				}
+				OfflinePlayer to_player = Bukkit.getOfflinePlayer(args[1]);
+				EconomyResponse deposit_res = eco.depositPlayer(to_player, amount);
+				if (deposit_res.type == EconomyResponse.ResponseType.SUCCESS) {
+					sender.sendMessage("成功向" + to_player.getName() + "添加" + eco.format(amount));
+				} else {
+					sender.sendMessage("添加失败，原因: " + deposit_res.errorMessage);
+				}
+				return true;
 			}
-			String msg = "玩家" + player.getName() + "拥有: ";
-			String[] bal_info = new String[this.eco_list.size()];
-			for (int i = 0; i < bal_info.length; i++) {
-				Scoreboard_economy eco = this.eco_list.get(i);
-				double bal = eco.getBalance(player);
-				bal_info[i] = eco.format(bal);
-			}
-			msg += String.join(", ", bal_info);
-			sender.sendMessage(msg);
-			return true;
-		} else if (args[0].equalsIgnoreCase("pay")) {
-
 		}
 		return false;
 	}
@@ -121,6 +207,32 @@ public class Scoreboard_economy_manager implements TabExecutor {
 	 */
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+		if (command.getName().equalsIgnoreCase("scb_eco")) {
+			if (args.length == 1) {
+				ArrayList<String> sub_cmd = new ArrayList<>();
+				if (sender.hasPermission("scb_eco.bal")) {
+					sub_cmd.add("bal");
+				}
+				if (sender.hasPermission("scb_eco.pay")) {
+					sub_cmd.add("pay");
+				}
+				if (sender.hasPermission("scb_eco.give")) {
+					sub_cmd.add("give");
+				}
+				return sub_cmd;
+			}
+			if (args[0].equalsIgnoreCase("bal")) {
+				if (args.length == 2) {
+					return Tab_list.get_online_player_name_list();
+				}
+			} else if (args[0].equalsIgnoreCase("pay") || args[0].equalsIgnoreCase("give")) {
+				if (args.length == 2) {
+					return Tab_list.get_online_player_name_list();
+				} else if (args.length == 4) {
+					return new ArrayList<>(this.eco_map.keySet());
+				}
+			}
+		}
 		return null;
 	}
 }
