@@ -1,6 +1,7 @@
 package com.piggest.minecraft.bukkit.economy;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop;
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Tab_list;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -76,7 +77,7 @@ public class Scoreboard_economy_manager implements TabExecutor {
 			return false;
 		}
 		if (command.getName().equalsIgnoreCase("scb_eco")) {
-			if (args[0].equalsIgnoreCase("get_all_economy")) {
+			if (args[0].equalsIgnoreCase("get_all_eco")) {
 				for (RegisteredServiceProvider<Economy> eco_provider : Bukkit.getServicesManager().getRegistrations(Economy.class)) {
 					Economy eco = eco_provider.getProvider();
 					sender.sendMessage(eco.getClass().getName() + ": " + eco.getName() + " " + eco.currencyNameSingular());
@@ -187,6 +188,50 @@ public class Scoreboard_economy_manager implements TabExecutor {
 					sender.sendMessage("添加失败，原因: " + deposit_res.errorMessage);
 				}
 				return true;
+			} else if (args[0].equalsIgnoreCase("import")) {
+				if (!sender.hasPermission("scb_eco.import")) {
+					sender.sendMessage("你没有权限导入经济");
+					return true;
+				}
+				if (args.length < 3) {
+					sender.sendMessage("/scb_eco import <经济系统类型名> <要导入的货币名>");
+					return true;
+				}
+				Economy import_eco = null;
+				for (RegisteredServiceProvider<Economy> eco_provider : Bukkit.getServicesManager().getRegistrations(Economy.class)) {
+					if (eco_provider.getPlugin() != Dropper_shop_plugin.instance) {
+						Economy eco = eco_provider.getProvider();
+						if (eco.getClass().getName().equalsIgnoreCase(args[1])) {
+							import_eco = eco;
+							break;
+						}
+					}
+				}
+				if (import_eco == null) {
+					sender.sendMessage("未找到要导入的经济系统: " + args[1]);
+					return true;
+				}
+				Economy to_eco = null;
+				to_eco = this.eco_map.get(args[2]);
+				if (to_eco == null) {
+					String[] names = new String[this.eco_map.size()];
+					names = this.eco_map.keySet().toArray(names);
+					sender.sendMessage("货币类型不正确，可用的货币类型: " + String.join(", ", names));
+					return true;
+				}
+				OfflinePlayer[] all_players = Bukkit.getOfflinePlayers();
+				int i = 0;
+				for (OfflinePlayer player : all_players) {
+					if (player.getName() != null) {
+						double bal = import_eco.getBalance(player);
+						Dropper_shop_plugin.instance.getLogger().info("导入" + player.getName() + to_eco.format(bal));
+						to_eco.withdrawPlayer(player, to_eco.getBalance(player));
+						to_eco.depositPlayer(player, bal);
+						i++;
+					}
+				}
+				sender.sendMessage("成功从" + args[1] + "中导入" + i + "名玩家的数据到" + args[2]);
+				return true;
 			}
 		}
 		return false;
@@ -219,6 +264,9 @@ public class Scoreboard_economy_manager implements TabExecutor {
 				if (sender.hasPermission("scb_eco.give")) {
 					sub_cmd.add("give");
 				}
+				if (sender.hasPermission("scb_eco.import")) {
+					sub_cmd.add("import");
+				}
 				return sub_cmd;
 			}
 			if (args[0].equalsIgnoreCase("bal")) {
@@ -229,6 +277,18 @@ public class Scoreboard_economy_manager implements TabExecutor {
 				if (args.length == 2) {
 					return Tab_list.get_online_player_name_list();
 				} else if (args.length == 4) {
+					return new ArrayList<>(this.eco_map.keySet());
+				}
+			} else if (args[0].equalsIgnoreCase("import")) {
+				if (args.length == 2) {
+					ArrayList<String> eco_name_list = new ArrayList<>();
+					for (RegisteredServiceProvider<Economy> eco : Bukkit.getServicesManager().getRegistrations(Economy.class)) {
+						if (eco.getPlugin() != Dropper_shop_plugin.instance) {
+							eco_name_list.add(eco.getProvider().getClass().getName());
+						}
+					}
+					return Tab_list.contains(eco_name_list, args[1]);
+				} else if (args.length == 3) {
 					return new ArrayList<>(this.eco_map.keySet());
 				}
 			}

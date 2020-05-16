@@ -300,6 +300,9 @@ public class Scoreboard_economy implements Economy, ConfigurationSerializable {
 	 */
 	@Override
 	public synchronized EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
+		if (amount < 0) {
+			return new EconomyResponse(amount, 0, EconomyResponse.ResponseType.FAILURE, "值不能为负数");
+		}
 		Score score = this.objective.getScore(player.getName());
 		int bal = score.getScore();
 		if (bal < amount) {
@@ -353,6 +356,9 @@ public class Scoreboard_economy implements Economy, ConfigurationSerializable {
 	 */
 	@Override
 	public synchronized EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
+		if (amount < 0) {
+			return new EconomyResponse(amount, 0, EconomyResponse.ResponseType.FAILURE, "值不能为负数");
+		}
 		Score score = this.objective.getScore(player.getName());
 		int bal = score.getScore();
 		if (bal + amount > max_bal) {

@@ -21,6 +21,7 @@ import net.milkbowl.vault.economy.Economy;
 
 public class Anti_thunder extends Multi_block_structure implements Ownable {
 	private String owner;
+	private int copper_unit;
 	private boolean active = false;
 	private Anti_thunder_runner runner = new Anti_thunder_runner(this);
 
@@ -139,17 +140,24 @@ public class Anti_thunder extends Multi_block_structure implements Ownable {
 		}
 	}
 
+	public void set_copper_unit(int copper_unit) {
+		this.copper_unit = copper_unit;
+	}
+
 	@Override
 	protected void set_from_save(Map<String, Object> shop_save) {
 		super.set_from_save(shop_save);
 		boolean active = (boolean) shop_save.get("active");
+		int copper_unit = (int) shop_save.get("copper-unit");
 		this.activate(active);
+		this.set_copper_unit(copper_unit);
 	}
 
 	@Override
 	public Map<String, Object> serialize() {
 		Map<String, Object> save = super.serialize();
 		save.put("active", this.is_active());
+		save.put("copper-unit", this.copper_unit);
 		return save;
 	}
 
@@ -167,11 +175,11 @@ public class Anti_thunder extends Multi_block_structure implements Ownable {
 	public ItemStack[] get_drop_items() {
 		return null;
 	}
-	
+
 	@Nonnull
-    public static Anti_thunder deserialize(@Nonnull Map<String, Object> args) {
+	public static Anti_thunder deserialize(@Nonnull Map<String, Object> args) {
 		Anti_thunder structure = new Anti_thunder();
 		structure.set_from_save(args);
 		return structure;
-    }
+	}
 }

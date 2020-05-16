@@ -271,5 +271,8 @@ permissions:
   scb_eco.give:
     description: Give money.
     default: op
+  scb_eco.import:
+    description: Import money from another economy plugin.
+    default: op
 depend: [Vault]
 softdepend: [ProtocolLib,PlaceholderAPI]
