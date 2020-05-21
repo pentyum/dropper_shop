@@ -24,8 +24,9 @@ public class Trees_felling_machine_manager extends Gui_structure_manager<Trees_f
 
 	public Trees_felling_machine_manager() {
 		super(Trees_felling_machine.class);
+		int price = Dropper_shop_plugin.instance.get_price_config().get_start_trees_felling_machine_price();
 		this.set_gui(9, Material.LEVER, "§r伐木机开关(开启需要"
-				+ Dropper_shop_plugin.instance.get_price_config().get_start_trees_felling_machine_price() + "金币)",
+				+ Dropper_shop_plugin.instance.get_economy().format(price),
 				Gui_slot_type.Switch);
 		this.set_gui(10, Material.PAPER, "§r重置", Gui_slot_type.Button);
 		this.set_gui(12, Material.BLUE_STAINED_GLASS_PANE, "§r右边放入伐木斧头", Gui_slot_type.Indicator);

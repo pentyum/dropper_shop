@@ -1,6 +1,8 @@
 package com.piggest.minecraft.bukkit.wrench;
 
 import java.util.ArrayList;
+
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
@@ -62,9 +64,10 @@ public class Wrench_command_executor implements CommandExecutor {
 			world_price = price.getInt("other");
 		}
 
-		if (Dropper_shop_plugin.instance.get_economy().has(player, world_price)) {
-			Dropper_shop_plugin.instance.get_economy().withdrawPlayer(player, world_price);
-			player.sendMessage("[扳手]已扣除" + world_price);
+		Economy eco = Dropper_shop_plugin.instance.get_economy();
+		if (eco.has(player, world_price)) {
+			eco.withdrawPlayer(player, world_price);
+			player.sendMessage("[扳手]已扣除" + eco.format(world_price));
 			return true;
 		} else {
 			player.sendMessage("[扳手]你的金钱不够");

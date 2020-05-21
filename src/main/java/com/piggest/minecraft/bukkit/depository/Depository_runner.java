@@ -18,7 +18,7 @@ public class Depository_runner extends Structure_runner {
 		Economy economy = Dropper_shop_plugin.instance.get_economy();
 		if (economy.has(depository.get_owner(), price)) {
 			if (depository.get_owner().isOnline() == true) {
-				((Player) depository.get_owner()).sendMessage("存储器已扣除" + price);
+				((Player) depository.get_owner()).sendMessage("存储器已扣除" + economy.format(price));
 			}
 			economy.withdrawPlayer(depository.get_owner(), price);
 			depository.set_accessible(true);

@@ -23,8 +23,9 @@ public class Anti_thunder_runner extends BukkitRunnable {
 		if (anti_thunder.completed() == true) {
 			if (anti_thunder.is_active() == true) {
 				int price = anti_thunder.get_manager().get_price();
+				String format_price = Dropper_shop_plugin.instance.get_economy().format(price);
 				if (Dropper_shop_plugin.instance.cost_player_money(price, owner)) {
-					anti_thunder.send_msg_to_owner("[防雷器]已扣除" + price);
+					anti_thunder.send_msg_to_owner("[防雷器]已扣除" + format_price);
 				} else {
 					anti_thunder.send_msg_to_owner("[防雷器]金钱不够，防雷器已经暂停");
 					anti_thunder.activate(false);

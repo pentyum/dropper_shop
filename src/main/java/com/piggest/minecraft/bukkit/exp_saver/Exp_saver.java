@@ -252,7 +252,7 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 		ArrayList<String> lore = new ArrayList<String>();
 		lore.add("§r当前等级: " + structure_level + " / "
 				+ Dropper_shop_plugin.instance.get_exp_saver_max_structure_level());
-		lore.add("§7升级所需金币: " + Exp_saver.get_upgrade_price(structure_level));
+		lore.add("§7升级所需金钱: " + Exp_saver.get_upgrade_price(structure_level));
 		lore.add("§7点击即可升级");
 		meta.setLore(lore);
 		upgrade_button.setItemMeta(meta);
@@ -277,12 +277,13 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 			return false;
 		}
 		int need_price = Exp_saver.get_upgrade_price(current_level);
+		String format_price = Dropper_shop_plugin.instance.get_economy().format(need_price);
 		if (Dropper_shop_plugin.instance.cost_player_money(need_price, player)) {
 			this.set_capacity_level(current_level + 1);
-			this.send_message(player, "消耗了" + need_price + "金币把经验存储器升级至" + (current_level + 1) + "级");
+			this.send_message(player, "消耗了" + format_price + "把经验存储器升级至" + (current_level + 1) + "级");
 			return true;
 		} else {
-			this.send_message(player, "你的钱不够，经验存储器由" + current_level + "升级至" + (current_level + 1) + "级需要" + need_price + "金币");
+			this.send_message(player, "你的钱不够，经验存储器由" + current_level + "升级至" + (current_level + 1) + "级需要" + format_price);
 			return false;
 		}
 	}

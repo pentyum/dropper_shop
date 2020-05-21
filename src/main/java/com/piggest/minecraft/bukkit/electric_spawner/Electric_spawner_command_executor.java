@@ -157,17 +157,18 @@ public class Electric_spawner_command_executor implements TabExecutor {
 					int current_money = electric_spawner.get_money();
 					if (current_money + charge_quantity > max_money) {
 						charge_quantity = max_money - current_money;
-						electric_spawner.send_message(player, "金币充值超出上限，数量修改为" + charge_quantity);
+						electric_spawner.send_message(player, "货币充值超出上限，数量修改为" + charge_quantity);
 					}
 					if (!player.hasPermission(this.get_permission_head() + ".set")) {
 						boolean cost_result = Dropper_shop_plugin.instance.cost_player_money(charge_quantity, player);
 						if (cost_result == false) {
-							electric_spawner.send_message(player, "你的金币不足" + charge_quantity);
+							electric_spawner.send_message(player, "你的货币不足" + charge_quantity);
 							return true;
 						}
 					}
 					electric_spawner.set_money(current_money + charge_quantity);
-					electric_spawner.send_message(player, "成功给刷怪机充值" + charge_quantity + "金币");
+					String format_charge = Dropper_shop_plugin.instance.get_economy().format(charge_quantity);
+					electric_spawner.send_message(player, "成功给刷怪机充值" + format_charge);
 				} else if (args[0].equalsIgnoreCase("set_entity")) {
 					if (!sender.hasPermission(this.get_permission_head() + ".set")) {
 						electric_spawner.send_message(player, "你没有权限直接设置生成实体!");

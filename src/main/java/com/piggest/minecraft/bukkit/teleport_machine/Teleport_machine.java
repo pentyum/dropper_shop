@@ -401,11 +401,12 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	@Override
 	public boolean create_condition(Player player) {
 		int price = Dropper_shop_plugin.instance.get_price_config().get_make_teleport_machine_price();
+		String format_price = Dropper_shop_plugin.instance.get_economy().format(price);
 		if (Dropper_shop_plugin.instance.cost_player_money(price, player)) {
-			this.send_message(player, "已扣除" + price);
+			this.send_message(player, "已扣除" + format_price);
 			return true;
 		} else {
-			this.send_message(player, "建立传送机所需的钱不够，需要" + price);
+			this.send_message(player, "建立传送机所需的钱不够，需要" + format_price);
 			return false;
 		}
 	}

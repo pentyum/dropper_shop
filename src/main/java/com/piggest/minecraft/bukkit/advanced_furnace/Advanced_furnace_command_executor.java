@@ -64,7 +64,7 @@ public class Advanced_furnace_command_executor implements TabExecutor {
 					return true;
 				}
 				if(!player.hasPermission("adv_furnace.get_money")) {
-					player.sendMessage("[高级熔炉]你没有取出金币的权限!");
+					player.sendMessage("[高级熔炉]你没有取出货币的权限!");
 					return true;
 				}
 				int money = adv_furnace.get_money();

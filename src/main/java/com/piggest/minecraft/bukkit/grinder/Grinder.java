@@ -1,14 +1,11 @@
 package com.piggest.minecraft.bukkit.grinder;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.annotation.Nonnull;
-
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.structure.Auto_io;
+import com.piggest.minecraft.bukkit.structure.HasRunner;
+import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
+import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.utils.Inventory_io;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Hopper;
@@ -17,12 +14,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.structure.Auto_io;
-import com.piggest.minecraft.bukkit.structure.HasRunner;
-import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
-import com.piggest.minecraft.bukkit.utils.Inventory_io;
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io {
 	private Grinder_runner runner = new Grinder_runner(this);
@@ -208,11 +206,12 @@ public class Grinder extends Multi_block_with_gui implements HasRunner, Auto_io 
 	@Override
 	public boolean create_condition(Player player) {
 		int price = Dropper_shop_plugin.instance.get_price_config().get_make_grinder_price();
+		String format_price = Dropper_shop_plugin.instance.get_economy().format(price);
 		if (Dropper_shop_plugin.instance.cost_player_money(price, player)) {
-			this.send_message(player, "已扣除" + price);
+			this.send_message(player, "已扣除" + format_price);
 			return true;
 		} else {
-			this.send_message(player, "建立磨粉机所需的钱不够，需要" + price);
+			this.send_message(player, "建立磨粉机所需的钱不够，需要" + format_price);
 			return false;
 		}
 	}

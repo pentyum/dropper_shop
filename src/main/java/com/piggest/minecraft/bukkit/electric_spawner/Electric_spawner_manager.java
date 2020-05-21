@@ -48,10 +48,10 @@ public class Electric_spawner_manager extends Gui_structure_manager<Electric_spa
 		this.set_gui(15, Material.BLUE_STAINED_GLASS_PANE, "§e左边放合成召唤物", Gui_slot_type.Indicator);
 		this.set_gui(Electric_spawner.look_button_slot, Material.ENCHANTED_BOOK, "§e查看召唤概率",
 				new String[] { "§7需要消耗"
-						+ Dropper_shop_plugin.instance.get_price_config().get_look_electric_spawner_price() + "金币" },
+						+ Dropper_shop_plugin.instance.get_economy().format(Dropper_shop_plugin.instance.get_price_config().get_look_electric_spawner_price()) },
 				Gui_slot_type.Button);
 		this.set_gui(Electric_spawner.info_indicator_slot, Material.SPAWNER, "§e刷怪信息",
-				new String[] { "§r运行状态: 关闭", "§r生成: 无", "§r剩余金币: 0", "§r区域难度: 0" }, Gui_slot_type.Indicator);
+				new String[] { "§r运行状态: 关闭", "§r生成: 无", "§r剩余金钱: 0", "§r区域难度: 0" }, Gui_slot_type.Indicator);
 		this.set_gui(Electric_spawner.synthesis_button_slot, Material.CRAFTING_TABLE, "§e召唤", Gui_slot_type.Button);
 
 		this.init_recipe();
