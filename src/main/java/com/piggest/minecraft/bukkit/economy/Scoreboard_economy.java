@@ -1,11 +1,17 @@
 package com.piggest.minecraft.bukkit.economy;
 
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
@@ -16,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Scoreboard_economy implements Economy, ConfigurationSerializable {
+public class Scoreboard_economy implements Economy, ConfigurationSerializable, Listener {
 	private final String name;
 	private final String display_name;
 	private final int default_balance;
@@ -24,6 +30,15 @@ public class Scoreboard_economy implements Economy, ConfigurationSerializable {
 	private Objective objective;
 	private int id;
 	private final int max_bal = 2000000000;
+
+	@EventHandler
+	public void on_login(PlayerJoinEvent event) {
+		Player player = event.getPlayer();
+		Score score = objective.getScore(player.getName());
+		if (!score.isScoreSet()) {
+			score.setScore(this.default_balance);
+		}
+	}
 
 	public Scoreboard_economy(String currency_name, String display_name, int default_balance) {
 		this.name = currency_name;
@@ -41,6 +56,10 @@ public class Scoreboard_economy implements Economy, ConfigurationSerializable {
 
 	public void register_service() {
 		Bukkit.getServicesManager().register(Economy.class, this, Dropper_shop_plugin.instance, ServicePriority.Normal);
+	}
+
+	public void register_listener() {
+		Bukkit.getPluginManager().registerEvents(this, Dropper_shop_plugin.instance);
 	}
 
 	void set_id(int id) {

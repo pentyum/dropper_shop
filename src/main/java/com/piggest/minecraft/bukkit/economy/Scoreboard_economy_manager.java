@@ -31,6 +31,7 @@ public class Scoreboard_economy_manager implements TabExecutor {
 	public void register_economy(Scoreboard_economy eco) {
 		eco.register_service();
 		eco.register_scoreboard();
+		eco.register_listener();
 		eco.set_id(eco_list.size());
 		eco_map.put(eco.getName(), eco);
 		eco_list.add(eco);

@@ -854,6 +854,13 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	public ItemStack get_custom_flag() {
 		return this.custom_flag;
 	}
+
+	@Nonnull
+	public static Teleport_machine deserialize(@Nonnull Map<String, Object> args) {
+		Teleport_machine structure = new Teleport_machine();
+		structure.set_from_save(args);
+		return structure;
+	}
 }
 
 class Name_tag_remover extends BukkitRunnable {
@@ -887,13 +894,6 @@ class Name_tag_remover extends BukkitRunnable {
 			item.setAmount(item.getAmount() - 1);
 		}
 	}
-	
-	@Nonnull
-    public static Teleport_machine deserialize(@Nonnull Map<String, Object> args) {
-		Teleport_machine structure = new Teleport_machine();
-		structure.set_from_save(args);
-		return structure;
-    }
 }
 
 class Item_remover extends BukkitRunnable {

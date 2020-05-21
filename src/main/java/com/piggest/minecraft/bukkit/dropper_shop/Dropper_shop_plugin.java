@@ -304,10 +304,6 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.structure_manager_map.put(Compressor.class, compressor_manager);
 		this.structure_manager_map.put(Electric_spawner.class, electric_spawner_manager);
 
-		for (Structure_manager<? extends Structure> manager : this.structure_manager_map.values()) {
-			manager.load_config();
-			manager.backup_config();
-		}
 	}
 
 	private void init_listener() {
@@ -401,6 +397,10 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		// 初始化特有物品完成
 
 		// 加载结构
+		for (Structure_manager<? extends Structure> manager : this.structure_manager_map.values()) {
+			manager.load_config();
+			manager.backup_config();
+		}
 		for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : this.structure_manager_map
 				.entrySet()) {
 			Structure_manager<? extends Structure> manager = entry.getValue();
