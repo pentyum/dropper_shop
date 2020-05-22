@@ -380,7 +380,7 @@ public class Scoreboard_economy implements Economy, ConfigurationSerializable, L
 		}
 		Score score = this.objective.getScore(player.getName());
 		int bal = score.getScore();
-		if (bal + amount > max_bal) {
+		if (bal + amount > max_bal || bal + amount < 0) {
 			return new EconomyResponse(amount, bal, EconomyResponse.ResponseType.FAILURE, "余额超出范围(" + max_bal + ")");
 		}
 		score.setScore((int) (bal + amount));
