@@ -5,8 +5,10 @@ import org.bukkit.entity.ItemFrame;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.server.MapInitializeEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.map.MapView;
 
 import com.piggest.minecraft.bukkit.config.Map_config;
@@ -24,6 +26,16 @@ public class Map_init_listener implements Listener {
 			Dropper_shop_plugin.instance.getLogger()
 					.info("map_" + id + ": " + content_render.getClass().getSimpleName());
 			Dropper_shop_plugin.instance.get_map_config().replace_render(map, content_render, edge_render);
+		}
+	}
+
+	@EventHandler
+	public void on_copy_map(CraftItemEvent event) {
+		Recipe recipe = event.getRecipe();
+		ItemStack item = recipe.getResult();
+		if (Custom_map_render.get_render_from_item(item) != null) {
+			event.getWhoClicked().sendMessage("不允许复制自定义地图");
+			event.setCancelled(true);
 		}
 	}
 

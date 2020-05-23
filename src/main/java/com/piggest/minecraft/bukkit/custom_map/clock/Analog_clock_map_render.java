@@ -30,7 +30,7 @@ public class Analog_clock_map_render extends Digital_clock_map_render {
 	private int side_amount;
 
 	public Analog_clock_map_render(Analog_clock_background_map_render background, String style, Font font, int size,
-			Color font_color, String world_name, int section) {
+								   Color font_color, String world_name, int section) {
 		super(background, "HH:mm:ss", font, size, font_color, world_name);
 		this.style = style;
 		this.section = section;
@@ -76,6 +76,7 @@ public class Analog_clock_map_render extends Digital_clock_map_render {
 		Static_image_map_render.draw_image(canvas, 0, 0, image);
 	}
 
+	@Nonnull
 	@Override
 	public Map<String, Object> serialize() {
 		Map<String, Object> save = super.serialize();

@@ -24,7 +24,7 @@ public class Digital_clock_map_render extends Dynamic_string_map_render implemen
 	protected Calendar date;
 
 	public Digital_clock_map_render(Background_map_render background, String format, Font font, int font_size,
-			org.bukkit.Color font_color, String world_name) {
+									org.bukkit.Color font_color, String world_name) {
 		super(background, font, font_size, font_color);
 		this.format = format;
 		this.format = this.format.replace('S', '_');
@@ -52,15 +52,17 @@ public class Digital_clock_map_render extends Dynamic_string_map_render implemen
 		return format;
 	}
 
+	@Nonnull
 	@Override
-	public @Nonnull Map<String, Object> serialize() {
-		HashMap<String, Object> save = new HashMap<String, Object>();
+	public Map<String, Object> serialize() {
+		HashMap<String, Object> save = new HashMap<>();
 		save.put("format", this.format);
 		save.put("font-color", this.font_color);
 		save.put("font-name", this.font_name);
 		save.put("font-size", this.font_size);
 		save.put("world", this.world_name);
 		save.put("background", this.background);
+		save.put("locked", this.locked);
 		return save;
 	}
 

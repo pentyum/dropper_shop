@@ -96,9 +96,10 @@ public class Local_image_map_render extends Static_image_map_render implements C
 		return this.width_n;
 	}
 
+	@Nonnull
 	@Override
-	public @Nonnull Map<String, Object> serialize() {
-		Map<String, Object> save = new HashMap<String, Object>();
+	public Map<String, Object> serialize() {
+		Map<String, Object> save = new HashMap<>();
 		save.put("path", this.path);
 		save.put("width-n", this.width_n);
 		save.put("height-n", this.height_n);
