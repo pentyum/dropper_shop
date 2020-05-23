@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 
 import com.piggest.minecraft.bukkit.economy.Scoreboard_economy;
 import com.piggest.minecraft.bukkit.economy.Scoreboard_economy_manager;
+import com.piggest.minecraft.bukkit.respawn_price.Respawn_listener;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -318,6 +319,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		pm.registerEvents(this.custom_durability_listener, this);
 		pm.registerEvents(this.tool_craft_listener, this);
 		pm.registerEvents(new Map_init_listener(), this);
+		pm.registerEvents(new Respawn_listener(), this);
 		// pm.registerEvents(this.prepare_enchant_listener, this);
 		for (Listener listener : this.structure_listeners) {
 			pm.registerEvents(listener, this);

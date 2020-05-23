@@ -18,6 +18,10 @@ make-teleport-machine-price: 10000
 make-electric-spawner-price: 50000
 look-electric-spawner-price: 5000
 
+respawn-price-threshold: 1000000
+respawn-price-mode: 1
+respawn-price: 5
+
 enable-scoreboard-eco: false
 scoreboard-eco:
 - ==: com.piggest.minecraft.bukkit.economy.Scoreboard_economy
