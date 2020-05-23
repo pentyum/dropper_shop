@@ -36,10 +36,12 @@ public abstract class Custom_map_render extends MapRenderer {
 		if (!Grinder.is_empty(item)) {
 			if (item.getType() == Material.FILLED_MAP) {
 				MapMeta meta = (MapMeta) item.getItemMeta();
-				if (meta.hasMapView()) {
-					MapRenderer render = meta.getMapView().getRenderers().get(0);
-					if (render instanceof Custom_map_render) {
-						return (Custom_map_render) render;
+				if (meta != null) {
+					if (meta.hasMapView()) {
+						MapRenderer render = meta.getMapView().getRenderers().get(0);
+						if (render instanceof Custom_map_render) {
+							return (Custom_map_render) render;
+						}
 					}
 				}
 			}

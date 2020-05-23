@@ -1,12 +1,17 @@
 package com.piggest.minecraft.bukkit.custom_map;
 
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.server.MapInitializeEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.map.MapView;
@@ -30,12 +35,19 @@ public class Map_init_listener implements Listener {
 	}
 
 	@EventHandler
-	public void on_copy_map(CraftItemEvent event) {
-		Recipe recipe = event.getRecipe();
-		ItemStack item = recipe.getResult();
-		if (Custom_map_render.get_render_from_item(item) != null) {
-			event.getWhoClicked().sendMessage("不允许复制自定义地图");
-			event.setCancelled(true);
+	public void on_copy_map(InventoryClickEvent event) {
+		Inventory inv = event.getInventory();
+		if (inv.getType() == InventoryType.CRAFTING || inv.getType() == InventoryType.WORKBENCH) {
+			HumanEntity player = event.getWhoClicked();
+			if (event.getSlot() == 0 && event.getSlotType() == InventoryType.SlotType.RESULT) {
+				ItemStack item = event.getCurrentItem();
+				if (Custom_map_render.get_render_from_item(item) != null) {
+					if (!player.hasPermission("custom_map.copy")) {
+						player.sendMessage("你没有复制自定义地图的权限!");
+						event.setCancelled(true);
+					}
+				}
+			}
 		}
 	}
 

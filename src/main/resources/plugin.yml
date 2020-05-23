@@ -253,6 +253,9 @@ permissions:
   custom_map.damage_locked_map:
     description: Damage a locked custom map.
     default: op
+  custom_map.copy:
+    description: copy a custom map.
+    default: op
   printer.make:
     description: Make printer.
     default: true
