@@ -6,18 +6,21 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 
 public class Respawn_listener implements Listener {
 	@EventHandler
-	public void on_player_respawn(PlayerRespawnEvent event) {
+	public void on_player_respawn(EntityDeathEvent event) {
+		if(!(event.getEntity() instanceof Player)){
+			return;
+		}
 		FileConfiguration config = Dropper_shop_plugin.instance.get_config();
 		int respawn_price_threshold = config.getInt("respawn-price-threshold");
 		if (respawn_price_threshold < 0) {
 			return;
 		}
 		Economy eco = Dropper_shop_plugin.instance.get_economy();
-		Player player = event.getPlayer();
+		Player player = (Player) event.getEntity();
 		int mode = config.getInt("respawn-price-mode");
 		int price = config.getInt("respawn-price");
 		int current_money = (int) eco.getBalance(player);
