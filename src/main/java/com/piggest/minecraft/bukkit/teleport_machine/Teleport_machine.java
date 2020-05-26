@@ -192,56 +192,62 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	}
 
 	protected void start_teleport_to_no_operater() {
-		if (this.auto_teleport_to == null) {
-			return;
-		}
-		if (this.get_state() == Radio_state.OFF) {
-			return;
-		}
-		boolean auto_entity_teleport = this.is_auto_entity_teleport();
-		boolean auto_player_teleport = this.is_auto_player_teleport();
-		if (auto_entity_teleport == false && auto_player_teleport == false) {
-			return;
-		}
-		Radio_terminal terminal = Radio_manager.instance.get(this.auto_teleport_to);
-		if (terminal == null) {
-			return;
-		}
-		if (terminal.get_location().getWorld() == null) {
-			return;
-		}
-		if (terminal.get_state() == Radio_state.OFF) {
-			return;
-		}
-		if (this.get_state() == Radio_state.WORKING) {
-			return;
-		}
+		Bukkit.getScheduler().runTask(Dropper_shop_plugin.instance, new Runnable() {
+			@Override
+			public void run() {
+				if (Teleport_machine.this.auto_teleport_to == null) {
+					return;
+				}
+				if (Teleport_machine.this.get_state() == Radio_state.OFF) {
+					return;
+				}
+				boolean auto_entity_teleport = Teleport_machine.this.is_auto_entity_teleport();
+				boolean auto_player_teleport = Teleport_machine.this.is_auto_player_teleport();
+				if (auto_entity_teleport == false && auto_player_teleport == false) {
+					return;
+				}
+				Radio_terminal terminal = Radio_manager.instance.get(Teleport_machine.this.auto_teleport_to);
+				if (terminal == null) {
+					return;
+				}
+				if (terminal.get_location().getWorld() == null) {
+					return;
+				}
+				if (terminal.get_state() == Radio_state.OFF) {
+					return;
+				}
+				if (Teleport_machine.this.get_state() == Radio_state.WORKING) {
+					return;
+				}
 
-		Teleporting_task task_to_do = new Teleporting_task();
-		if (auto_entity_teleport == true && auto_player_teleport == true) {
-			task_to_do.set_entities(this.get_entities_in_stage());
-		} else if (auto_entity_teleport == false && auto_player_teleport == true) {
-			task_to_do.set_entities(this.get_players_in_stage());
-		} else {
-			task_to_do.set_entities(this.get_entities_no_player_in_stage());
-		}
-		Elements_composition total_elements_cost = new Elements_composition();
-		for (Entity entity : task_to_do.get_entities()) {
-			total_elements_cost.add(Elements_composition.get_element_composition(entity));
-		}
-		if (!terminal.has_enough(total_elements_cost)) {
-			return;
-		}
-		task_to_do.set_elements(total_elements_cost);
-		terminal.minus(total_elements_cost);
-		int total_byte = total_elements_cost.get_total_byte();
-		task_to_do.set_total_byte(total_byte);
-		task_to_do.set_target(terminal.get_uuid());
-		boolean task_submit_result = this.set_current_task(task_to_do);
-		this.set_state(Radio_state.WORKING);
-		if (task_submit_result == false) {
-			return;
-		}
+				Teleporting_task task_to_do = new Teleporting_task();
+				if (auto_entity_teleport == true && auto_player_teleport == true) {
+					task_to_do.set_entities(Teleport_machine.this.get_entities_in_stage());
+				} else if (auto_entity_teleport == false && auto_player_teleport == true) {
+					task_to_do.set_entities(Teleport_machine.this.get_players_in_stage());
+				} else {
+					task_to_do.set_entities(Teleport_machine.this.get_entities_no_player_in_stage());
+				}
+				Elements_composition total_elements_cost = new Elements_composition();
+				for (Entity entity : task_to_do.get_entities()) {
+					total_elements_cost.add(Elements_composition.get_element_composition(entity));
+				}
+				if (!terminal.has_enough(total_elements_cost)) {
+					return;
+				}
+				task_to_do.set_elements(total_elements_cost);
+				terminal.minus(total_elements_cost);
+				int total_byte = total_elements_cost.get_total_byte();
+				task_to_do.set_total_byte(total_byte);
+				task_to_do.set_target(terminal.get_uuid());
+				boolean task_submit_result = Teleport_machine.this.set_current_task(task_to_do);
+				Teleport_machine.this.set_state(Radio_state.WORKING);
+				if (task_submit_result == false) {
+					return;
+				}
+			}
+		});
+
 	}
 
 	private void start_teleport_to(Player operator, Radio_terminal terminal) {
@@ -255,6 +261,10 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 		}
 		if (terminal.get_state() == Radio_state.OFF) {
 			this.send_message(operator, "目标没有开机");
+			return;
+		}
+		if (terminal.get_state() == Radio_state.WORKING) {
+			this.send_message(operator, "目标正在运行中，请等待目标运行完成");
 			return;
 		}
 		if (this.get_state() == Radio_state.WORKING) {
@@ -796,7 +806,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	public Collection<Entity> get_entities_in_stage() {
 		Location loc = this.get_location();
 		World world = loc.getWorld();
-		Predicate<Entity> fliter = new Predicate<Entity>() {
+		Predicate<Entity> filter = new Predicate<Entity>() {
 			@Override
 			public boolean test(Entity entity) {
 				EntityType type = entity.getType();
@@ -804,7 +814,7 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 						&& type != EntityType.PRIMED_TNT && type != EntityType.FISHING_HOOK;
 			}
 		};
-		return world.getNearbyEntities(loc, 2, 2, 2, fliter);
+		return world.getNearbyEntities(loc, 2, 2, 2, filter);
 	}
 
 	public Collection<Entity> get_entities_no_player_in_stage() {
