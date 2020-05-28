@@ -26,9 +26,9 @@ import com.piggest.minecraft.bukkit.utils.Chunk_location;
 public abstract class Structure_manager<T extends Structure> {
 	protected Class<T> structure_class = null;
 	protected Constructor<T> constructor = null;
-	protected HashMap<Chunk_location, HashSet<T>> chunk_structure_map = new HashMap<Chunk_location, HashSet<T>>();
-	protected HashMap<World, HashMap<Location, T>> structure_map = new HashMap<World, HashMap<Location, T>>();
-	protected HashMap<World, Structure_config> config_map = new HashMap<World, Structure_config>();
+	protected HashMap<World, Structure_config> config_map = new HashMap<>();
+	protected HashMap<Chunk_location, HashSet<T>> chunk_structure_map = new HashMap<>();
+	protected HashMap<World, HashMap<Location, T>> structure_map = new HashMap<>();
 	protected Structure_manager_runner structure_manager_runner;
 
 	public Structure_manager(Class<T> structure_class) {
@@ -40,10 +40,13 @@ public abstract class Structure_manager<T extends Structure> {
 			e.printStackTrace();
 		}
 		for (World world : Bukkit.getServer().getWorlds()) {
-			this.structure_map.put(world, new HashMap<Location, T>());
-			Structure_config config = new Structure_config(world, this.get_permission_head());
-			this.config_map.put(world, config);
+			this.load_config_from_world(world);
 		}
+	}
+
+	public void load_config_from_world(World world) {
+		Structure_config config = new Structure_config(world, this.get_permission_head());
+		this.config_map.put(world, config);
 	}
 
 	public T get(Location loc) {
@@ -54,7 +57,7 @@ public abstract class Structure_manager<T extends Structure> {
 		Chunk_location chunk_location = new_structure.get_chunk_location();
 		HashSet<T> structures_in_chunk = this.chunk_structure_map.get(chunk_location);
 		if (structures_in_chunk == null) {
-			HashSet<T> new_list = new HashSet<T>();
+			HashSet<T> new_list = new HashSet<>();
 			new_list.add(new_structure);
 			this.chunk_structure_map.put(chunk_location, new_list);
 		} else {
@@ -104,26 +107,21 @@ public abstract class Structure_manager<T extends Structure> {
 		this.structure_map.get(structure.get_world()).remove(structure.get_location());
 	}
 
-	public void load_structures() {
-		int i = 0;
-		for (Structure_config config : this.config_map.values()) {
-			List<Structure> list = config.getList();
-			if (list == null) {
-				continue;
-			}
-			for (Structure shop : list) {
-				if (shop instanceof Multi_block_structure) {
-					Multi_block_structure multi_block_struct = (Multi_block_structure) shop;
-					if (multi_block_struct.get_location().getWorld() != null) {
-						if (multi_block_struct.completed() == true) {
-							this.add(shop);
-							i++;
-						}
-					}
-				} else {
-					this.add(shop);
-					i++;
+	public void load_world_structures(World world) {
+		Structure_config config = this.config_map.get(world);
+		List<Structure> list = config.getList();
+		if (list == null) {
+			return;
+		}
+		this.structure_map.put(world, new HashMap<>());
+		for (Structure structure : list) {
+			if (structure instanceof Multi_block_structure) {
+				Multi_block_structure multi_block_struct = (Multi_block_structure) structure;
+				if (multi_block_struct.completed() == true) {
+					this.add(structure);
 				}
+			} else {
+				this.add(structure);
 			}
 		}
 		if (this.structure_manager_runner != null) {
@@ -135,19 +133,26 @@ public abstract class Structure_manager<T extends Structure> {
 						this.structure_manager_runner.get_delay(), this.structure_manager_runner.get_cycle());
 			}
 		}
-		Dropper_shop_plugin.instance.getLogger().info("已加载" + i + "个" + structure_class.getSimpleName());
+		Dropper_shop_plugin.instance.getLogger().info(world.getName() + "已加载" + list.size() + "个" + this.structure_class.getSimpleName());
 	}
 
-	public void save_structures() {
-		for (Entry<World, HashMap<Location, T>> entry : structure_map.entrySet()) {
-			World world = entry.getKey();
-			Collection<T> structures = entry.getValue().values();
-			Structure_config config = this.config_map.get(world);
-			config.set(new ArrayList<>(structures));
-			config.save();
-		}
+	public void unload_world_structures(World world) {
+		Collection<T> structures = this.structure_map.get(world).values();
+		structures.forEach(s -> s.remove());
+		Dropper_shop_plugin.instance.getLogger().info(world.getName() + "已卸载" + structures.size() + "个" + this.structure_class.getSimpleName());
 	}
-	
+
+	public void save_world_structures(World world) {
+		HashMap<Location, T> map = this.structure_map.get(world);
+		if (map == null) {
+			return;
+		}
+		Collection<T> structures = map.values();
+		Structure_config config = this.config_map.get(world);
+		config.set(new ArrayList<>(structures));
+		config.save();
+	}
+
 	@Nullable
 	public T find_existed(Location loc) {
 		int x;
@@ -175,7 +180,7 @@ public abstract class Structure_manager<T extends Structure> {
 		}
 		return null;
 	}
-	
+
 	@Nullable
 	public T find_and_make(Player player, Location loc) {
 		int x;

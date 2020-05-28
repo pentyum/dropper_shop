@@ -6,10 +6,7 @@ import java.util.Map.Entry;
 import com.piggest.minecraft.bukkit.economy.Scoreboard_economy;
 import com.piggest.minecraft.bukkit.economy.Scoreboard_economy_manager;
 import com.piggest.minecraft.bukkit.respawn_price.Respawn_listener;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
@@ -232,7 +229,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		return this.price_map;
 	}
 
-	public Scoreboard_economy_manager get_economy_manager(){
+	public Scoreboard_economy_manager get_economy_manager() {
 		return this.economy_manager;
 	}
 
@@ -406,7 +403,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : this.structure_manager_map
 				.entrySet()) {
 			Structure_manager<? extends Structure> manager = entry.getValue();
-			manager.load_structures();
+			for (World world : this.getServer().getWorlds()) {
+				manager.load_world_structures(world);
+			}
 		}
 		// 加载结构完成
 
@@ -427,7 +426,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : this.structure_manager_map
 				.entrySet()) {
 			Structure_manager<? extends Structure> manager = entry.getValue();
-			manager.save_structures();
+			for (World world : this.getServer().getWorlds()) {
+				manager.save_world_structures(world);
+			}
 		}
 		return true;
 	}
@@ -449,10 +450,14 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		this.getLogger().info("停止运行结构");
-		this.stop_structure_runner();
 		this.save_structure();
-
+		for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : this.structure_manager_map
+				.entrySet()) {
+			Structure_manager<? extends Structure> manager = entry.getValue();
+			for (World world : this.getServer().getWorlds()) {
+				manager.unload_world_structures(world);
+			}
+		}
 		this.save_maps();
 		this.lottery_config.save();
 
