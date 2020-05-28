@@ -28,6 +28,34 @@ public class Scoreboard_economy_manager implements TabExecutor {
 		ConfigurationSerialization.registerClass(Scoreboard_economy.class);
 	}
 
+	public static int money_parser(String str) throws NumberFormatException {
+		int length = str.length();
+		if (length > 1) {
+			char unit = str.charAt(length - 1);
+			int multi = 0;
+			int amount = Integer.parseInt(str.substring(0, length - 1));
+			switch (unit) {
+				case 'k':
+				case 'K':
+					multi = 1000;
+					break;
+				case 'w':
+				case 'W':
+					multi = 10000;
+					break;
+				case 'm':
+				case 'M':
+					multi = 1000000;
+					break;
+				default:
+					return Integer.parseInt(str);
+			}
+			return amount * multi;
+		} else {
+			return Integer.parseInt(str);
+		}
+	}
+
 	public void register_economy(Scoreboard_economy eco) {
 		eco.register_service();
 		eco.register_scoreboard();
@@ -126,7 +154,7 @@ public class Scoreboard_economy_manager implements TabExecutor {
 				}
 				int amount = 0;
 				try {
-					amount = Integer.parseInt(args[2]);
+					amount = money_parser(args[2]);
 				} catch (NumberFormatException e) {
 					player.sendMessage("数量格式不对");
 					return true;
@@ -166,7 +194,7 @@ public class Scoreboard_economy_manager implements TabExecutor {
 				}
 				int amount = 0;
 				try {
-					amount = Integer.parseInt(args[2]);
+					amount = money_parser(args[2]);
 				} catch (NumberFormatException e) {
 					sender.sendMessage("数量格式不对");
 					return true;
@@ -277,6 +305,14 @@ public class Scoreboard_economy_manager implements TabExecutor {
 			} else if (args[0].equalsIgnoreCase("pay") || args[0].equalsIgnoreCase("give")) {
 				if (args.length == 2) {
 					return Tab_list.get_online_player_name_list();
+				} else if (args.length == 3) {
+					String amount = args[2];
+					ArrayList<String> list = new ArrayList<>();
+					list.add(amount);
+					list.add(amount + "k");
+					list.add(amount + "w");
+					list.add(amount + "M");
+					return list;
 				} else if (args.length == 4) {
 					return new ArrayList<>(this.eco_map.keySet());
 				}
