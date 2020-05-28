@@ -137,9 +137,17 @@ public abstract class Structure_manager<T extends Structure> {
 	}
 
 	public void unload_world_structures(World world) {
-		Collection<T> structures = this.structure_map.get(world).values();
-		structures.forEach(s -> s.remove());
-		Dropper_shop_plugin.instance.getLogger().info(world.getName() + "已卸载" + structures.size() + "个" + this.structure_class.getSimpleName());
+		HashMap<Location, T> world_structures_map = this.structure_map.get(world);
+		synchronized (world_structures_map) {
+			Collection<T> structures = world_structures_map.values();
+			Structure[] structures_to_remove = new Structure[structures.size()];
+			structures_to_remove = structures.toArray(structures_to_remove);
+			for (Structure structure : structures_to_remove) {
+				structure.remove();
+			}
+			Dropper_shop_plugin.instance.getLogger().info(world.getName() + "已卸载" + structures_to_remove.length + "个" + this.structure_class.getSimpleName());
+			world_structures_map.remove(world);
+		}
 	}
 
 	public void save_world_structures(World world) {

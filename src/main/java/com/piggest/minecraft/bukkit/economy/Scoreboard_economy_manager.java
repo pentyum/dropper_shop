@@ -307,8 +307,12 @@ public class Scoreboard_economy_manager implements TabExecutor {
 					return Tab_list.get_online_player_name_list();
 				} else if (args.length == 3) {
 					String amount = args[2];
+					try {
+						Integer.parseInt(amount);
+					} catch (NumberFormatException e) {
+						return null;
+					}
 					ArrayList<String> list = new ArrayList<>();
-					list.add(amount);
 					list.add(amount + "k");
 					list.add(amount + "w");
 					list.add(amount + "M");

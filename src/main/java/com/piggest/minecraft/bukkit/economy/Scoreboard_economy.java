@@ -127,16 +127,31 @@ public class Scoreboard_economy implements Economy, ConfigurationSerializable, L
 	public String format(double amount) {
 		String show_quantity;
 		if (amount >= 1e9) {
-			show_quantity = String.format("%gG", amount / 1e9);
+			show_quantity = subZeroAndDot(amount / 1e9) + "G";
 		} else if (amount >= 1e6) {
-			show_quantity = String.format("%gM", amount / 1e6);
+			show_quantity = subZeroAndDot(amount / 1e6) + "M";
 		} else if (amount >= 1e3) {
-			show_quantity = String.format("%gk", amount / 1e3);
+			show_quantity = subZeroAndDot(amount / 1e3) + "k";
 		} else {
 			show_quantity = String.format("%d ", (int) amount);
 		}
 
 		return show_quantity + this.display_name;
+	}
+
+	/**
+	 * 使用java正则表达式去掉多余的.与0
+	 *
+	 * @param d
+	 * @return
+	 */
+	public static String subZeroAndDot(double d) {
+		String s = String.valueOf(d);
+		if (s.indexOf(".") > 0) {
+			s = s.replaceAll("0+?$", "");//去掉多余的0
+			s = s.replaceAll("[.]$", "");//如最后一位是.则去掉
+		}
+		return s;
 	}
 
 	/**
