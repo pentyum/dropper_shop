@@ -64,7 +64,7 @@ public class Anti_thunder extends Multi_block_structure implements Ownable {
 				this.send_message(player, "已为该防雷器添加" + add + "点铜锭");
 			}
 		}
-		this.send_message(player, "当前防雷器主人: " + this.owner + "，剩余铜锭: " + this.copper_unit);
+		this.send_message(player, "当前防雷器主人: " + this.owner + "，状态: " + (this.active ? "开启" : "关闭") + "，剩余铜锭: " + this.copper_unit);
 	}
 
 	@Override

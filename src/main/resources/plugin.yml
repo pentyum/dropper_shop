@@ -265,6 +265,9 @@ permissions:
   my_space.use:
     description: Use my space.
     default: true
+  scb_eco.use:
+    description: Use scb eco system.
+    default: true
   scb_eco.bal:
     description: Look up the balance.
     default: true
