@@ -23,7 +23,7 @@ import net.milkbowl.vault.economy.Economy;
 
 public class Anti_thunder extends Multi_block_structure implements Ownable {
 	private String owner;
-	private int copper_unit;
+	private int copper_unit = 10;
 	private boolean active = false;
 	private Anti_thunder_runner runner = new Anti_thunder_runner(this);
 
