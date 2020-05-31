@@ -4,6 +4,8 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import com.piggest.minecraft.bukkit.grinder.Grinder;
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -53,7 +55,16 @@ public class Anti_thunder extends Multi_block_structure implements Ownable {
 
 	@Override
 	protected void on_right_click(Player player) {
-		return;
+		ItemStack item = player.getInventory().getItemInMainHand();
+		if (!Grinder.is_empty(item)) {
+			if (Material_ext.get_id_name(item).equals("copper_ingot")) {
+				int add = item.getAmount();
+				this.copper_unit += add;
+				item.setAmount(0);
+				this.send_message(player, "已为该防雷器添加" + add + "点铜锭");
+			}
+		}
+		this.send_message(player, "当前防雷器主人: " + this.owner + "，剩余铜锭: " + this.copper_unit);
 	}
 
 	@Override
@@ -149,7 +160,7 @@ public class Anti_thunder extends Multi_block_structure implements Ownable {
 		super.set_from_save(shop_save);
 		boolean active = (boolean) shop_save.get("active");
 		int copper_unit = (int) shop_save.get("copper-unit");
-		this.activate(active);
+		this.active = active;
 		this.set_copper_unit(copper_unit);
 	}
 
@@ -168,7 +179,7 @@ public class Anti_thunder extends Multi_block_structure implements Ownable {
 
 	@Override
 	public void init_after_set_location() {
-		return;
+		this.activate(this.active);
 	}
 
 	@Override

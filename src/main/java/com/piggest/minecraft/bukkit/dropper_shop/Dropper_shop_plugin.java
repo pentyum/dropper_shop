@@ -406,6 +406,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 			for (World world : this.getServer().getWorlds()) {
 				manager.load_world_structures(world);
 			}
+			manager.start_structure_manager_runner();
 		}
 		// 加载结构完成
 

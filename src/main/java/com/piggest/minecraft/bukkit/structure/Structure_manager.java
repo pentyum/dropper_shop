@@ -124,6 +124,10 @@ public abstract class Structure_manager<T extends Structure> {
 				this.add(structure);
 			}
 		}
+		Dropper_shop_plugin.instance.getLogger().info(world.getName() + "已加载" + list.size() + "个" + this.structure_class.getSimpleName());
+	}
+
+	public void start_structure_manager_runner() {
 		if (this.structure_manager_runner != null) {
 			if (this.structure_manager_runner.is_asynchronously()) {
 				this.structure_manager_runner.runTaskTimerAsynchronously(Dropper_shop_plugin.instance,
@@ -133,7 +137,6 @@ public abstract class Structure_manager<T extends Structure> {
 						this.structure_manager_runner.get_delay(), this.structure_manager_runner.get_cycle());
 			}
 		}
-		Dropper_shop_plugin.instance.getLogger().info(world.getName() + "已加载" + list.size() + "个" + this.structure_class.getSimpleName());
 	}
 
 	public void unload_world_structures(World world) {
