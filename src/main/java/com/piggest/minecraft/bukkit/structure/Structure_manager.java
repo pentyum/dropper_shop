@@ -47,6 +47,7 @@ public abstract class Structure_manager<T extends Structure> {
 	public void load_config_from_world(World world) {
 		Structure_config config = new Structure_config(world, this.get_permission_head());
 		this.config_map.put(world, config);
+		//Dropper_shop_plugin.instance.getLogger().info(world.getName() + "的" + this.get_permission_head() + "的配置文件已读取");
 	}
 
 	public T get(Location loc) {
@@ -110,10 +111,11 @@ public abstract class Structure_manager<T extends Structure> {
 	public void load_world_structures(World world) {
 		Structure_config config = this.config_map.get(world);
 		List<Structure> list = config.getList();
+		this.structure_map.put(world, new HashMap<>());
 		if (list == null) {
+			Dropper_shop_plugin.instance.getLogger().info(world.getName() + "已加载0个" + this.structure_class.getSimpleName());
 			return;
 		}
-		this.structure_map.put(world, new HashMap<>());
 		for (Structure structure : list) {
 			if (structure instanceof Multi_block_structure) {
 				Multi_block_structure multi_block_struct = (Multi_block_structure) structure;
@@ -276,6 +278,7 @@ public abstract class Structure_manager<T extends Structure> {
 	public void load_instance_from_world_config(World world) {
 		Structure_config config = this.config_map.get(world);
 		if (config == null) {
+			Dropper_shop_plugin.instance.getLogger().warning(world.getName() + "的" + this.get_permission_head() + "的配置文件未读取，请先读取后再实例化！");
 			return;
 		}
 		config.load();
