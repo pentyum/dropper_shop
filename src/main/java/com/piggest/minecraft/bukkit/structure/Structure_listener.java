@@ -1,5 +1,6 @@
 package com.piggest.minecraft.bukkit.structure;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -13,6 +14,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
@@ -90,6 +92,16 @@ public class Structure_listener implements Listener {
 					}
 				}
 			}
+		}
+	}
+
+	@EventHandler
+	public void on_world_load(WorldLoadEvent event) {
+		Collection<Structure_manager<? extends Structure>> managers = Dropper_shop_plugin.instance.get_structure_manager().values();
+		for (Structure_manager<? extends Structure> manager : managers) {
+			manager.load_config_from_world(event.getWorld());
+			manager.load_instance_from_world_config(event.getWorld());
+			manager.load_world_structures(event.getWorld());
 		}
 	}
 }

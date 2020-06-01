@@ -267,10 +267,18 @@ public abstract class Structure_manager<T extends Structure> {
 		return this.structure_map.get(world).values();
 	}
 
-	public void load_config() {
+	public void load_instance_from_config() {
 		for (Structure_config config : this.config_map.values()) {
 			config.load();
 		}
+	}
+
+	public void load_instance_from_world_config(World world) {
+		Structure_config config = this.config_map.get(world);
+		if (config == null) {
+			return;
+		}
+		config.load();
 	}
 
 	public void backup_config() {

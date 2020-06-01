@@ -397,7 +397,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 		// 加载结构
 		for (Structure_manager<? extends Structure> manager : this.structure_manager_map.values()) {
-			manager.load_config();
+			manager.load_instance_from_config();
 			manager.backup_config();
 		}
 		for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : this.structure_manager_map
