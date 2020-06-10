@@ -40,6 +40,7 @@ public class Gif_map_render extends Static_image_map_render implements Configura
 			this.images.add(frame);
 		}
 		this.image = this.images.get(0);
+		this.path = path;
 	}
 
 	public static BufferedImage resize(BufferedImage image) {
@@ -86,7 +87,8 @@ public class Gif_map_render extends Static_image_map_render implements Configura
 	}
 
 	@Override
-	public @Nonnull Map<String, Object> serialize() {
+	public @Nonnull
+	Map<String, Object> serialize() {
 		Map<String, Object> save = new HashMap<String, Object>();
 		save.put("path", this.path);
 		save.put("locked", this.locked);

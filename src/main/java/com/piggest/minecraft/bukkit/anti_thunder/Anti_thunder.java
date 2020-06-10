@@ -187,6 +187,10 @@ public class Anti_thunder extends Multi_block_structure implements Ownable {
 		return null;
 	}
 
+	public int get_copper_unit() {
+		return this.copper_unit;
+	}
+
 	@Nonnull
 	public static Anti_thunder deserialize(@Nonnull Map<String, Object> args) {
 		Anti_thunder structure = new Anti_thunder();

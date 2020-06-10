@@ -39,9 +39,17 @@ public class Anti_thunder_listener implements Listener {
 					continue;
 				}
 				if (anti_thunder.is_active() == true) {
-					anti_thunder.send_msg_to_owner("[防雷器] 已阻止" + chunk_loc + "的" + event_string);
-					Dropper_shop_plugin.instance.getLogger().info("已阻止" + event_string);
-					return true;
+					int copper_unit = anti_thunder.get_copper_unit();
+					if (copper_unit <= 0) {
+						anti_thunder.send_msg_to_owner("[防雷器] 由于铜锭单位不够，" + chunk_loc + "的" + event_string + "未被阻止");
+						Dropper_shop_plugin.instance.getLogger().info("[防雷器] 由于铜锭单位不够，" + chunk_loc + "的" + event_string + "未被阻止");
+						return false;
+					} else {
+						anti_thunder.set_copper_unit(copper_unit - 1);
+						anti_thunder.send_msg_to_owner("[防雷器] 已阻止" + chunk_loc + "的" + event_string);
+						Dropper_shop_plugin.instance.getLogger().info("[防雷器] 已阻止" + chunk_loc + "的" + event_string);
+						return true;
+					}
 				} else {
 					Dropper_shop_plugin.instance.getLogger().info("防雷器未被激活，因此" + event_string + "未被阻止");
 					continue;
@@ -82,7 +90,7 @@ public class Anti_thunder_listener implements Listener {
 			event.setCancelled(this.find_anti_thunder(event.getLocation(), "骷髅陷阱马"));
 		}
 	}
-	
+
 	@EventHandler
 	public void on_crepper_powered(CreeperPowerEvent event) {
 		if (event.getCause() != CreeperPowerEvent.PowerCause.LIGHTNING) {
@@ -93,7 +101,7 @@ public class Anti_thunder_listener implements Listener {
 		}
 		event.setCancelled(this.find_anti_thunder(event.getEntity().getLocation(), "高压爬行者"));
 	}
-	
+
 	@EventHandler
 	public void on_pigman_zagged(PigZapEvent event) {
 		if (event.isCancelled() == true) {
@@ -101,13 +109,13 @@ public class Anti_thunder_listener implements Listener {
 		}
 		event.setCancelled(this.find_anti_thunder(event.getEntity().getLocation(), "僵尸猪人"));
 	}
-	
+
 	@EventHandler
 	public void on_villager_transformed(EntityTransformEvent event) {
-		if(event.isCancelled() == true) {
+		if (event.isCancelled() == true) {
 			return;
 		}
-		if(event.getTransformReason() != EntityTransformEvent.TransformReason.LIGHTNING) {
+		if (event.getTransformReason() != EntityTransformEvent.TransformReason.LIGHTNING) {
 			return;
 		}
 		event.setCancelled(this.find_anti_thunder(event.getEntity().getLocation(), "女巫"));
