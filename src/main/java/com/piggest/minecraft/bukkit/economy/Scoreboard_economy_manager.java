@@ -172,9 +172,13 @@ public class Scoreboard_economy_manager implements TabExecutor {
 				OfflinePlayer to_player = Bukkit.getOfflinePlayer(args[1]);
 				EconomyResponse withdraw_res = eco.withdrawPlayer(player, amount);
 				if (withdraw_res.type == EconomyResponse.ResponseType.SUCCESS) {
+					String fmt_amount = eco.format(amount);
 					EconomyResponse deposit_res = eco.depositPlayer(to_player, amount);
 					if (deposit_res.type == EconomyResponse.ResponseType.SUCCESS) {
-						player.sendMessage("成功向" + to_player.getName() + "转账" + eco.format(amount));
+						player.sendMessage("成功向" + to_player.getName() + "转账" + fmt_amount);
+						if (to_player.isOnline()) {
+							to_player.getPlayer().sendMessage("从" + player.getName() + "收到转账" + fmt_amount);
+						}
 					} else {
 						eco.depositPlayer(player, amount);
 						player.sendMessage("转账失败，原因: " + deposit_res.errorMessage);
@@ -183,13 +187,17 @@ public class Scoreboard_economy_manager implements TabExecutor {
 					player.sendMessage("转账失败，原因: " + withdraw_res.errorMessage);
 				}
 				return true;
-			} else if (args[0].equalsIgnoreCase("give")) {
-				if (!sender.hasPermission("scb_eco.give")) {
-					sender.sendMessage("你没有权限添加货币");
+			} else if (args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("take")) {
+				if (args[0].equalsIgnoreCase("give") && !sender.hasPermission("scb_eco.give")) {
+					sender.sendMessage("你没有权限给玩家添加货币");
+					return true;
+				}
+				if (args[0].equalsIgnoreCase("take") && !sender.hasPermission("scb_eco.take")) {
+					sender.sendMessage("你没有权限扣除玩家的货币");
 					return true;
 				}
 				if (args.length < 3) {
-					sender.sendMessage("/scb_eco give <玩家名称> <数量> <货币名称>");
+					sender.sendMessage("/scb_eco give|take <玩家名称> <数量> <货币名称>");
 					return true;
 				}
 				int amount = 0;
@@ -210,11 +218,27 @@ public class Scoreboard_economy_manager implements TabExecutor {
 					return true;
 				}
 				OfflinePlayer to_player = Bukkit.getOfflinePlayer(args[1]);
-				EconomyResponse deposit_res = eco.depositPlayer(to_player, amount);
-				if (deposit_res.type == EconomyResponse.ResponseType.SUCCESS) {
-					sender.sendMessage("成功向" + to_player.getName() + "添加" + eco.format(amount));
-				} else {
-					sender.sendMessage("添加失败，原因: " + deposit_res.errorMessage);
+				String fmt_amount = eco.format(amount);
+				if (args[0].equalsIgnoreCase("give")) {
+					EconomyResponse deposit_res = eco.depositPlayer(to_player, amount);
+					if (deposit_res.type == EconomyResponse.ResponseType.SUCCESS) {
+						sender.sendMessage("成功向" + to_player.getName() + "添加" + fmt_amount);
+						if (to_player.isOnline()) {
+							to_player.getPlayer().sendMessage("已获得" + fmt_amount);
+						}
+					} else {
+						sender.sendMessage("添加失败，原因: " + deposit_res.errorMessage);
+					}
+				} else if (args[0].equalsIgnoreCase("take")) {
+					EconomyResponse deposit_res = eco.withdrawPlayer(to_player, amount);
+					if (deposit_res.type == EconomyResponse.ResponseType.SUCCESS) {
+						sender.sendMessage("成功扣除" + to_player.getName() + " " + fmt_amount);
+						if (to_player.isOnline()) {
+							to_player.getPlayer().sendMessage("已扣除" + fmt_amount);
+						}
+					} else {
+						sender.sendMessage("扣除失败，原因: " + deposit_res.errorMessage);
+					}
 				}
 				return true;
 			} else if (args[0].equalsIgnoreCase("import")) {
@@ -296,13 +320,16 @@ public class Scoreboard_economy_manager implements TabExecutor {
 				if (sender.hasPermission("scb_eco.import")) {
 					sub_cmd.add("import");
 				}
+				if (sender.hasPermission("scb_eco.take")) {
+					sub_cmd.add("take");
+				}
 				return sub_cmd;
 			}
 			if (args[0].equalsIgnoreCase("bal")) {
 				if (args.length == 2) {
 					return Tab_list.get_online_player_name_list();
 				}
-			} else if (args[0].equalsIgnoreCase("pay") || args[0].equalsIgnoreCase("give")) {
+			} else if (args[0].equalsIgnoreCase("pay") || args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("take")) {
 				if (args.length == 2) {
 					return Tab_list.get_online_player_name_list();
 				} else if (args.length == 3) {
