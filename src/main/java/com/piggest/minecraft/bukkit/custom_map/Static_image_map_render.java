@@ -30,11 +30,11 @@ public abstract class Static_image_map_render extends Custom_map_render {
 	public void refresh(MapView map, MapCanvas canvas) {
 		draw_image(canvas, 0, 0, image);
 	}
-	
+
 	public BufferedImage get_image() {
 		return this.image;
 	}
-	
+
 	public static interface IntToByteFunction {
 		byte applyAsByte(int i);
 	}
@@ -77,13 +77,14 @@ public abstract class Static_image_map_render extends Custom_map_render {
 
 	public static void draw_image(MapCanvas canvas, int x, int y, Image image) {
 		byte[] bytes = imageToBytes(image);
-		IntStream.range(0, image.getWidth(null)).parallel().forEach(x2 -> {
-			IntStream.range(0, image.getHeight(null)).parallel().forEach(y2 -> {
-				byte color = bytes[y2 * image.getWidth(null) + x2];
-				if (color != 0) {
-					canvas.setPixel(x + x2, y + y2, color);
-				}
-			});
+		int width = image.getWidth(null);
+		IntStream.range(0, bytes.length).parallel().forEach(i -> {
+			int y2 = i / width;
+			int x2 = i % width;
+			byte color = bytes[i];
+			if (color != 0) {
+				canvas.setPixel(x + x2, y + y2, color);
+			}
 		});
 	}
 }
