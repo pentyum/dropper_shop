@@ -362,6 +362,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 		Tab_list.init();
 
+		this.init_eco();
+
 		// 初始化管理器
 		this.init_structure_manager();
 		this.radio_manager = new Radio_manager();
@@ -373,7 +375,6 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.getCommand("wrench").setExecutor(wrench);
 		// 初始化指令完成
 
-		this.init_eco();
 
 		this.init_placeholder();
 
