@@ -13,9 +13,9 @@ import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 
 public class Electric_spawner_manager extends Gui_structure_manager<Electric_spawner> {
 	private Material[][][] model = {
-			{ { Material.CHISELED_QUARTZ_BLOCK, Material.LAPIS_BLOCK, Material.CHISELED_QUARTZ_BLOCK },
-					{ Material.LAPIS_BLOCK, Material.DIAMOND_BLOCK, Material.LAPIS_BLOCK },
-					{ Material.CHISELED_QUARTZ_BLOCK, Material.LAPIS_BLOCK, Material.CHISELED_QUARTZ_BLOCK } },
+			{ { Material.CHISELED_QUARTZ_BLOCK, Material.NETHERITE_BLOCK, Material.CHISELED_QUARTZ_BLOCK },
+					{ Material.NETHERITE_BLOCK, Material.DIAMOND_BLOCK, Material.NETHERITE_BLOCK },
+					{ Material.CHISELED_QUARTZ_BLOCK, Material.NETHERITE_BLOCK, Material.CHISELED_QUARTZ_BLOCK } },
 			{ { Material.IRON_BARS, Material.IRON_BARS, Material.IRON_BARS },
 					{ Material.IRON_BARS, Material.BEACON, Material.IRON_BARS },
 					{ Material.IRON_BARS, Material.IRON_BARS, Material.IRON_BARS } },
@@ -63,7 +63,7 @@ public class Electric_spawner_manager extends Gui_structure_manager<Electric_spa
 
 		probability_list = new Entity_probability[] { new Entity_probability(EntityType.ZOMBIE, 3),
 				new Entity_probability(EntityType.ZOMBIE_VILLAGER, 1), new Entity_probability(EntityType.HUSK, 1),
-				new Entity_probability(EntityType.PIG_ZOMBIE, 1), new Entity_probability(EntityType.DROWNED, 1) };
+				new Entity_probability(EntityType.ZOMBIFIED_PIGLIN, 1), new Entity_probability(EntityType.DROWNED, 1) };
 		this.probability_map.put(Material.ROTTEN_FLESH.getKey().toString(), probability_list);
 
 		probability_list = new Entity_probability[] { new Entity_probability(EntityType.SKELETON, 3),

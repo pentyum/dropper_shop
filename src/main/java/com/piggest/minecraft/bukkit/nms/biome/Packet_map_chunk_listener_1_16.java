@@ -14,14 +14,14 @@ import com.comphenix.protocol.reflect.StructureModifier;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
 
-import net.minecraft.server.v1_15_R1.BiomeBase;
-import net.minecraft.server.v1_15_R1.BiomeStorage;
+import net.minecraft.server.v1_16_R1.BiomeBase;
+import net.minecraft.server.v1_16_R1.BiomeStorage;
 
-public class Packet_map_chunk_listener_1_15 extends PacketAdapter {
-	Biome_modifier_1_15 biome_modifier;
-	public Packet_map_chunk_listener_1_15() {
+public class Packet_map_chunk_listener_1_16 extends PacketAdapter {
+	Biome_modifier_1_16 biome_modifier;
+	public Packet_map_chunk_listener_1_16() {
 		super(Dropper_shop_plugin.instance, ListenerPriority.NORMAL, PacketType.Play.Server.MAP_CHUNK);
-		this.biome_modifier = (Biome_modifier_1_15) NMS_manager.biome_modifier;
+		this.biome_modifier = (Biome_modifier_1_16) NMS_manager.biome_modifier;
 	}
 	
 	@Override
@@ -29,7 +29,7 @@ public class Packet_map_chunk_listener_1_15 extends PacketAdapter {
 		PacketContainer packet = event.getPacket();
 		StructureModifier<BiomeStorage> modifier = packet.getSpecificModifier(BiomeStorage.class);
 		BiomeStorage biome_storge = modifier.read(0);
-		Biome_storage_modifier_1_15 provider = (Biome_storage_modifier_1_15) NMS_manager.biome_modifier
+		Biome_storage_modifier_1_16 provider = (Biome_storage_modifier_1_16) NMS_manager.biome_modifier
 				.get_biome_storge_modifier();
 		BiomeBase[] biomes = provider.get_biomes(biome_storge);
 		if (biomes == null) {

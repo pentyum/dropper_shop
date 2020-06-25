@@ -14,7 +14,7 @@ public class Pigman_spawn_listener implements Listener {
 	@EventHandler
 	public void on_spawn(EntitySpawnEvent event) {
 		EntityType type = event.getEntityType();
-		if (type == EntityType.PIG_ZOMBIE) {
+		if (type == EntityType.ZOMBIFIED_PIGLIN) {
 			Chunk spawn_chunk = event.getLocation().getChunk();
 			Chunk_location chunk_location = new Chunk_location(spawn_chunk);
 			HashSet<Pigman_switch> find = Pigman_switch_manager.instance.get_all_structures_around_chunk(chunk_location,
