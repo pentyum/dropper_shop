@@ -1,25 +1,23 @@
 package com.piggest.minecraft.bukkit.pigman_switch;
 
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.structure.Structure_manager;
 import org.bukkit.Material;
 
-import com.piggest.minecraft.bukkit.structure.Structure_manager;
-
 public class Pigman_switch_manager extends Structure_manager<Pigman_switch> {
-    private final Material[][][] model = {
-            {{Material.SANDSTONE, Material.SANDSTONE, Material.SANDSTONE},
-                    {Material.SANDSTONE, Material.SANDSTONE, Material.SANDSTONE},
-                    {Material.SANDSTONE, Material.SANDSTONE, Material.SANDSTONE}},
-            {{null, null, null}, {null, Material.OBSIDIAN, null}, {null, null, null}}};
-    private final int center_x = 1;
-    private final int center_y = 1;
-    private final int center_z = 1;
-    public static Pigman_switch_manager instance;
+	private final Material[][][] model = {
+			{{Material.SANDSTONE, Material.SANDSTONE, Material.SANDSTONE},
+					{Material.SANDSTONE, Material.SANDSTONE, Material.SANDSTONE},
+					{Material.SANDSTONE, Material.SANDSTONE, Material.SANDSTONE}},
+			{{null, null, null}, {null, Material.OBSIDIAN, null}, {null, null, null}}};
+	private final int center_x = 1;
+	private final int center_y = 1;
+	private final int center_z = 1;
+	public static Pigman_switch_manager instance;
 
-    public Pigman_switch_manager() {
-        super(Pigman_switch.class);
-        instance = this;
-    }
+	public Pigman_switch_manager() {
+		super(Pigman_switch.class);
+		instance = this;
+	}
 	/*
 	@Override
 	public Pigman_switch find(String player_name, Location loc, boolean new_structure) {
@@ -54,19 +52,19 @@ public class Pigman_switch_manager extends Structure_manager<Pigman_switch> {
 	}
 	*/
 
-    @Override
-    public String get_permission_head() {
-        return "pigman_switch";
-    }
+	@Override
+	public String get_permission_head() {
+		return "pigman_switch";
+	}
 
-    @Override
-    public Material[][][] get_model() {
-        return this.model;
-    }
+	@Override
+	public Material[][][] get_model() {
+		return this.model;
+	}
 
-    @Override
-    public int[] get_center() {
-        return new int[]{this.center_x, this.center_y, this.center_z};
-    }
+	@Override
+	public int[] get_center() {
+		return new int[]{this.center_x, this.center_y, this.center_z};
+	}
 
 }

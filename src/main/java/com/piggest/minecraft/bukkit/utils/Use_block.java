@@ -1,7 +1,5 @@
 package com.piggest.minecraft.bukkit.utils;
 
-import java.util.HashSet;
-
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
@@ -9,9 +7,12 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Container;
 import org.bukkit.block.data.type.Lectern;
 
+import java.util.HashSet;
+
 public class Use_block {
 	private static final HashSet<Material> use_set = new HashSet<Material>() {
 		private static final long serialVersionUID = -80343265520227606L;
+
 		{
 			add(Material.ACACIA_FENCE_GATE);
 			add(Material.BIRCH_FENCE_GATE);

@@ -1,18 +1,17 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.grinder.Grinder;
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.structure.Structure;
+import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.utils.Inventory_io;
+import org.bukkit.inventory.ItemStack;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
-
-import com.piggest.minecraft.bukkit.structure.Structure;
-import org.bukkit.inventory.ItemStack;
-
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.grinder.Grinder;
-import com.piggest.minecraft.bukkit.material_ext.Material_ext;
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
-import com.piggest.minecraft.bukkit.utils.Inventory_io;
 
 public class Advanced_furnace_reaction_runner extends Structure_runner {
 	public Advanced_furnace_reaction_runner(Advanced_furnace_manager manager) {
@@ -20,7 +19,7 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 	}
 
 	public void run_instance(Structure structure) {
-		Advanced_furnace advanced_furnace = (Advanced_furnace)structure;
+		Advanced_furnace advanced_furnace = (Advanced_furnace) structure;
 		if (advanced_furnace.is_loaded() == false) {
 			return;
 		}

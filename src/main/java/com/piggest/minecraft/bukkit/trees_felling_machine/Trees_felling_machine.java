@@ -1,12 +1,11 @@
 package com.piggest.minecraft.bukkit.trees_felling_machine;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.Stack;
-
-import javax.annotation.Nonnull;
-
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.grinder.Grinder;
+import com.piggest.minecraft.bukkit.material_ext.Tool_material;
+import com.piggest.minecraft.bukkit.structure.Auto_io;
+import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
+import com.piggest.minecraft.bukkit.structure.Ownable;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -26,12 +25,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.grinder.Grinder;
-import com.piggest.minecraft.bukkit.material_ext.Tool_material;
-import com.piggest.minecraft.bukkit.structure.Auto_io;
-import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
-import com.piggest.minecraft.bukkit.structure.Ownable;
+import javax.annotation.Nonnull;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.Stack;
 
 public class Trees_felling_machine extends Multi_block_with_gui implements Auto_io, Ownable {
 	private int current_x;
@@ -44,9 +42,9 @@ public class Trees_felling_machine extends Multi_block_with_gui implements Auto_
 	private int scanned_blocks = 0;
 	private Random random = new Random();
 	private ItemStack buffer_item = null;
-	private static final int[][] axe_hopper_check_list = { { 0, 1, 2 }, { 2, 1, 0 }, { 0, 1, -2 }, { -2, 1, 0 } }; // 注入斧头
-	private static final int[][] product_chest_check_list = { { 0, -1, 2 }, { 2, -1, 0 }, { 0, -1, -2 },
-			{ -2, -1, 0 } };
+	private static final int[][] axe_hopper_check_list = {{0, 1, 2}, {2, 1, 0}, {0, 1, -2}, {-2, 1, 0}}; // 注入斧头
+	private static final int[][] product_chest_check_list = {{0, -1, 2}, {2, -1, 0}, {0, -1, -2},
+			{-2, -1, 0}};
 	public static final int owner_indicator = 15;
 
 	private int r = 32;
@@ -80,7 +78,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements Auto_
 	}
 
 	public int[] get_current_pointer_location() {
-		return new int[] { this.current_x, this.current_z };
+		return new int[]{this.current_x, this.current_z};
 	}
 
 	private int[] pointer_move_to_next() {
@@ -427,7 +425,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements Auto_
 
 	@Override
 	public ItemStack[] get_drop_items() {
-		return new ItemStack[] { this.get_axe() };
+		return new ItemStack[]{this.get_axe()};
 	}
 
 	@Nonnull

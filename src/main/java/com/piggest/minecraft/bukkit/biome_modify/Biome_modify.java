@@ -1,23 +1,22 @@
 package com.piggest.minecraft.bukkit.biome_modify;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
+import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import org.bukkit.block.Biome;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
-import com.piggest.minecraft.bukkit.nms.NMS_manager;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class Biome_modify implements TabExecutor {
 	private HashMap<Biome, Float> custom_temp = new HashMap<>();
 	public static final HashMap<Biome, Float> original_temp = new HashMap<>();
 	private HashMap<Biome, Biome> pretend_biome = new HashMap<>();
 	private Winter_mode winter_mode = new Winter_mode();
-	private String[] subcommand_list = new String[] { "show_biome_temp", "set_biome_temp", "winter_mode" };
+	private String[] subcommand_list = new String[]{"show_biome_temp", "set_biome_temp", "winter_mode"};
 
 	public void set_pretend_biome(Biome biome, Biome pretend_biome) {
 		this.pretend_biome.put(biome, pretend_biome);

@@ -1,13 +1,13 @@
 package com.piggest.minecraft.bukkit.teleport_machine;
 
-import java.util.Collection;
-import java.util.UUID;
-
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.Collection;
+import java.util.UUID;
 
 public class Teleporting_task extends BukkitRunnable {
 	private int total_byte = 0;
@@ -16,7 +16,7 @@ public class Teleporting_task extends BukkitRunnable {
 	private Elements_composition elements = null;
 	private Player operator;
 	private UUID target = null;
-	
+
 	public void set_total_byte(int total_byte) {
 		this.total_byte = total_byte;
 	}
@@ -40,11 +40,11 @@ public class Teleporting_task extends BukkitRunnable {
 	public Collection<Entity> get_entities() {
 		return this.entities;
 	}
-	
+
 	public void set_elements(Elements_composition elements) {
 		this.elements = elements;
 	}
-	
+
 	public Elements_composition get_elements() {
 		return this.elements;
 	}
@@ -52,7 +52,7 @@ public class Teleporting_task extends BukkitRunnable {
 	public void set_operater(Player operator) {
 		this.operator = operator;
 	}
-	
+
 	@Nullable
 	public Player get_operater() {
 		return this.operator;
@@ -68,7 +68,7 @@ public class Teleporting_task extends BukkitRunnable {
 	public void set_target(UUID terminal) {
 		this.target = terminal;
 	}
-	
+
 	public UUID get_target() {
 		return this.target;
 	}

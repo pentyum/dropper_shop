@@ -1,23 +1,5 @@
 package com.piggest.minecraft.bukkit.tools;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.bukkit.Material;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.PrepareAnvilEvent;
-import org.bukkit.event.inventory.PrepareItemCraftEvent;
-import org.bukkit.inventory.AnvilInventory;
-import org.bukkit.inventory.CraftingInventory;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.meta.ItemMeta;
-
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.grinder.Ingot;
@@ -25,11 +7,23 @@ import com.piggest.minecraft.bukkit.material_ext.Custom_durability;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.material_ext.Tool_material;
 import com.piggest.minecraft.bukkit.material_ext.Tool_material.Custom_material;
+import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.PrepareAnvilEvent;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
+import org.bukkit.inventory.*;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Tool_craft_listener implements Listener {
 	public static final List<String> raw_tool_material = Arrays
-			.asList(new String[] { Material.GOLD_INGOT.getKey().toString(), Material.COBBLESTONE.getKey().toString(),
-					Material.IRON_INGOT.getKey().toString(), Material.DIAMOND.getKey().toString() });
+			.asList(new String[]{Material.GOLD_INGOT.getKey().toString(), Material.COBBLESTONE.getKey().toString(),
+					Material.IRON_INGOT.getKey().toString(), Material.DIAMOND.getKey().toString()});
 
 	@EventHandler
 	public void on_prepare_craft(PrepareItemCraftEvent event) {

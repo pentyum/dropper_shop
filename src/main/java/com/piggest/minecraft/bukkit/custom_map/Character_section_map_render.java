@@ -1,13 +1,12 @@
 package com.piggest.minecraft.bukkit.custom_map;
 
-import java.awt.Font;
-import java.awt.image.BufferedImage;
-import java.util.Map;
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import org.bukkit.Color;
 
 import javax.annotation.Nonnull;
-
-import org.bukkit.Color;
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.Map;
 
 public class Character_section_map_render extends Character_map_render {
 	private int section;
@@ -23,7 +22,7 @@ public class Character_section_map_render extends Character_map_render {
 	}
 
 	public Character_section_map_render(Background_map_render background, char character, Font font, int font_size,
-			Color font_color, int section) {
+										Color font_color, int section) {
 		super(background, character, font, font_size, font_color);
 		int side_amount = get_side_amount(font_size);
 		this.image = get_section_of_image(this.image, side_amount, section);

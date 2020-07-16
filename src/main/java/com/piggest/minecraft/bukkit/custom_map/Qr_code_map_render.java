@@ -1,14 +1,13 @@
 package com.piggest.minecraft.bukkit.custom_map;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import com.google.zxing.WriterException;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Qr_code_utils;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+
+import javax.annotation.Nonnull;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Qr_code_map_render extends Static_image_map_render implements ConfigurationSerializable {
 	private String text;
@@ -21,7 +20,8 @@ public class Qr_code_map_render extends Static_image_map_render implements Confi
 	}
 
 	@Override
-	public @Nonnull Map<String, Object> serialize() {
+	public @Nonnull
+	Map<String, Object> serialize() {
 		HashMap<String, Object> save = new HashMap<String, Object>();
 		save.put("text", this.text);
 		save.put("margin", this.margin);

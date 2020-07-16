@@ -1,12 +1,10 @@
 package com.piggest.minecraft.bukkit.structure;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import com.piggest.minecraft.bukkit.grinder.Grinder;
+import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
+import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
+import com.piggest.minecraft.bukkit.gui.Slot_config;
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -16,11 +14,8 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.piggest.minecraft.bukkit.grinder.Grinder;
-import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
-import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
-import com.piggest.minecraft.bukkit.gui.Slot_config;
-import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import java.util.*;
+import java.util.Map.Entry;
 
 public abstract class Multi_block_with_gui extends Multi_block_structure implements InventoryHolder {
 	protected Inventory gui;
@@ -72,7 +67,7 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 	 * public void unpress_button(int i) { ItemStack item =
 	 * this.getInventory().getItem(i); ItemMeta meta = item.getItemMeta();
 	 * meta.setLore(null); item.setItemMeta(meta); }
-	 * 
+	 *
 	 * public boolean pressed_button(int i) { ItemStack item =
 	 * this.getInventory().getItem(i); ItemMeta meta = item.getItemMeta(); return
 	 * meta.hasLore(); }
@@ -109,10 +104,10 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 	}
-	
+
 	/**
 	 * 返回开关状态
-	 * 
+	 *
 	 * @param i 槽位编号
 	 * @return true表示开启
 	 */
@@ -199,31 +194,31 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 
 	/**
 	 * Item_store类型的槽位放物品时触发。
-	 * 
-	 * @param player 操作的玩家
+	 *
+	 * @param player      操作的玩家
 	 * @param cursor_item 被放入的物品
-	 * @param slot 槽位编号
+	 * @param slot        槽位编号
 	 * @return 返回true表示允许放入
 	 */
 	public abstract boolean on_put_item(Player player, ItemStack cursor_item, int slot);
 
 	/**
 	 * Item_store类型的槽位取出物品时触发。
-	 * 
-	 * @param player 操作的玩家
+	 *
+	 * @param player  操作的玩家
 	 * @param in_item 被取出的物品
-	 * @param slot 槽位编号
+	 * @param slot    槽位编号
 	 * @return 返回true表示允许放入
 	 */
 	public abstract boolean on_take_item(Player player, ItemStack in_item, int slot);
 
 	/**
 	 * Item_store类型的槽位替换物品时触发
-	 * 
-	 * @param player 操作的玩家
-	 * @param in_item 槽位里面的物品
+	 *
+	 * @param player      操作的玩家
+	 * @param in_item     槽位里面的物品
 	 * @param cursor_item 准备被替换的物品
-	 * @param slot 槽位编号
+	 * @param slot        槽位编号
 	 * @return 返回true表示允许放入
 	 */
 	public abstract boolean on_exchange_item(Player player, ItemStack in_item, ItemStack cursor_item, int slot);

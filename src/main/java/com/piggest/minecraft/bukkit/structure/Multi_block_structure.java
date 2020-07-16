@@ -1,11 +1,11 @@
 package com.piggest.minecraft.bukkit.structure;
 
-import javax.annotation.Nonnull;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+
+import javax.annotation.Nonnull;
 
 public abstract class Multi_block_structure extends Structure {
 

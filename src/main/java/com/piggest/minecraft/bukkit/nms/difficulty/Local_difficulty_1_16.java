@@ -1,11 +1,10 @@
 package com.piggest.minecraft.bukkit.nms.difficulty;
 
+import net.minecraft.server.v1_16_R1.DifficultyDamageScaler;
+import net.minecraft.server.v1_16_R1.WorldServer;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_16_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_16_R1.block.CraftBlock;
-
-import net.minecraft.server.v1_16_R1.DifficultyDamageScaler;
-import net.minecraft.server.v1_16_R1.WorldServer;
 
 public class Local_difficulty_1_16 implements Local_difficulty {
 	public float get_local_difficulty(Location loc) {

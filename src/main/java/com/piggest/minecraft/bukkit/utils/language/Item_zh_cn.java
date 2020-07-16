@@ -1,11 +1,10 @@
 package com.piggest.minecraft.bukkit.utils.language;
 
-import java.util.HashMap;
-
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import java.util.HashMap;
 
 public class Item_zh_cn {
 	public static final HashMap<String, String> name = new HashMap<String, String>();

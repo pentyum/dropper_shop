@@ -7,7 +7,7 @@ public interface Chemical extends Has_composition {
 	public String get_displayname();
 
 	public String get_name();
-		
+
 	public static Chemical get_chemical(String name) {
 		if (name.contains("_log")) {
 			name = "log";

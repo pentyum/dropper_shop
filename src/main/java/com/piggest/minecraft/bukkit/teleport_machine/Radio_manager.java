@@ -8,7 +8,7 @@ import java.util.UUID;
 public class Radio_manager extends HashMap<UUID, Radio_terminal> {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 6122668059776454762L;
 	public static Radio_manager instance;

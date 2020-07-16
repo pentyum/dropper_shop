@@ -1,22 +1,16 @@
 package com.piggest.minecraft.bukkit.watersheep;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.World;
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
-import org.bukkit.Server;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-
-import org.bukkit.Material;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Watersheep_runner extends BukkitRunnable {
 	private Server server = null;
@@ -102,15 +96,15 @@ public class Watersheep_runner extends BukkitRunnable {
 						counter_how_many_sheep_proceesed++;
 
 						switch (res) {
-						case not_sheared:
-							counter_how_many_sheep_not_sheared++;
-							break;
-						case no_grass:
-							counter_how_many_sheep_no_grass++;
-							break;
-						case succeed:
-							counter_how_many_sheep_succeed++;
-							break;
+							case not_sheared:
+								counter_how_many_sheep_not_sheared++;
+								break;
+							case no_grass:
+								counter_how_many_sheep_no_grass++;
+								break;
+							case succeed:
+								counter_how_many_sheep_succeed++;
+								break;
 						}
 					}
 				}

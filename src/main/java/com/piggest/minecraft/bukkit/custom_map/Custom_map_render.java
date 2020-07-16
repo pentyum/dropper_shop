@@ -1,7 +1,6 @@
 package com.piggest.minecraft.bukkit.custom_map;
 
-import javax.annotation.Nullable;
-
+import com.piggest.minecraft.bukkit.grinder.Grinder;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.MapMeta;
@@ -9,7 +8,7 @@ import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 
-import com.piggest.minecraft.bukkit.grinder.Grinder;
+import javax.annotation.Nullable;
 
 public abstract class Custom_map_render extends MapRenderer {
 	public static final int pic_size = 128;

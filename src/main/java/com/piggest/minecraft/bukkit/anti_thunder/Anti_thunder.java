@@ -1,11 +1,11 @@
 package com.piggest.minecraft.bukkit.anti_thunder;
 
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
+import com.piggest.minecraft.bukkit.structure.Ownable;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,10 +16,8 @@ import org.bukkit.block.data.type.Piston;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
-import com.piggest.minecraft.bukkit.structure.Ownable;
-import net.milkbowl.vault.economy.Economy;
+import javax.annotation.Nonnull;
+import java.util.Map;
 
 public class Anti_thunder extends Multi_block_structure implements Ownable {
 	private String owner;

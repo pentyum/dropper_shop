@@ -1,23 +1,18 @@
 package com.piggest.minecraft.bukkit.custom_map.clock;
 
-import java.awt.BasicStroke;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.util.Calendar;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-
-import org.bukkit.Color;
-import org.bukkit.map.MapCanvas;
-import org.bukkit.map.MapView;
-
 import com.piggest.minecraft.bukkit.custom_map.Character_section_map_render;
 import com.piggest.minecraft.bukkit.custom_map.Custom_map_render;
 import com.piggest.minecraft.bukkit.custom_map.Static_image_map_render;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Clock_utils;
+import org.bukkit.Color;
+import org.bukkit.map.MapCanvas;
+import org.bukkit.map.MapView;
+
+import javax.annotation.Nonnull;
+import java.awt.*;
+import java.util.Calendar;
+import java.util.Map;
 
 public class Analog_clock_map_render extends Digital_clock_map_render {
 	private String style;

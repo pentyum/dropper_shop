@@ -1,16 +1,13 @@
 package com.piggest.minecraft.bukkit.custom_map;
 
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.utils.Color_utils;
 import org.bukkit.entity.Player;
 import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapView;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.utils.Color_utils;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public abstract class Dynamic_string_map_render extends Custom_map_render {
 	protected BufferedImage image;
@@ -22,7 +19,7 @@ public abstract class Dynamic_string_map_render extends Custom_map_render {
 	protected Background_map_render background;
 
 	public Dynamic_string_map_render(Background_map_render background, Font font, int font_size,
-			org.bukkit.Color font_color) {
+									 org.bukkit.Color font_color) {
 		BufferedImage bi = new BufferedImage(Custom_map_render.pic_size, Custom_map_render.pic_size,
 				BufferedImage.TYPE_INT_ARGB);
 		this.image = bi;
@@ -48,7 +45,7 @@ public abstract class Dynamic_string_map_render extends Custom_map_render {
 	public void refresh(MapView map, MapCanvas canvas) {
 		image = background.get_image(Custom_map_render.pic_size, Custom_map_render.pic_size);
 		Graphics2D g = image.createGraphics();
-		
+
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		g.setColor(awt_font_color);

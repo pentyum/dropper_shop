@@ -1,14 +1,13 @@
 package com.piggest.minecraft.bukkit.pigman_switch;
 
-import java.util.HashSet;
-
+import com.piggest.minecraft.bukkit.utils.Chunk_location;
 import org.bukkit.Chunk;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
 
-import com.piggest.minecraft.bukkit.utils.Chunk_location;
+import java.util.HashSet;
 
 public class Pigman_spawn_listener implements Listener {
 	@EventHandler

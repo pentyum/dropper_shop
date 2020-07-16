@@ -29,7 +29,7 @@ public class Exp_saver extends Multi_block_with_gui implements Capacity_upgradab
 	private int damaged_anvil_count = 0;
 
 	private int remove_next = 0;
-	private static final int[][] hopper_check_list = { { 0, 3, 0 } };
+	private static final int[][] hopper_check_list = {{0, 3, 0}};
 	public static final int mending_slot = 13;
 
 	public Exp_saver() {
@@ -49,9 +49,9 @@ public class Exp_saver extends Multi_block_with_gui implements Capacity_upgradab
 		if (this.get_block(0, 0, 0).getType() != Material.DIAMOND_BLOCK) {
 			return false;
 		}
-		Material[] support = new Material[] { this.get_block(0, 1, 0).getType(), this.get_block(0, 2, 0).getType(),
+		Material[] support = new Material[]{this.get_block(0, 1, 0).getType(), this.get_block(0, 2, 0).getType(),
 				this.get_block(1, 2, 0).getType(), this.get_block(-1, 2, 0).getType(),
-				this.get_block(0, 2, 1).getType(), this.get_block(0, 2, -1).getType() };
+				this.get_block(0, 2, 1).getType(), this.get_block(0, 2, -1).getType()};
 		for (Material material : support) {
 			if (!Tag.WOODEN_FENCES.isTagged(material)) {
 				return false;
@@ -360,7 +360,7 @@ public class Exp_saver extends Multi_block_with_gui implements Capacity_upgradab
 
 	@Override
 	public ItemStack[] get_drop_items() {
-		return new ItemStack[] { this.get_mending() };
+		return new ItemStack[]{this.get_mending()};
 	}
 
 	@Nonnull

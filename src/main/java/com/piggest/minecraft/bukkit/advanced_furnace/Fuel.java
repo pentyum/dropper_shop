@@ -1,12 +1,11 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
-import java.util.Set;
-
+import com.piggest.minecraft.bukkit.grinder.Powder;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.inventory.ItemStack;
 
-import com.piggest.minecraft.bukkit.grinder.Powder;
+import java.util.Set;
 
 public enum Fuel {
 	coal(1.95, Status.solid, 1600), charcoal(1.15, Status.solid, 1600), coal_block(1.9, Status.solid, 16000),
@@ -46,62 +45,62 @@ public enum Fuel {
 	public static Fuel get_fuel(ItemStack item) {
 		Material type = item.getType();
 		switch (type) {
-		case COAL:
-			return Fuel.coal;
-		case CHARCOAL:
-			return Fuel.charcoal;
-		case COAL_BLOCK:
-			return Fuel.coal_block;
-		case BLAZE_ROD:
-			return Fuel.blaze_rod;
-		case LAVA_BUCKET:
-			return Fuel.lava;
-		case GUNPOWDER:
-			return Fuel.gun_powder;
-		case DRIED_KELP_BLOCK:
-			return dried_kelp_block;
-		case STICK:
-			return Fuel.stick;
-		case SUGAR:
-			if (item.hasItemMeta()) {
-				if (Powder.is_powder(item, "coal_powder")) {
-					return Fuel.coal_powder;
-				} else if (Powder.is_powder(item, "flour_powder")) {
-					return Fuel.flour_powder;
+			case COAL:
+				return Fuel.coal;
+			case CHARCOAL:
+				return Fuel.charcoal;
+			case COAL_BLOCK:
+				return Fuel.coal_block;
+			case BLAZE_ROD:
+				return Fuel.blaze_rod;
+			case LAVA_BUCKET:
+				return Fuel.lava;
+			case GUNPOWDER:
+				return Fuel.gun_powder;
+			case DRIED_KELP_BLOCK:
+				return dried_kelp_block;
+			case STICK:
+				return Fuel.stick;
+			case SUGAR:
+				if (item.hasItemMeta()) {
+					if (Powder.is_powder(item, "coal_powder")) {
+						return Fuel.coal_powder;
+					} else if (Powder.is_powder(item, "flour_powder")) {
+						return Fuel.flour_powder;
+					} else {
+						return null;
+					}
+				} else {
+					return sugar;
+				}
+			case GLASS_BOTTLE:
+				if (Gas_bottle.is_gas_bottle(item)) {
+					Set<Gas> contents_type = Gas_bottle.get_gas_map(item).keySet();
+					for (Gas gas : contents_type) {
+						switch (gas) {
+							case hydrogen:
+								return Fuel.hydrogen;
+							case CO:
+								return Fuel.CO;
+							case CH4:
+								return Fuel.CH4;
+							default:
+								return null;
+						}
+					}
+					return null;
 				} else {
 					return null;
 				}
-			} else {
-				return sugar;
-			}
-		case GLASS_BOTTLE:
-			if (Gas_bottle.is_gas_bottle(item)) {
-				Set<Gas> contents_type = Gas_bottle.get_gas_map(item).keySet();
-				for (Gas gas : contents_type) {
-					switch (gas) {
-					case hydrogen:
-						return Fuel.hydrogen;
-					case CO:
-						return Fuel.CO;
-					case CH4:
-						return Fuel.CH4;
-					default:
-						return null;
-					}
+			default:
+				if (Tag.WOOL.isTagged(type)) {
+					return Fuel.wool;
+				} else if (Tag.CARPETS.isTagged(type)) {
+					return Fuel.carpet;
+				} else if (Tag.PLANKS.isTagged(type)) {
+					return Fuel.planks;
 				}
 				return null;
-			} else {
-				return null;
-			}
-		default:
-			if (Tag.WOOL.isTagged(type)) {
-				return Fuel.wool;
-			} else if (Tag.CARPETS.isTagged(type)) {
-				return Fuel.carpet;
-			} else if (Tag.PLANKS.isTagged(type)) {
-				return Fuel.planks;
-			}
-			return null;
 		}
 	}
 }

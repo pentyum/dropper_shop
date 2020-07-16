@@ -1,7 +1,9 @@
 package com.piggest.minecraft.bukkit.gui;
 
-import java.util.List;
-
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.grinder.Grinder;
+import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
+import com.piggest.minecraft.bukkit.structure.Structure_manager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,10 +13,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.grinder.Grinder;
-import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
-import com.piggest.minecraft.bukkit.structure.Structure_manager;
+import java.util.List;
 
 public class Gui_listener implements Listener {
 	@EventHandler
@@ -91,45 +90,45 @@ public class Gui_listener implements Listener {
 			}
 			if (slot_config != null) {
 				switch (slot_config.type) {
-				case Indicator:
-					break;
-				case Switch:
-					ItemStack item = event.getCurrentItem();
-					ItemMeta meta = item.getItemMeta();
-					List<String> lore = meta.getLore();
-					String info = lore.get(0);
-					if (info.equals("§r当前: 开启")) { // 关闭开关
-						if (structure.on_switch_pressed(player, slot, false)) {
-							lore.set(0, "§r当前: 关闭");
-							meta.setLore(lore);
-							item.setItemMeta(meta);
+					case Indicator:
+						break;
+					case Switch:
+						ItemStack item = event.getCurrentItem();
+						ItemMeta meta = item.getItemMeta();
+						List<String> lore = meta.getLore();
+						String info = lore.get(0);
+						if (info.equals("§r当前: 开启")) { // 关闭开关
+							if (structure.on_switch_pressed(player, slot, false)) {
+								lore.set(0, "§r当前: 关闭");
+								meta.setLore(lore);
+								item.setItemMeta(meta);
+							}
+						} else { // 打开开关
+							if (structure.on_switch_pressed(player, slot, true)) {
+								lore.set(0, "§r当前: 开启");
+								meta.setLore(lore);
+								item.setItemMeta(meta);
+							}
 						}
-					} else { // 打开开关
-						if (structure.on_switch_pressed(player, slot, true)) {
-							lore.set(0, "§r当前: 开启");
-							meta.setLore(lore);
-							item.setItemMeta(meta);
+						break;
+					case Button:
+						structure.on_button_pressed(player, slot);
+						break;
+					case Item_store:
+						ItemStack in_item = event.getCurrentItem();
+						ItemStack cursor_item = event.getCursor();
+						if (Grinder.is_empty(in_item) && !Grinder.is_empty(cursor_item)) {
+							cancel_result = !structure.on_put_item(player, cursor_item, slot);
+						} else if (!Grinder.is_empty(in_item) && Grinder.is_empty(cursor_item)) {
+							cancel_result = !structure.on_take_item(player, in_item, slot);
+						} else if (!Grinder.is_empty(in_item) && !Grinder.is_empty(cursor_item)) {
+							cancel_result = !structure.on_exchange_item(player, in_item, cursor_item, slot);
+						} else {
+							cancel_result = false;
 						}
-					}
-					break;
-				case Button:
-					structure.on_button_pressed(player, slot);
-					break;
-				case Item_store:
-					ItemStack in_item = event.getCurrentItem();
-					ItemStack cursor_item = event.getCursor();
-					if (Grinder.is_empty(in_item) && !Grinder.is_empty(cursor_item)) {
-						cancel_result = !structure.on_put_item(player, cursor_item, slot);
-					} else if (!Grinder.is_empty(in_item) && Grinder.is_empty(cursor_item)) {
-						cancel_result = !structure.on_take_item(player, in_item, slot);
-					} else if (!Grinder.is_empty(in_item) && !Grinder.is_empty(cursor_item)) {
-						cancel_result = !structure.on_exchange_item(player, in_item, cursor_item, slot);
-					} else {
-						cancel_result = false;
-					}
-					break;
-				default:
-					break;
+						break;
+					default:
+						break;
 				}
 				event.setCancelled(cancel_result);
 				return;

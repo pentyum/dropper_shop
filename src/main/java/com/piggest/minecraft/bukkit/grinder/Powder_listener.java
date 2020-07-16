@@ -1,11 +1,10 @@
 package com.piggest.minecraft.bukkit.grinder;
 
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.inventory.ItemStack;
-
-import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 
 public class Powder_listener implements Listener {
 	@EventHandler

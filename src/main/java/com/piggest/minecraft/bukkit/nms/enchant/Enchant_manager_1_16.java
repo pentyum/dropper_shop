@@ -1,9 +1,8 @@
 package com.piggest.minecraft.bukkit.nms.enchant;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Random;
-
+import com.google.common.collect.Lists;
+import com.piggest.minecraft.bukkit.material_ext.Tool_material;
+import net.minecraft.server.v1_16_R1.*;
 import org.bukkit.craftbukkit.v1_16_R1.inventory.CraftInventoryView;
 import org.bukkit.craftbukkit.v1_16_R1.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_16_R1.util.CraftNamespacedKey;
@@ -12,17 +11,9 @@ import org.bukkit.enchantments.EnchantmentOffer;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
-import com.google.common.collect.Lists;
-import com.piggest.minecraft.bukkit.material_ext.Tool_material;
-
-import net.minecraft.server.v1_16_R1.ContainerEnchantTable;
-import net.minecraft.server.v1_16_R1.ContainerProperty;
-import net.minecraft.server.v1_16_R1.EnchantmentManager;
-import net.minecraft.server.v1_16_R1.IRegistry;
-import net.minecraft.server.v1_16_R1.MathHelper;
-import net.minecraft.server.v1_16_R1.SystemUtils;
-import net.minecraft.server.v1_16_R1.WeightedRandom;
-import net.minecraft.server.v1_16_R1.WeightedRandomEnchant;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Random;
 
 public class Enchant_manager_1_16 implements Enchant_manager {
 	Field containerProperty_i = null;

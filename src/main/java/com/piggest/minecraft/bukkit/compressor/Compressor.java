@@ -1,21 +1,19 @@
 package com.piggest.minecraft.bukkit.compressor;
 
-import java.util.ArrayList;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.structure.Auto_io;
+import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
+import com.piggest.minecraft.bukkit.utils.Inventory_io;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Hopper;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.material_ext.Material_ext;
-import com.piggest.minecraft.bukkit.structure.Auto_io;
-import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
-import com.piggest.minecraft.bukkit.utils.Inventory_io;
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class Compressor extends Multi_block_with_gui implements Auto_io {
 	private int piston_storage = 0;
@@ -25,10 +23,10 @@ public class Compressor extends Multi_block_with_gui implements Auto_io {
 	public static final int piston_slot = 11;
 	public static final int product_slot = 13;
 
-	private static final int[][] reactant_hopper_check_list = { { 0, 2, 2 }, { 2, 2, 0 }, { 0, 2, -2 }, { -2, 2, 0 } }; // 注入原料
-	private static final int[][] piston_hopper_check_list = { { 0, 0, 2 }, { 2, 0, 0 }, { 0, 0, -2 }, { -2, 0, 0 } }; // 注入活塞单位
-	private static final int[][] product_check_list = { { 1, 0, 2 }, { 2, 0, 1 }, { -1, 0, 2 }, { 2, 0, -1 },
-			{ 1, 0, -2 }, { -2, 0, 1 }, { -2, 0, -1 }, { -1, 0, -2 } };// 产品自动流出
+	private static final int[][] reactant_hopper_check_list = {{0, 2, 2}, {2, 2, 0}, {0, 2, -2}, {-2, 2, 0}}; // 注入原料
+	private static final int[][] piston_hopper_check_list = {{0, 0, 2}, {2, 0, 0}, {0, 0, -2}, {-2, 0, 0}}; // 注入活塞单位
+	private static final int[][] product_check_list = {{1, 0, 2}, {2, 0, 1}, {-1, 0, 2}, {2, 0, -1},
+			{1, 0, -2}, {-2, 0, 1}, {-2, 0, -1}, {-1, 0, -2}};// 产品自动流出
 
 	public Compressor() {
 		this.set_process(0);
@@ -85,7 +83,7 @@ public class Compressor extends Multi_block_with_gui implements Auto_io {
 
 	@Override
 	public ItemStack[] get_drop_items() {
-		return new ItemStack[] { this.get_raw(), this.get_piston(), this.get_product() };
+		return new ItemStack[]{this.get_raw(), this.get_piston(), this.get_product()};
 	}
 
 	public ItemStack get_product() {
@@ -178,11 +176,11 @@ public class Compressor extends Multi_block_with_gui implements Auto_io {
 	public boolean add_a_piston(ItemStack item) {
 		return Inventory_io.move_item_to_slot(item, 1, gui, Compressor.piston_slot);
 	}
-	
+
 	@Nonnull
-    public static Compressor deserialize(@Nonnull Map<String, Object> args) {
+	public static Compressor deserialize(@Nonnull Map<String, Object> args) {
 		Compressor structure = new Compressor();
 		structure.set_from_save(args);
 		return structure;
-    }
+	}
 }

@@ -1,7 +1,7 @@
 package com.piggest.minecraft.bukkit.compressor;
 
-import org.bukkit.inventory.ItemStack;
 import com.piggest.minecraft.bukkit.structure.Structure_recipe;
+import org.bukkit.inventory.ItemStack;
 
 public class Compressor_recipe extends Structure_recipe {
 	private String source;

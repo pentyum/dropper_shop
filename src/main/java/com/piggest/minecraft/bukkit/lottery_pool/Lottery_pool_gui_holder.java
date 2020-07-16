@@ -1,16 +1,15 @@
 package com.piggest.minecraft.bukkit.lottery_pool;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.gui.Paged_inventory_holder;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.gui.Paged_inventory_holder;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Lottery_pool_gui_holder implements Paged_inventory_holder {
 	public static final int page_size = 27;

@@ -1,12 +1,11 @@
 package com.piggest.minecraft.bukkit.utils;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import org.bukkit.World;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import org.bukkit.World;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class Server_date {
 	public static int get_world_day(World world) {
@@ -19,7 +18,7 @@ public class Server_date {
 
 	public static Calendar get_world_date(@Nullable World world) {
 		Calendar start_date = Calendar.getInstance();
-		if(world != null) {
+		if (world != null) {
 			start_date.set(2000, 1, 1, 6, get_world_min(world), 0);
 		}
 		return start_date;

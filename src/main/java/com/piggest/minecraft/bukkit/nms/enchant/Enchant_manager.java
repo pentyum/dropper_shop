@@ -5,5 +5,5 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
 public interface Enchant_manager {
-	public void enchant(ItemStack itemstack,InventoryView view,EnchantmentOffer[] offer,int bonus);
+	public void enchant(ItemStack itemstack, InventoryView view, EnchantmentOffer[] offer, int bonus);
 }

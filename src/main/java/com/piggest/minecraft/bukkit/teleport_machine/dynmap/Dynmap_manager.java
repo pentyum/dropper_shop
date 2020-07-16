@@ -1,9 +1,10 @@
 package com.piggest.minecraft.bukkit.teleport_machine.dynmap;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.teleport_machine.Element;
+import com.piggest.minecraft.bukkit.teleport_machine.Radio_state;
+import com.piggest.minecraft.bukkit.teleport_machine.Teleport_machine;
+import com.piggest.minecraft.bukkit.teleport_machine.Teleport_machine_manager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
@@ -13,11 +14,9 @@ import org.dynmap.markers.MarkerAPI;
 import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.teleport_machine.Element;
-import com.piggest.minecraft.bukkit.teleport_machine.Radio_state;
-import com.piggest.minecraft.bukkit.teleport_machine.Teleport_machine;
-import com.piggest.minecraft.bukkit.teleport_machine.Teleport_machine_manager;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class Dynmap_manager {
 	Teleport_machine_manager teleport_machine_manager;

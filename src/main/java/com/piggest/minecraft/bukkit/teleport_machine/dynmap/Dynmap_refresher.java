@@ -1,11 +1,10 @@
 package com.piggest.minecraft.bukkit.teleport_machine.dynmap;
 
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-
 import com.piggest.minecraft.bukkit.structure.Structure_manager_runner;
 import com.piggest.minecraft.bukkit.teleport_machine.Teleport_machine;
 import com.piggest.minecraft.bukkit.teleport_machine.Teleport_machine_manager;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 
 public class Dynmap_refresher extends Structure_manager_runner {
 

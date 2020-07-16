@@ -1,14 +1,13 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
+import com.piggest.minecraft.bukkit.depository.Reader;
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.teleport_machine.Elements_composition;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
-
-import com.piggest.minecraft.bukkit.depository.Reader;
-import com.piggest.minecraft.bukkit.material_ext.Material_ext;
-import com.piggest.minecraft.bukkit.teleport_machine.Elements_composition;
 
 public enum Liquid implements Chemical {
 	water("水"), lava("熔岩"), milk("牛奶");
@@ -35,16 +34,16 @@ public enum Liquid implements Chemical {
 			id_name = Reader.get_content_id_name(item);
 		}
 		switch (id_name) {
-		case "water_bucket":
-			return 1000;
-		case "lava_bucket":
-			return 1000;
-		case "milk_bucket":
-			return 1000;
-		case "potion":
-			return 200;
-		default:
-			return 0;
+			case "water_bucket":
+				return 1000;
+			case "lava_bucket":
+				return 1000;
+			case "milk_bucket":
+				return 1000;
+			case "potion":
+				return 200;
+			default:
+				return 0;
 		}
 	}
 
@@ -54,12 +53,12 @@ public enum Liquid implements Chemical {
 			id_name = Reader.get_content_id_name(item);
 		}
 		switch (id_name) {
-		case "bucket":
-			return 1000;
-		case "glass_bottle":
-			return 200;
-		default:
-			return 0;
+			case "bucket":
+				return 1000;
+			case "glass_bottle":
+				return 200;
+			default:
+				return 0;
 		}
 	}
 
@@ -69,16 +68,16 @@ public enum Liquid implements Chemical {
 			id_name = Reader.get_content_id_name(item);
 		}
 		switch (id_name) {
-		case "water_bucket":
-			return water;
-		case "lava_bucket":
-			return lava;
-		case "milk_bucket":
-			return milk;
-		case "potion":
-			return water;
-		default:
-			return null;
+			case "water_bucket":
+				return water;
+			case "lava_bucket":
+				return lava;
+			case "milk_bucket":
+				return milk;
+			case "potion":
+				return water;
+			default:
+				return null;
 		}
 	}
 
@@ -106,36 +105,36 @@ public enum Liquid implements Chemical {
 			id_name = Reader.get_content_id_name(container);
 		}
 		switch (liquid) {
-		case lava:
-			switch (id_name) {
-			case "bucket":
-				return new ItemStack(Material.LAVA_BUCKET);
+			case lava:
+				switch (id_name) {
+					case "bucket":
+						return new ItemStack(Material.LAVA_BUCKET);
+					default:
+						return null;
+				}
+			case milk:
+				switch (id_name) {
+					case "bucket":
+						return new ItemStack(Material.MILK_BUCKET);
+					default:
+						return null;
+				}
+			case water:
+				switch (id_name) {
+					case "bucket":
+						return new ItemStack(Material.WATER_BUCKET);
+					case "glass_bottle":
+						ItemStack water_bottle = new ItemStack(Material.POTION);
+						PotionMeta meta = (PotionMeta) water_bottle.getItemMeta();
+						PotionData data = new PotionData(PotionType.WATER);
+						meta.setBasePotionData(data);
+						water_bottle.setItemMeta(meta);
+						return water_bottle;
+					default:
+						return null;
+				}
 			default:
 				return null;
-			}
-		case milk:
-			switch (id_name) {
-			case "bucket":
-				return new ItemStack(Material.MILK_BUCKET);
-			default:
-				return null;
-			}
-		case water:
-			switch (id_name) {
-			case "bucket":
-				return new ItemStack(Material.WATER_BUCKET);
-			case "glass_bottle":
-				ItemStack water_bottle = new ItemStack(Material.POTION);
-				PotionMeta meta = (PotionMeta) water_bottle.getItemMeta();
-				PotionData data = new PotionData(PotionType.WATER);
-				meta.setBasePotionData(data);
-				water_bottle.setItemMeta(meta);
-				return water_bottle;
-			default:
-				return null;
-			}
-		default:
-			return null;
 		}
 	}
 

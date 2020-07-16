@@ -1,14 +1,13 @@
 package com.piggest.minecraft.bukkit.custom_map;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapView;
+
+import javax.annotation.Nonnull;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Empty_map_render extends Custom_map_render implements ConfigurationSerializable {
 
@@ -17,7 +16,8 @@ public class Empty_map_render extends Custom_map_render implements Configuration
 	}
 
 	@Override
-	public @Nonnull Map<String, Object> serialize() {
+	public @Nonnull
+	Map<String, Object> serialize() {
 		return new HashMap<String, Object>();
 	}
 
@@ -28,5 +28,5 @@ public class Empty_map_render extends Custom_map_render implements Configuration
 	@Override
 	public void refresh(MapView map, MapCanvas canvas) {
 	}
-	
+
 }

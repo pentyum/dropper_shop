@@ -38,11 +38,11 @@ public class Advanced_furnace extends Multi_block_with_gui implements Capacity_u
 	public static final int gas_product_slot = 20;
 	public static final int upgrade_component_slot = 33;
 
-	private static final int[][] solid_reactant_hopper_check_list = { { 0, 1, 2 }, { 2, 1, 0 }, { 0, 1, -2 },
-			{ -2, 1, 0 } }; // 注入固体
-	private static final int[][] fuel_hopper_check_list = { { 0, -1, 2 }, { 2, -1, 0 }, { 0, -1, -2 }, { -2, -1, 0 } }; // 注入固体
-	private static final int[][] solid_product_check_list = { { 1, -1, 2 }, { 2, -1, 1 }, { -1, -1, 2 }, { 2, -1, -1 },
-			{ 1, -1, -2 }, { -2, -1, 1 }, { -2, -1, -1 }, { -1, -1, -2 } };
+	private static final int[][] solid_reactant_hopper_check_list = {{0, 1, 2}, {2, 1, 0}, {0, 1, -2},
+			{-2, 1, 0}}; // 注入固体
+	private static final int[][] fuel_hopper_check_list = {{0, -1, 2}, {2, -1, 0}, {0, -1, -2}, {-2, -1, 0}}; // 注入固体
+	private static final int[][] solid_product_check_list = {{1, -1, 2}, {2, -1, 1}, {-1, -1, 2}, {2, -1, -1},
+			{1, -1, -2}, {-2, -1, 1}, {-2, -1, -1}, {-1, -1, -2}};
 
 	private Reaction_container reaction_container = new Reaction_container();
 	private double power = 0;
@@ -68,7 +68,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements Capacity_u
 
 	/**
 	 * 获取方块温度，单位为开尔文，自然温度由群系温度+高度温度+维度温度+亮度温度控制
-	 * 
+	 *
 	 * @param block
 	 * @return
 	 */
@@ -504,15 +504,15 @@ public class Advanced_furnace extends Multi_block_with_gui implements Capacity_u
 	@Override
 	public boolean on_switch_pressed(Player player, int slot, boolean on) {
 		switch (slot) {
-		case Advanced_furnace.make_money_switch:
-			if (player.hasPermission("adv_furnace.make_money")) {
+			case Advanced_furnace.make_money_switch:
+				if (player.hasPermission("adv_furnace.make_money")) {
+					return true;
+				} else {
+					this.send_message(player, "你没有启动火力发钱的权限");
+					return false;
+				}
+			default:
 				return true;
-			} else {
-				this.send_message(player, "你没有启动火力发钱的权限");
-				return false;
-			}
-		default:
-			return true;
 		}
 	}
 
@@ -688,11 +688,11 @@ public class Advanced_furnace extends Multi_block_with_gui implements Capacity_u
 
 	@Override
 	public ItemStack[] get_drop_items() {
-		ItemStack[] drop_items = new ItemStack[] { null, null, this.gui.getItem(fuel_slot),
+		ItemStack[] drop_items = new ItemStack[]{null, null, this.gui.getItem(fuel_slot),
 				this.gui.getItem(fuel_product_slot), this.gui.getItem(solid_reactant_slot),
 				this.gui.getItem(solid_product_slot), this.gui.getItem(liquid_reactant_slot),
 				this.gui.getItem(liquid_product_slot), this.gui.getItem(gas_reactant_slot),
-				this.gui.getItem(gas_product_slot) };
+				this.gui.getItem(gas_product_slot)};
 		if (this.get_overload_upgrade() > 0) {
 			drop_items[0] = Upgrade_component.overload_component_item[this.get_overload_upgrade() - 1].clone();
 		}

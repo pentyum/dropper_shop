@@ -1,13 +1,11 @@
 package com.piggest.minecraft.bukkit.nms.map;
 
-import java.lang.reflect.Field;
-
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import net.minecraft.server.v1_16_R1.WorldMap;
 import org.bukkit.craftbukkit.v1_16_R1.map.CraftMapView;
 import org.bukkit.map.MapView;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-
-import net.minecraft.server.v1_16_R1.WorldMap;
+import java.lang.reflect.Field;
 
 public class Map_editor_1_16 implements Map_editor {
 	Field worldmap_field;

@@ -1,13 +1,13 @@
 package com.piggest.minecraft.bukkit.grinder;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.material_ext.Tool_material;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Ingot extends Material_ext {
 	public final static int ingot_model_offset = 100;

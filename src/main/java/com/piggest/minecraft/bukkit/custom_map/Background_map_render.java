@@ -1,15 +1,13 @@
 package com.piggest.minecraft.bukkit.custom_map;
 
-import java.awt.Graphics2D;
+import com.piggest.minecraft.bukkit.utils.Color_utils;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+
+import javax.annotation.Nonnull;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.annotation.Nonnull;
-
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-
-import com.piggest.minecraft.bukkit.utils.Color_utils;
 
 public class Background_map_render implements ConfigurationSerializable {
 	protected BufferedImage image_cache;
@@ -26,7 +24,8 @@ public class Background_map_render implements ConfigurationSerializable {
 	}
 
 	@Override
-	public @Nonnull Map<String, Object> serialize() {
+	public @Nonnull
+	Map<String, Object> serialize() {
 		HashMap<String, Object> save = new HashMap<String, Object>();
 		save.put("background-color", this.background_color);
 		return save;

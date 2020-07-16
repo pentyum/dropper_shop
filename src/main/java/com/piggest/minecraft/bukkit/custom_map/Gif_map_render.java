@@ -1,25 +1,22 @@
 package com.piggest.minecraft.bukkit.custom_map;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.Player;
+import org.bukkit.map.MapCanvas;
+import org.bukkit.map.MapView;
+
+import javax.annotation.Nonnull;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.annotation.Nonnull;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
-
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.Player;
-import org.bukkit.map.MapCanvas;
-import org.bukkit.map.MapView;
-
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 
 public class Gif_map_render extends Static_image_map_render implements ConfigurationSerializable {
 	private String path;

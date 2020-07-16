@@ -1,8 +1,7 @@
 package com.piggest.minecraft.bukkit.electrolyte;
 
-import org.bukkit.Material;
-
 import com.piggest.minecraft.bukkit.structure.Structure_manager;
+import org.bukkit.Material;
 
 public class Electrolyte_manager extends Structure_manager<Electrolyte> {
 

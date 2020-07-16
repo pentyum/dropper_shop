@@ -1,15 +1,14 @@
 package com.piggest.minecraft.bukkit.dropper_shop;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.function.Predicate;
-
+import com.google.zxing.NotFoundException;
+import com.piggest.minecraft.bukkit.config.Price_config;
+import com.piggest.minecraft.bukkit.custom_map.Custom_map_render;
+import com.piggest.minecraft.bukkit.custom_map.Static_image_map_render;
+import com.piggest.minecraft.bukkit.grinder.Grinder;
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.nms.NMS_manager;
+import com.piggest.minecraft.bukkit.teleport_machine.Elements_composition;
 import com.piggest.minecraft.bukkit.utils.*;
-import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,18 +21,14 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
-import com.google.zxing.NotFoundException;
-import com.piggest.minecraft.bukkit.config.Price_config;
-import com.piggest.minecraft.bukkit.custom_map.Custom_map_render;
-import com.piggest.minecraft.bukkit.custom_map.Static_image_map_render;
-import com.piggest.minecraft.bukkit.grinder.Grinder;
-import com.piggest.minecraft.bukkit.material_ext.Material_ext;
-import com.piggest.minecraft.bukkit.nms.NMS_manager;
-import com.piggest.minecraft.bukkit.teleport_machine.Elements_composition;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
 
 public class Dropper_shop_command_executor implements TabExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

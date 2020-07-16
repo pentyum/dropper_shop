@@ -24,7 +24,7 @@ public class Clock_utils {
 		public int sec_tail_y;
 
 		public Clock_pos_data(int hr, int min, int sec, int size, double hr_rsize, double min_rsize, double sec_rsize,
-				double tail_rsize) {
+							  double tail_rsize) {
 			double a_sec = get_sec_pa(sec);
 			double a_min = get_min_pa(min, sec);
 			double a_hour = get_hr_pa(hr, min);

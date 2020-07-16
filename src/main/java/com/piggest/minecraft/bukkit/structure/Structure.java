@@ -1,9 +1,11 @@
 package com.piggest.minecraft.bukkit.structure;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
+import com.piggest.minecraft.bukkit.teleport_machine.Element;
+import com.piggest.minecraft.bukkit.teleport_machine.Elements_container;
+import com.piggest.minecraft.bukkit.teleport_machine.Unique;
+import com.piggest.minecraft.bukkit.utils.Chunk_location;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Nameable;
@@ -14,12 +16,9 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
-import com.piggest.minecraft.bukkit.teleport_machine.Element;
-import com.piggest.minecraft.bukkit.teleport_machine.Elements_container;
-import com.piggest.minecraft.bukkit.teleport_machine.Unique;
-import com.piggest.minecraft.bukkit.utils.Chunk_location;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public abstract class Structure implements ConfigurationSerializable {
 	protected String world_name = null;

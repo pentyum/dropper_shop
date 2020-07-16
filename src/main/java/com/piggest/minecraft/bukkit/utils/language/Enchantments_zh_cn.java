@@ -1,8 +1,8 @@
 package com.piggest.minecraft.bukkit.utils.language;
 
-import java.util.HashMap;
-
 import org.bukkit.enchantments.Enchantment;
+
+import java.util.HashMap;
 
 public class Enchantments_zh_cn {
 	public static final HashMap<String, String> name = new HashMap<String, String>();

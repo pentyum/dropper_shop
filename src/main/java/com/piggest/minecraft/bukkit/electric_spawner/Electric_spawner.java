@@ -1,18 +1,11 @@
 package com.piggest.minecraft.bukkit.electric_spawner;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.function.Predicate;
-import java.util.Random;
-
-import javax.annotation.Nonnull;
-
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.grinder.Grinder;
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.nms.NMS_manager;
+import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
+import com.piggest.minecraft.bukkit.utils.language.Entity_zh_cn;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -23,12 +16,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.grinder.Grinder;
-import com.piggest.minecraft.bukkit.material_ext.Material_ext;
-import com.piggest.minecraft.bukkit.nms.NMS_manager;
-import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
-import com.piggest.minecraft.bukkit.utils.language.Entity_zh_cn;
+import javax.annotation.Nonnull;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.function.Predicate;
 
 public class Electric_spawner extends Multi_block_with_gui {
 	public static final int info_indicator_slot = 9;
@@ -220,7 +211,7 @@ public class Electric_spawner extends Multi_block_with_gui {
 	}
 
 	private ArrayList<Entity_probability> get_probability_list(Map<EntityType, Integer> probability_map,
-			double total_modifier) {
+															   double total_modifier) {
 		ArrayList<Entry<EntityType, Integer>> probability_list = new ArrayList<Entry<EntityType, Integer>>(
 				probability_map.entrySet());
 		probability_list.sort(new Comparator<Entry<EntityType, Integer>>() {
@@ -359,8 +350,8 @@ public class Electric_spawner extends Multi_block_with_gui {
 
 	@Override
 	public ItemStack[] get_drop_items() {
-		return new ItemStack[] { this.gui.getItem(11), this.gui.getItem(12), this.gui.getItem(13),
-				this.gui.getItem(14) };
+		return new ItemStack[]{this.gui.getItem(11), this.gui.getItem(12), this.gui.getItem(13),
+				this.gui.getItem(14)};
 	}
 
 	public synchronized void set_process(int process) {

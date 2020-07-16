@@ -1,9 +1,9 @@
 package com.piggest.minecraft.bukkit.config;
 
-import java.util.List;
+import com.piggest.minecraft.bukkit.structure.Structure;
 import org.bukkit.World;
 
-import com.piggest.minecraft.bukkit.structure.Structure;
+import java.util.List;
 
 public class Structure_config extends Ext_config {
 	private String structure_type_name;

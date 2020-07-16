@@ -1,18 +1,17 @@
 package com.piggest.minecraft.bukkit.tools;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.material_ext.Custom_durability;
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.material_ext.Tool_material;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.material_ext.Custom_durability;
-import com.piggest.minecraft.bukkit.material_ext.Material_ext;
-import com.piggest.minecraft.bukkit.material_ext.Tool_material;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Tools {
 	private static final NamespacedKey pickaxe_recipe_namespace = Dropper_shop_plugin.get_key("pickaxe_recipe");
@@ -20,15 +19,15 @@ public class Tools {
 	private static final NamespacedKey shovel_recipe_namespace = Dropper_shop_plugin.get_key("shovel_recipe");
 	private static final NamespacedKey hoe_recipe_namespace = Dropper_shop_plugin.get_key("hoe_recipe");
 	private static final NamespacedKey sword_recipe_namespace = Dropper_shop_plugin.get_key("sword_recipe");
-	static final List<NamespacedKey> tools_namespace = Arrays.asList(new NamespacedKey[] { pickaxe_recipe_namespace,
-			axe_recipe_namespace, shovel_recipe_namespace, hoe_recipe_namespace, sword_recipe_namespace });
-	
+	static final List<NamespacedKey> tools_namespace = Arrays.asList(new NamespacedKey[]{pickaxe_recipe_namespace,
+			axe_recipe_namespace, shovel_recipe_namespace, hoe_recipe_namespace, sword_recipe_namespace});
+
 	public static final ArrayList<Tools> pickaxe_config = new ArrayList<>();
 	public static final ArrayList<Tools> axe_config = new ArrayList<>();
 	public static final ArrayList<Tools> shovel_config = new ArrayList<>();
 	public static final ArrayList<Tools> hoe_config = new ArrayList<>();
 	public static final ArrayList<Tools> sword_config = new ArrayList<>();
-	
+
 	public static final int tool_model_offset = 100;
 
 	private Tool_type tool_type;
@@ -92,7 +91,7 @@ public class Tools {
 		hoe_recipe.setIngredient('s', Material.STICK);
 		hoe_recipe.setIngredient('a', Material.AIR);
 		Dropper_shop_plugin.instance.add_recipe(hoe_recipe);
-		
+
 		ShapedRecipe sword_recipe = new ShapedRecipe(sword_recipe_namespace, new ItemStack(Material.STONE_SWORD));
 		sword_recipe.shape("aba", "aba", "asa");
 		sword_recipe.setIngredient('b', Material.BRICK);

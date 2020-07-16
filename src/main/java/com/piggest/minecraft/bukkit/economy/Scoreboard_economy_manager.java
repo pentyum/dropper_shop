@@ -1,6 +1,5 @@
 package com.piggest.minecraft.bukkit.economy;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Tab_list;
 import net.milkbowl.vault.economy.Economy;

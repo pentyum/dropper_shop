@@ -1,8 +1,7 @@
 package com.piggest.minecraft.bukkit.teleport_machine;
 
-import java.util.ArrayList;
-import java.util.UUID;
-
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.utils.Radio;
 import org.bukkit.Location;
 import org.bukkit.Nameable;
 import org.bukkit.block.Biome;
@@ -10,8 +9,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.inventory.ItemStack;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.utils.Radio;
+import java.util.ArrayList;
+import java.util.UUID;
 
 public interface Radio_terminal extends Nameable, Unique, Elements_container {
 
@@ -100,10 +99,10 @@ public interface Radio_terminal extends Nameable, Unique, Elements_container {
 	public default double get_biome_noise() {
 		Biome biome = this.get_location().getBlock().getBiome();
 		switch (biome) {
-		case BADLANDS:
-			return 5E-11;
-		default:
-			return 5E-11;
+			case BADLANDS:
+				return 5E-11;
+			default:
+				return 5E-11;
 		}
 	}
 
@@ -140,7 +139,7 @@ public interface Radio_terminal extends Nameable, Unique, Elements_container {
 		int central_freq = Radio.get_central_freq(this.get_n());
 		for (int scan_freq = (int) (central_freq
 				- Radio.antenna_bandwidth * central_freq); scan_freq <= (int) (central_freq
-						+ Radio.antenna_bandwidth * central_freq); scan_freq += 100) {
+				+ Radio.antenna_bandwidth * central_freq); scan_freq += 100) {
 			this.set_channel_freq(scan_freq);
 			for (Radio_terminal terminal : manager.values()) {
 				if (terminal != this) {

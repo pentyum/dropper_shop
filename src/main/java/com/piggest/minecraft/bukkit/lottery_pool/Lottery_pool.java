@@ -1,13 +1,8 @@
 package com.piggest.minecraft.bukkit.lottery_pool;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.function.Predicate;
-
-import javax.annotation.Nonnull;
-
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -19,16 +14,19 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.material_ext.Material_ext;
-import com.piggest.minecraft.bukkit.structure.Multi_block_structure;
+import javax.annotation.Nonnull;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.function.Predicate;
 
 public class Lottery_pool extends Multi_block_structure {
 	Lottery_pool_timer timer = null;
 	EnderCrystal[] ender_crystal_list = new EnderCrystal[8];
 	boolean running = false;
 	private Random rand = new Random();
-	
+
 	@Override
 	protected void on_right_click(Player player) {
 		if (this.completed() == false) {

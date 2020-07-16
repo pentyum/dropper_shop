@@ -26,26 +26,26 @@ public class NMS_manager {
 		Dropper_shop_plugin.instance.getLogger().info("当前NMS:" + version);
 		NMS_version nms_version = NMS_version.parse_version(version);
 		switch (nms_version) {
-		case v1_16:
-			Dropper_shop_plugin.instance.getLogger().info("已适配NMS:" + version);
-			ext_id_provider = new Ext_id_1_16();
-			raid_provider = new Raid_trigger_1_16();
-			biome_modifier = new Biome_modifier_1_16();
-			packet_map_chunk_listener = new Packet_map_chunk_listener_1_16();
-			enchant_manager = new Enchant_manager_1_16();
-			local_difficulty = new Local_difficulty_1_16();
-			map_editor = new Map_editor_1_16();
-			break;
-		default:
-			Dropper_shop_plugin.instance.getLogger().warning("NMS未能适配!");
-			ext_id_provider = new Ext_id_1_16();
-			raid_provider = new Raid_trigger_1_16();
-			biome_modifier = new Biome_modifier_1_16();
-			packet_map_chunk_listener = new Packet_map_chunk_listener_1_16();
-			enchant_manager = new Enchant_manager_1_16();
-			local_difficulty = new Local_difficulty_1_16();
-			map_editor = new Map_editor_1_16();
-			break;
+			case v1_16:
+				Dropper_shop_plugin.instance.getLogger().info("已适配NMS:" + version);
+				ext_id_provider = new Ext_id_1_16();
+				raid_provider = new Raid_trigger_1_16();
+				biome_modifier = new Biome_modifier_1_16();
+				packet_map_chunk_listener = new Packet_map_chunk_listener_1_16();
+				enchant_manager = new Enchant_manager_1_16();
+				local_difficulty = new Local_difficulty_1_16();
+				map_editor = new Map_editor_1_16();
+				break;
+			default:
+				Dropper_shop_plugin.instance.getLogger().warning("NMS未能适配!");
+				ext_id_provider = new Ext_id_1_16();
+				raid_provider = new Raid_trigger_1_16();
+				biome_modifier = new Biome_modifier_1_16();
+				packet_map_chunk_listener = new Packet_map_chunk_listener_1_16();
+				enchant_manager = new Enchant_manager_1_16();
+				local_difficulty = new Local_difficulty_1_16();
+				map_editor = new Map_editor_1_16();
+				break;
 		}
 	}
 }

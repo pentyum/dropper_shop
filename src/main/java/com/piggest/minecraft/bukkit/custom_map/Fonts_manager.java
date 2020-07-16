@@ -1,14 +1,13 @@
 package com.piggest.minecraft.bukkit.custom_map;
 
-import java.awt.Font;
-import java.awt.FontFormatException;
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+
+import java.awt.*;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Set;
-
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 
 public class Fonts_manager {
 	private final HashMap<String, Font> font_map = new HashMap<>();

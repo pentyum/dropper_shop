@@ -1,9 +1,7 @@
 package com.piggest.minecraft.bukkit.structure;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map.Entry;
-
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.grinder.Grinder;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -17,8 +15,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.grinder.Grinder;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 public class Structure_listener implements Listener {
 	@EventHandler

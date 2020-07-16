@@ -1,8 +1,9 @@
 package com.piggest.minecraft.bukkit.utils;
 
-import java.util.HashMap;
-import java.util.List;
-
+import com.piggest.minecraft.bukkit.depository.Depository;
+import com.piggest.minecraft.bukkit.depository.Reader;
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.grinder.Grinder;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -12,10 +13,8 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.piggest.minecraft.bukkit.depository.Depository;
-import com.piggest.minecraft.bukkit.depository.Reader;
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.grinder.Grinder;
+import java.util.HashMap;
+import java.util.List;
 
 public class Inventory_io {
 	public static boolean move_item_to_inventoryholder(Inventory inventory, int slot, InventoryHolder holder) {

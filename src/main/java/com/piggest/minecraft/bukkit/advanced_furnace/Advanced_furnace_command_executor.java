@@ -1,18 +1,18 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import java.util.ArrayList;
+import java.util.List;
 
 enum Advanced_furnace_sub_cmd {
 	remove, getmoney, temp;
+
 	public static ArrayList<String> get_list(CommandSender sender) {
 		ArrayList<String> list = new ArrayList<String>();
 		for (Advanced_furnace_sub_cmd cmd : Advanced_furnace_sub_cmd.values()) {
@@ -63,7 +63,7 @@ public class Advanced_furnace_command_executor implements TabExecutor {
 					player.sendMessage("[高级熔炉]没有检测到完整的高级熔炉结构");
 					return true;
 				}
-				if(!player.hasPermission("adv_furnace.get_money")) {
+				if (!player.hasPermission("adv_furnace.get_money")) {
 					player.sendMessage("[高级熔炉]你没有取出货币的权限!");
 					return true;
 				}
@@ -100,7 +100,7 @@ public class Advanced_furnace_command_executor implements TabExecutor {
 					adv_furnace.set_time_upgrade(level);
 				}
 				return true;
-			} else if (args[0].equalsIgnoreCase("set_temp")){
+			} else if (args[0].equalsIgnoreCase("set_temp")) {
 				if (!player.hasPermission("adv_furnace.admin")) {
 					player.sendMessage("[高级熔炉]你没有权限直接设置温度");
 					return true;

@@ -12,5 +12,5 @@ public class Raid_info {
 	//public float total_health;
 	//public float num_groups;
 	//public String status;
-  
+
 }

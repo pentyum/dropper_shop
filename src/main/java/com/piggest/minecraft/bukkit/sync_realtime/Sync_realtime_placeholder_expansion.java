@@ -1,15 +1,13 @@
 package com.piggest.minecraft.bukkit.sync_realtime;
 
-import java.util.Calendar;
-
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.utils.Server_date;
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.utils.Server_date;
-
-import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import java.util.Calendar;
 
 public class Sync_realtime_placeholder_expansion extends PlaceholderExpansion {
 	private Dropper_shop_plugin plugin;
@@ -59,7 +57,6 @@ public class Sync_realtime_placeholder_expansion extends PlaceholderExpansion {
 	 *
 	 * @param player     A {@link org.bukkit.Player Player}.
 	 * @param identifier A String containing the identifier/value.
-	 *
 	 * @return possibly-null String of the requested identifier.
 	 */
 	@Override
@@ -75,22 +72,22 @@ public class Sync_realtime_placeholder_expansion extends PlaceholderExpansion {
 			}
 			Calendar date = Server_date.get_world_date(world);
 			switch (values[0]) {
-			case "year":
-				return String.valueOf(date.get(Calendar.YEAR));
-			case "month":
-				return String.valueOf(date.get(Calendar.MONTH));
-			case "day":
-				return String.valueOf(date.get(Calendar.DAY_OF_MONTH));
-			case "hour":
-				return String.valueOf(date.get(Calendar.HOUR_OF_DAY));
-			case "hour12":
-				return String.valueOf(date.get(Calendar.HOUR));
-			case "hour24":
-				return String.valueOf(date.get(Calendar.HOUR_OF_DAY));
-			case "minute":
-				return String.valueOf(date.get(Calendar.MINUTE));
-			case "second":
-				return String.valueOf(date.get(Calendar.SECOND));
+				case "year":
+					return String.valueOf(date.get(Calendar.YEAR));
+				case "month":
+					return String.valueOf(date.get(Calendar.MONTH));
+				case "day":
+					return String.valueOf(date.get(Calendar.DAY_OF_MONTH));
+				case "hour":
+					return String.valueOf(date.get(Calendar.HOUR_OF_DAY));
+				case "hour12":
+					return String.valueOf(date.get(Calendar.HOUR));
+				case "hour24":
+					return String.valueOf(date.get(Calendar.HOUR_OF_DAY));
+				case "minute":
+					return String.valueOf(date.get(Calendar.MINUTE));
+				case "second":
+					return String.valueOf(date.get(Calendar.SECOND));
 			}
 		}
 		return null;

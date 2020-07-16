@@ -21,7 +21,7 @@ public class Reaction_container {
 		reactions.put("ammonia_synthesis", ammonia_synthesis);
 
 		pton = 1e-16 * Math.exp(131500 / 8.314 / 293);
-		Reaction get_hydrogen = new Reaction(true, 80*pton, 221500, 80, 90000);
+		Reaction get_hydrogen = new Reaction(true, 80 * pton, 221500, 80, 90000);
 		get_hydrogen.set_reactants(Solid.coal, Gas.water_vapor);
 		get_hydrogen.set_products(Gas.hydrogen, Gas.CO);
 		get_hydrogen.set_reactants_coef(1, 1);
@@ -71,21 +71,21 @@ public class Reaction_container {
 		get_gold.set_reactants_coef(1);
 		get_gold.set_products_coef(1);
 		reactions.put("get_gold", get_gold);
-		
+
 		Reaction get_silver = new Reaction(false, 100000, 80000, 1, 1000);
 		get_silver.set_reactants(Solid.silver_powder);
 		get_silver.set_products(Solid.silver_ingot);
 		get_silver.set_reactants_coef(1);
 		get_silver.set_products_coef(1);
 		reactions.put("get_silver", get_silver);
-		
+
 		Reaction get_copper = new Reaction(false, 100000, 80000, 1, 1000);
 		get_copper.set_reactants(Solid.copper_powder);
 		get_copper.set_products(Solid.copper_ingot);
 		get_copper.set_reactants_coef(1);
 		get_copper.set_products_coef(1);
 		reactions.put("get_copper", get_copper);
-		
+
 		Reaction get_lapis = new Reaction(false, 100000, 80000, 1, 1000);
 		get_lapis.set_reactants(Solid.lapis_powder);
 		get_lapis.set_products(Solid.lapis_lazuli);

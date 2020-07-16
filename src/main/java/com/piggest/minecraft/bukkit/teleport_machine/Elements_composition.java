@@ -1,9 +1,9 @@
 package com.piggest.minecraft.bukkit.teleport_machine;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import com.piggest.minecraft.bukkit.advanced_furnace.Gas;
+import com.piggest.minecraft.bukkit.advanced_furnace.Gas_bottle;
+import com.piggest.minecraft.bukkit.grinder.Grinder;
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Container;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
@@ -18,10 +18,9 @@ import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.piggest.minecraft.bukkit.advanced_furnace.Gas;
-import com.piggest.minecraft.bukkit.advanced_furnace.Gas_bottle;
-import com.piggest.minecraft.bukkit.grinder.Grinder;
-import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class Elements_composition implements Elements_container {
 	private int[] composition = new int[96];
@@ -188,70 +187,70 @@ public class Elements_composition implements Elements_container {
 			}
 		} else if (id_name.contains("_slab")) {
 			switch (id_name) {
-			case "oak_slab":
-			case "spruce_slab":
-			case "birch_slab":
-			case "jungle_slab":
-			case "acacia_slab":
-			case "dark_oak_slab":
-				id_name = "planks_slab";
-				break;
-			default:
-				break;
+				case "oak_slab":
+				case "spruce_slab":
+				case "birch_slab":
+				case "jungle_slab":
+				case "acacia_slab":
+				case "dark_oak_slab":
+					id_name = "planks_slab";
+					break;
+				default:
+					break;
 			}
 		} else if (id_name.contains("_wall")) {
 			String new_id_name = id_name.substring(0, id_name.length() - "_wall".length());
 			switch (id_name) {
-			case "stone_brick_wall":
-			case "brick_wall":
-			case "mossy_stone_brick_wall":
-			case "end_stone_brick_wall":
-			case "nether_brick_wall":
-			case "red_nether_brick_wall":
-				id_name = new_id_name + "s";
-				break;
-			default:
-				id_name = new_id_name;
-				break;
+				case "stone_brick_wall":
+				case "brick_wall":
+				case "mossy_stone_brick_wall":
+				case "end_stone_brick_wall":
+				case "nether_brick_wall":
+				case "red_nether_brick_wall":
+					id_name = new_id_name + "s";
+					break;
+				default:
+					id_name = new_id_name;
+					break;
 			}
 		} else if (id_name.contains("_stairs")) {
 			switch (id_name) {
-			case "oak_stairs":
-			case "spruce_stairs":
-			case "birch_stairs":
-			case "jungle_stairs":
-			case "acacia_stairs":
-			case "dark_oak_stairs":
-				id_name = "planks_stairs";
-				break;
-			default:
-				break;
+				case "oak_stairs":
+				case "spruce_stairs":
+				case "birch_stairs":
+				case "jungle_stairs":
+				case "acacia_stairs":
+				case "dark_oak_stairs":
+					id_name = "planks_stairs";
+					break;
+				default:
+					break;
 			}
 		} else if (id_name.contains("_button")) {
 			switch (id_name) {
-			case "oak_button":
-			case "spruce_button":
-			case "birch_button":
-			case "jungle_button":
-			case "acacia_button":
-			case "dark_oak_button":
-				id_name = "planks_button";
-				break;
-			default:
-				break;
+				case "oak_button":
+				case "spruce_button":
+				case "birch_button":
+				case "jungle_button":
+				case "acacia_button":
+				case "dark_oak_button":
+					id_name = "planks_button";
+					break;
+				default:
+					break;
 			}
 		} else if (id_name.contains("_pressure_plate")) {
 			switch (id_name) {
-			case "oak_pressure_plate":
-			case "spruce_pressure_plate":
-			case "birch_pressure_plate":
-			case "jungle_pressure_plate":
-			case "acacia_pressure_plate":
-			case "dark_oak_pressure_plate":
-				id_name = "planks_pressure_plate";
-				break;
-			default:
-				break;
+				case "oak_pressure_plate":
+				case "spruce_pressure_plate":
+				case "birch_pressure_plate":
+				case "jungle_pressure_plate":
+				case "acacia_pressure_plate":
+				case "dark_oak_pressure_plate":
+					id_name = "planks_pressure_plate";
+					break;
+				default:
+					break;
 			}
 		}
 		Base_material material = Base_material.get(id_name);
@@ -267,44 +266,44 @@ public class Elements_composition implements Elements_container {
 	private static Elements_composition get_entity_element_composition(String entity_id_name) {
 		Elements_composition compostion = new Elements_composition();
 		switch (entity_id_name) {
-		case "player":
-			compostion.set_amount(Element.Magic, 1000);
-			compostion.set_amount(Element.C, 475);
-			compostion.set_amount(Element.H, 3150);
-			compostion.set_amount(Element.O, 1275);
-			compostion.set_amount(Element.N, 70);
-			compostion.set_amount(Element.P, 12);
-			compostion.set_amount(Element.S, 3);
-			break;
-		case "iron_golem":
-			compostion.set_amount(Element.Magic, 10000);
-			compostion.set_amount(Element.Fe, 36000);
-			break;
-		case "minecart":
-			compostion.add(Base_material.minecart.get_elements_composition());
-			break;
-		case "villager":
-			compostion.set_amount(Element.Magic, 1000);
-			compostion.set_amount(Element.C, 475);
-			compostion.set_amount(Element.H, 3150);
-			compostion.set_amount(Element.O, 1275);
-			compostion.set_amount(Element.N, 70);
-			compostion.set_amount(Element.P, 12);
-			compostion.set_amount(Element.S, 3);
-			compostion.set_amount(Element.Be, 500);
-			break;
-		case "boat":
-			compostion.add(Base_material.boat.get_elements_composition());
-			break;
-		default:
-			compostion.set_amount(Element.Magic, 1000);
-			compostion.set_amount(Element.C, 475);
-			compostion.set_amount(Element.H, 3150);
-			compostion.set_amount(Element.O, 1275);
-			compostion.set_amount(Element.N, 70);
-			compostion.set_amount(Element.P, 12);
-			compostion.set_amount(Element.S, 3);
-			break;
+			case "player":
+				compostion.set_amount(Element.Magic, 1000);
+				compostion.set_amount(Element.C, 475);
+				compostion.set_amount(Element.H, 3150);
+				compostion.set_amount(Element.O, 1275);
+				compostion.set_amount(Element.N, 70);
+				compostion.set_amount(Element.P, 12);
+				compostion.set_amount(Element.S, 3);
+				break;
+			case "iron_golem":
+				compostion.set_amount(Element.Magic, 10000);
+				compostion.set_amount(Element.Fe, 36000);
+				break;
+			case "minecart":
+				compostion.add(Base_material.minecart.get_elements_composition());
+				break;
+			case "villager":
+				compostion.set_amount(Element.Magic, 1000);
+				compostion.set_amount(Element.C, 475);
+				compostion.set_amount(Element.H, 3150);
+				compostion.set_amount(Element.O, 1275);
+				compostion.set_amount(Element.N, 70);
+				compostion.set_amount(Element.P, 12);
+				compostion.set_amount(Element.S, 3);
+				compostion.set_amount(Element.Be, 500);
+				break;
+			case "boat":
+				compostion.add(Base_material.boat.get_elements_composition());
+				break;
+			default:
+				compostion.set_amount(Element.Magic, 1000);
+				compostion.set_amount(Element.C, 475);
+				compostion.set_amount(Element.H, 3150);
+				compostion.set_amount(Element.O, 1275);
+				compostion.set_amount(Element.N, 70);
+				compostion.set_amount(Element.P, 12);
+				compostion.set_amount(Element.S, 3);
+				break;
 		}
 		return compostion;
 	}

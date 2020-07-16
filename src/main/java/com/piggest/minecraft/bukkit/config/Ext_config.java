@@ -1,12 +1,11 @@
 package com.piggest.minecraft.bukkit.config;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.bukkit.configuration.file.YamlConfiguration;
-
 import com.google.common.io.Files;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import org.bukkit.configuration.file.YamlConfiguration;
+
+import java.io.File;
+import java.io.IOException;
 
 public abstract class Ext_config {
 	protected File config_file;

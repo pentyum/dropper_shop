@@ -71,110 +71,110 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 			return;
 		}
 		switch (slot) {
-		case 17:// 上一页
-			this.set_gui_terminal_list(this.current_page - 1);
-			break;
-		case 26:// 下一页
-			this.set_gui_terminal_list(this.current_page + 1);
-			break;
-		case 28:// 搜台
-			if (!player.hasPermission("teleport_machine.search")) {
-				this.send_message(player, "你没有搜台的权限!");
+			case 17:// 上一页
+				this.set_gui_terminal_list(this.current_page - 1);
 				break;
-			}
-			this.known_terminal_list = this.search(player, false);
-			this.set_gui_terminal_list(1);
-			break;
-		case 29:// 立刻刷新无线电信息
-			this.set_gui_terminal_list(this.current_page);
-			break;
-		case 32:// 提高待机电压
-			this.set_online_voltage(this.online_voltage + 1);
-			break;
-		case 33:// 提高发射电压
-			this.set_working_voltage(this.working_voltage + 1);
-			break;
-		case 34:// 增加带宽
-			this.set_channel_bandwidth(this.channel_bandwidth + 100);
-			break;
-		case 35:// 提高载波频率
-			this.set_channel_freq(this.channel_freq + 500);
-			break;
-		case 36:// 显示元素信息
-			player.openInventory(this.elements_gui);
-			break;
-		case 37:// 传送台上实体转化为元素
-			Elements_composition total_elements_add = new Elements_composition();
-			for (Entity entity : this.get_entities_in_stage()) {
-				if (!(entity instanceof Player)) {
-					total_elements_add.add(Elements_composition.get_element_composition(entity));
-					entity.remove();
-				}
-			}
-			this.send_message(player, "总共转化元素: " + total_elements_add.toString());
-			this.add(total_elements_add);
-			break;
-		case 40:// 玩家经验转化为魔力
-			int total_exp = SetExpFix.getTotalExperience(player);
-			int use_exp = 1000;
-			if (total_exp < 1000) {
-				use_exp = total_exp;
-			}
-			int add_magic = use_exp * exp_magic_exchange_rate / 1000;
-			SetExpFix.setTotalExperience(player, total_exp - use_exp);
-			this.set_amount(Element.Magic, this.get_amount(Element.Magic) + add_magic);
-			this.send_message(player, "成功将" + use_exp + "点经验转化为" + add_magic + "点魔力");
-			break;
-		case 50:// 降低待机电压
-			if (this.online_voltage <= 0) {
-				this.set_online_voltage(0);
-			} else {
-				this.set_online_voltage(this.online_voltage - 1);
-			}
-			break;
-		case 51:// 降低发射电压
-			if (this.working_voltage <= 0) {
-				this.set_working_voltage(0);
-			} else {
-				this.set_working_voltage(this.working_voltage - 1);
-			}
-			break;
-		case 52:// 减少带宽
-			this.set_channel_bandwidth(this.channel_bandwidth - 100);
-			break;
-		case 53:// 降低载波频率
-			this.set_channel_freq(this.channel_freq - 500);
-			break;
-		default:
-			if (slot >= 9 && slot <= 25) {
-				if (this.get_state() == Radio_state.OFF) {
-					this.send_message(player, "关机状态不能传送");
+			case 26:// 下一页
+				this.set_gui_terminal_list(this.current_page + 1);
+				break;
+			case 28:// 搜台
+				if (!player.hasPermission("teleport_machine.search")) {
+					this.send_message(player, "你没有搜台的权限!");
 					break;
 				}
-				ItemStack item = this.gui.getItem(slot);
-				if (!Grinder.is_empty(item)) {
-					if (item.getType() == Material.BEACON || Tag.ITEMS_BANNERS.isTagged(item.getType())) {
-						if (slot < 17) {
-							slot -= 9;
-						} else {
-							slot -= 10;
-						}
-						int index = slot + 16 * (this.current_page - 1);
-						Radio_terminal terminal = Radio_manager.instance.get(this.known_terminal_list.get(index));
-						if (terminal == null) {
-							this.send_message(player, "目标传送机已经丢失");
-						} else {
-							if (this.is_setting_mode() == true) {// 自动模式，选择传送对象
-								this.auto_teleport_to = terminal.get_uuid();
-								this.send_message(player, "已经设置为自动传送至" + terminal.getCustomName());
+				this.known_terminal_list = this.search(player, false);
+				this.set_gui_terminal_list(1);
+				break;
+			case 29:// 立刻刷新无线电信息
+				this.set_gui_terminal_list(this.current_page);
+				break;
+			case 32:// 提高待机电压
+				this.set_online_voltage(this.online_voltage + 1);
+				break;
+			case 33:// 提高发射电压
+				this.set_working_voltage(this.working_voltage + 1);
+				break;
+			case 34:// 增加带宽
+				this.set_channel_bandwidth(this.channel_bandwidth + 100);
+				break;
+			case 35:// 提高载波频率
+				this.set_channel_freq(this.channel_freq + 500);
+				break;
+			case 36:// 显示元素信息
+				player.openInventory(this.elements_gui);
+				break;
+			case 37:// 传送台上实体转化为元素
+				Elements_composition total_elements_add = new Elements_composition();
+				for (Entity entity : this.get_entities_in_stage()) {
+					if (!(entity instanceof Player)) {
+						total_elements_add.add(Elements_composition.get_element_composition(entity));
+						entity.remove();
+					}
+				}
+				this.send_message(player, "总共转化元素: " + total_elements_add.toString());
+				this.add(total_elements_add);
+				break;
+			case 40:// 玩家经验转化为魔力
+				int total_exp = SetExpFix.getTotalExperience(player);
+				int use_exp = 1000;
+				if (total_exp < 1000) {
+					use_exp = total_exp;
+				}
+				int add_magic = use_exp * exp_magic_exchange_rate / 1000;
+				SetExpFix.setTotalExperience(player, total_exp - use_exp);
+				this.set_amount(Element.Magic, this.get_amount(Element.Magic) + add_magic);
+				this.send_message(player, "成功将" + use_exp + "点经验转化为" + add_magic + "点魔力");
+				break;
+			case 50:// 降低待机电压
+				if (this.online_voltage <= 0) {
+					this.set_online_voltage(0);
+				} else {
+					this.set_online_voltage(this.online_voltage - 1);
+				}
+				break;
+			case 51:// 降低发射电压
+				if (this.working_voltage <= 0) {
+					this.set_working_voltage(0);
+				} else {
+					this.set_working_voltage(this.working_voltage - 1);
+				}
+				break;
+			case 52:// 减少带宽
+				this.set_channel_bandwidth(this.channel_bandwidth - 100);
+				break;
+			case 53:// 降低载波频率
+				this.set_channel_freq(this.channel_freq - 500);
+				break;
+			default:
+				if (slot >= 9 && slot <= 25) {
+					if (this.get_state() == Radio_state.OFF) {
+						this.send_message(player, "关机状态不能传送");
+						break;
+					}
+					ItemStack item = this.gui.getItem(slot);
+					if (!Grinder.is_empty(item)) {
+						if (item.getType() == Material.BEACON || Tag.ITEMS_BANNERS.isTagged(item.getType())) {
+							if (slot < 17) {
+								slot -= 9;
 							} else {
-								this.start_teleport_to(player, terminal);
+								slot -= 10;
+							}
+							int index = slot + 16 * (this.current_page - 1);
+							Radio_terminal terminal = Radio_manager.instance.get(this.known_terminal_list.get(index));
+							if (terminal == null) {
+								this.send_message(player, "目标传送机已经丢失");
+							} else {
+								if (this.is_setting_mode() == true) {// 自动模式，选择传送对象
+									this.auto_teleport_to = terminal.get_uuid();
+									this.send_message(player, "已经设置为自动传送至" + terminal.getCustomName());
+								} else {
+									this.start_teleport_to(player, terminal);
+								}
 							}
 						}
 					}
 				}
-			}
-			break;
+				break;
 		}
 	}
 
@@ -379,19 +379,19 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 	@Override
 	public boolean on_switch_pressed(Player player, int slot, boolean on) {
 		switch (slot) {
-		case 27:
-			if (on == false) {
-				this.set_state(Radio_state.OFF);
-			} else {
-				this.set_state(Radio_state.ONLINE);
-			}
-			return true;
-		case setting_mode_switch:
-		case auto_entity_teleport_switch:
-		case auto_player_teleport_switch:
-			return true;
-		default:
-			return false;
+			case 27:
+				if (on == false) {
+					this.set_state(Radio_state.OFF);
+				} else {
+					this.set_state(Radio_state.ONLINE);
+				}
+				return true;
+			case setting_mode_switch:
+			case auto_entity_teleport_switch:
+			case auto_player_teleport_switch:
+				return true;
+			default:
+				return false;
 		}
 	}
 
@@ -542,12 +542,12 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 	@Override
 	public int get_voltage(Radio_state state) {
 		switch (state) {
-		case OFF:
-			return 0;
-		case ONLINE:
-			return this.online_voltage;
-		default:
-			return this.working_voltage;
+			case OFF:
+				return 0;
+			case ONLINE:
+				return this.online_voltage;
+			default:
+				return this.working_voltage;
 		}
 	}
 
@@ -613,16 +613,16 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 	public boolean on_put_item(Player player, ItemStack cursor_item, int slot) {
 		BukkitRunnable remover;
 		switch (slot) {
-		case name_tag_slot:
-			remover = new Name_tag_remover(this);
-			remover.runTaskLaterAsynchronously(Dropper_shop_plugin.instance, 1);
-			return true;
-		case item_to_elements_slot:
-			remover = new Item_remover(this);
-			remover.runTaskLaterAsynchronously(Dropper_shop_plugin.instance, 1);
-			return true;
-		default:
-			break;
+			case name_tag_slot:
+				remover = new Name_tag_remover(this);
+				remover.runTaskLaterAsynchronously(Dropper_shop_plugin.instance, 1);
+				return true;
+			case item_to_elements_slot:
+				remover = new Item_remover(this);
+				remover.runTaskLaterAsynchronously(Dropper_shop_plugin.instance, 1);
+				return true;
+			default:
+				break;
 		}
 		return true;
 	}
@@ -705,7 +705,7 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 	}
-	
+
 	@Override
 	public void set_n(int n) {
 		this.n = n;

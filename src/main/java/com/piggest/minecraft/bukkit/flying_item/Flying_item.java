@@ -1,8 +1,7 @@
 package com.piggest.minecraft.bukkit.flying_item;
 
-import org.bukkit.NamespacedKey;
-
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import org.bukkit.NamespacedKey;
 
 public class Flying_item {
 	public final static NamespacedKey flyting_time_namespacedkey = new NamespacedKey(Dropper_shop_plugin.instance,

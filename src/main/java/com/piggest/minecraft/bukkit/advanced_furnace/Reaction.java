@@ -66,7 +66,7 @@ public class Reaction {
 	public int[] get_products_coef() {
 		return this.products_coefficients;
 	}
-	
+
 	/*
 	 * 反应速率：每单位每0.25秒
 	 */

@@ -1,8 +1,7 @@
 package com.piggest.minecraft.bukkit.teleport_machine;
 
-import org.bukkit.NamespacedKey;
-
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import org.bukkit.NamespacedKey;
 
 public enum Element implements Has_composition {
 	Magic(-1, 0, 0), H(0, 1, 1, 1), Be(1, 4, 9, 2), C(2, 6, 12, 4), N(3, 7, 14, -3, 5), O(4, 8, 16, -2),

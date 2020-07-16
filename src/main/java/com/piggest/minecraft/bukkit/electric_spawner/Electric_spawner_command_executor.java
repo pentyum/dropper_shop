@@ -1,8 +1,8 @@
 package com.piggest.minecraft.bukkit.electric_spawner;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.utils.Tab_list;
+import com.piggest.minecraft.bukkit.utils.language.Entity_zh_cn;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -10,15 +10,15 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.utils.Tab_list;
-import com.piggest.minecraft.bukkit.utils.language.Entity_zh_cn;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Electric_spawner_command_executor implements TabExecutor {
 	public static final int max_money = 100000000;
 
 	private static final ArrayList<String> cmd = new ArrayList<String>() {
 		private static final long serialVersionUID = 4632683284690778242L;
+
 		{
 			add("charge");
 			add("set_entity");
@@ -95,6 +95,7 @@ public class Electric_spawner_command_executor implements TabExecutor {
 
 	private static final ArrayList<String> charge_money = new ArrayList<String>() {
 		private static final long serialVersionUID = -10739381756686327L;
+
 		{
 			add("100");
 			add("1000");

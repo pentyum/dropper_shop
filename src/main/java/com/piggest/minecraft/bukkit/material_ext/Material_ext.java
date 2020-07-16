@@ -1,12 +1,11 @@
 package com.piggest.minecraft.bukkit.material_ext;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import com.piggest.minecraft.bukkit.advanced_furnace.Gas_bottle;
+import com.piggest.minecraft.bukkit.advanced_furnace.Status;
+import com.piggest.minecraft.bukkit.depository.Reader;
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.nms.NMS_manager;
+import com.piggest.minecraft.bukkit.utils.language.Item_zh_cn;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -15,12 +14,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import com.piggest.minecraft.bukkit.advanced_furnace.Gas_bottle;
-import com.piggest.minecraft.bukkit.advanced_furnace.Status;
-import com.piggest.minecraft.bukkit.depository.Reader;
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.nms.NMS_manager;
-import com.piggest.minecraft.bukkit.utils.language.Item_zh_cn;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Material_ext {
 	public static final NamespacedKey ext_id_namespacedkey = Dropper_shop_plugin.get_key("ext_id");
@@ -137,7 +135,7 @@ public abstract class Material_ext {
 
 	/**
 	 * 以namespacedkey、材质、名称、物品模型ID注册物品
-	 * 
+	 *
 	 * @return 注册出的物品.
 	 **/
 	public static ItemStack register(NamespacedKey namespacedkey, Material material_base, String name, int model_data) {
@@ -241,16 +239,16 @@ public abstract class Material_ext {
 			id_name = Reader.get_content_id_name(item);
 		}
 		switch (id_name) {
-		case "bucket":
-			return Status.liquid;
-		case "glass_bottle":
-			return Status.liquid;
-		case "gas_bottle":
-			if (Gas_bottle.calc_capacity(item) == 0) {
-				return Status.gas;
-			}
-		default:
-			return null;
+			case "bucket":
+				return Status.liquid;
+			case "glass_bottle":
+				return Status.liquid;
+			case "gas_bottle":
+				if (Gas_bottle.calc_capacity(item) == 0) {
+					return Status.gas;
+				}
+			default:
+				return null;
 		}
 	}
 
@@ -274,18 +272,18 @@ public abstract class Material_ext {
 			id_name = Reader.get_content_id_name(item);
 		}
 		switch (id_name) {
-		case "lava_bucket":
-			return new ItemStack(Material.BUCKET);
-		case "water_bucket":
-			return new ItemStack(Material.BUCKET);
-		case "milk_bucket":
-			return new ItemStack(Material.BUCKET);
-		case "potion":
-			return new ItemStack(Material.GLASS_BOTTLE);
-		case "gas_bottle":
-			return Material_ext.new_item("gas_bottle", 1);
-		default:
-			return null;
+			case "lava_bucket":
+				return new ItemStack(Material.BUCKET);
+			case "water_bucket":
+				return new ItemStack(Material.BUCKET);
+			case "milk_bucket":
+				return new ItemStack(Material.BUCKET);
+			case "potion":
+				return new ItemStack(Material.GLASS_BOTTLE);
+			case "gas_bottle":
+				return Material_ext.new_item("gas_bottle", 1);
+			default:
+				return null;
 		}
 	}
 

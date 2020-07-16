@@ -1,7 +1,9 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
-import java.util.Map.Entry;
-
+import com.piggest.minecraft.bukkit.depository.Upgrade_component;
+import com.piggest.minecraft.bukkit.depository.Upgrade_component_type;
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.grinder.Grinder;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,10 +12,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.piggest.minecraft.bukkit.depository.Upgrade_component;
-import com.piggest.minecraft.bukkit.depository.Upgrade_component_type;
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.grinder.Grinder;
+import java.util.Map.Entry;
 
 public class Advanced_furnace_listener implements Listener {
 	@EventHandler

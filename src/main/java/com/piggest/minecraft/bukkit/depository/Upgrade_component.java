@@ -1,10 +1,8 @@
 package com.piggest.minecraft.bukkit.depository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_manager;
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemFlag;
@@ -13,9 +11,10 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.piggest.minecraft.bukkit.advanced_furnace.Advanced_furnace_manager;
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Upgrade_component {
 	public static final String name = "§r存储升级组件";
@@ -40,14 +39,14 @@ public class Upgrade_component {
 			return Upgrade_component_type.NOT_UPGRADE_COMPONENT;
 		}
 		switch (ext_id) {
-		case Upgrade_component.id_name:
-			return Upgrade_component_type.depository_upgrade;
-		case Upgrade_component.overload_id_name:
-			return Upgrade_component_type.overload_upgrade;
-		case Upgrade_component.time_id_name:
-			return Upgrade_component_type.time_upgrade;
-		default:
-			return Upgrade_component_type.NOT_UPGRADE_COMPONENT;
+			case Upgrade_component.id_name:
+				return Upgrade_component_type.depository_upgrade;
+			case Upgrade_component.overload_id_name:
+				return Upgrade_component_type.overload_upgrade;
+			case Upgrade_component.time_id_name:
+				return Upgrade_component_type.time_upgrade;
+			default:
+				return Upgrade_component_type.NOT_UPGRADE_COMPONENT;
 		}
 	}
 

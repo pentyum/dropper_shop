@@ -1,42 +1,18 @@
 package com.piggest.minecraft.bukkit.resourcepacks;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.List;
-
 import com.google.gson.Gson;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.resourcepacks.dropper_shop.Element;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.Brick;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.Sugar;
 import com.piggest.minecraft.bukkit.resourcepacks.minecraft.Vanilla_model;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Diamond_axe;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Diamond_hoe;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Diamond_pickaxe;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Diamond_shovel;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Diamond_sword;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Golden_axe;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Golden_hoe;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Golden_pickaxe;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Golden_shovel;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Golden_sword;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Iron_axe;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Iron_hoe;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Iron_pickaxe;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Iron_shovel;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Iron_sword;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Stone_axe;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Stone_hoe;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Stone_pickaxe;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Stone_shovel;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Stone_sword;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Wooden_axe;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Wooden_hoe;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Wooden_pickaxe;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Wooden_shovel;
-import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.Wooden_sword;
+import com.piggest.minecraft.bukkit.resourcepacks.minecraft.tools.*;
 import com.piggest.minecraft.bukkit.tools.Tools;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
 
 public class Builder {
 	public final static Gson gson = new Gson();
@@ -126,7 +102,7 @@ public class Builder {
 	}
 
 	private static void build_tool(List<Tools> config, Vanilla_model wooden, Vanilla_model golden, Vanilla_model stone,
-			Vanilla_model iron, Vanilla_model diamond) {
+								   Vanilla_model iron, Vanilla_model diamond) {
 		File file = new File(dropper_shop_models_dir + "tools");
 		if (!file.exists()) {
 			file.mkdirs();
@@ -139,23 +115,23 @@ public class Builder {
 			write_json(file_path, js);
 			Vanilla_model vanilla_model;
 			switch (tool.get_tool_material().get_raw()) {
-			case WOODEN:
-				vanilla_model = wooden;
-				break;
-			case GOLDEN:
-				vanilla_model = golden;
-				break;
-			case STONE:
-				vanilla_model = stone;
-				break;
-			case IRON:
-				vanilla_model = iron;
-				break;
-			case DIAMOND:
-				vanilla_model = diamond;
-				break;
-			default:
-				return;
+				case WOODEN:
+					vanilla_model = wooden;
+					break;
+				case GOLDEN:
+					vanilla_model = golden;
+					break;
+				case STONE:
+					vanilla_model = stone;
+					break;
+				case IRON:
+					vanilla_model = iron;
+					break;
+				case DIAMOND:
+					vanilla_model = diamond;
+					break;
+				default:
+					return;
 			}
 			vanilla_model.add_custom_model_override(
 					Dropper_shop_plugin.custom_model_data_offset + Tools.tool_model_offset + i,
@@ -201,13 +177,13 @@ public class Builder {
 		Stone_shovel stone_shovel = new Stone_shovel();
 		Iron_shovel iron_shovel = new Iron_shovel();
 		Diamond_shovel diamond_shovel = new Diamond_shovel();
-		
+
 		Wooden_sword wooden_sword = new Wooden_sword();
 		Golden_sword golden_sword = new Golden_sword();
 		Stone_sword stone_sword = new Stone_sword();
 		Iron_sword iron_sword = new Iron_sword();
 		Diamond_sword diamond_sword = new Diamond_sword();
-		
+
 		com.piggest.minecraft.bukkit.grinder.Powder.init_powder_config();
 		com.piggest.minecraft.bukkit.grinder.Ingot.init_ingot_config();
 		com.piggest.minecraft.bukkit.tools.Tools.init_tools_config();
@@ -249,7 +225,7 @@ public class Builder {
 		build_vanilla(stone_shovel);
 		build_vanilla(iron_shovel);
 		build_vanilla(diamond_shovel);
-		
+
 		build_vanilla(wooden_sword);
 		build_vanilla(golden_sword);
 		build_vanilla(stone_sword);

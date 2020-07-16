@@ -3,21 +3,21 @@ package com.piggest.minecraft.bukkit.music_stick;
 import org.bukkit.Material;
 import org.bukkit.Note;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.Event.Result;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.block.data.type.NoteBlock;
 
 public class Note_stick_listener implements Listener {
-	public static String[] note_id1 = new String[] { ".F#", ".G", ".G#", ".A", ".A#", ".B", "C", "C#", "D", "D#", "E",
-			"F", "F#", "G", "G#", "A", "A#", "B", "C.", "C#.", "D.", "D#.", "E.", "F.", "F#." };
-	public static String[] note_id2 = new String[] { ".4#", ".5", ".5#", ".6", ".6#", ".7", "1", "1#", "2", "2#", "3",
-			"4", "4#", "5", "5#", "6", "6#", "7", "1.", "1#.", "2.", "2#.", "3.", "4.", "4#." };
+	public static String[] note_id1 = new String[]{".F#", ".G", ".G#", ".A", ".A#", ".B", "C", "C#", "D", "D#", "E",
+			"F", "F#", "G", "G#", "A", "A#", "B", "C.", "C#.", "D.", "D#.", "E.", "F.", "F#."};
+	public static String[] note_id2 = new String[]{".4#", ".5", ".5#", ".6", ".6#", ".7", "1", "1#", "2", "2#", "3",
+			"4", "4#", "5", "5#", "6", "6#", "7", "1.", "1#.", "2.", "2#.", "3.", "4.", "4#."};
 	public Note_stick_runner runner = new Note_stick_runner();
 
 	public static int get_id(String str) {

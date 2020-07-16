@@ -1,8 +1,8 @@
 package com.piggest.minecraft.bukkit.utils.language;
 
-import java.util.HashMap;
-
 import org.bukkit.entity.EntityType;
+
+import java.util.HashMap;
 
 public class Entity_zh_cn {
 	public static final HashMap<String, String> name = new HashMap<String, String>();
@@ -33,10 +33,10 @@ public class Entity_zh_cn {
 		add(EntityType.RAVAGER, "劫掠兽");
 		add(EntityType.EVOKER, "唤魔者");
 		add(EntityType.GHAST, "恶魂");
-		
+
 		add(EntityType.IRON_GOLEM, "铁傀儡");
 		add(EntityType.SNOWMAN, "雪傀儡");
-		
+
 		add(EntityType.POLAR_BEAR, "北极熊");
 		add(EntityType.PANDA, "熊猫");
 		add(EntityType.BEE, "蜜蜂");
@@ -61,14 +61,14 @@ public class Entity_zh_cn {
 		add(EntityType.MULE, "骡");
 		add(EntityType.VILLAGER, "村民");
 		add(EntityType.WANDERING_TRADER, "流浪商人");
-		
+
 		add(EntityType.DOLPHIN, "海豚");
 		add(EntityType.SQUID, "鱿鱼");
 		add(EntityType.COD, "鳕鱼");
 		add(EntityType.SALMON, "鲑鱼");
 		add(EntityType.PUFFERFISH, "河豚");
 		add(EntityType.TROPICAL_FISH, "热带鱼");
-		
+
 		add(EntityType.MINECART, "矿车");
 		add(EntityType.MINECART_FURNACE, "动力矿车");
 		add(EntityType.MINECART_HOPPER, "漏斗矿车");

@@ -1,20 +1,16 @@
 package com.piggest.minecraft.bukkit.custom_map;
 
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.utils.Color_utils;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+
+import javax.annotation.Nonnull;
+import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.LineMetrics;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.annotation.Nonnull;
-
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.utils.Color_utils;
 
 public class Character_map_render extends Static_image_map_render implements ConfigurationSerializable {
 	protected char character;
@@ -37,7 +33,7 @@ public class Character_map_render extends Static_image_map_render implements Con
 	}
 
 	public static BufferedImage char_to_image(Background_map_render background, char character, Font font,
-			int font_size, org.bukkit.Color font_color) {
+											  int font_size, org.bukkit.Color font_color) {
 		int side_amount = Character_section_map_render.get_side_amount(font_size);
 		int pic_size = Custom_map_render.pic_size * side_amount;
 
@@ -57,7 +53,7 @@ public class Character_map_render extends Static_image_map_render implements Con
 	}
 
 	public Character_map_render(Background_map_render background, char character, Font font, int font_size,
-			org.bukkit.Color font_color) {
+								org.bukkit.Color font_color) {
 		this.background = background;
 		BufferedImage bi = char_to_image(background, character, font, font_size, font_color);
 		this.character = character;
@@ -68,7 +64,8 @@ public class Character_map_render extends Static_image_map_render implements Con
 	}
 
 	@Override
-	public @Nonnull Map<String, Object> serialize() {
+	public @Nonnull
+	Map<String, Object> serialize() {
 		HashMap<String, Object> save = new HashMap<String, Object>();
 		save.put("character", this.character);
 		save.put("font-color", this.font_color);

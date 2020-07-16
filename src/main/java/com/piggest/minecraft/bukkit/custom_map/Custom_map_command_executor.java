@@ -1,16 +1,14 @@
 package com.piggest.minecraft.bukkit.custom_map;
 
-import java.awt.Font;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-
-import javax.annotation.Nullable;
-
+import com.google.zxing.WriterException;
+import com.piggest.minecraft.bukkit.config.Map_config;
+import com.piggest.minecraft.bukkit.custom_map.clock.Analog_clock_background_map_render;
+import com.piggest.minecraft.bukkit.custom_map.clock.Analog_clock_map_render;
+import com.piggest.minecraft.bukkit.custom_map.clock.Digital_clock_map_render;
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.utils.Color_utils;
 import com.piggest.minecraft.bukkit.utils.Inventory_io;
+import com.piggest.minecraft.bukkit.utils.Tab_list;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -23,18 +21,19 @@ import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 
-import com.google.zxing.WriterException;
-import com.piggest.minecraft.bukkit.config.Map_config;
-import com.piggest.minecraft.bukkit.custom_map.clock.Analog_clock_background_map_render;
-import com.piggest.minecraft.bukkit.custom_map.clock.Analog_clock_map_render;
-import com.piggest.minecraft.bukkit.custom_map.clock.Digital_clock_map_render;
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.utils.Color_utils;
-import com.piggest.minecraft.bukkit.utils.Tab_list;
+import javax.annotation.Nullable;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 public class Custom_map_command_executor implements TabExecutor {
 	private static final ArrayList<String> sub_cmd = new ArrayList<String>() {
 		private static final long serialVersionUID = -6116323601639805386L;
+
 		{
 			add("get_char");
 			add("get_digital_clock");
@@ -49,6 +48,7 @@ public class Custom_map_command_executor implements TabExecutor {
 	};
 	private static final ArrayList<String> size_list = new ArrayList<String>() {
 		private static final long serialVersionUID = -4372329620166289408L;
+
 		{
 			add("18");
 			add("20");
@@ -70,6 +70,7 @@ public class Custom_map_command_executor implements TabExecutor {
 	};
 	private static final ArrayList<String> n_list = new ArrayList<String>() {
 		private static final long serialVersionUID = 3906690741866082030L;
+
 		{
 			add("1");
 			add("2");
@@ -150,7 +151,7 @@ public class Custom_map_command_executor implements TabExecutor {
 	}
 
 	public static ItemStack[] generate_char_maps(Player player, Color background_color, char c, Font font,
-			int font_size, Color font_color) {
+												 int font_size, Color font_color) {
 		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
 		int side_amount = Character_section_map_render.get_side_amount(font_size);
 		int map_amount = side_amount * side_amount;
@@ -186,7 +187,7 @@ public class Custom_map_command_executor implements TabExecutor {
 	}
 
 	public static ItemStack generate_digital_clock_map(Player player, Color background_color, String format, Font font,
-			int font_size, Color font_color, String world_name) {
+													   int font_size, Color font_color, String world_name) {
 		ItemStack item = new ItemStack(Material.FILLED_MAP);
 		ItemMeta meta = item.getItemMeta();
 		MapMeta mapmeta = (MapMeta) meta;
@@ -211,7 +212,7 @@ public class Custom_map_command_executor implements TabExecutor {
 	}
 
 	public static ItemStack[] generate_analog_clock_maps(Player player, Color background_color, String style, Font font,
-			int font_size, Color font_color, String world_name) {
+														 int font_size, Color font_color, String world_name) {
 		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
 		int side_amount = Character_section_map_render.get_side_amount(font_size);
 		int map_amount = side_amount * side_amount;

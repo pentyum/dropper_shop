@@ -11,7 +11,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 public class Respawn_listener implements Listener {
 	@EventHandler
 	public void on_player_respawn(EntityDeathEvent event) {
-		if(!(event.getEntity() instanceof Player)){
+		if (!(event.getEntity() instanceof Player)) {
 			return;
 		}
 		FileConfiguration config = Dropper_shop_plugin.instance.get_config();

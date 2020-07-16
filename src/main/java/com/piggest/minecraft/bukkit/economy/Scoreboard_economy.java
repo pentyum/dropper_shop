@@ -1,11 +1,9 @@
 package com.piggest.minecraft.bukkit.economy;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;

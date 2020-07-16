@@ -1,13 +1,11 @@
 package com.piggest.minecraft.bukkit.printer;
 
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-
+import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
+import javax.annotation.Nonnull;
+import java.util.Map;
 
 public class Printer extends Multi_block_with_gui {
 	private boolean color_upgrade = false;

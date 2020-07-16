@@ -1,12 +1,11 @@
 package com.piggest.minecraft.bukkit.resourcepacks.minecraft;
 
-import java.util.ArrayList;
-
-import org.bukkit.Material;
-
 import com.piggest.minecraft.bukkit.resourcepacks.Model;
 import com.piggest.minecraft.bukkit.resourcepacks.Override;
 import com.piggest.minecraft.bukkit.resourcepacks.Textures;
+import org.bukkit.Material;
+
+import java.util.ArrayList;
 
 public class Vanilla_model extends Model {
 

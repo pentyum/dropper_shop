@@ -1,10 +1,5 @@
 package com.piggest.minecraft.bukkit.nms.biome;
 
-import java.util.Arrays;
-import java.util.function.IntFunction;
-
-import org.bukkit.block.Biome;
-
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
@@ -13,17 +8,21 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.reflect.StructureModifier;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
-
 import net.minecraft.server.v1_16_R1.BiomeBase;
 import net.minecraft.server.v1_16_R1.BiomeStorage;
+import org.bukkit.block.Biome;
+
+import java.util.Arrays;
+import java.util.function.IntFunction;
 
 public class Packet_map_chunk_listener_1_16 extends PacketAdapter {
 	Biome_modifier_1_16 biome_modifier;
+
 	public Packet_map_chunk_listener_1_16() {
 		super(Dropper_shop_plugin.instance, ListenerPriority.NORMAL, PacketType.Play.Server.MAP_CHUNK);
 		this.biome_modifier = (Biome_modifier_1_16) NMS_manager.biome_modifier;
 	}
-	
+
 	@Override
 	public void onPacketSending(PacketEvent event) {
 		PacketContainer packet = event.getPacket();

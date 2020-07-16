@@ -1,12 +1,11 @@
 package com.piggest.minecraft.bukkit.material_ext;
 
-import java.util.HashMap;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
+import java.util.HashMap;
 
 public interface Tool_material {
 	public int get_max_durbility();
@@ -51,6 +50,7 @@ public interface Tool_material {
 
 		public static final HashMap<Material, Raw_material> raw_material_map = new HashMap<Material, Raw_material>() {
 			private static final long serialVersionUID = -3631472477554673517L;
+
 			{
 				put(Material.WOODEN_AXE, WOODEN);
 				put(Material.WOODEN_HOE, WOODEN);

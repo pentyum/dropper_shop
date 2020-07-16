@@ -1,28 +1,31 @@
 package com.piggest.minecraft.bukkit.custom_map;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 import org.bukkit.entity.Player;
 import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapView;
+
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Command_map_render extends Custom_map_render {
 	private Queue<Map_operation> command_queue = new LinkedList<>();
 
 	public abstract static class Map_operation {
 		byte color;
+
 		public abstract void draw(MapCanvas canvas);
 	}
 
 	public static class Pixel_setting extends Map_operation {
 		int x;
 		int y;
+
 		public Pixel_setting(int x, int y, byte color) {
 			this.x = x;
 			this.y = y;
 			this.color = color;
 		}
+
 		@Override
 		public void draw(MapCanvas canvas) {
 			canvas.setPixel(x, y, color);
@@ -34,13 +37,15 @@ public class Command_map_render extends Custom_map_render {
 		int start_y;
 		int end_x;
 		int end_y;
-		public Line_setting(int start_x, int start_y, int end_x,int end_y, byte color) {
+
+		public Line_setting(int start_x, int start_y, int end_x, int end_y, byte color) {
 			this.start_x = start_x;
 			this.start_y = start_y;
 			this.end_x = end_x;
 			this.end_y = end_y;
 			this.color = color;
 		}
+
 		@Override
 		public void draw(MapCanvas canvas) {
 			// TO DO
@@ -51,12 +56,14 @@ public class Command_map_render extends Custom_map_render {
 		int x;
 		int y;
 		int r;
+
 		public Circle_setting(int x, int y, int r, byte color) {
 			this.x = x;
 			this.y = y;
 			this.r = r;
 			this.color = color;
 		}
+
 		@Override
 		public void draw(MapCanvas canvas) {
 			// TO DO
@@ -79,7 +86,7 @@ public class Command_map_render extends Custom_map_render {
 
 	@Override
 	public void refresh(MapView map, MapCanvas canvas) {
-		
+
 	}
-	
+
 }

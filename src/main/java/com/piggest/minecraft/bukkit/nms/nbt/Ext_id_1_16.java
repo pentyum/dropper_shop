@@ -1,10 +1,9 @@
 package com.piggest.minecraft.bukkit.nms.nbt;
 
-import org.bukkit.craftbukkit.v1_16_R1.inventory.CraftItemStack;
-import org.bukkit.inventory.ItemStack;
-
 import net.minecraft.server.v1_16_R1.NBTTagCompound;
 import net.minecraft.server.v1_16_R1.NBTTagString;
+import org.bukkit.craftbukkit.v1_16_R1.inventory.CraftItemStack;
+import org.bukkit.inventory.ItemStack;
 
 public class Ext_id_1_16 implements Ext_id {
 	/*

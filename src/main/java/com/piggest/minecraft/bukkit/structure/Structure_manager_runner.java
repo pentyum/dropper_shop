@@ -6,7 +6,7 @@ public abstract class Structure_manager_runner extends BukkitRunnable {
 
 	@Override
 	public abstract void run();
-	
+
 	public abstract int get_cycle();
 
 	public abstract int get_delay();

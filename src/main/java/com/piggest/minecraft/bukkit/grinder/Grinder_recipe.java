@@ -1,7 +1,7 @@
 package com.piggest.minecraft.bukkit.grinder;
 
-import org.bukkit.inventory.ItemStack;
 import com.piggest.minecraft.bukkit.structure.Structure_recipe;
+import org.bukkit.inventory.ItemStack;
 
 public class Grinder_recipe extends Structure_recipe {
 	private String source;
@@ -11,7 +11,7 @@ public class Grinder_recipe extends Structure_recipe {
 	private int recipe_time;
 
 	public Grinder_recipe(String source_full_name, ItemStack main_result, ItemStack minor_result, int minor_possibility,
-			int recipe_time) {
+						  int recipe_time) {
 		this.source = source_full_name;
 		this.main_result = main_result;
 		this.minor_result = minor_result;

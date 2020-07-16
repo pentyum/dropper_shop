@@ -1,17 +1,14 @@
 package com.piggest.minecraft.bukkit.custom_map.clock;
 
-import java.awt.BasicStroke;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-
 import com.piggest.minecraft.bukkit.custom_map.Background_map_render;
 import com.piggest.minecraft.bukkit.custom_map.Character_section_map_render;
 import com.piggest.minecraft.bukkit.custom_map.Custom_map_render;
 import com.piggest.minecraft.bukkit.utils.Color_utils;
+
+import javax.annotation.Nonnull;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.Map;
 
 public class Analog_clock_background_map_render extends Background_map_render {
 	protected int size;
@@ -22,7 +19,7 @@ public class Analog_clock_background_map_render extends Background_map_render {
 	public final BasicStroke bstroke3;
 
 	public Analog_clock_background_map_render(org.bukkit.Color background_color, org.bukkit.Color line_color,
-			int size) {
+											  int size) {
 		super(background_color);
 		this.size = size;
 		this.line_color = line_color;
@@ -30,10 +27,10 @@ public class Analog_clock_background_map_render extends Background_map_render {
 		bstroke1 = new BasicStroke((float) size / 100);
 		bstroke2 = new BasicStroke((float) size / 60);
 		bstroke3 = new BasicStroke((float) size / 50);
-		
+
 		int side_amount = Character_section_map_render.get_side_amount(size);
 		int pic_size = Custom_map_render.pic_size * side_amount;
-		
+
 		BufferedImage bi = new BufferedImage(pic_size, pic_size, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = bi.createGraphics();
 		g.setBackground(awt_background_color);
@@ -70,7 +67,8 @@ public class Analog_clock_background_map_render extends Background_map_render {
 	}
 
 	@Override
-	public @Nonnull Map<String, Object> serialize() {
+	public @Nonnull
+	Map<String, Object> serialize() {
 		Map<String, Object> save = super.serialize();
 		save.put("size", this.size);
 		save.put("line-color", this.line_color);

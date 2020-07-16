@@ -1,22 +1,20 @@
 package com.piggest.minecraft.bukkit.custom_map.clock;
 
-import java.awt.Font;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-
+import com.piggest.minecraft.bukkit.custom_map.Background_map_render;
+import com.piggest.minecraft.bukkit.custom_map.Dynamic_string_map_render;
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.utils.Server_date;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 
-import com.piggest.minecraft.bukkit.custom_map.Background_map_render;
-import com.piggest.minecraft.bukkit.custom_map.Dynamic_string_map_render;
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.utils.Server_date;
+import javax.annotation.Nonnull;
+import java.awt.*;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Digital_clock_map_render extends Dynamic_string_map_render implements ConfigurationSerializable {
 	protected String world_name = null;

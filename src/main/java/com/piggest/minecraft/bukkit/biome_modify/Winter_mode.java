@@ -1,9 +1,9 @@
 package com.piggest.minecraft.bukkit.biome_modify;
 
+import org.bukkit.block.Biome;
+
 import java.util.HashMap;
 import java.util.Map.Entry;
-
-import org.bukkit.block.Biome;
 
 public class Winter_mode {
 	HashMap<Biome, Biome> winter_biome_map = new HashMap<>();
@@ -21,7 +21,7 @@ public class Winter_mode {
 		this.winter_biome_map.put(Biome.DEEP_LUKEWARM_OCEAN, Biome.DEEP_COLD_OCEAN);
 		this.winter_biome_map.put(Biome.WARM_OCEAN, Biome.OCEAN);
 		this.winter_biome_map.put(Biome.DEEP_WARM_OCEAN, Biome.DEEP_OCEAN);
-		
+
 		this.winter_biome_map.put(Biome.PLAINS, Biome.SNOWY_TUNDRA);
 		this.winter_biome_map.put(Biome.SUNFLOWER_PLAINS, Biome.SNOWY_TUNDRA);
 

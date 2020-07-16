@@ -1,18 +1,15 @@
 package com.piggest.minecraft.bukkit.custom_map;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.util.Objects;
-import java.util.stream.IntStream;
-
-import javax.annotation.Nonnull;
-
 import org.bukkit.entity.Player;
 import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapPalette;
 import org.bukkit.map.MapView;
+
+import javax.annotation.Nonnull;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.Objects;
+import java.util.stream.IntStream;
 
 public abstract class Static_image_map_render extends Custom_map_render {
 	protected BufferedImage image;

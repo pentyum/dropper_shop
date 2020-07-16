@@ -1,9 +1,8 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
-import org.bukkit.inventory.ItemStack;
-
 import com.piggest.minecraft.bukkit.teleport_machine.Base_material;
 import com.piggest.minecraft.bukkit.teleport_machine.Elements_composition;
+import org.bukkit.inventory.ItemStack;
 
 public enum Gas implements Chemical {
 	hydrogen("氢气", Base_material.hygrogen_molecule), oxygen("氧气", Base_material.oxygen_molecule),
