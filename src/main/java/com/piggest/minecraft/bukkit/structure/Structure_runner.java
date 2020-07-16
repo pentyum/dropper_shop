@@ -1,5 +1,6 @@
 package com.piggest.minecraft.bukkit.structure;
 
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -54,7 +55,12 @@ public abstract class Structure_runner extends Thread {
 			}
 			int max_time = this.get_cycle() * 50;
 			try {
-				Thread.sleep(max_time - (System.currentTimeMillis() - start_time));
+				long sleep_time = max_time - (System.currentTimeMillis() - start_time);
+				if (max_time > 0) {
+					Thread.sleep(sleep_time);
+				} else {
+					Dropper_shop_plugin.instance.getLogger().warning("[" + this.getName() + "]执行超时" + (-sleep_time) + "ms");
+				}
 			} catch (InterruptedException e) {
 				return;
 			}

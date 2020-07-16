@@ -38,7 +38,7 @@ public class Grinder_runner extends Structure_runner {
 			int need_ticks = grinder.get_manager().get_time(grinder.get_raw().getType());
 			if (grinder.working_ticks <= need_ticks) { // 工作中
 				grinder.set_process(grinder.working_ticks * 100 / need_ticks);
-				grinder.working_ticks++;
+				grinder.working_ticks += this.get_cycle();
 			} else { // 工作完成
 				if (grinder.to_product() == true) {
 					grinder.set_process(0);
@@ -51,7 +51,7 @@ public class Grinder_runner extends Structure_runner {
 
 	@Override
 	public int get_cycle() {
-		return 1;
+		return 8;
 	}
 
 	@Override

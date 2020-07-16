@@ -44,7 +44,7 @@ public class Compressor_runner extends Structure_runner {
 			int need_ticks = compressor.get_manager().get_time(Material_ext.get_full_name(compressor.get_raw()));
 			if (compressor.working_ticks <= need_ticks) { // 工作中
 				compressor.set_process(compressor.working_ticks * 100 / need_ticks);
-				compressor.working_ticks++;
+				compressor.working_ticks += this.get_cycle();
 			} else { // 工作完成
 				if (compressor.to_product() == true) {
 					compressor.set_process(0);
@@ -57,7 +57,7 @@ public class Compressor_runner extends Structure_runner {
 
 	@Override
 	public int get_cycle() {
-		return 1;
+		return 8;
 	}
 
 	@Override

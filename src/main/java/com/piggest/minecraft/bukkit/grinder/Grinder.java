@@ -29,6 +29,7 @@ public class Grinder extends Multi_block_with_gui implements Auto_io {
 	private static final int[][] product_chest_check_list = new int[][]{{1, -2, 0}, {-1, -2, 0}, {0, -2, 1},
 			{0, -2, -1}};
 	private static final int[][] raw_hopper_check_list = new int[][]{{0, 1, 0}};
+	private int flint_storage = 0;
 
 	public Grinder() {
 		/*
@@ -52,20 +53,8 @@ public class Grinder extends Multi_block_with_gui implements Auto_io {
 		item.setItemMeta(meta);
 	}
 
-	public synchronized int get_flint_storage() {
-		int storage = 0;
-		ItemStack flint_info = this.gui.getContents()[17];
-		ItemMeta flint_info_meta = flint_info.getItemMeta();
-		List<String> lore = flint_info_meta.getLore();
-		String line = lore.get(0);
-		String pattern = "§r([1-9]\\d*|0) 单位";
-		Pattern r = Pattern.compile(pattern);
-		Matcher m = r.matcher(line);
-		if (m.find()) {
-			storage = Integer.parseInt(m.group(1));
-			return storage;
-		}
-		return 0;
+	public int get_flint_storage() {
+		return this.flint_storage;
 	}
 
 	public synchronized void set_flint_storage(int storage) {
@@ -75,6 +64,7 @@ public class Grinder extends Multi_block_with_gui implements Auto_io {
 		lore.add("§r" + storage + " 单位");
 		flint_info_meta.setLore(lore);
 		flint_info.setItemMeta(flint_info_meta);
+		this.flint_storage = storage;
 	}
 
 	public ItemStack get_raw() {
