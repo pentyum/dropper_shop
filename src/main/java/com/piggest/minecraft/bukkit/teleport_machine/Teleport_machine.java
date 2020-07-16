@@ -1,19 +1,12 @@
 package com.piggest.minecraft.bukkit.teleport_machine;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.function.Predicate;
-
-import javax.annotation.Nonnull;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Tag;
-import org.bukkit.World;
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.exp_saver.SetExpFix;
+import com.piggest.minecraft.bukkit.grinder.Grinder;
+import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
+import com.piggest.minecraft.bukkit.utils.Radio;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -24,16 +17,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.exp_saver.SetExpFix;
-import com.piggest.minecraft.bukkit.grinder.Grinder;
-import com.piggest.minecraft.bukkit.material_ext.Material_ext;
-import com.piggest.minecraft.bukkit.structure.HasRunner;
-import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
-import com.piggest.minecraft.bukkit.utils.Radio;
+import javax.annotation.Nonnull;
+import java.util.*;
+import java.util.function.Predicate;
 
-public class Teleport_machine extends Multi_block_with_gui implements HasRunner, Radio_terminal {
+public class Teleport_machine extends Multi_block_with_gui implements Radio_terminal {
 	public static final int name_tag_slot = 47;
 	public static final int item_to_elements_slot = 45;
 	public static final int online_voltage_indicator = 41;
@@ -62,10 +50,9 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	private int exp_magic_exchange_rate = 1000; // 每1000点经验转化为多少魔力
 	private UUID auto_teleport_to = null;
 	// private UUID current_work_with = null;
-	private Auto_refresher auto_refresher = new Auto_refresher(this);
-	private Teleport_machine_runner runner = new Teleport_machine_runner(this);
 	private Teleporting_task teleport_task;
 	private ItemStack custom_flag = null;
+	int need_to_cost_magic_buffer = 0;
 
 	public Teleport_machine() {
 		this.gen_uuid();
@@ -792,11 +779,6 @@ public class Teleport_machine extends Multi_block_with_gui implements HasRunner,
 	@Override
 	public void set_uuid(UUID uuid) {
 		this.uuid = uuid;
-	}
-
-	@Override
-	public Structure_runner[] get_runner() {
-		return new Structure_runner[] { this.auto_refresher, this.runner };
 	}
 
 	protected int get_current_page() {

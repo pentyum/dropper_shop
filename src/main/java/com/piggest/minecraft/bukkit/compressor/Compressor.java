@@ -14,15 +14,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.Auto_io;
-import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
 import com.piggest.minecraft.bukkit.utils.Inventory_io;
 
-public class Compressor extends Multi_block_with_gui implements HasRunner, Auto_io {
-	private Compressor_runner runner = new Compressor_runner(this);
-	private Compressor_io_runner io_runner = new Compressor_io_runner(this);
+public class Compressor extends Multi_block_with_gui implements Auto_io {
 	private int piston_storage = 0;
+	int working_ticks = 0;
 
 	public static final int raw_slot = 9;
 	public static final int piston_slot = 11;
@@ -103,11 +100,6 @@ public class Compressor extends Multi_block_with_gui implements HasRunner, Auto_
 		return this.gui.getItem(raw_slot);
 	}
 
-	@Override
-	public Structure_runner[] get_runner() {
-		return new Structure_runner[] { this.runner, this.io_runner };
-	}
-
 	public int get_piston_storage() {
 		return this.piston_storage;
 	}
@@ -125,7 +117,7 @@ public class Compressor extends Multi_block_with_gui implements HasRunner, Auto_
 	@Override
 	protected void set_from_save(Map<String, Object> save) {
 		this.set_piston_storage((Integer) save.get("piston-storage"));
-		this.runner.working_ticks = (Integer) save.get("working-ticks");
+		this.working_ticks = (Integer) save.get("working-ticks");
 		super.set_from_save(save);
 	}
 
@@ -133,7 +125,7 @@ public class Compressor extends Multi_block_with_gui implements HasRunner, Auto_
 	public Map<String, Object> serialize() {
 		Map<String, Object> save = super.serialize();
 		save.put("piston-storage", this.get_piston_storage());
-		save.put("working-ticks", this.runner.working_ticks);
+		save.put("working-ticks", this.working_ticks);
 		return save;
 	}
 

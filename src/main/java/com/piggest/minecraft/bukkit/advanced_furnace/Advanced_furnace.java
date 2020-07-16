@@ -1,39 +1,32 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.annotation.Nonnull;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.World.Environment;
-import org.bukkit.block.Block;
-import org.bukkit.block.Chest;
-import org.bukkit.block.data.type.Furnace;
-import org.bukkit.block.Hopper;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import com.piggest.minecraft.bukkit.depository.Upgrade_component;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.exp_saver.Exp_saver;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.structure.Auto_io;
 import com.piggest.minecraft.bukkit.structure.Capacity_upgradable;
-import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Ownable;
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
 import com.piggest.minecraft.bukkit.utils.Inventory_io;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.World.Environment;
+import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
+import org.bukkit.block.Hopper;
+import org.bukkit.block.data.type.Furnace;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
-public class Advanced_furnace extends Multi_block_with_gui implements HasRunner, Capacity_upgradable, Auto_io, Ownable {
+import javax.annotation.Nonnull;
+import java.util.*;
+import java.util.Map.Entry;
+
+public class Advanced_furnace extends Multi_block_with_gui implements Capacity_upgradable, Auto_io, Ownable {
 	public static final int make_money_switch = 8;
 	public static final int solid_reactant_slot = 9;
 	public static final int liquid_reactant_slot = 13;
@@ -53,10 +46,6 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 
 	private Reaction_container reaction_container = new Reaction_container();
 	private double power = 0;
-	private Advanced_furnace_temp_runner temp_runner = new Advanced_furnace_temp_runner(this);
-	private Advanced_furnace_reaction_runner reaction_runner = new Advanced_furnace_reaction_runner(this);
-	private Advanced_furnace_io_runner io_runner = new Advanced_furnace_io_runner(this);
-	private Advanced_furnace_upgrade_runner upgrade_runner = new Advanced_furnace_upgrade_runner(this);
 	private boolean is_litting = false;
 
 	private int heat_keeping_value = 0;
@@ -66,6 +55,8 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 	// public int fuel_amount = 0;
 	private int money = 0;
 	private int money_limit = 9000;
+	int money_times = 0;
+
 	private int structure_level = 1;
 	private boolean heat_keeping_upgrade = false;
 	private int overload_upgrade = 0;
@@ -329,10 +320,6 @@ public class Advanced_furnace extends Multi_block_with_gui implements HasRunner,
 		double temp = this.get_temperature();
 		double base_temp = this.get_base_temperature();
 		return this.get_e() * 1e-14 * (Math.pow(temp, 4) - Math.pow(base_temp, 4)) + this.get_k() * (temp - base_temp);
-	}
-
-	public Structure_runner[] get_runner() {
-		return new Structure_runner[] { this.temp_runner, this.reaction_runner, this.io_runner, this.upgrade_runner };
 	}
 
 	public Reaction_container get_reaction_container() {

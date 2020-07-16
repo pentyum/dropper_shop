@@ -30,12 +30,10 @@ import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Tool_material;
 import com.piggest.minecraft.bukkit.structure.Auto_io;
-import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Ownable;
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
 
-public class Trees_felling_machine extends Multi_block_with_gui implements HasRunner, Auto_io, Ownable {
+public class Trees_felling_machine extends Multi_block_with_gui implements Auto_io, Ownable {
 	private int current_x;
 	private int current_z;
 	private int start_x;
@@ -52,9 +50,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	public static final int owner_indicator = 15;
 
 	private int r = 32;
-	private Trees_felling_machine_runner runner = new Trees_felling_machine_runner(this);
 	private String owner;
-	private Random rand = new Random();
 
 	@Override
 	public void on_button_pressed(Player player, int slot) {
@@ -81,11 +77,6 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 	@Override
 	protected boolean on_break(Player player) {
 		return true;
-	}
-
-	@Override
-	public Structure_runner[] get_runner() {
-		return new Structure_runner[] { this.runner };
 	}
 
 	public int[] get_current_pointer_location() {
@@ -279,7 +270,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements HasRu
 		ItemMeta meta = axe.getItemMeta();
 		Damageable damageable = (Damageable) meta;
 		int durability_level = axe.getEnchantmentLevel(Enchantment.DURABILITY);
-		int num = rand.nextInt(durability_level + 1);
+		int num = random.nextInt(durability_level + 1);
 		int damage = 0;
 		int current_durability = damageable.getDamage();
 		if (num == 0) {

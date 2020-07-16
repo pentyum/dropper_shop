@@ -1,11 +1,11 @@
 package com.piggest.minecraft.bukkit.exp_saver;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-
+import com.piggest.minecraft.bukkit.config.Price_config;
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
+import com.piggest.minecraft.bukkit.material_ext.Custom_durability;
+import com.piggest.minecraft.bukkit.structure.Auto_io;
+import com.piggest.minecraft.bukkit.structure.Capacity_upgradable;
+import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Hopper;
@@ -15,22 +15,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.Repairable;
 
-import com.piggest.minecraft.bukkit.config.Price_config;
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.material_ext.Custom_durability;
-import com.piggest.minecraft.bukkit.structure.Auto_io;
-import com.piggest.minecraft.bukkit.structure.Capacity_upgradable;
-import com.piggest.minecraft.bukkit.structure.HasRunner;
-import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Map;
 
-public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capacity_upgradable, Auto_io {
+public class Exp_saver extends Multi_block_with_gui implements Capacity_upgradable, Auto_io {
 	private int saved_exp = 0;
 	private int max_saved_exp = 6000;
 	private int structure_level = 1;
-	private Exp_saver_runner exp_saver_runner = new Exp_saver_runner(this);
-	private Exp_saver_io_runner exp_saver_io_runner = new Exp_saver_io_runner(this);
-	private Exp_saver_exp_importer exp_saver_exp_importer = new Exp_saver_exp_importer(this);
 	private int anvil_count = 0;
 	private int chipped_anvil_count = 0;
 	private int damaged_anvil_count = 0;
@@ -88,11 +81,6 @@ public class Exp_saver extends Multi_block_with_gui implements HasRunner, Capaci
 	@Override
 	public boolean create_condition(Player player) {
 		return true;
-	}
-
-	@Override
-	public Structure_runner[] get_runner() {
-		return new Structure_runner[] { this.exp_saver_runner, this.exp_saver_io_runner, this.exp_saver_exp_importer };
 	}
 
 	@Override

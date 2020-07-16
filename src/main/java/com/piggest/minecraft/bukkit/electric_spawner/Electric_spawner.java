@@ -27,20 +27,20 @@ import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
-import com.piggest.minecraft.bukkit.structure.HasRunner;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
 import com.piggest.minecraft.bukkit.utils.language.Entity_zh_cn;
 
-public class Electric_spawner extends Multi_block_with_gui implements HasRunner {
+public class Electric_spawner extends Multi_block_with_gui {
 	public static final int info_indicator_slot = 9;
 	public static final int synthesis_button_slot = 17;
 	public static final int look_button_slot = 16;
 	private Random rand = new Random();
 	private EntityType entity_type = null;
 	private int money = 0;
-	private Electric_spawner_runner runner = new Electric_spawner_runner(this);
 	private boolean minecart_upgrade = false;
+
+	int completed_period = 0;
+	int money_cost_period = 0;
 
 	public Electric_spawner() {
 		this.set_process(0);
@@ -383,10 +383,6 @@ public class Electric_spawner extends Multi_block_with_gui implements HasRunner 
 		return false;
 	}
 
-	@Override
-	public Structure_runner[] get_runner() {
-		return new Structure_runner[] { this.runner };
-	}
 
 	@Nonnull
 	public static Electric_spawner deserialize(@Nonnull Map<String, Object> args) {

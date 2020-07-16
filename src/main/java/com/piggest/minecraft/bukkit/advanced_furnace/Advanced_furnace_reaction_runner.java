@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import com.piggest.minecraft.bukkit.structure.Structure;
 import org.bukkit.inventory.ItemStack;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
@@ -14,15 +15,13 @@ import com.piggest.minecraft.bukkit.structure.Structure_runner;
 import com.piggest.minecraft.bukkit.utils.Inventory_io;
 
 public class Advanced_furnace_reaction_runner extends Structure_runner {
-	private Advanced_furnace advanced_furnace;
-	private int money_times = 0;
-
-	public Advanced_furnace_reaction_runner(Advanced_furnace advanced_furnace) {
-		this.advanced_furnace = advanced_furnace;
+	public Advanced_furnace_reaction_runner(Advanced_furnace_manager manager) {
+		super(manager);
 	}
 
-	public void run() {
-		if (this.advanced_furnace.is_loaded() == false) {
+	public void run_instance(Structure structure) {
+		Advanced_furnace advanced_furnace = (Advanced_furnace)structure;
+		if (advanced_furnace.is_loaded() == false) {
 			return;
 		}
 		synchronized (advanced_furnace) {
@@ -30,7 +29,7 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 			ItemStack gas_reactant_slot = advanced_furnace.get_gui_item(Advanced_furnace.gas_reactant_slot);
 			ItemStack liquid_reactant_slot = advanced_furnace.get_gui_item(Advanced_furnace.liquid_reactant_slot);
 
-			Reaction_container reaction_container = this.advanced_furnace.get_reaction_container();
+			Reaction_container reaction_container = advanced_furnace.get_reaction_container();
 
 			if (!Inventory_io.is_empty(solid_reactant_slot)) { // 固体进入反应器
 				Solid solid = Solid.get_solid(solid_reactant_slot);
@@ -55,12 +54,12 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 							int unit = entry.getValue();
 							if (unit >= capacity) {
 								ItemStack filled = Liquid.get_fill_container(liquid, liquid_reactant_slot);
-								if (Inventory_io.try_move_item_to_slot(filled, 1, this.advanced_furnace.getInventory(),
+								if (Inventory_io.try_move_item_to_slot(filled, 1, advanced_furnace.getInventory(),
 										Advanced_furnace.liquid_product_slot)) {
 									if (Inventory_io.item_remove(liquid_reactant_slot, 1) != null) {
 										reaction_container.set_unit(liquid,
 												reaction_container.get_unit(liquid) - capacity);
-										Inventory_io.move_item_to_slot(filled, 1, this.advanced_furnace.getInventory(),
+										Inventory_io.move_item_to_slot(filled, 1, advanced_furnace.getInventory(),
 												Advanced_furnace.liquid_product_slot);
 									}
 								}
@@ -73,12 +72,12 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 					if (liquid != null) { // 检测到合法液体容器
 						ItemStack new_empty_bucket = Material_ext.get_empty_container(liquid_reactant_slot);
 						if (Inventory_io.try_move_item_to_slot(new_empty_bucket, 1,
-								this.advanced_furnace.getInventory(), Advanced_furnace.liquid_product_slot)) { // 产品槽允许空桶放入则添加进内部
+								advanced_furnace.getInventory(), Advanced_furnace.liquid_product_slot)) { // 产品槽允许空桶放入则添加进内部
 							if (Inventory_io.item_remove(liquid_reactant_slot, 1) != null) {
 								reaction_container.set_unit(liquid, reaction_container.get_unit(liquid)
 										+ Liquid.get_item_unit(liquid_reactant_slot));
 								Inventory_io.move_item_to_slot(new_empty_bucket, 1,
-										this.advanced_furnace.getInventory(), Advanced_furnace.liquid_product_slot);
+										advanced_furnace.getInventory(), Advanced_furnace.liquid_product_slot);
 							}
 						}
 					}
@@ -155,11 +154,11 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 			if (advanced_furnace.get_make_money() == false) { // 不产钱
 				reaction_container.run_all_reactions();
 			} else {
-				if (this.money_times >= 120) { // 产线
+				if (advanced_furnace.money_times >= 120) { // 产线
 					advanced_furnace.add_money(advanced_furnace.get_make_money_rate());
-					this.money_times = 0;
+					advanced_furnace.money_times = 0;
 				} else {
-					this.money_times++;
+					advanced_furnace.money_times++;
 				}
 			}
 
@@ -195,9 +194,5 @@ public class Advanced_furnace_reaction_runner extends Structure_runner {
 		return 10;
 	}
 
-	@Override
-	public boolean is_asynchronously() {
-		return true;
-	}
 
 }
