@@ -10,12 +10,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Nameable;
 import org.bukkit.World;
+import org.bukkit.block.Biome;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -25,6 +28,7 @@ public abstract class Structure implements ConfigurationSerializable {
 	protected int x;
 	protected int y;
 	protected int z;
+	protected Biome biome_cache = null;
 
 	@Override
 	public Map<String, Object> serialize() {
@@ -206,5 +210,18 @@ public abstract class Structure implements ConfigurationSerializable {
 			name = manager.get_permission_head();
 		}
 		Bukkit.getServer().broadcastMessage("[" + name + "]" + message);
+	}
+
+	@Nonnull
+	public Block get_block(int relative_x, int relative_y, int relative_z) {
+		Location loc = this.get_location().add(relative_x, relative_y, relative_z);
+		return loc.getBlock();
+	}
+
+	public Biome get_biome(int relative_x, int relative_y, int relative_z) {
+		if (this.biome_cache == null) {
+			this.biome_cache = this.get_block(relative_x, relative_y, relative_z).getBiome();
+		}
+		return this.biome_cache;
 	}
 }

@@ -97,7 +97,7 @@ public interface Radio_terminal extends Nameable, Unique, Elements_container {
 	 * 获得本底噪声(单位频率强度)
 	 */
 	public default double get_biome_noise() {
-		Biome biome = this.get_location().getBlock().getBiome();
+		Biome biome = this.get_biome();
 		switch (biome) {
 			case BADLANDS:
 				return 5E-11;
@@ -105,6 +105,8 @@ public interface Radio_terminal extends Nameable, Unique, Elements_container {
 				return 5E-11;
 		}
 	}
+
+	public Biome get_biome();
 
 	/*
 	 * 获得接收某个发射源信号的噪声强度(总强度)

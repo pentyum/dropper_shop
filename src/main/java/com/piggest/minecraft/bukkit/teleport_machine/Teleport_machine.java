@@ -7,6 +7,7 @@ import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.utils.Radio;
 import org.bukkit.*;
+import org.bukkit.block.Biome;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -538,6 +539,12 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 	}
+
+	@Override
+	public Biome get_biome() {
+		return this.get_biome(0, 0, 0);
+	}
+
 
 	@Override
 	public int get_voltage(Radio_state state) {
