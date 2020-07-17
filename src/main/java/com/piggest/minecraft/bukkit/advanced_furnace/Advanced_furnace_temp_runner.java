@@ -21,19 +21,18 @@ public class Advanced_furnace_temp_runner extends Old_structure_runner {
 		if (adv_furnace.is_loaded() == false) {
 			return;
 		}
-		synchronized (adv_furnace.fuel_info) {
-			double current_temp = adv_furnace.get_temperature();
-			double p = adv_furnace.get_power();
-			double loss = adv_furnace.get_power_loss();
-			double d_current_temp = p - loss;
-			adv_furnace.set_temperature(current_temp + this.get_cycle() * d_current_temp);
-			if (adv_furnace.get_fuel() != null) {
-				// Bukkit.getLogger().info("当前燃料存在");
-				this.run_fuel(adv_furnace);
-			} else {
-				// Bukkit.getLogger().info(Thread.currentThread().getId()+"当前燃料为null，准备吸取燃料");
-				this.get_fuel(adv_furnace);
-			}
+
+		double current_temp = adv_furnace.get_temperature();
+		double p = adv_furnace.get_power();
+		double loss = adv_furnace.get_power_loss();
+		double d_current_temp = p - loss;
+		adv_furnace.set_temperature(current_temp + this.get_cycle() * d_current_temp);
+		if (adv_furnace.get_fuel() != null) {
+			// Bukkit.getLogger().info("当前燃料存在");
+			this.run_fuel(adv_furnace);
+		} else {
+			// Bukkit.getLogger().info(Thread.currentThread().getId()+"当前燃料为null，准备吸取燃料");
+			this.get_fuel(adv_furnace);
 		}
 
 	}

@@ -65,6 +65,7 @@ public class Advanced_furnace extends Multi_block_with_gui implements Capacity_u
 	private boolean is_locked_temp = false;
 	private double locked_temp = 290;
 	private String owner;
+	private double base_temperature_cache = -1;
 
 	/**
 	 * 获取方块温度，单位为开尔文，自然温度由群系温度+高度温度+维度温度+亮度温度控制
@@ -110,7 +111,10 @@ public class Advanced_furnace extends Multi_block_with_gui implements Capacity_u
 	}
 
 	public double get_base_temperature() {
-		return Advanced_furnace.get_block_temperature(this.get_location().add(0, 1, 0).getBlock());
+		if (this.base_temperature_cache < 0) {
+			this.base_temperature_cache = Advanced_furnace.get_block_temperature(this.get_location().add(0, 1, 0).getBlock());
+		}
+		return this.base_temperature_cache;
 	}
 
 	public void set_temperature(double temperature) {
