@@ -1,9 +1,9 @@
 package com.piggest.minecraft.bukkit.teleport_machine;
 
 import com.piggest.minecraft.bukkit.structure.Structure;
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
 
-public class Auto_refresher extends Structure_runner {
+public class Auto_refresher extends Old_structure_runner {
 	public Auto_refresher(Teleport_machine_manager manager) {
 		super(manager);
 	}
@@ -24,5 +24,8 @@ public class Auto_refresher extends Structure_runner {
 		return 20;
 	}
 
-
+	@Override
+	public boolean is_asynchronously() {
+		return true;
+	}
 }

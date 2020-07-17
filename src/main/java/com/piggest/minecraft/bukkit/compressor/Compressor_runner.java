@@ -4,11 +4,11 @@ import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.Structure;
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class Compressor_runner extends Structure_runner {
+public class Compressor_runner extends Old_structure_runner {
 	public Compressor_runner(Compressor_manager manager) {
 		super(manager);
 	}
@@ -65,4 +65,8 @@ public class Compressor_runner extends Structure_runner {
 		return 10;
 	}
 
+	@Override
+	public boolean is_asynchronously() {
+		return true;
+	}
 }

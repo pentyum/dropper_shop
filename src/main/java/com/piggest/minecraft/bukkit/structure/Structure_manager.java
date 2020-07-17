@@ -10,6 +10,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -22,7 +23,7 @@ public abstract class Structure_manager<T extends Structure> {
 	protected HashMap<Chunk_location, HashSet<T>> chunk_structure_map = new HashMap<>();
 	protected HashMap<World, HashMap<Location, T>> structure_map = new HashMap<>();
 	protected Structure_manager_runner structure_manager_runner;
-	protected Structure_runner[] structure_runners = null;
+	protected Old_structure_runner[] structure_runners = null;
 
 	public Structure_manager(Class<T> structure_class) {
 		this.structure_class = structure_class;
@@ -116,8 +117,12 @@ public abstract class Structure_manager<T extends Structure> {
 			}
 		}
 		if (this instanceof Has_runner) {
-			for (Structure_runner runner : this.structure_runners) {
-				runner.start();
+			for (Old_structure_runner runner : this.structure_runners) {
+				if (runner.is_asynchronously() == true) {
+					runner.start();
+				} else {
+					Bukkit.getScheduler().runTaskTimer(Dropper_shop_plugin.instance, runner, runner.get_delay(), runner.get_cycle());
+				}
 			}
 		}
 	}
@@ -244,12 +249,12 @@ public abstract class Structure_manager<T extends Structure> {
 		if (this.structure_manager_runner != null) {
 			this.structure_manager_runner.cancel();
 		}
-		for (Structure_runner runner : this.structure_runners) {
+		for (Old_structure_runner runner : this.structure_runners) {
 			runner.interrupt();
 		}
 	}
 
-	public Collection<T> get_all_structures_in_world(World world) {
+	public Collection<T> get_all_structures_in_world(@Nonnull World world) {
 		return this.structure_map.get(world).values();
 	}
 

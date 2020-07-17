@@ -5,11 +5,11 @@ import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Custom_durability;
 import com.piggest.minecraft.bukkit.structure.Structure;
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class Exp_saver_runner extends Structure_runner {
+public class Exp_saver_runner extends Old_structure_runner {
 	public Exp_saver_runner(Exp_saver_manager manager) {
 		super(manager);
 	}
@@ -63,5 +63,8 @@ public class Exp_saver_runner extends Structure_runner {
 		return 10;
 	}
 
-
+	@Override
+	public boolean is_asynchronously() {
+		return true;
+	}
 }

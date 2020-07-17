@@ -2,13 +2,13 @@ package com.piggest.minecraft.bukkit.compressor;
 
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.structure.Structure;
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
 import com.piggest.minecraft.bukkit.utils.Inventory_io;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Hopper;
 import org.bukkit.inventory.ItemStack;
 
-public class Compressor_io_runner extends Structure_runner {
+public class Compressor_io_runner extends Old_structure_runner {
 
 	public Compressor_io_runner(Compressor_manager manager) {
 		super(manager);
@@ -60,5 +60,8 @@ public class Compressor_io_runner extends Structure_runner {
 		return 10;
 	}
 
-
+	@Override
+	public boolean is_asynchronously() {
+		return false;
+	}
 }

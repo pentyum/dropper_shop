@@ -1,7 +1,7 @@
 package com.piggest.minecraft.bukkit.exp_saver;
 
 import com.piggest.minecraft.bukkit.structure.Structure;
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -9,7 +9,7 @@ import org.bukkit.entity.ExperienceOrb;
 
 import java.util.Collection;
 
-public class Exp_saver_exp_importer extends Structure_runner {
+public class Exp_saver_exp_importer extends Old_structure_runner {
 	public Exp_saver_exp_importer(Exp_saver_manager manager) {
 		super(manager);
 	}
@@ -42,4 +42,8 @@ public class Exp_saver_exp_importer extends Structure_runner {
 		return 10;
 	}
 
+	@Override
+	public boolean is_asynchronously() {
+		return false;
+	}
 }

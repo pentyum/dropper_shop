@@ -3,10 +3,10 @@ package com.piggest.minecraft.bukkit.advanced_furnace;
 import com.piggest.minecraft.bukkit.depository.Upgrade_component;
 import com.piggest.minecraft.bukkit.depository.Upgrade_component_type;
 import com.piggest.minecraft.bukkit.structure.Structure;
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
 import org.bukkit.inventory.ItemStack;
 
-public class Advanced_furnace_upgrade_runner extends Structure_runner {
+public class Advanced_furnace_upgrade_runner extends Old_structure_runner {
 	public Advanced_furnace_upgrade_runner(Advanced_furnace_manager manager) {
 		super(manager);
 	}
@@ -44,4 +44,8 @@ public class Advanced_furnace_upgrade_runner extends Structure_runner {
 		return 60;
 	}
 
+	@Override
+	public boolean is_asynchronously() {
+		return true;
+	}
 }

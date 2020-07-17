@@ -3,7 +3,7 @@ package com.piggest.minecraft.bukkit.exp_saver;
 import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 import com.piggest.minecraft.bukkit.structure.Has_runner;
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 
@@ -91,7 +91,7 @@ public class Exp_saver_manager extends Gui_structure_manager<Exp_saver> implemen
 	}
 
 	@Override
-	public Structure_runner[] init_runners() {
-		return new Structure_runner[]{new Exp_saver_exp_importer(this), new Exp_saver_io_runner(this), new Exp_saver_runner(this)};
+	public Old_structure_runner[] init_runners() {
+		return new Old_structure_runner[]{new Exp_saver_exp_importer(this), new Exp_saver_io_runner(this), new Exp_saver_runner(this)};
 	}
 }

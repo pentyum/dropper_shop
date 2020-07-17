@@ -4,7 +4,7 @@ import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 import com.piggest.minecraft.bukkit.structure.Has_runner;
 import com.piggest.minecraft.bukkit.structure.Structure;
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
 import com.piggest.minecraft.bukkit.teleport_machine.dynmap.Dynmap_manager;
 import com.piggest.minecraft.bukkit.teleport_machine.dynmap.Dynmap_refresher;
 import org.bukkit.Material;
@@ -150,8 +150,8 @@ public class Teleport_machine_manager extends Gui_structure_manager<Teleport_mac
 	}
 
 	@Override
-	public Structure_runner[] init_runners() {
-		return new Structure_runner[]{new Teleport_machine_runner(this), new Auto_refresher(this)};
+	public Old_structure_runner[] init_runners() {
+		return new Old_structure_runner[]{new Teleport_machine_runner(this), new Auto_refresher(this)};
 	}
 
 	@Override

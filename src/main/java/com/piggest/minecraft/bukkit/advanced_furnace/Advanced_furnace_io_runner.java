@@ -2,14 +2,14 @@ package com.piggest.minecraft.bukkit.advanced_furnace;
 
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.structure.Structure;
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
 import com.piggest.minecraft.bukkit.utils.Inventory_io;
 import org.bukkit.Location;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Hopper;
 import org.bukkit.inventory.ItemStack;
 
-public class Advanced_furnace_io_runner extends Structure_runner {
+public class Advanced_furnace_io_runner extends Old_structure_runner {
 
 	public Advanced_furnace_io_runner(Advanced_furnace_manager manager) {
 		super(manager);
@@ -57,6 +57,11 @@ public class Advanced_furnace_io_runner extends Structure_runner {
 			loc.getWorld().createExplosion(loc, 8);
 			adv_furnace.remove();
 		}
+	}
+
+	@Override
+	public boolean is_asynchronously() {
+		return false;
 	}
 
 	@Override

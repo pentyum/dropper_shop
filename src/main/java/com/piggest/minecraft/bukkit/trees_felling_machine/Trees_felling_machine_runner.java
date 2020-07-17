@@ -3,13 +3,13 @@ package com.piggest.minecraft.bukkit.trees_felling_machine;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.structure.Structure;
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
 import org.bukkit.block.Hopper;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class Trees_felling_machine_runner extends Structure_runner {
+public class Trees_felling_machine_runner extends Old_structure_runner {
 	public Trees_felling_machine_runner(Trees_felling_machine_manager manager) {
 		super(manager);
 	}
@@ -51,4 +51,8 @@ public class Trees_felling_machine_runner extends Structure_runner {
 		return 10;
 	}
 
+	@Override
+	public boolean is_asynchronously() {
+		return false;
+	}
 }

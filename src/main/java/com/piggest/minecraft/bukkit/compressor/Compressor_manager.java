@@ -5,7 +5,7 @@ import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.structure.Has_runner;
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
@@ -69,8 +69,8 @@ public class Compressor_manager extends Gui_structure_manager<Compressor> implem
 	}
 
 	@Override
-	public Structure_runner[] init_runners() {
-		return new Structure_runner[]{new Compressor_io_runner(this), new Compressor_runner(this)};
+	public Old_structure_runner[] init_runners() {
+		return new Old_structure_runner[]{new Compressor_io_runner(this), new Compressor_runner(this)};
 	}
 
 	@Override

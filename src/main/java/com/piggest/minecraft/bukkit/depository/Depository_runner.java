@@ -2,11 +2,11 @@ package com.piggest.minecraft.bukkit.depository;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.structure.Structure;
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 
-public class Depository_runner extends Structure_runner {
+public class Depository_runner extends Old_structure_runner {
 	public Depository_runner(Depository_manager manager) {
 		super(manager);
 	}
@@ -36,4 +36,8 @@ public class Depository_runner extends Structure_runner {
 		return 20;
 	}
 
+	@Override
+	public boolean is_asynchronously() {
+		return true;
+	}
 }

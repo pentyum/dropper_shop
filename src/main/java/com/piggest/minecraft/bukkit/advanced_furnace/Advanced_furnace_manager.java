@@ -3,7 +3,7 @@ package com.piggest.minecraft.bukkit.advanced_furnace;
 import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 import com.piggest.minecraft.bukkit.structure.Has_runner;
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 
@@ -104,8 +104,8 @@ public class Advanced_furnace_manager extends Gui_structure_manager<Advanced_fur
 	}
 
 	@Override
-	public Structure_runner[] init_runners() {
-		return new Structure_runner[]{new Advanced_furnace_io_runner(this), new Advanced_furnace_reaction_runner(this), new Advanced_furnace_temp_runner(this), new Advanced_furnace_upgrade_runner(this)};
+	public Old_structure_runner[] init_runners() {
+		return new Old_structure_runner[]{new Advanced_furnace_io_runner(this), new Advanced_furnace_reaction_runner(this), new Advanced_furnace_temp_runner(this), new Advanced_furnace_upgrade_runner(this)};
 	}
 
 	@Override

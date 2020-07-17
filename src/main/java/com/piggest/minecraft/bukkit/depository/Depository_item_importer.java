@@ -1,14 +1,14 @@
 package com.piggest.minecraft.bukkit.depository;
 
 import com.piggest.minecraft.bukkit.structure.Structure;
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Hopper;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-public class Depository_item_importer extends Structure_runner {
+public class Depository_item_importer extends Old_structure_runner {
 	public Depository_item_importer(Depository_manager manager) {
 		super(manager);
 	}
@@ -67,5 +67,8 @@ public class Depository_item_importer extends Structure_runner {
 		return 10;
 	}
 
-
+	@Override
+	public boolean is_asynchronously() {
+		return false;
+	}
 }

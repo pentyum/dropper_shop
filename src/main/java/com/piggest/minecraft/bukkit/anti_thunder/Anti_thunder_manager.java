@@ -3,7 +3,7 @@ package com.piggest.minecraft.bukkit.anti_thunder;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.structure.Has_runner;
 import com.piggest.minecraft.bukkit.structure.Structure_manager;
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
 import org.bukkit.Material;
 
 public class Anti_thunder_manager extends Structure_manager<Anti_thunder> implements Has_runner {
@@ -44,7 +44,7 @@ public class Anti_thunder_manager extends Structure_manager<Anti_thunder> implem
 	}
 
 	@Override
-	public Structure_runner[] init_runners() {
-		return new Structure_runner[0];
+	public Old_structure_runner[] init_runners() {
+		return new Old_structure_runner[0];
 	}
 }

@@ -3,7 +3,7 @@ package com.piggest.minecraft.bukkit.electric_spawner;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.structure.Structure;
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
 import org.bukkit.Chunk;
 import org.bukkit.Difficulty;
 import org.bukkit.entity.EntityType;
@@ -14,7 +14,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
-public class Electric_spawner_runner extends Structure_runner {
+public class Electric_spawner_runner extends Old_structure_runner {
 	private Electric_spawner_manager manager;
 
 	public Electric_spawner_runner(Electric_spawner_manager manager) {
@@ -96,4 +96,8 @@ public class Electric_spawner_runner extends Structure_runner {
 		return 10;
 	}
 
+	@Override
+	public boolean is_asynchronously() {
+		return true;
+	}
 }

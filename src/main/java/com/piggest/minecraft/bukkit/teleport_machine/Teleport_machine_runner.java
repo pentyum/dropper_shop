@@ -1,9 +1,9 @@
 package com.piggest.minecraft.bukkit.teleport_machine;
 
 import com.piggest.minecraft.bukkit.structure.Structure;
-import com.piggest.minecraft.bukkit.structure.Structure_runner;
+import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
 
-public class Teleport_machine_runner extends Structure_runner {
+public class Teleport_machine_runner extends Old_structure_runner {
 	public Teleport_machine_runner(Teleport_machine_manager manager) {
 		super(manager);
 	}
@@ -65,5 +65,8 @@ public class Teleport_machine_runner extends Structure_runner {
 		return 10;
 	}
 
-
+	@Override
+	public boolean is_asynchronously() {
+		return true;
+	}
 }
