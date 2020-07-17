@@ -34,9 +34,9 @@ public abstract class Async_structure_runner extends Thread implements Structure
 		while (!this.isInterrupted()) {
 			long start_time = System.currentTimeMillis();
 			for (World world : Bukkit.getWorlds()) {
-				Collection<?> structures = manager.get_all_structures_in_world(world);
-				for (Object structure : structures) {
-					this.run_instance((Structure) structure);
+				Collection<? extends Structure> structures = manager.get_all_structures_in_world(world);
+				for (Structure structure : structures) {
+					this.run_instance(structure);
 				}
 			}
 			int max_time = this.get_cycle() * 50;
@@ -53,6 +53,6 @@ public abstract class Async_structure_runner extends Thread implements Structure
 		}
 	}
 
-	public abstract void run_instance(Structure structure);
+	public abstract boolean run_instance(Structure structure);
 
 }

@@ -52,10 +52,12 @@ public abstract class Old_structure_runner extends Thread {
 			}
 			while (!this.isInterrupted()) {
 				long start_time = System.currentTimeMillis();
+				int count = 0;
 				for (World world : Bukkit.getWorlds()) {
 					Collection<?> structures = manager.get_all_structures_in_world(world);
 					for (Object structure : structures) {
 						this.run_instance((Structure) structure);
+						count++;
 					}
 				}
 				int max_time = this.get_cycle() * 50;
@@ -64,7 +66,7 @@ public abstract class Old_structure_runner extends Thread {
 					if (sleep_time > 0) {
 						Thread.sleep(sleep_time);
 					} else {
-						Dropper_shop_plugin.instance.getLogger().warning("线程执行超时" + (-sleep_time) + "ms");
+						Dropper_shop_plugin.instance.getLogger().warning("线程执行超时" + (-sleep_time) + "ms" + ",实例数量" + count);
 					}
 				} catch (InterruptedException e) {
 					return;

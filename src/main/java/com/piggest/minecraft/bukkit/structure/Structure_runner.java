@@ -15,5 +15,5 @@ public interface Structure_runner {
 	 */
 	public int get_delay();
 
-	public void run_instance(Structure structure);
+	public boolean run_instance(Structure structure);
 }

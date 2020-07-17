@@ -12,7 +12,7 @@ public class Advanced_furnace_temp_runner extends Old_structure_runner {
 	}
 
 	public int get_cycle() {
-		return 2;
+		return 4;
 	}
 
 	@Override
