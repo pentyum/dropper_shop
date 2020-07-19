@@ -1,6 +1,6 @@
 package com.piggest.minecraft.bukkit.structure;
 
-public interface Structure_runner {
+public interface Structure_runner extends Runnable {
 	/**
 	 * 获得线程运行周期
 	 *
@@ -16,4 +16,6 @@ public interface Structure_runner {
 	public int get_delay();
 
 	public boolean run_instance(Structure structure);
+
+	public void start();
 }

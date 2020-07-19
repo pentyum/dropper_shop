@@ -6,12 +6,12 @@ import org.bukkit.World;
 
 import java.util.Collection;
 
-public abstract class Async_structure_runner extends Thread implements Structure_runner {
+public abstract class Async_structure_runner implements Structure_runner {
 	Structure_manager<? extends Structure> manager;
 
 	public Async_structure_runner(Structure_manager<? extends Structure> manager) {
 		this.manager = manager;
-		this.setName(this.manager.get_permission_head() + ":" + this.getClass().getSimpleName());
+		//this.setName(this.manager.get_permission_head() + ":" + this.getClass().getSimpleName());
 	}
 
 	private boolean unload_run = false;
@@ -25,34 +25,24 @@ public abstract class Async_structure_runner extends Thread implements Structure
 	}
 
 	@Override
-	public void run() {
-		try {
-			Thread.sleep(this.get_delay() * 50);
-		} catch (InterruptedException e) {
-			return;
-		}
-		while (!this.isInterrupted()) {
-			long start_time = System.currentTimeMillis();
-			for (World world : Bukkit.getWorlds()) {
-				Collection<? extends Structure> structures = manager.get_all_structures_in_world(world);
-				for (Structure structure : structures) {
-					this.run_instance(structure);
-				}
-			}
-			int max_time = this.get_cycle() * 50;
-			try {
-				long sleep_time = max_time - (System.currentTimeMillis() - start_time);
-				if (sleep_time > 0) {
-					Thread.sleep(sleep_time);
-				} else {
-					Dropper_shop_plugin.instance.getLogger().warning("线程执行超时" + (-sleep_time) + "ms");
-				}
-			} catch (InterruptedException e) {
-				return;
-			}
-		}
+	public void start() {
+		Bukkit.getScheduler().runTaskTimerAsynchronously(Dropper_shop_plugin.instance, this, this.get_delay(), this.get_cycle());
 	}
 
-	public abstract boolean run_instance(Structure structure);
+	@Override
+	public void run() {
+		long start_time = System.currentTimeMillis();
+		for (World world : Bukkit.getWorlds()) {
+			Collection<? extends Structure> structures = manager.get_all_structures_in_world(world);
+			for (Structure structure : structures) {
+				this.run_instance(structure);
+			}
+		}
+		int max_time = this.get_cycle() * 50;
+		long sleep_time = max_time - (System.currentTimeMillis() - start_time);
+		if (sleep_time < 0) {
+			Dropper_shop_plugin.instance.getLogger().warning(this.getClass().getSimpleName() + "线程执行超时" + (-sleep_time) + "ms");
+		}
+	}
 
 }
