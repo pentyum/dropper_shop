@@ -4,21 +4,19 @@ import com.piggest.minecraft.bukkit.depository.Upgrade_component;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Custom_durability;
-import com.piggest.minecraft.bukkit.structure.Structure;
-import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
+import com.piggest.minecraft.bukkit.structure.Async_structure_runner;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class Exp_saver_runner extends Old_structure_runner {
+public class Exp_saver_runner extends Async_structure_runner<Exp_saver> {
 	public Exp_saver_runner(Exp_saver_manager manager) {
 		super(manager);
 	}
 
 	@Override
-	public void run_instance(Structure structure) {
-		Exp_saver exp_saver = (Exp_saver) structure;
+	public boolean run_instance(Exp_saver exp_saver) {
 		if (exp_saver.is_loaded() == false) {
-			return;
+			return false;
 		}
 		ItemStack mending = exp_saver.get_mending();
 		if (!Grinder.is_empty(mending)) {
@@ -51,6 +49,7 @@ public class Exp_saver_runner extends Old_structure_runner {
 				}
 			}
 		}
+		return true;
 	}
 
 	@Override
@@ -63,8 +62,4 @@ public class Exp_saver_runner extends Old_structure_runner {
 		return 10;
 	}
 
-	@Override
-	public boolean is_asynchronously() {
-		return true;
-	}
 }

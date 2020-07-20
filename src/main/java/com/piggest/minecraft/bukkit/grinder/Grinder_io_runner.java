@@ -1,8 +1,7 @@
 package com.piggest.minecraft.bukkit.grinder;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.structure.Structure;
-import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
+import com.piggest.minecraft.bukkit.structure.Sync_structure_runner;
 import com.piggest.minecraft.bukkit.utils.Inventory_io;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
@@ -10,15 +9,14 @@ import org.bukkit.block.Hopper;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class Grinder_io_runner extends Old_structure_runner {
+public class Grinder_io_runner extends Sync_structure_runner<Grinder> {
 	public Grinder_io_runner(Grinder_manager manager) {
 		super(manager);
 	}
 
-	public void run_instance(Structure structure) {
-		Grinder grinder = (Grinder) structure;
+	public boolean run_instance(Grinder grinder) {
 		if (grinder.is_loaded() == false) {
-			return;
+			return false;
 		}
 		Hopper hopper = grinder.get_hopper();
 		Chest chest = grinder.get_chest();
@@ -46,6 +44,7 @@ public class Grinder_io_runner extends Old_structure_runner {
 		if (chest != null) {
 			Inventory_io.move_item_to_inventoryholder(grinder.getInventory(), 13, chest);
 		}
+		return true;
 	}
 
 	@Override
@@ -58,8 +57,4 @@ public class Grinder_io_runner extends Old_structure_runner {
 		return 10;
 	}
 
-	@Override
-	public boolean is_asynchronously() {
-		return false;
-	}
 }

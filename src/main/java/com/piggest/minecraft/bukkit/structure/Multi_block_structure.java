@@ -5,8 +5,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import javax.annotation.Nonnull;
-
 public abstract class Multi_block_structure extends Structure {
 
 	protected abstract void on_right_click(Player player);

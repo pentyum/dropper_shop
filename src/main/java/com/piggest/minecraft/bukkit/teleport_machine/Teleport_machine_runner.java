@@ -1,24 +1,22 @@
 package com.piggest.minecraft.bukkit.teleport_machine;
 
-import com.piggest.minecraft.bukkit.structure.Structure;
-import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
+import com.piggest.minecraft.bukkit.structure.Async_structure_runner;
 
-public class Teleport_machine_runner extends Old_structure_runner {
+public class Teleport_machine_runner extends Async_structure_runner<Teleport_machine> {
 	public Teleport_machine_runner(Teleport_machine_manager manager) {
 		super(manager);
 	}
 
 	@Override
-	public void run_instance(Structure structure) {
-		Teleport_machine teleport_machine = (Teleport_machine) structure;
+	public boolean run_instance(Teleport_machine teleport_machine) {
 		teleport_machine.refresh_power_info();
 		if (teleport_machine.get_state() == Radio_state.OFF) {
-			return;
+			return true;
 		}
 		if (teleport_machine.get_amount(Element.Magic) <= 0) {
 			teleport_machine.set_switch(Teleport_machine.open_switch, false);
 			teleport_machine.set_state(Radio_state.OFF);
-			return;
+			return true;
 		}
 		int need_to_cost_kj = 0;
 		teleport_machine.need_to_cost_magic_buffer += teleport_machine.get_current_input_power();
@@ -29,7 +27,7 @@ public class Teleport_machine_runner extends Old_structure_runner {
 			if (new_magic < 0) {
 				teleport_machine.set_switch(Teleport_machine.open_switch, false);
 				teleport_machine.set_state(Radio_state.OFF);
-				return;
+				return true;
 			} else {
 				teleport_machine.set_amount(Element.Magic, new_magic);
 				teleport_machine.need_to_cost_magic_buffer -= need_to_cost_kj * 1000;
@@ -42,7 +40,7 @@ public class Teleport_machine_runner extends Old_structure_runner {
 			Teleporting_task task = teleport_machine.get_teleporting_task();
 			if (task.get_completed_byte() >= task.get_total_byte()) {
 				teleport_machine.complete_teleport_to(teleport_machine.get_current_working_with());
-				return;
+				return true;
 			}
 			int current_speed = teleport_machine.get_current_working_with().get_working_speed(teleport_machine);
 			int add_byte = current_speed * 1024;
@@ -53,6 +51,7 @@ public class Teleport_machine_runner extends Old_structure_runner {
 			teleport_machine.set_process(100 * new_byte / task.get_total_byte());
 			task.set_completed_byte(new_byte);
 		}
+		return true;
 	}
 
 	@Override
@@ -65,8 +64,4 @@ public class Teleport_machine_runner extends Old_structure_runner {
 		return 10;
 	}
 
-	@Override
-	public boolean is_asynchronously() {
-		return true;
-	}
 }

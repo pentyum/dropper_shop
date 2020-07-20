@@ -23,7 +23,7 @@ public class Anti_thunder extends Multi_block_structure implements Ownable {
 	private String owner;
 	private int copper_unit = 10;
 	private boolean active = false;
-	private Anti_thunder_runner runner = new Anti_thunder_runner(this);
+	int working_ticks = 0;
 
 	@Override
 	public boolean completed() {
@@ -62,7 +62,8 @@ public class Anti_thunder extends Multi_block_structure implements Ownable {
 				this.send_message(player, "已为该防雷器添加" + add + "点铜锭");
 			}
 		}
-		this.send_message(player, "当前防雷器主人: " + this.owner + "，状态: " + (this.active ? "开启" : "关闭") + "，剩余铜锭: " + this.copper_unit);
+		this.send_message(player, "当前防雷器主人: " + this.owner + "，状态: " + (this.active ? "开启" : "关闭") +
+				"，剩余铜锭: " + this.copper_unit + "，距离下次扣费时间还剩" + (this.get_manager().get_cycle() - this.working_ticks / 20) + "秒");
 	}
 
 	@Override
@@ -72,7 +73,6 @@ public class Anti_thunder extends Multi_block_structure implements Ownable {
 
 	@Override
 	protected boolean on_break(Player player) {
-		this.runner.cancel();
 		return true;
 	}
 
@@ -98,25 +98,19 @@ public class Anti_thunder extends Multi_block_structure implements Ownable {
 
 	public boolean activate(boolean active) {
 		if (active == true) {
+			this.working_ticks = 0;
 			if (this.completed() == true) {
-				if (runner.started() == false) {
-					runner.start();
-					Dropper_shop_plugin.instance.getLogger().info("[防雷器]已启动扣钱线程");
-					runner.runTaskTimerAsynchronously(Dropper_shop_plugin.instance, 0,
-							this.get_manager().get_cycle() * 20);
-				} else {
-					OfflinePlayer owner = this.get_owner();
-					Economy economy = Dropper_shop_plugin.instance.get_economy();
-					int price = this.get_manager().get_price();
-					if (!economy.has(owner, price)) {
-						this.send_msg_to_owner("[防雷器]你的钱不够，不能启动防雷器");
-						active = false;
-						return false;
-					}
+				OfflinePlayer owner = this.get_owner();
+				Economy economy = Dropper_shop_plugin.instance.get_economy();
+				int price = this.get_manager().get_price();
+				if (!economy.has(owner, price)) {
+					this.send_msg_to_owner("[防雷器]你的钱不够，不能启动防雷器");
+					this.active = false;
+					return false;
 				}
 			} else {
-				this.remove();
 				this.send_msg_to_owner("[防雷器]区块" + get_chunk_location() + "的防雷器结构不完整，已经移除");
+				this.remove();
 				return false;
 			}
 		}
@@ -138,15 +132,6 @@ public class Anti_thunder extends Multi_block_structure implements Ownable {
 			return null;
 		}
 		return (Piston) core_data;
-	}
-
-	public void close() {
-		if (this.runner.started() == true) {
-			if (this.runner.isCancelled() == false) {
-				Dropper_shop_plugin.instance.getLogger().info("[防雷器]停止扣钱线程");
-				this.runner.cancel();
-			}
-		}
 	}
 
 	public void set_copper_unit(int copper_unit) {

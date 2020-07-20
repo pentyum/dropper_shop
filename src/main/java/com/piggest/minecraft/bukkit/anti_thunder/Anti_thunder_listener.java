@@ -99,7 +99,7 @@ public class Anti_thunder_listener implements Listener {
 		if (event.isCancelled() == true) {
 			return;
 		}
-		event.setCancelled(this.find_anti_thunder(event.getEntity().getLocation(), "高压爬行者"));
+		event.setCancelled(this.find_anti_thunder(event.getEntity().getLocation(), "高压苦力怕"));
 	}
 
 	@EventHandler

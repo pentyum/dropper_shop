@@ -4,7 +4,7 @@ import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 import com.piggest.minecraft.bukkit.structure.Has_runner;
-import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
+import com.piggest.minecraft.bukkit.structure.Structure_runner;
 import org.bukkit.Difficulty;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -199,8 +199,8 @@ public class Electric_spawner_manager extends Gui_structure_manager<Electric_spa
 	}
 
 	@Override
-	public Old_structure_runner[] init_runners() {
-		return new Old_structure_runner[]{new Electric_spawner_runner(this)};
+	public Structure_runner[] init_runners() {
+		return new Structure_runner[]{new Electric_spawner_runner(this)};
 	}
 
 	@Override

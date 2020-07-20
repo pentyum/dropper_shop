@@ -1,23 +1,20 @@
 package com.piggest.minecraft.bukkit.depository;
 
-import com.piggest.minecraft.bukkit.structure.Structure;
-import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
+import com.piggest.minecraft.bukkit.structure.Sync_structure_runner;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Hopper;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-public class Depository_item_importer extends Old_structure_runner {
+public class Depository_item_importer extends Sync_structure_runner<Depository> {
 	public Depository_item_importer(Depository_manager manager) {
 		super(manager);
 	}
 
-	public void run_instance(Structure structure) {
-		Depository depository = (Depository) structure;
-
+	public boolean run_instance(Depository depository) {
 		if (depository.is_loaded() == false) {
-			return;
+			return false;
 		}
 		if (depository.is_accessible() == true) {
 			int check_list[][] = {{0, 2, 0}, {0, -1, 2}, {2, -1, 0}, {0, -1, -2}, {-2, -1, 0}};
@@ -55,6 +52,7 @@ public class Depository_item_importer extends Old_structure_runner {
 			depository.working_ticks = 0;
 		}
 		depository.working_ticks++;
+		return true;
 	}
 
 	@Override
@@ -67,8 +65,4 @@ public class Depository_item_importer extends Old_structure_runner {
 		return 10;
 	}
 
-	@Override
-	public boolean is_asynchronously() {
-		return false;
-	}
 }

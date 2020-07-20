@@ -2,23 +2,21 @@ package com.piggest.minecraft.bukkit.trees_felling_machine;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
-import com.piggest.minecraft.bukkit.structure.Structure;
-import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
+import com.piggest.minecraft.bukkit.structure.Sync_structure_runner;
 import org.bukkit.block.Hopper;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class Trees_felling_machine_runner extends Old_structure_runner {
+public class Trees_felling_machine_runner extends Sync_structure_runner<Trees_felling_machine> {
 	public Trees_felling_machine_runner(Trees_felling_machine_manager manager) {
 		super(manager);
 	}
 
 	@Override
-	public void run_instance(Structure structure) {
-		Trees_felling_machine machine = (Trees_felling_machine) structure;
+	public boolean run_instance(Trees_felling_machine machine) {
 		if (!machine.is_loaded()) {
-			return;
+			return false;
 		}
 		int price = Dropper_shop_plugin.instance.get_price_config().get_start_trees_felling_machine_price();
 		Inventory gui = machine.getInventory();
@@ -39,6 +37,7 @@ public class Trees_felling_machine_runner extends Old_structure_runner {
 		if (machine.is_working()) {
 			machine.do_next();
 		}
+		return true;
 	}
 
 	@Override
@@ -51,8 +50,4 @@ public class Trees_felling_machine_runner extends Old_structure_runner {
 		return 10;
 	}
 
-	@Override
-	public boolean is_asynchronously() {
-		return false;
-	}
 }

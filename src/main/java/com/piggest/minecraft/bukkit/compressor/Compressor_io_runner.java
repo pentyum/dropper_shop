@@ -1,25 +1,22 @@
 package com.piggest.minecraft.bukkit.compressor;
 
 import com.piggest.minecraft.bukkit.grinder.Grinder;
-import com.piggest.minecraft.bukkit.structure.Structure;
-import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
+import com.piggest.minecraft.bukkit.structure.Sync_structure_runner;
 import com.piggest.minecraft.bukkit.utils.Inventory_io;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Hopper;
 import org.bukkit.inventory.ItemStack;
 
-public class Compressor_io_runner extends Old_structure_runner {
+public class Compressor_io_runner extends Sync_structure_runner<Compressor> {
 
 	public Compressor_io_runner(Compressor_manager manager) {
 		super(manager);
 	}
 
 	@Override
-	public void run_instance(Structure structure) {
-		Compressor compressor = (Compressor) structure;
-
+	public boolean run_instance(Compressor compressor) {
 		if (compressor.is_loaded() == false) {
-			return;
+			return false;
 		}
 		Hopper solid_hopper = compressor.get_reactant_hopper();
 		if (solid_hopper != null) {
@@ -48,6 +45,7 @@ public class Compressor_io_runner extends Old_structure_runner {
 					product_chest);
 
 		}
+		return true;
 	}
 
 	@Override
@@ -60,8 +58,4 @@ public class Compressor_io_runner extends Old_structure_runner {
 		return 10;
 	}
 
-	@Override
-	public boolean is_asynchronously() {
-		return false;
-	}
 }

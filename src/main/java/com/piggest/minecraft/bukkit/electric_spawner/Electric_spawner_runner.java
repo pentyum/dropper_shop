@@ -2,8 +2,7 @@ package com.piggest.minecraft.bukkit.electric_spawner;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
-import com.piggest.minecraft.bukkit.structure.Structure;
-import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
+import com.piggest.minecraft.bukkit.structure.Async_structure_runner;
 import org.bukkit.Chunk;
 import org.bukkit.Difficulty;
 import org.bukkit.entity.EntityType;
@@ -14,7 +13,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
-public class Electric_spawner_runner extends Old_structure_runner {
+public class Electric_spawner_runner extends Async_structure_runner<Electric_spawner> {
 	private Electric_spawner_manager manager;
 
 	public Electric_spawner_runner(Electric_spawner_manager manager) {
@@ -23,11 +22,9 @@ public class Electric_spawner_runner extends Old_structure_runner {
 	}
 
 	@Override
-	public void run_instance(Structure structure) {
-		Electric_spawner spawner = (Electric_spawner) structure;
-
+	public boolean run_instance(Electric_spawner spawner) {
 		if (spawner.is_loaded() == false) {
-			return;
+			return false;
 		}
 		Inventory gui = spawner.getInventory();
 		ItemStack look_button = gui.getItem(Electric_spawner.look_button_slot);
@@ -41,16 +38,16 @@ public class Electric_spawner_runner extends Old_structure_runner {
 		int default_difficulty = Electric_spawner_manager.difficulty_values.get(world_difficulty);
 		float local_difficulty = spawner.update_local_difficulty();
 		if (Math.abs(local_difficulty) < 1e-3) {
-			return;
+			return true;
 		}
 		if (local_difficulty < default_difficulty) {
-			return;
+			return true;
 		}
 		if (!spawner.is_active()) {
-			return;
+			return true;
 		}
 		if (spawner.get_money() <= 0) {
-			return;
+			return true;
 		}
 		EntityType spawn_entity_type = spawner.get_spawn_entity();
 		if (spawn_entity_type != null) {
@@ -84,6 +81,7 @@ public class Electric_spawner_runner extends Old_structure_runner {
 		} else {
 			spawner.money_cost_period++;
 		}
+		return true;
 	}
 
 	@Override
@@ -96,8 +94,4 @@ public class Electric_spawner_runner extends Old_structure_runner {
 		return 10;
 	}
 
-	@Override
-	public boolean is_asynchronously() {
-		return true;
-	}
 }

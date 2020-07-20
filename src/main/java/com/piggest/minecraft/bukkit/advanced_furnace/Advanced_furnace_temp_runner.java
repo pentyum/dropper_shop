@@ -1,12 +1,11 @@
 package com.piggest.minecraft.bukkit.advanced_furnace;
 
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
-import com.piggest.minecraft.bukkit.structure.Structure;
-import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
+import com.piggest.minecraft.bukkit.structure.Async_structure_runner;
 import com.piggest.minecraft.bukkit.utils.Inventory_io;
 import org.bukkit.inventory.ItemStack;
 
-public class Advanced_furnace_temp_runner extends Old_structure_runner {
+public class Advanced_furnace_temp_runner extends Async_structure_runner<Advanced_furnace> {
 	public Advanced_furnace_temp_runner(Advanced_furnace_manager manager) {
 		super(manager);
 	}
@@ -16,10 +15,9 @@ public class Advanced_furnace_temp_runner extends Old_structure_runner {
 	}
 
 	@Override
-	public void run_instance(Structure structure) {
-		Advanced_furnace adv_furnace = (Advanced_furnace) structure;
+	public boolean run_instance(Advanced_furnace adv_furnace) {
 		if (adv_furnace.is_loaded() == false) {
-			return;
+			return false;
 		}
 
 		double current_temp = adv_furnace.get_temperature();
@@ -35,6 +33,7 @@ public class Advanced_furnace_temp_runner extends Old_structure_runner {
 			this.get_fuel(adv_furnace);
 		}
 
+		return true;
 	}
 
 	private void run_fuel(Advanced_furnace adv_furnace) {
@@ -100,8 +99,4 @@ public class Advanced_furnace_temp_runner extends Old_structure_runner {
 		return 10;
 	}
 
-	@Override
-	public boolean is_asynchronously() {
-		return true;
-	}
 }

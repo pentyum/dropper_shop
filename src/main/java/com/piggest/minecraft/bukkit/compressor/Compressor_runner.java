@@ -3,21 +3,19 @@ package com.piggest.minecraft.bukkit.compressor;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
-import com.piggest.minecraft.bukkit.structure.Structure;
-import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
+import com.piggest.minecraft.bukkit.structure.Async_structure_runner;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class Compressor_runner extends Old_structure_runner {
+public class Compressor_runner extends Async_structure_runner<Compressor> {
 	public Compressor_runner(Compressor_manager manager) {
 		super(manager);
 	}
 
 	@Override
-	public void run_instance(Structure structure) {
-		Compressor compressor = (Compressor) structure;
+	public boolean run_instance(Compressor compressor) {
 		if (compressor.is_loaded() == false) {
-			return;
+			return false;
 		}
 		if (!Grinder.is_empty(compressor.get_piston())) {
 			if (compressor.get_piston_storage() <= 1000) {
@@ -38,7 +36,7 @@ public class Compressor_runner extends Old_structure_runner {
 					compressor.get_raw().getAmount()) == null || compressor.get_piston_storage() == 0) {
 				compressor.set_process(0);
 				compressor.working_ticks = 0;
-				return;
+				return false;
 			}
 			// Dropper_shop_plugin.instance.getLogger().info(Grinder.recipe_time.toString());
 			int need_ticks = compressor.get_manager().get_time(Material_ext.get_full_name(compressor.get_raw()));
@@ -53,6 +51,7 @@ public class Compressor_runner extends Old_structure_runner {
 				}
 			}
 		}
+		return true;
 	}
 
 	@Override
@@ -65,8 +64,4 @@ public class Compressor_runner extends Old_structure_runner {
 		return 10;
 	}
 
-	@Override
-	public boolean is_asynchronously() {
-		return true;
-	}
 }

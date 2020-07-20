@@ -6,10 +6,10 @@ import org.bukkit.World;
 
 import java.util.Collection;
 
-public abstract class Async_structure_runner implements Structure_runner {
-	Structure_manager<? extends Structure> manager;
+public abstract class Async_structure_runner<T extends Structure> extends Structure_runner<T> {
+	protected Structure_manager<T> manager;
 
-	public Async_structure_runner(Structure_manager<? extends Structure> manager) {
+	public Async_structure_runner(Structure_manager<T> manager) {
 		this.manager = manager;
 		//this.setName(this.manager.get_permission_head() + ":" + this.getClass().getSimpleName());
 	}
@@ -26,15 +26,15 @@ public abstract class Async_structure_runner implements Structure_runner {
 
 	@Override
 	public void start() {
-		Bukkit.getScheduler().runTaskTimerAsynchronously(Dropper_shop_plugin.instance, this, this.get_delay(), this.get_cycle());
+		this.task = Bukkit.getScheduler().runTaskTimerAsynchronously(Dropper_shop_plugin.instance, this, this.get_delay(), this.get_cycle());
 	}
 
 	@Override
 	public void run() {
 		long start_time = System.currentTimeMillis();
 		for (World world : Bukkit.getWorlds()) {
-			Collection<? extends Structure> structures = manager.get_all_structures_in_world(world);
-			for (Structure structure : structures) {
+			Collection<T> structures = manager.get_all_structures_in_world(world);
+			for (T structure : structures) {
 				this.run_instance(structure);
 			}
 		}
@@ -44,5 +44,4 @@ public abstract class Async_structure_runner implements Structure_runner {
 			Dropper_shop_plugin.instance.getLogger().warning(this.getClass().getSimpleName() + "线程执行超时" + (-sleep_time) + "ms");
 		}
 	}
-
 }

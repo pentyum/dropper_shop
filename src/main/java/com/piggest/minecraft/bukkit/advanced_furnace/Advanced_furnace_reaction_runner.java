@@ -3,8 +3,7 @@ package com.piggest.minecraft.bukkit.advanced_furnace;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
-import com.piggest.minecraft.bukkit.structure.Structure;
-import com.piggest.minecraft.bukkit.structure.Old_structure_runner;
+import com.piggest.minecraft.bukkit.structure.Async_structure_runner;
 import com.piggest.minecraft.bukkit.utils.Inventory_io;
 import org.bukkit.inventory.ItemStack;
 
@@ -13,15 +12,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-public class Advanced_furnace_reaction_runner extends Old_structure_runner {
+public class Advanced_furnace_reaction_runner extends Async_structure_runner<Advanced_furnace> {
 	public Advanced_furnace_reaction_runner(Advanced_furnace_manager manager) {
 		super(manager);
 	}
 
-	public void run_instance(Structure structure) {
-		Advanced_furnace advanced_furnace = (Advanced_furnace) structure;
+	public boolean run_instance(Advanced_furnace advanced_furnace) {
 		if (advanced_furnace.is_loaded() == false) {
-			return;
+			return false;
 		}
 		synchronized (advanced_furnace) {
 			ItemStack solid_reactant_slot = advanced_furnace.get_gui_item(Advanced_furnace.solid_reactant_slot);
@@ -182,6 +180,7 @@ public class Advanced_furnace_reaction_runner extends Old_structure_runner {
 				}
 			}
 		}
+		return true;
 	}
 
 	public int get_cycle() {
@@ -193,8 +192,4 @@ public class Advanced_furnace_reaction_runner extends Old_structure_runner {
 		return 10;
 	}
 
-	@Override
-	public boolean is_asynchronously() {
-		return true;
-	}
 }

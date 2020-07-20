@@ -3,11 +3,8 @@ package com.piggest.minecraft.bukkit.structure;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Collection;
-import java.util.function.Consumer;
 
 @Deprecated
 public abstract class Old_structure_runner extends Thread {

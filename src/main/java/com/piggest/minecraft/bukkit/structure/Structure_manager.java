@@ -23,7 +23,7 @@ public abstract class Structure_manager<T extends Structure> {
 	protected HashMap<Chunk_location, HashSet<T>> chunk_structure_map = new HashMap<>();
 	protected HashMap<World, HashMap<Location, T>> structure_map = new HashMap<>();
 	protected Structure_manager_runner structure_manager_runner;
-	protected Old_structure_runner[] structure_runners = null;
+	protected Structure_runner[] structure_runners = null;
 
 	public Structure_manager(Class<T> structure_class) {
 		this.structure_class = structure_class;
@@ -117,12 +117,8 @@ public abstract class Structure_manager<T extends Structure> {
 			}
 		}
 		if (this instanceof Has_runner) {
-			for (Old_structure_runner runner : this.structure_runners) {
-				if (runner.is_asynchronously() == true) {
-					runner.start();
-				} else {
-					Bukkit.getScheduler().runTaskTimer(Dropper_shop_plugin.instance, runner, runner.get_delay(), runner.get_cycle());
-				}
+			for (Structure_runner runner : this.structure_runners) {
+				runner.start();
 			}
 		}
 	}
@@ -249,8 +245,8 @@ public abstract class Structure_manager<T extends Structure> {
 		if (this.structure_manager_runner != null) {
 			this.structure_manager_runner.cancel();
 		}
-		for (Old_structure_runner runner : this.structure_runners) {
-			runner.interrupt();
+		for (Structure_runner runner : this.structure_runners) {
+			runner.cancel();
 		}
 	}
 
