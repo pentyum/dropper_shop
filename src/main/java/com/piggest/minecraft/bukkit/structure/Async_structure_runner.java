@@ -35,7 +35,9 @@ public abstract class Async_structure_runner<T extends Structure> extends Struct
 		for (World world : Bukkit.getWorlds()) {
 			Collection<T> structures = manager.get_all_structures_in_world(world);
 			for (T structure : structures) {
-				this.run_instance(structure);
+				synchronized (structure) {
+					this.run_instance(structure);
+				}
 			}
 		}
 		int max_time = this.get_cycle() * 50;
