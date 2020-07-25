@@ -23,7 +23,7 @@ public abstract class Structure_manager<T extends Structure> {
 	protected HashMap<Chunk_location, HashSet<T>> chunk_structure_map = new HashMap<>();
 	protected HashMap<World, HashMap<Location, T>> structure_map = new HashMap<>();
 	protected Structure_manager_runner structure_manager_runner;
-	protected Structure_runner[] structure_runners = null;
+	protected Structure_runner<T>[] structure_runners = null;
 
 	public Structure_manager(Class<T> structure_class) {
 		this.structure_class = structure_class;
@@ -117,7 +117,7 @@ public abstract class Structure_manager<T extends Structure> {
 			}
 		}
 		if (this instanceof Has_runner) {
-			for (Structure_runner runner : this.structure_runners) {
+			for (Structure_runner<T> runner : this.structure_runners) {
 				runner.start();
 			}
 		}

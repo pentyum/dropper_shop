@@ -19,9 +19,9 @@ public abstract class Structure_runner<T extends Structure> implements Runnable 
 	 */
 	public abstract int get_delay();
 
-	public abstract boolean run_instance(T structure);
-
 	public abstract void start();
+
+	public abstract boolean run_instance(T structure);
 
 	public void cancel() {
 		this.task.cancel();

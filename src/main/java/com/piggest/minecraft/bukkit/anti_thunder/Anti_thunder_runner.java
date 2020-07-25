@@ -22,11 +22,13 @@ public class Anti_thunder_runner extends Async_structure_runner<Anti_thunder> {
 
 	@Override
 	public boolean run_instance(Anti_thunder anti_thunder) {
-		OfflinePlayer owner = anti_thunder.get_owner();
-		if (anti_thunder.working_ticks >= anti_thunder.get_manager().get_cycle() * 20) {
-			anti_thunder.working_ticks = 0;
+		if (anti_thunder.working_ticks < anti_thunder.get_manager().get_cycle() * 20) {
+			anti_thunder.working_ticks += this.get_cycle();
+			return false;
 		}
-		if (anti_thunder.working_ticks == 0 && anti_thunder.is_active() == true) {
+		OfflinePlayer owner = anti_thunder.get_owner();
+		anti_thunder.working_ticks = 0;
+		if (anti_thunder.is_active() == true) {
 			int price = anti_thunder.get_manager().get_price();
 			String format_price = Dropper_shop_plugin.instance.get_economy().format(price);
 			if (Dropper_shop_plugin.instance.cost_player_money(price, owner)) {
