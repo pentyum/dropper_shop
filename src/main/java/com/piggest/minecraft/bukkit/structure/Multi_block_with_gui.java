@@ -122,7 +122,7 @@ public abstract class Multi_block_with_gui extends Multi_block_structure impleme
 			return false;
 		}
 		String info = lore.get(0);
-		if (info.equals("§r当前: 开启")) {
+		if (info.contains("开启")) {
 			return true;
 		} else {
 			return false;
