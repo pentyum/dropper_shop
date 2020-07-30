@@ -28,10 +28,13 @@ scoreboard-eco:
   name: gold_coin
   display-name: 金币
   default-balance: 100
+  transfer-fee: 5
 - ==: com.piggest.minecraft.bukkit.economy.Scoreboard_economy
   name: copper_coin
   display-name: 铜币
   default-balance: 5000
+  transfer-fee: 5
+
 winter-mode: false
 sync-realtime-worlds:
   new_world: 0

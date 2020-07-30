@@ -274,6 +274,9 @@ permissions:
   scb_eco.pay:
     description: Pay money.
     default: true
+  scb_eco.pay.nofee:
+    description: Pay money without fee.
+    default: op
   scb_eco.give:
     description: Give money.
     default: op

@@ -168,13 +168,24 @@ public class Scoreboard_economy_manager implements TabExecutor {
 					player.sendMessage("货币类型不正确，可用的货币类型: " + String.join(", ", names));
 					return true;
 				}
+				int fee = 0;
+				int cost_amount = amount;
+				if (!player.hasPermission("scb_eco.pay.nofee") && eco instanceof Scoreboard_economy) {
+					Scoreboard_economy scb_eco = (Scoreboard_economy) eco;
+					fee = (int) Math.ceil((double) amount * scb_eco.get_transfer_fee() / 100);
+					cost_amount = amount + fee;
+				}
 				OfflinePlayer to_player = Bukkit.getOfflinePlayer(args[1]);
-				EconomyResponse withdraw_res = eco.withdrawPlayer(player, amount);
+				EconomyResponse withdraw_res = eco.withdrawPlayer(player, cost_amount);
 				if (withdraw_res.type == EconomyResponse.ResponseType.SUCCESS) {
 					String fmt_amount = eco.format(amount);
 					EconomyResponse deposit_res = eco.depositPlayer(to_player, amount);
 					if (deposit_res.type == EconomyResponse.ResponseType.SUCCESS) {
-						player.sendMessage("成功向" + to_player.getName() + "转账" + fmt_amount);
+						String msg = "成功向" + to_player.getName() + "转账" + fmt_amount;
+						if (fee > 0) {
+							msg += ", 并收取了" + eco.format(fee) + "的手续费";
+						}
+						player.sendMessage(msg);
 						if (to_player.isOnline()) {
 							to_player.getPlayer().sendMessage("从" + player.getName() + "收到转账" + fmt_amount);
 						}
