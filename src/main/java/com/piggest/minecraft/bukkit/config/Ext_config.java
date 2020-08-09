@@ -64,4 +64,8 @@ public abstract class Ext_config {
 		Dropper_shop_plugin.instance.getLogger().info("原" + file_name + "已保存至" + config_file_backup.getAbsolutePath());
 		return true;
 	}
+
+	public String get_file_name() {
+		return this.file_name;
+	}
 }

@@ -1,5 +1,6 @@
 package com.piggest.minecraft.bukkit.compressor;
 
+import com.piggest.minecraft.bukkit.config.Recipe_config;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
@@ -10,9 +11,12 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Compressor_manager extends Gui_structure_manager<Compressor> implements Has_runner {
+	private final Recipe_config recipe_config = new Recipe_config("compressor.yml", Compressor_recipe.class);
 	private HashMap<String, Compressor_recipe> recipe = new HashMap<String, Compressor_recipe>();
 	// private HashMap<String, String> main_recipe = new HashMap<String, String>();
 	// private HashMap<String, Integer> recipe_quantity = new HashMap<String,
@@ -46,6 +50,7 @@ public class Compressor_manager extends Gui_structure_manager<Compressor> implem
 		this.set_gui(Compressor.product_slot, null, "main-product", Gui_slot_type.Item_store);
 		this.set_gui(16, Material.BLUE_STAINED_GLASS_PANE, "§r右边为活塞单元储量", Gui_slot_type.Indicator);
 		this.set_gui(17, Material.PISTON, "§e活塞单元", Gui_slot_type.Indicator);
+		this.recipe_config.load();
 	}
 
 	@Override
@@ -129,36 +134,55 @@ public class Compressor_manager extends Gui_structure_manager<Compressor> implem
 		Compressor_recipe recipe = new Compressor_recipe(source_full_name, need_quantity,
 				Material_ext.new_item_full_name(main_out, 1), time);
 		this.recipe.put(source_full_name, recipe);
-
+		List<Compressor_recipe> recipe_list = (List<Compressor_recipe>) this.recipe_config.get_config().getList("compressor-recipe");
+		if (recipe_list == null) {
+			recipe_list = new ArrayList<>();
+			this.recipe_config.get_config().set("compressor-recipe", recipe_list);
+		}
+		recipe_list.add(recipe);
 	}
 
 	public void init_recipe() {
 		Dropper_shop_plugin.instance.getLogger().info("[压缩机]开始加载合成表");
-		this.add_recipe(Material.IRON_NUGGET, 9, Material.IRON_INGOT, 500);
-		this.add_recipe(Material.IRON_INGOT, 9, Material.IRON_BLOCK, 500);
+		List<?> recipe_list = this.recipe_config.get_config().getList("compressor-recipe");
+		if (recipe_list == null || recipe_list.size() == 0) {
+			Dropper_shop_plugin.instance.getLogger().info("[压缩机]合成表为空，加载自带合成表");
+			this.add_recipe(Material.IRON_NUGGET, 9, Material.IRON_INGOT, 500);
+			this.add_recipe(Material.IRON_INGOT, 9, Material.IRON_BLOCK, 500);
 
-		this.add_recipe(Material.GOLD_NUGGET, 9, Material.GOLD_INGOT, 500);
-		this.add_recipe(Material.GOLD_INGOT, 9, Material.GOLD_BLOCK, 500);
+			this.add_recipe(Material.GOLD_NUGGET, 9, Material.GOLD_INGOT, 500);
+			this.add_recipe(Material.GOLD_INGOT, 9, Material.GOLD_BLOCK, 500);
 
-		this.add_recipe(Material.DIAMOND, 9, Material.DIAMOND_BLOCK, 500);
-		this.add_recipe(Material.REDSTONE, 9, Material.REDSTONE_BLOCK, 500);
-		this.add_recipe(Material.COAL, 9, Material.COAL_BLOCK, 500);
-		this.add_recipe(Material.EMERALD, 9, Material.EMERALD_BLOCK, 500);
-		this.add_recipe(Material.LAPIS_LAZULI, 9, Material.LAPIS_BLOCK, 500);
-		this.add_recipe(Material.WHEAT, 9, Material.HAY_BLOCK, 500);
-		this.add_recipe(Material.MELON_SLICE, 9, Material.MELON, 500);
-		this.add_recipe(Material.DRIED_KELP, 9, Material.DRIED_KELP_BLOCK, 500);
-		this.add_recipe(Material.BONE_MEAL, 9, Material.BONE_BLOCK, 500);
-		this.add_recipe(Material.NETHER_WART, 9, Material.NETHER_WART_BLOCK, 500);
-		this.add_recipe(Material.ICE, 9, Material.PACKED_ICE, 500);
-		this.add_recipe(Material.PACKED_ICE, 9, Material.BLUE_ICE, 500);
+			this.add_recipe(Material.DIAMOND, 9, Material.DIAMOND_BLOCK, 500);
+			this.add_recipe(Material.REDSTONE, 9, Material.REDSTONE_BLOCK, 500);
+			this.add_recipe(Material.COAL, 9, Material.COAL_BLOCK, 500);
+			this.add_recipe(Material.EMERALD, 9, Material.EMERALD_BLOCK, 500);
+			this.add_recipe(Material.LAPIS_LAZULI, 9, Material.LAPIS_BLOCK, 500);
+			this.add_recipe(Material.WHEAT, 9, Material.HAY_BLOCK, 500);
+			this.add_recipe(Material.MELON_SLICE, 9, Material.MELON, 500);
+			this.add_recipe(Material.DRIED_KELP, 9, Material.DRIED_KELP_BLOCK, 500);
+			this.add_recipe(Material.BONE_MEAL, 9, Material.BONE_BLOCK, 500);
+			this.add_recipe(Material.NETHER_WART, 9, Material.NETHER_WART_BLOCK, 500);
+			this.add_recipe(Material.ICE, 9, Material.PACKED_ICE, 500);
+			this.add_recipe(Material.PACKED_ICE, 9, Material.BLUE_ICE, 500);
 
-		this.add_recipe(Material.SNOW, 4, Material.SNOW_BLOCK, 200);
-		this.add_recipe(Material.GLOWSTONE_DUST, 4, Material.GLOWSTONE, 200);
-		this.add_recipe(Material.QUARTZ, 4, Material.QUARTZ_BLOCK, 200);
-		this.add_recipe(Material.STRING, 4, Material.WHITE_WOOL, 200);
+			this.add_recipe(Material.SNOW, 4, Material.SNOW_BLOCK, 200);
+			this.add_recipe(Material.GLOWSTONE_DUST, 4, Material.GLOWSTONE, 200);
+			this.add_recipe(Material.QUARTZ, 4, Material.QUARTZ_BLOCK, 200);
+			this.add_recipe(Material.STRING, 4, Material.WHITE_WOOL, 200);
 
-		this.add_recipe(Material.POPPED_CHORUS_FRUIT, 1, Material.PURPUR_BLOCK, 100);
+			this.add_recipe(Material.POPPED_CHORUS_FRUIT, 1, Material.PURPUR_BLOCK, 100);
+			this.recipe_config.save();
+			Dropper_shop_plugin.instance.getLogger().info("[压缩机]已将自带合成表保存至文件" + this.recipe_config.get_file_name());
+		} else {
+			Dropper_shop_plugin.instance.getLogger().info("[压缩机]开始加载已保存的合成表");
+			for (Object recipe_obj : recipe_list) {
+				if (recipe_obj instanceof Compressor_recipe) {
+					Compressor_recipe recipe = (Compressor_recipe) recipe_obj;
+					this.recipe.put(recipe.get_source_full_name(), recipe);
+				}
+			}
+		}
 	}
 
 }
