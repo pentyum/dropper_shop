@@ -223,8 +223,8 @@ permissions:
   flying_item.use:
     description: use flying item.
     default: true
-  flying_item.set:
-    description: set flying item time.
+  flying_item.get:
+    description: get a flying item.
     default: op
   biome_modify.use:
     description: show biome base temp.

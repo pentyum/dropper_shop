@@ -6,6 +6,7 @@ import com.piggest.minecraft.bukkit.depository.Reader;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.utils.language.Item_zh_cn;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -141,7 +142,7 @@ public abstract class Material_ext {
 	public static ItemStack register(NamespacedKey namespacedkey, Material material_base, String name, int model_data) {
 		ItemStack item = new ItemStack(material_base);
 		ItemMeta itemmeta = item.getItemMeta();
-		itemmeta.setDisplayName("§r" + name);
+		itemmeta.setDisplayName(ChatColor.RESET + name);
 		itemmeta.setCustomModelData(model_data);
 		item.setItemMeta(itemmeta);
 		Material_ext.register(namespacedkey, item);
