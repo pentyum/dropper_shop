@@ -143,7 +143,7 @@ public class Compressor_manager extends Gui_structure_manager<Compressor> implem
 	}
 
 	public void init_recipe() {
-		Dropper_shop_plugin.instance.getLogger().info("[压缩机]开始加载合成表");
+		//Dropper_shop_plugin.instance.getLogger().info("[压缩机]开始加载合成表");
 		List<?> recipe_list = this.recipe_config.get_config().getList("compressor-recipe");
 		if (recipe_list == null || recipe_list.size() == 0) {
 			Dropper_shop_plugin.instance.getLogger().info("[压缩机]合成表为空，加载自带合成表");
@@ -176,12 +176,15 @@ public class Compressor_manager extends Gui_structure_manager<Compressor> implem
 			Dropper_shop_plugin.instance.getLogger().info("[压缩机]已将自带合成表保存至文件" + this.recipe_config.get_file_name());
 		} else {
 			Dropper_shop_plugin.instance.getLogger().info("[压缩机]开始加载已保存的合成表");
+			int count = 0;
 			for (Object recipe_obj : recipe_list) {
 				if (recipe_obj instanceof Compressor_recipe) {
 					Compressor_recipe recipe = (Compressor_recipe) recipe_obj;
 					this.recipe.put(recipe.get_source_full_name(), recipe);
+					count++;
 				}
 			}
+			Dropper_shop_plugin.instance.getLogger().info("[压缩机]加载了" + count + "个合成表");
 		}
 	}
 

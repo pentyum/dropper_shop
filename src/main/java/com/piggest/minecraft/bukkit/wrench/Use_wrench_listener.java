@@ -11,6 +11,7 @@ import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.type.Bed;
 import org.bukkit.block.data.type.EndPortalFrame;
 import org.bukkit.block.data.type.Piston;
+import org.bukkit.block.data.type.PistonHead;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
@@ -35,7 +36,7 @@ public class Use_wrench_listener implements Listener {
 		if (!(data instanceof Directional)) {
 			return false;
 		}
-		if (data instanceof EndPortalFrame || data instanceof Bed) {
+		if (data instanceof EndPortalFrame || data instanceof Bed || data instanceof PistonHead) {
 			return false;
 		}
 		if (data instanceof Piston) {
