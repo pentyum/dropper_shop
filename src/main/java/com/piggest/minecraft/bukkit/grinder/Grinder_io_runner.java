@@ -42,7 +42,8 @@ public class Grinder_io_runner extends Sync_structure_runner<Grinder> {
 			}
 		}
 		if (chest != null) {
-			Inventory_io.move_item_to_inventoryholder(grinder.getInventory(), 13, chest);
+			Inventory_io.move_item_to_inventoryholder(grinder.getInventory(), Grinder.main_product_slot, chest);
+			Inventory_io.move_item_to_inventoryholder(grinder.getInventory(), Grinder.minor_product_slot, chest);
 		}
 		return true;
 	}
