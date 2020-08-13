@@ -317,6 +317,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.getCommand("printer").setExecutor(new Printer_command_executor());
 		this.getCommand("my_space").setExecutor(new My_space_command_executor());
 		this.getCommand("scb_eco").setExecutor(this.economy_manager);
+		this.getCommand("flying_item").setExecutor(new Flying_item());
 	}
 
 	@Override
@@ -370,7 +371,6 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		Gas_bottle.set_recipe();
 		Reaction_container.init_reaction();
 		wrench.init();
-		Flying_item.init();
 		// 初始化特有物品完成
 
 		// 加载结构

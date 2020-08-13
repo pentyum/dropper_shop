@@ -6,6 +6,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Container;
 import org.bukkit.block.data.type.Lectern;
+import org.bukkit.block.data.type.RespawnAnchor;
 
 import java.util.HashSet;
 
@@ -69,6 +70,10 @@ public class Use_block {
 		if (type == Material.LECTERN) {
 			Lectern lectern = (Lectern) block.getBlockData();
 			return lectern.hasBook();
+		}
+		if (type == Material.RESPAWN_ANCHOR) {
+			RespawnAnchor anchor = (RespawnAnchor) block.getBlockData();
+			return anchor.getCharges() > 0;
 		}
 		return false;
 	}
