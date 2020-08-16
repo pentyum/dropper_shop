@@ -78,7 +78,7 @@ public class Winter_mode {
 		this.winter_biome_map.put(Biome.DESERT_HILLS, Biome.SNOWY_TUNDRA);
 		this.winter_biome_map.put(Biome.DESERT_LAKES, Biome.FROZEN_RIVER);
 	}
-
+	/*
 	public void enable(Biome_modify biome_modify) {
 		for (Entry<Biome, Biome> entry : this.winter_biome_map.entrySet()) {
 			Biome old_biome = entry.getKey();
@@ -90,4 +90,5 @@ public class Winter_mode {
 	public void disable(Biome_modify biome_modify) {
 		biome_modify.reset_all();
 	}
+	 */
 }
