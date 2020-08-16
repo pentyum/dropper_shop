@@ -38,14 +38,14 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 
 	private UUID uuid;
 	private String name = this.get_manager().get_gui_name();
-	private int channel_freq = 75000;
+	private int transmit_freq = 75000;
 	private Radio_state state = Radio_state.OFF;
 	private int channel_bandwidth = 100;
 	private int n = 0;
 	private int online_voltage = 12;
 	private int working_voltage = 32;
 	private int current_page = 1;
-	ArrayList<UUID> known_terminal_list = new ArrayList<UUID>();
+	ArrayList<UUID> known_terminal_list = new ArrayList<>();
 	private int[] elements_amount = new int[96];
 	private Inventory elements_gui = Bukkit.createInventory(this, 27, "元素存储");
 	private int exp_magic_exchange_rate = 1000; // 每1000点经验转化为多少魔力
@@ -96,10 +96,10 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 				this.set_working_voltage(this.working_voltage + 1);
 				break;
 			case 34:// 增加带宽
-				this.set_channel_bandwidth(this.channel_bandwidth + 100);
+				this.set_transmit_bandwidth(this.channel_bandwidth + 100);
 				break;
 			case 35:// 提高载波频率
-				this.set_channel_freq(this.channel_freq + 500);
+				this.set_transmit_freq(this.transmit_freq + 500);
 				break;
 			case 36:// 显示元素信息
 				player.openInventory(this.elements_gui);
@@ -141,10 +141,10 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 				}
 				break;
 			case 52:// 减少带宽
-				this.set_channel_bandwidth(this.channel_bandwidth - 100);
+				this.set_transmit_bandwidth(this.channel_bandwidth - 100);
 				break;
 			case 53:// 降低载波频率
-				this.set_channel_freq(this.channel_freq - 500);
+				this.set_transmit_freq(this.transmit_freq - 500);
 				break;
 			default:
 				if (slot >= 9 && slot <= 25) {
@@ -327,10 +327,10 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 			lore.add("§7位置: " + loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ() + ","
 					+ loc.getWorld().getName());
 			lore.add("§7距离: " + (int) (Radio.get_distance(loc, this.get_location())) + " m");
-			lore.add("§7频率: " + terminal.get_current_channel_freq() + " kHz");
-			lore.add("§7带宽: " + terminal.get_current_channel_bandwidth() + " kHz");
+			lore.add("§7频率: " + terminal.get_transmit_freq() + " kHz");
+			lore.add("§7带宽: " + terminal.get_transmit_bandwidth() + " kHz");
 			if (loc.getWorld() != null) {
-				double signal = this.get_signal(terminal, terminal.get_state());
+				double signal = this.get_signal(terminal);
 				double noise = this.get_noise(terminal);
 				// Bukkit.getLogger().info(signal + "/" + noise);
 				int snr = (int) (10 * Math.log10(signal / noise));
@@ -339,7 +339,7 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 				} else {
 					lore.add("§7当前接收目标发射强度: " + snr + " dB");
 				}
-				signal = terminal.get_signal(this, Radio_state.WORKING, true);
+				signal = terminal.get_signal(this, Radio_state.WORKING);
 				noise = terminal.get_noise(this);
 				// Bukkit.getLogger().info(signal + "/" + noise);
 				snr = (int) (10 * Math.log10(signal / noise));
@@ -427,31 +427,15 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 		return this.n;
 	}
 
-	@Override
-	public int get_current_channel_freq() {
-		if (this.state != Radio_state.WORKING) {
-			return this.channel_freq;
-		} else {
-			return this.get_current_working_with().get_current_channel_freq();
-		}
-	}
 
 	@Override
-	public int get_channel_freq() {
-		return this.channel_freq;
+	public int get_transmit_freq() {
+		return this.transmit_freq;
 	}
 
-	@Override
-	public int get_current_channel_bandwidth() {
-		if (this.get_current_working_with() == null) {
-			return this.channel_bandwidth;
-		} else {
-			return this.get_current_working_with().get_current_channel_bandwidth();
-		}
-	}
 
 	@Override
-	public int get_channel_bandwidth() {
+	public int get_transmit_bandwidth() {
 		return this.channel_bandwidth;
 	}
 
@@ -471,7 +455,7 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 		save.put("is-setting-mode", this.is_setting_mode());
 		save.put("state", this.state.name());
 		save.put("channel-bandwidth", this.channel_bandwidth);
-		save.put("channel-freq", this.channel_freq);
+		save.put("channel-freq", this.transmit_freq);
 		save.put("working-voltage", this.working_voltage);
 		save.put("online-voltage", this.online_voltage);
 		save.put("known-terminal-list", Radio_manager.to_uuid_string_list(this.known_terminal_list));
@@ -509,8 +493,8 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 		} else {
 			this.set_switch(open_switch, true);
 		}
-		this.set_channel_bandwidth((int) save.get("channel-bandwidth"));
-		this.set_channel_freq((int) save.get("channel-freq"));
+		this.set_transmit_bandwidth((int) save.get("channel-bandwidth"));
+		this.set_transmit_freq((int) save.get("channel-freq"));
 		this.set_working_voltage((int) save.get("working-voltage"));
 		this.set_online_voltage((int) save.get("online-voltage"));
 		ArrayList<String> uuid_string_list = (ArrayList<String>) save.get("known-terminal-list");
@@ -591,9 +575,9 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 	}
 
 	@Override
-	public void set_channel_freq(int freq) {
+	public void set_transmit_freq(int freq) {
 		if (Radio.check_channel_vaild(freq, this.channel_bandwidth, this.n)) {
-			this.channel_freq = freq;
+			this.transmit_freq = freq;
 			ItemStack item = this.gui.getItem(freq_indicator);
 			ItemMeta meta = item.getItemMeta();
 			List<String> lore = meta.getLore();
@@ -604,8 +588,8 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 	}
 
 	@Override
-	public void set_channel_bandwidth(int bandwidth) {
-		if (Radio.check_channel_vaild(this.channel_freq, bandwidth, this.n)) {
+	public void set_transmit_bandwidth(int bandwidth) {
+		if (Radio.check_channel_vaild(this.transmit_freq, bandwidth, this.n)) {
 			this.channel_bandwidth = bandwidth;
 			ItemStack item = this.gui.getItem(bandwidth_indicator);
 			ItemMeta meta = item.getItemMeta();
@@ -725,10 +709,10 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 		lore.set(6, "§7天线频宽: " + (int) (central_freq * 2 * Radio.antenna_bandwidth) + " kHz");
 		meta.setLore(lore);
 		item.setItemMeta(meta);
-		this.channel_freq = central_freq;
+		this.transmit_freq = central_freq;
 		this.channel_bandwidth = 100;
-		this.set_channel_freq(central_freq);
-		this.set_channel_bandwidth(100);
+		this.set_transmit_freq(central_freq);
+		this.set_transmit_bandwidth(100);
 	}
 
 	@Override
@@ -748,7 +732,7 @@ public class Teleport_machine extends Multi_block_with_gui implements Radio_term
 			this.teleport_task = null;
 			return false;
 		}
-		if (!Radio.check_channel_vaild(terminal.get_current_channel_freq(), terminal.get_current_channel_bandwidth(),
+		if (!Radio.check_channel_vaild(terminal.get_transmit_freq(), terminal.get_transmit_bandwidth(),
 				this.n)) {
 			return false;
 		}

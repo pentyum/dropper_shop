@@ -87,26 +87,26 @@ public class Teleport_machine_manager extends Gui_structure_manager<Teleport_mac
 		this.set_gui(48, Material.BLUE_STAINED_GLASS_PANE, "§r左边放置命名牌或者旗帜给本传送机命名", Gui_slot_type.Indicator);
 
 		this.set_gui(32, Material.RED_STAINED_GLASS_PANE, "§r提高待机魔压", new String[]{"§7+1 V"}, Gui_slot_type.Button);
-		this.set_gui(33, Material.RED_STAINED_GLASS_PANE, "§r提高发射魔压", new String[]{"§7+1 V"}, Gui_slot_type.Button);
-		this.set_gui(34, Material.RED_STAINED_GLASS_PANE, "§r增加带宽", new String[]{"§7+100 kHz"},
+		this.set_gui(33, Material.RED_STAINED_GLASS_PANE, "§r提高工作魔压", new String[]{"§7+1 V"}, Gui_slot_type.Button);
+		this.set_gui(34, Material.RED_STAINED_GLASS_PANE, "§r增加发射带宽", new String[]{"§7+100 kHz"},
 				Gui_slot_type.Button);
-		this.set_gui(35, Material.RED_STAINED_GLASS_PANE, "§r提高载波频率", new String[]{"§7+500 kHz"},
+		this.set_gui(35, Material.RED_STAINED_GLASS_PANE, "§r提高发射频率", new String[]{"§7+500 kHz"},
 				Gui_slot_type.Button);
 
 		this.set_gui(Teleport_machine.online_voltage_indicator, Material.COMPASS, "§r当前待机魔压", new String[]{"§70 V"},
 				Gui_slot_type.Indicator);
-		this.set_gui(Teleport_machine.working_voltage_indicator, Material.COMPASS, "§r当前发射魔压", new String[]{"§70 V"},
+		this.set_gui(Teleport_machine.working_voltage_indicator, Material.COMPASS, "§r当前工作魔压", new String[]{"§70 V"},
 				Gui_slot_type.Indicator);
-		this.set_gui(Teleport_machine.bandwidth_indicator, Material.COMPASS, "§r当前带宽", new String[]{"§70 kHz"},
+		this.set_gui(Teleport_machine.bandwidth_indicator, Material.COMPASS, "§r当前发射带宽", new String[]{"§70 kHz"},
 				Gui_slot_type.Indicator);
-		this.set_gui(Teleport_machine.freq_indicator, Material.COMPASS, "§r当前载波频率", new String[]{"§70 kHz"},
+		this.set_gui(Teleport_machine.freq_indicator, Material.COMPASS, "§r当前发射频率", new String[]{"§70 kHz"},
 				Gui_slot_type.Indicator);
 
 		this.set_gui(50, Material.BLUE_STAINED_GLASS_PANE, "§r降低待机魔压", new String[]{"§7-1 V"}, Gui_slot_type.Button);
-		this.set_gui(51, Material.BLUE_STAINED_GLASS_PANE, "§r降低发射魔压", new String[]{"§7-1 V"}, Gui_slot_type.Button);
-		this.set_gui(52, Material.BLUE_STAINED_GLASS_PANE, "§r减少带宽", new String[]{"§7-100 kHz"},
+		this.set_gui(51, Material.BLUE_STAINED_GLASS_PANE, "§r降低工作魔压", new String[]{"§7-1 V"}, Gui_slot_type.Button);
+		this.set_gui(52, Material.BLUE_STAINED_GLASS_PANE, "§r减少发射带宽", new String[]{"§7-100 kHz"},
 				Gui_slot_type.Button);
-		this.set_gui(53, Material.BLUE_STAINED_GLASS_PANE, "§r降低载波频率", new String[]{"§7-500 kHz"},
+		this.set_gui(53, Material.BLUE_STAINED_GLASS_PANE, "§r降低发射频率", new String[]{"§7-500 kHz"},
 				Gui_slot_type.Button);
 		this.dynmap_manager.activate();
 		if (this.dynmap_manager.api != null) {

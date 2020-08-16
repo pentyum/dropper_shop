@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+/*
 public class Biome_modify implements TabExecutor {
 	private HashMap<Biome, Float> custom_temp = new HashMap<>();
 	public static final HashMap<Biome, Float> original_temp = new HashMap<>();
@@ -146,4 +147,6 @@ public class Biome_modify implements TabExecutor {
 	public Winter_mode get_winter_mode() {
 		return this.winter_mode;
 	}
+
 }
+ */

@@ -16,7 +16,7 @@ enum sub_command {
 }
 
 public class Teleport_machine_command_executer implements TabExecutor {
-	private static final ArrayList<String> sub_command_list = new ArrayList<String>();
+	private static final ArrayList<String> sub_command_list = new ArrayList<>();
 
 	public Teleport_machine_command_executer() {
 		for (sub_command command : sub_command.values()) {
@@ -82,17 +82,17 @@ public class Teleport_machine_command_executer implements TabExecutor {
 					}
 					switch (subcommand) {
 						case set_bandwidth:
-							if (Radio.check_channel_vaild(machine.get_channel_freq(), value, machine.get_n())) {
-								machine.set_channel_bandwidth(value);
-								player.sendMessage("[传送机]带宽设置成功");
+							if (Radio.check_channel_vaild(machine.get_transmit_freq(), value, machine.get_n())) {
+								machine.set_transmit_bandwidth(value);
+								player.sendMessage("[传送机]发射带宽设置成功");
 							} else {
 								player.sendMessage("[传送机]频段超出范围");
 							}
 							return true;
 						case set_freq:
-							if (Radio.check_channel_vaild(value, machine.get_channel_bandwidth(), machine.get_n())) {
-								machine.set_channel_freq(value);
-								player.sendMessage("[传送机]频率设置成功");
+							if (Radio.check_channel_vaild(value, machine.get_transmit_bandwidth(), machine.get_n())) {
+								machine.set_transmit_freq(value);
+								player.sendMessage("[传送机]发射频率设置成功");
 							} else {
 								player.sendMessage("[传送机]频段超出范围");
 							}

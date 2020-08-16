@@ -1,12 +1,10 @@
 package com.piggest.minecraft.bukkit.dropper_shop;
 
-import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.piggest.minecraft.bukkit.advanced_furnace.*;
 import com.piggest.minecraft.bukkit.anti_thunder.Anti_thunder;
 import com.piggest.minecraft.bukkit.anti_thunder.Anti_thunder_listener;
 import com.piggest.minecraft.bukkit.anti_thunder.Anti_thunder_manager;
-import com.piggest.minecraft.bukkit.biome_modify.Biome_modify;
 import com.piggest.minecraft.bukkit.compressor.Compressor;
 import com.piggest.minecraft.bukkit.compressor.Compressor_manager;
 import com.piggest.minecraft.bukkit.config.Config_auto_saver;
@@ -133,7 +131,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private NMS_manager nms_manager = null;
 	private Config_auto_saver auto_saver = new Config_auto_saver(this);
 	private Sync_realtime realtime_runner = null;
-	private Biome_modify biome_modify = null;
+	//private Biome_modify biome_modify = null;
 	private Radio_manager radio_manager = null;
 	private Watersheep_runner watersheep_runner = null;
 	private ProtocolManager protocol_manager = null;
@@ -311,7 +309,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.getCommand("sync_realtime").setExecutor(new Sync_realtime_command_executor(this.sync_realtime_worlds));
 		this.getCommand("teleport_machine").setExecutor(new Teleport_machine_command_executer());
 		this.getCommand("watersheep").setExecutor(new Watersheep_command_executor());
-		this.getCommand("biome_modify").setExecutor(this.biome_modify);
+		//this.getCommand("biome_modify").setExecutor(this.biome_modify);
 		this.getCommand("electric_spawner").setExecutor(new Electric_spawner_command_executor());
 		this.getCommand("custom_map").setExecutor(new Custom_map_command_executor());
 		this.getCommand("printer").setExecutor(new Printer_command_executor());
@@ -323,6 +321,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		// 处理冬天模式
+		/*
 		this.biome_modify = new Biome_modify();
 		boolean winter_mode_enabled = this.config.getBoolean("winter-mode");
 		if (winter_mode_enabled) {
@@ -336,7 +335,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		} catch (Exception e) {
 			this.getLogger().warning("生物群系伪装开启失败，请检查ProtocalLib是否安装！");
 		}
+		 */
 		// 处理冬天模式完成
+		this.getLogger().info("冬天模式不再支持1.16.2");
 
 		Tab_list.init();
 
@@ -567,9 +568,11 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		return this.teleport_machine_manager;
 	}
 
+	/*
 	public Biome_modify get_biome_modify() {
 		return this.biome_modify;
 	}
+	*/
 
 	public Electric_spawner_manager get_electric_spawner_manager() {
 		return this.electric_spawner_manager;

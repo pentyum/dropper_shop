@@ -1,14 +1,16 @@
 package com.piggest.minecraft.bukkit.nms.biome;
 
-import com.piggest.minecraft.bukkit.biome_modify.Biome_modify;
+//import com.piggest.minecraft.bukkit.biome_modify.Biome_modify;
+
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import net.minecraft.server.v1_16_R1.BiomeBase;
+import net.minecraft.server.v1_16_R2.BiomeBase;
 import org.bukkit.block.Biome;
-import org.bukkit.craftbukkit.v1_16_R1.block.CraftBlock;
+import org.bukkit.craftbukkit.v1_16_R2.block.CraftBlock;
 
 import java.lang.reflect.Field;
 
 public class Biome_modifier_1_16 implements Biome_modifier {
+	/*
 	private Field temp_field;
 	//private HashMap<Biome, BiomeBase> biome_map = new HashMap<>();
 	//private HashMap<BiomeBase, Biome> biome_map_reverse = new HashMap<>();
@@ -26,12 +28,6 @@ public class Biome_modifier_1_16 implements Biome_modifier {
 
 		Dropper_shop_plugin.instance.getLogger().info("开始保存生物群系原温度");
 		for (Biome biome : Biome.values()) {
-			/*
-			MinecraftKey key = new MinecraftKey(biome.getKey().toString());
-			BiomeBase biome_nms = IRegistry.BIOME.get(key);
-			biome_map.put(biome, biome_nms);
-			biome_map_reverse.put(biome_nms, biome);
-			*/
 			BiomeBase biome_nms = get_biomebase(biome);
 			Biome_modify.original_temp.put(biome, biome_nms.getTemperature());
 		}
@@ -49,6 +45,7 @@ public class Biome_modifier_1_16 implements Biome_modifier {
 
 	public float get_temperature(Biome biome) {
 		BiomeBase biome_nms = get_biomebase(biome);
+		return biome.
 		return biome_nms.getTemperature();
 	}
 
@@ -64,4 +61,5 @@ public class Biome_modifier_1_16 implements Biome_modifier {
 	public Biome get_biome(BiomeBase biomeBase) {
 		return CraftBlock.biomeBaseToBiome(biomeBase);
 	}
+	*/
 }

@@ -1,11 +1,11 @@
 package com.piggest.minecraft.bukkit.nms;
 
-import net.minecraft.server.v1_16_R1.PersistentRaid;
-import net.minecraft.server.v1_16_R1.WorldServer;
+import net.minecraft.server.v1_16_R2.PersistentRaid;
+import net.minecraft.server.v1_16_R2.WorldServer;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_16_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_16_R1.block.CraftBlock;
+import org.bukkit.craftbukkit.v1_16_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_16_R2.block.CraftBlock;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -23,7 +23,7 @@ public class Raid_trigger_1_16 implements Raid_trigger {
 
 		Field next_id_field;
 		int next_id = 0;
-		Map<Integer, net.minecraft.server.v1_16_R1.Raid> raid_map = persistentraid.raids;
+		Map<Integer, net.minecraft.server.v1_16_R2.Raid> raid_map = persistentraid.raids;
 		try {
 			next_id_field = PersistentRaid.class.getDeclaredField("c");
 			next_id_field.setAccessible(true);
@@ -34,7 +34,7 @@ public class Raid_trigger_1_16 implements Raid_trigger {
 			e.printStackTrace();
 			return null;
 		}
-		net.minecraft.server.v1_16_R1.Raid raid = new net.minecraft.server.v1_16_R1.Raid(next_id, world_nms,
+		net.minecraft.server.v1_16_R2.Raid raid = new net.minecraft.server.v1_16_R2.Raid(next_id, world_nms,
 				craft_block.getPosition());
 		if (bad_omen_level > raid.getMaxBadOmenLevel()) {
 			bad_omen_level = raid.getMaxBadOmenLevel();
@@ -46,7 +46,7 @@ public class Raid_trigger_1_16 implements Raid_trigger {
 		return info;
 	}
 
-	public Raid_info get_info(net.minecraft.server.v1_16_R1.Raid raid) {
+	public Raid_info get_info(net.minecraft.server.v1_16_R2.Raid raid) {
 		if (raid == null) {
 			return null;
 		}

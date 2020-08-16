@@ -48,7 +48,7 @@ public class Dynmap_manager {
 		v += "待机魔压: " + "<span style=\"font-weight:bold;\">%online_voltage%</span><br />";
 		v += "工作魔压: " + "<span style=\"font-weight:bold;\">%working_voltage%</span><br />";
 		v += "剩余魔力: " + "<span style=\"font-weight:bold;\">%magic%</span><br />";
-		v += "频率信息: " + "<br /><span style=\"font-weight:bold;\">";
+		v += "发射信息: " + "<br /><span style=\"font-weight:bold;\">";
 		v += "中心波长: %wavelength%<br />";
 		v += "带宽: %bandwidth%";
 		v += "</span>";
@@ -58,8 +58,8 @@ public class Dynmap_manager {
 		v = v.replace("%length%", res.get_n() + " m");
 		v = v.replace("%online_voltage%", res.get_voltage(Radio_state.ONLINE) + " V");
 		v = v.replace("%working_voltage%", res.get_voltage(Radio_state.WORKING) + " V");
-		v = v.replace("%wavelength%", res.get_channel_freq() + " kHz");
-		v = v.replace("%bandwidth%", res.get_channel_bandwidth() + " kHz");
+		v = v.replace("%wavelength%", res.get_transmit_freq() + " kHz");
+		v = v.replace("%bandwidth%", res.get_transmit_bandwidth() + " kHz");
 		v = v.replace("%magic%", res.get_amount(Element.Magic) + " kJ");
 		// v = v.replace("%playerowners%", res.getOwner());
 		return v;

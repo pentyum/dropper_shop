@@ -1,8 +1,8 @@
 package com.piggest.minecraft.bukkit.nms.biome;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import net.minecraft.server.v1_16_R1.BiomeBase;
-import net.minecraft.server.v1_16_R1.BiomeStorage;
+import net.minecraft.server.v1_16_R2.BiomeBase;
+import net.minecraft.server.v1_16_R2.BiomeStorage;
 
 import java.lang.reflect.Field;
 
