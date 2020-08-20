@@ -14,10 +14,11 @@ public abstract class Screen implements ConfigurationSerializable, Runnable {
 	protected int id = 0;
 	protected long time = 0;
 	protected BufferedImage raw_img;
-	protected BufferedImage show_img;
+	private BufferedImage show_img;
 	protected int width_n = 0;
 	protected int height_n = 0;
 	protected Fill_type fill_type;
+	protected boolean locked = false;
 
 	public Screen(int width_n, int height_n, Fill_type fill_type) {
 		this.height_n = height_n;
@@ -33,6 +34,14 @@ public abstract class Screen implements ConfigurationSerializable, Runnable {
 		this.id = id;
 	}
 
+	public boolean is_locked() {
+		return this.locked;
+	}
+
+	public void set_locked(boolean locked) {
+		this.locked = locked;
+	}
+
 	@Nonnull
 	@Override
 	public Map<String, Object> serialize() {
@@ -41,6 +50,7 @@ public abstract class Screen implements ConfigurationSerializable, Runnable {
 		save.put("height-n", this.height_n);
 		save.put("width-n", this.width_n);
 		save.put("fill-type", this.fill_type.name());
+		save.put("locked", this.locked);
 		return save;
 	}
 
@@ -130,7 +140,7 @@ public abstract class Screen implements ConfigurationSerializable, Runnable {
 		return (int) Math.ceil((double) n * another_length / n_length);
 	}
 
-	enum Fill_type {
+	protected enum Fill_type {
 		WIDTH,
 		HEIGHT,
 		FULL

@@ -4,8 +4,8 @@ import com.google.zxing.WriterException;
 import com.piggest.minecraft.bukkit.config.Map_config;
 import com.piggest.minecraft.bukkit.config.Screen_config;
 import com.piggest.minecraft.bukkit.custom_map.clock.Analog_clock_background_map_render;
-import com.piggest.minecraft.bukkit.custom_map.clock.Analog_clock_map_render;
-import com.piggest.minecraft.bukkit.custom_map.clock.Digital_clock_map_render;
+import com.piggest.minecraft.bukkit.custom_map.clock.Analog_clock_screen;
+import com.piggest.minecraft.bukkit.custom_map.clock.Digital_clock_screen;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Color_utils;
 import com.piggest.minecraft.bukkit.utils.Inventory_io;
@@ -22,6 +22,7 @@ import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.*;
 import java.io.File;
@@ -32,6 +33,9 @@ import java.util.Locale;
 import java.util.Set;
 
 public class Custom_map_command_executor implements TabExecutor {
+	static Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
+	static Screen_config screen_config = Dropper_shop_plugin.instance.get_screen_config();
+
 	private static final ArrayList<String> sub_cmd = new ArrayList<String>() {
 		private static final long serialVersionUID = -6116323601639805386L;
 
@@ -82,7 +86,7 @@ public class Custom_map_command_executor implements TabExecutor {
 	};
 
 	@Override
-	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+	public List<String> onTabComplete(@Nonnull CommandSender sender, @Nonnull Command command, @Nonnull String alias, String[] args) {
 		if (args.length == 1) {
 			return Tab_list.contains(sub_cmd, args[0]);
 		}
@@ -92,7 +96,7 @@ public class Custom_map_command_executor implements TabExecutor {
 				return Tab_list.color_list;
 			} else if (args.length == 4) {
 				Set<String> fonts_set = Dropper_shop_plugin.instance.get_fonts_manager().get_all_name();
-				ArrayList<String> fonts_list = new ArrayList<String>(fonts_set);
+				ArrayList<String> fonts_list = new ArrayList<>(fonts_set);
 				return Tab_list.contains(fonts_list, args[3]);
 			} else if (args.length == 3) {
 				if (args[0].equalsIgnoreCase("get_digital_clock")) {
@@ -114,7 +118,7 @@ public class Custom_map_command_executor implements TabExecutor {
 					ItemStack item = player.getInventory().getItemInMainHand();
 					MapMeta meta = (MapMeta) item.getItemMeta();
 					int id = meta.getMapView().getId();
-					ArrayList<String> id_list = new ArrayList<String>();
+					ArrayList<String> id_list = new ArrayList<>();
 					id_list.add(String.valueOf(id));
 					return id_list;
 				} catch (Exception e) {
@@ -125,7 +129,7 @@ public class Custom_map_command_executor implements TabExecutor {
 			if (sender instanceof Player) {
 				if (args.length == 2) {
 					File font_folder = new File(Dropper_shop_plugin.instance.getDataFolder(), "images");
-					ArrayList<String> file_name_list = new ArrayList<String>();
+					ArrayList<String> file_name_list = new ArrayList<>();
 					for (File file : font_folder.listFiles()) {
 						file_name_list.add(file.getName());
 					}
@@ -140,7 +144,7 @@ public class Custom_map_command_executor implements TabExecutor {
 			if (sender instanceof Player) {
 				if (args.length == 2) {
 					File font_folder = new File(Dropper_shop_plugin.instance.getDataFolder(), "images");
-					ArrayList<String> file_name_list = new ArrayList<String>();
+					ArrayList<String> file_name_list = new ArrayList<>();
 					for (File file : font_folder.listFiles()) {
 						file_name_list.add(file.getName());
 					}
@@ -153,7 +157,6 @@ public class Custom_map_command_executor implements TabExecutor {
 
 	public static ItemStack[] generate_char_maps(Player player, Color background_color, char c, Font font,
 												 int font_size, Color font_color) {
-		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
 		int side_amount = Character_section_map_render.get_side_amount(font_size);
 		int map_amount = side_amount * side_amount;
 		ItemStack[] maps = new ItemStack[map_amount];
@@ -167,7 +170,7 @@ public class Custom_map_command_executor implements TabExecutor {
 			MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
 			mapmeta.setMapView(mapview);
 			mapmeta.setDisplayName(String.valueOf(c));
-			ArrayList<String> lore = new ArrayList<String>();
+			ArrayList<String> lore = new ArrayList<>();
 			lore.add(String.format("§r背景颜色: (%d,%d,%d)", background_color.getRed(), background_color.getGreen(),
 					background_color.getBlue()));
 			lore.add("§r字体: " + font.getFontName(Locale.SIMPLIFIED_CHINESE));
@@ -193,13 +196,13 @@ public class Custom_map_command_executor implements TabExecutor {
 		ItemMeta meta = item.getItemMeta();
 		MapMeta mapmeta = (MapMeta) meta;
 		Background_map_render background = new Background_map_render(background_color);
-		Digital_clock_map_render render = new Digital_clock_map_render(background, format, font, font_size, font_color,
+		Digital_clock_screen screen = new Digital_clock_screen(background, format, font, font_size, font_color,
 				world_name);
-		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
+		Screen_map_render render = screen.generate_renders()[0];
 		MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
 		mapmeta.setMapView(mapview);
 		mapmeta.setDisplayName("时钟");
-		ArrayList<String> lore = new ArrayList<String>();
+		ArrayList<String> lore = new ArrayList<>();
 		lore.add(String.format("§r背景颜色: (%d,%d,%d)", background_color.getRed(), background_color.getGreen(),
 				background_color.getBlue()));
 		lore.add(String.format("§r格式: %s", format));
@@ -214,22 +217,23 @@ public class Custom_map_command_executor implements TabExecutor {
 
 	public static ItemStack[] generate_analog_clock_maps(Player player, Color background_color, String style, Font font,
 														 int font_size, Color font_color, String world_name) {
-		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
+		Analog_clock_background_map_render background = new Analog_clock_background_map_render(background_color,
+				font_color, font_size);
+		Analog_clock_screen screen = new Analog_clock_screen(background, style, font, font_size,
+				font_color, world_name);
+		Screen_map_render[] renders = screen.generate_renders();
 		int side_amount = Character_section_map_render.get_side_amount(font_size);
 		int map_amount = side_amount * side_amount;
 		ItemStack[] maps = new ItemStack[map_amount];
 		for (int i = 0; i < map_amount; i++) {
+			Screen_map_render render = renders[i];
 			ItemStack item = new ItemStack(Material.FILLED_MAP);
 			ItemMeta meta = item.getItemMeta();
 			MapMeta mapmeta = (MapMeta) meta;
-			Analog_clock_background_map_render background = new Analog_clock_background_map_render(background_color,
-					font_color, font_size);
-			Digital_clock_map_render render = new Analog_clock_map_render(background, style, font, font_size,
-					font_color, world_name, i);
 			MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
 			mapmeta.setMapView(mapview);
 			mapmeta.setDisplayName("时钟");
-			ArrayList<String> lore = new ArrayList<String>();
+			ArrayList<String> lore = new ArrayList<>();
 			lore.add(String.format("§r背景颜色: (%d,%d,%d)", background_color.getRed(), background_color.getGreen(),
 					background_color.getBlue()));
 			lore.add(String.format("§r样式: %s", style));
@@ -251,63 +255,20 @@ public class Custom_map_command_executor implements TabExecutor {
 		return maps;
 	}
 
-	public static ItemStack[] generate_pic_maps(Player player, String pic_name, int n, boolean lock_width)
-			throws IOException {
-		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
-		int width_n = 0;
-		int height_n = 0;
-		if (lock_width == true) {
-			width_n = n;
-		} else {
-			height_n = n;
-		}
-		ArrayList<ItemStack> map_list = new ArrayList<ItemStack>();
-		for (int i = 0; true; i++) {
-			ItemStack item = new ItemStack(Material.FILLED_MAP);
-			ItemMeta meta = item.getItemMeta();
-			MapMeta mapmeta = (MapMeta) meta;
-			Local_image_map_render render;
-			try {
-				render = new Local_image_map_render(pic_name, width_n, height_n, i);
-			} catch (IndexOutOfBoundsException e) {
-				break;
-			}
-			int width_n_real = render.get_width_n();
-			int height_n_real = render.get_height_n();
-			int map_amount = width_n_real * height_n_real;
-			MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
-			mapmeta.setMapView(mapview);
-			mapmeta.setDisplayName(pic_name);
-			ArrayList<String> lore = new ArrayList<String>();
-			lore.add(String.format("§r文件名: %s", pic_name));
-			if (map_amount > 1) {
-				int y = (i / width_n_real);
-				int x = (i % width_n_real);
-				lore.add(String.format("§r部分: (%d,%d)", x, y));
-				lore.add("§r共 " + map_amount + " 张");
-			}
-			mapmeta.setLore(lore);
-			item.setItemMeta(meta);
-			map_list.add(item);
-		}
-		ItemStack[] maps = new ItemStack[map_list.size()];
-		return map_list.toArray(maps);
-	}
-
 	public static ItemStack generate_qr_code_map(Player player, @Nullable String title, String text, int margin)
 			throws WriterException {
 		ItemStack item = new ItemStack(Material.FILLED_MAP);
 		ItemMeta meta = item.getItemMeta();
 		MapMeta mapmeta = (MapMeta) meta;
-		Qr_code_map_render render = new Qr_code_map_render(text, margin);
-		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
+		Qr_code_screen screen = new Qr_code_screen(text, margin);
+		Screen_map_render render = screen.generate_renders()[0];
 		MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
 		mapmeta.setMapView(mapview);
 		if (title == null) {
 			title = "二维码";
 		}
 		mapmeta.setDisplayName(title);
-		ArrayList<String> lore = new ArrayList<String>();
+		ArrayList<String> lore = new ArrayList<>();
 		String content = text.length() > 16 ? (text.substring(0, 16) + "...") : text;
 		lore.add(String.format("§r内容: %s", content));
 		lore.add(String.format("§r边框宽度: %d", margin));
@@ -316,10 +277,8 @@ public class Custom_map_command_executor implements TabExecutor {
 		return item;
 	}
 
-	public static ItemStack[] generate_gif_maps(Player player, String pic_name, int n, boolean lock_width)
+	public static ItemStack[] generate_pic_maps(Player player, String pic_name, int n, boolean lock_width, boolean is_gif)
 			throws IOException {
-		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
-		Screen_config screen_config = Dropper_shop_plugin.instance.get_screen_config();
 		Screen.Fill_type fill_type;
 		int width_n = 0;
 		int height_n = 0;
@@ -330,12 +289,17 @@ public class Custom_map_command_executor implements TabExecutor {
 			fill_type = Screen.Fill_type.HEIGHT;
 			height_n = n;
 		}
-		Gif_screen screen = new Gif_screen(pic_name, width_n, height_n, fill_type);
+		Screen screen;
+		if (is_gif == true) {
+			screen = new Gif_screen(pic_name, width_n, height_n, fill_type);
+		} else {
+			screen = new Local_image_screen(pic_name, width_n, height_n, fill_type);
+		}
 		Screen_map_render[] renders = screen.generate_renders();
 		screen_config.add_screen(screen);
-		ArrayList<ItemStack> map_list = new ArrayList<>();
-		int map_amount = screen.get_show_height_n() * screen.get_show_width_n();
-		for (Screen_map_render render : renders) {
+		ItemStack[] map_list = new ItemStack[renders.length];
+		for (int i = 0; i < renders.length; i++) {
+			Screen_map_render render = renders[i];
 			ItemStack item = new ItemStack(Material.FILLED_MAP);
 			ItemMeta meta = item.getItemMeta();
 			MapMeta mapmeta = (MapMeta) meta;
@@ -344,19 +308,20 @@ public class Custom_map_command_executor implements TabExecutor {
 			mapmeta.setDisplayName(pic_name);
 			ArrayList<String> lore = new ArrayList<>();
 			lore.add(String.format("§r文件名: %s", pic_name));
-			lore.add(String.format("§r帧数: %d", screen.get_total_frames()));
-			if (map_amount > 1) {
+			if (is_gif == true) {
+				lore.add(String.format("§r帧数: %d", ((Gif_screen) screen).get_total_frames()));
+			}
+			if (renders.length > 1) {
 				int x = render.get_x();
 				int y = render.get_y();
 				lore.add(String.format("§r部分: (%d,%d)", x, y));
-				lore.add("§r共 " + map_amount + " 张");
+				lore.add("§r共 " + renders.length + " 张");
 			}
 			mapmeta.setLore(lore);
 			item.setItemMeta(meta);
-			map_list.add(item);
+			map_list[i] = item;
 		}
-		ItemStack[] maps = new ItemStack[map_list.size()];
-		return map_list.toArray(maps);
+		return map_list;
 	}
 
 	/*
@@ -379,7 +344,6 @@ public class Custom_map_command_executor implements TabExecutor {
 	*/
 
 	public static void set_command_def_map(ItemStack item, Player player) {
-		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
 		MapMeta meta = (MapMeta) item.getItemMeta();
 		MapView map;
 		if (meta.hasMapView()) {
@@ -389,7 +353,7 @@ public class Custom_map_command_executor implements TabExecutor {
 			map = map_config.create_new_map(player.getWorld(), new Command_map_render(), null);
 		}
 		meta.setMapView(map);
-		ArrayList<String> lore = new ArrayList<String>();
+		ArrayList<String> lore = new ArrayList<>();
 		lore.add("§r输入指令/custom_map set_cdm id X Y color可以设置地图像素");
 		meta.setLore(lore);
 		item.setItemMeta(meta);
@@ -534,7 +498,6 @@ public class Custom_map_command_executor implements TabExecutor {
 			}
 			return true;
 		} else if (args[0].equalsIgnoreCase("set_cdm")) {
-			Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
 			if (args.length < 5) {
 				sender.sendMessage("参数数量错误");
 				return true;
@@ -599,9 +562,9 @@ public class Custom_map_command_executor implements TabExecutor {
 			ItemStack[] item = null;
 			try {
 				if (args[0].equalsIgnoreCase("get_gif")) {
-					item = generate_gif_maps(player, file_name, n, lock_width);
+					item = generate_pic_maps(player, file_name, n, lock_width, true);
 				} else {
-					item = generate_pic_maps(player, file_name, n, lock_width);
+					item = generate_pic_maps(player, file_name, n, lock_width, false);
 
 				}
 			} catch (IOException e) {
@@ -635,7 +598,8 @@ public class Custom_map_command_executor implements TabExecutor {
 			Inventory_io.give_item_to_player(player, item);
 			return true;
 		} else if (args[0].equalsIgnoreCase("reload")) {
-			Dropper_shop_plugin.instance.get_map_config().reload();
+			screen_config.reload();
+			map_config.reload();
 			sender.sendMessage("自定义地图配置重载成功");
 			return true;
 		}

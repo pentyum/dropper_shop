@@ -19,15 +19,18 @@ public abstract class Static_image_screen extends Screen {
 		return 0;//永不自动刷新
 	}
 
+	@Override
+	public void refresh() {
+		refresh(this.raw_img);
+	}
+
 	public static interface IntToByteFunction {
 		byte applyAsByte(int i);
 	}
 
 	public static void parallelSetAll_byte(byte[] array, IntToByteFunction generator) {
 		Objects.requireNonNull(generator);
-		IntStream.range(0, array.length).parallel().forEach(i -> {
-			array[i] = generator.applyAsByte(i);
-		});
+		IntStream.range(0, array.length).parallel().forEach(i -> array[i] = generator.applyAsByte(i));
 	}
 
 	@SuppressWarnings("deprecation")

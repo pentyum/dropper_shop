@@ -12,7 +12,7 @@ import java.util.Map;
 public class Empty_map_render extends Custom_map_render implements ConfigurationSerializable {
 
 	@Override
-	public void render(MapView map, MapCanvas canvas, Player player) {
+	public void render(@Nonnull MapView map, @Nonnull MapCanvas canvas, @Nonnull Player player) {
 	}
 
 	@Override
@@ -25,8 +25,5 @@ public class Empty_map_render extends Custom_map_render implements Configuration
 		return new Empty_map_render();
 	}
 
-	@Override
-	public void refresh(MapView map, MapCanvas canvas) {
-	}
 
 }

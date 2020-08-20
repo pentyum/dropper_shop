@@ -2,8 +2,6 @@ package com.piggest.minecraft.bukkit.config;
 
 import com.piggest.minecraft.bukkit.custom_map.*;
 import com.piggest.minecraft.bukkit.custom_map.clock.Analog_clock_background_map_render;
-import com.piggest.minecraft.bukkit.custom_map.clock.Analog_clock_map_render;
-import com.piggest.minecraft.bukkit.custom_map.clock.Digital_clock_map_render;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -22,12 +20,6 @@ public class Map_config extends Ext_config {
 	public Map_config() {
 		super("maps.yml");
 		ConfigurationSerialization.registerClass(Empty_map_render.class);
-		ConfigurationSerialization.registerClass(Character_map_render.class);
-		ConfigurationSerialization.registerClass(Character_section_map_render.class);
-		ConfigurationSerialization.registerClass(Digital_clock_map_render.class);
-		ConfigurationSerialization.registerClass(Analog_clock_map_render.class);
-		ConfigurationSerialization.registerClass(Local_image_map_render.class);
-		ConfigurationSerialization.registerClass(Qr_code_map_render.class);
 
 		ConfigurationSerialization.registerClass(Background_map_render.class);
 		ConfigurationSerialization.registerClass(Analog_clock_background_map_render.class);

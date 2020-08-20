@@ -2,44 +2,41 @@ package com.piggest.minecraft.bukkit.custom_map.clock;
 
 import com.piggest.minecraft.bukkit.custom_map.Character_section_map_render;
 import com.piggest.minecraft.bukkit.custom_map.Custom_map_render;
-import com.piggest.minecraft.bukkit.custom_map.Static_image_map_render;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Clock_utils;
 import org.bukkit.Color;
-import org.bukkit.map.MapCanvas;
-import org.bukkit.map.MapView;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.Calendar;
 import java.util.Map;
 
-public class Analog_clock_map_render extends Digital_clock_map_render {
+public class Analog_clock_screen extends Digital_clock_screen {
 	private String style;
 	private BasicStroke bstroke_sec;
 	private BasicStroke bstroke_min;
 	private BasicStroke bstroke_hr;
-	private int section = 1;
 
 	private int pic_size;
 	private int side_amount;
 
-	public Analog_clock_map_render(Analog_clock_background_map_render background, String style, Font font, int size,
-								   Color font_color, String world_name, int section) {
+	public Analog_clock_screen(Analog_clock_background_map_render background, String style, Font font, int size,
+							   Color font_color, String world_name) {
 		super(background, "HH:mm:ss", font, size, font_color, world_name);
 		this.style = style;
-		this.section = section;
 		bstroke_sec = new BasicStroke((float) this.font_size / 100);
 		bstroke_min = new BasicStroke((float) this.font_size / 58);
 		bstroke_hr = new BasicStroke((float) this.font_size / 43);
 
 		this.side_amount = Character_section_map_render.get_side_amount(this.font_size);
 		this.pic_size = Custom_map_render.pic_size * side_amount;
+		this.refresh();
 	}
 
 	@Override
-	public void refresh(MapView map, MapCanvas canvas) {
-		this.image = this.background.get_image_cache_copy();
+	public void refresh() {
+		BufferedImage image = this.background.get_image_cache_copy();
 
 		Graphics2D g = image.createGraphics();
 
@@ -67,8 +64,7 @@ public class Analog_clock_map_render extends Digital_clock_map_render {
 
 		g.dispose();
 
-		this.image = Character_section_map_render.get_section_of_image(image, side_amount, this.section);
-		Static_image_map_render.draw_image(canvas, 0, 0, image);
+		this.refresh(image);
 	}
 
 	@Nonnull
@@ -76,22 +72,20 @@ public class Analog_clock_map_render extends Digital_clock_map_render {
 	public Map<String, Object> serialize() {
 		Map<String, Object> save = super.serialize();
 		save.put("style", this.style);
-		save.put("section", this.section);
 		return save;
 	}
 
-	public static Analog_clock_map_render deserialize(@Nonnull Map<String, Object> args) {
+	public static Analog_clock_screen deserialize(@Nonnull Map<String, Object> args) {
 		org.bukkit.Color font_color = (org.bukkit.Color) args.get("font-color");
 		String font_name = (String) args.get("font-name");
 		Font font = Dropper_shop_plugin.instance.get_fonts_manager().get_font(font_name);
 		int font_size = (int) args.get("font-size");
 		String world_name = (String) args.get("world");
 		String style = null;
-		int section = (int) args.get("section");
 		boolean locked = (boolean) args.get("locked");
 		Analog_clock_background_map_render background = (Analog_clock_background_map_render) args.get("background");
-		Analog_clock_map_render new_render = new Analog_clock_map_render(background, style, font, font_size, font_color,
-				world_name, section);
+		Analog_clock_screen new_render = new Analog_clock_screen(background, style, font, font_size, font_color,
+				world_name);
 		new_render.locked = locked;
 		return new_render;
 	}

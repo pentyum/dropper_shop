@@ -1,7 +1,8 @@
 package com.piggest.minecraft.bukkit.config;
 
-import com.piggest.minecraft.bukkit.custom_map.Gif_screen;
-import com.piggest.minecraft.bukkit.custom_map.Screen;
+import com.piggest.minecraft.bukkit.custom_map.*;
+import com.piggest.minecraft.bukkit.custom_map.clock.Analog_clock_screen;
+import com.piggest.minecraft.bukkit.custom_map.clock.Digital_clock_screen;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 
@@ -20,6 +21,13 @@ public class Screen_config extends Ext_config {
 	public Screen_config() {
 		super("screen.yml");
 		ConfigurationSerialization.registerClass(Gif_screen.class);
+		ConfigurationSerialization.registerClass(Local_image_screen.class);
+		ConfigurationSerialization.registerClass(Qr_code_screen.class);
+		ConfigurationSerialization.registerClass(Character_map_render.class);
+		ConfigurationSerialization.registerClass(Character_section_map_render.class);
+		ConfigurationSerialization.registerClass(Digital_clock_screen.class);
+		ConfigurationSerialization.registerClass(Analog_clock_screen.class);
+
 		int threads = Runtime.getRuntime().availableProcessors();
 		this.service = Executors.newScheduledThreadPool(threads);
 		Dropper_shop_plugin.instance.getLogger().info("[屏幕渲染器]启动" + threads + "线程刷新");
@@ -59,5 +67,8 @@ public class Screen_config extends Ext_config {
 
 	public void stop_refresh() {
 		this.service.shutdownNow();
+	}
+
+	public void reload() {
 	}
 }

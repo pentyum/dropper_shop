@@ -84,9 +84,5 @@ public class Command_map_render extends Custom_map_render {
 		operation.draw(canvas);
 	}
 
-	@Override
-	public void refresh(MapView map, MapCanvas canvas) {
-
-	}
 
 }

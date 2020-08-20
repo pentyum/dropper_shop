@@ -6,15 +6,15 @@ import com.piggest.minecraft.bukkit.utils.Qr_code_utils;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import javax.annotation.Nonnull;
-import java.util.HashMap;
 import java.util.Map;
 
-public class Qr_code_map_render extends Static_image_map_render implements ConfigurationSerializable {
-	private String text;
+public class Qr_code_screen extends Static_image_screen implements ConfigurationSerializable {
+	private final String text;
 	private int margin = 3;
 
-	public Qr_code_map_render(String text, int margin) throws WriterException {
-		this.image = Qr_code_utils.generate(text, margin);
+	public Qr_code_screen(String text, int margin) throws WriterException {
+		super(1,1,Fill_type.FULL);
+		this.raw_img = Qr_code_utils.generate(text, margin);
 		this.text = text;
 		this.margin = margin;
 	}
@@ -22,20 +22,21 @@ public class Qr_code_map_render extends Static_image_map_render implements Confi
 	@Override
 	public @Nonnull
 	Map<String, Object> serialize() {
-		HashMap<String, Object> save = new HashMap<String, Object>();
+		Map<String, Object> save = super.serialize();
 		save.put("text", this.text);
 		save.put("margin", this.margin);
 		save.put("locked", this.locked);
 		return save;
 	}
 
-	public static Qr_code_map_render deserialize(@Nonnull Map<String, Object> args) {
+
+	public static Qr_code_screen deserialize(@Nonnull Map<String, Object> args) {
 		String text = (String) args.get("text");
 		int margin = (int) args.get("margin");
 		boolean locked = (boolean) args.get("locked");
-		Qr_code_map_render new_render = null;
+		Qr_code_screen new_render = null;
 		try {
-			new_render = new Qr_code_map_render(text, margin);
+			new_render = new Qr_code_screen(text, margin);
 			new_render.locked = locked;
 		} catch (WriterException e) {
 			Dropper_shop_plugin.instance.getLogger().severe(e.toString());

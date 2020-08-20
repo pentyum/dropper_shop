@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapView;
 
+import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,10 +22,7 @@ public class Screen_map_render extends Custom_map_render implements Configuratio
 	}
 
 
-	@Override
-	public void refresh(MapView map, MapCanvas canvas) {
-	}
-
+	@Nonnull
 	@Override
 	public Map<String, Object> serialize() {
 		HashMap<String, Object> save = new HashMap<>();
@@ -34,7 +32,7 @@ public class Screen_map_render extends Custom_map_render implements Configuratio
 	}
 
 	@Override
-	public void render(MapView map, MapCanvas canvas, Player player) {
+	public void render(@Nonnull MapView map, @Nonnull MapCanvas canvas, @Nonnull Player player) {
 		Screen screen = this.get_screen();
 		if (screen == null) {
 			return;

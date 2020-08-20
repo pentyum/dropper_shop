@@ -33,10 +33,6 @@ public class Local_image_screen extends Static_image_screen {
 		return save;
 	}
 
-	@Override
-	public void refresh() {
-		refresh(this.raw_img);
-	}
 
 	public static Local_image_screen deserialize(@Nonnull Map<String, Object> args) {
 		String path = (String) args.get("path");

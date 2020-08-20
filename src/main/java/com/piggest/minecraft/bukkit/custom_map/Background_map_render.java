@@ -26,7 +26,7 @@ public class Background_map_render implements ConfigurationSerializable {
 	@Override
 	public @Nonnull
 	Map<String, Object> serialize() {
-		HashMap<String, Object> save = new HashMap<String, Object>();
+		HashMap<String, Object> save = new HashMap<>();
 		save.put("background-color", this.background_color);
 		return save;
 	}

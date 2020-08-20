@@ -56,8 +56,9 @@ public class Map_init_listener implements Listener {
 			ItemFrame item_frame = (ItemFrame) entity;
 			ItemStack item = item_frame.getItem();
 			Custom_map_render c_render = Custom_map_render.get_render_from_item(item);
-			if (c_render != null) {
-				if (c_render.is_locked() == true) {
+			if (c_render instanceof Screen_map_render) {
+				Screen_map_render screen_map_render = (Screen_map_render) c_render;
+				if (screen_map_render.get_screen().is_locked() == true) {
 					Entity damager = event.getDamager();
 					if (!damager.hasPermission("custom_map.damage_locked_map")) {
 						event.setCancelled(true);

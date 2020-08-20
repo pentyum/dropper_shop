@@ -6,7 +6,7 @@ import org.bukkit.World;
 import java.util.List;
 
 public class Structure_config extends Ext_config {
-	private String structure_type_name;
+	private final String structure_type_name;
 
 	public Structure_config(World world, String structure_type_name) {
 		super("structures/" + world.getName() + "/" + structure_type_name + ".yml");
