@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 public class Map_config extends Ext_config {
-	private HashMap<Integer, MapView> custom_map_map = new HashMap<>();
+	private final HashMap<Integer, MapView> custom_map_map = new HashMap<>();
 
 	public Map_config() {
 		super("maps.yml");
@@ -32,6 +32,8 @@ public class Map_config extends Ext_config {
 
 		ConfigurationSerialization.registerClass(Background_map_render.class);
 		ConfigurationSerialization.registerClass(Analog_clock_background_map_render.class);
+
+		ConfigurationSerialization.registerClass(Screen_map_render.class);
 	}
 
 	public MapView create_new_map(World world, Custom_map_render content_render, Custom_map_render edge_render) {

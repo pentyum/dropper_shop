@@ -7,10 +7,7 @@ import com.piggest.minecraft.bukkit.anti_thunder.Anti_thunder_listener;
 import com.piggest.minecraft.bukkit.anti_thunder.Anti_thunder_manager;
 import com.piggest.minecraft.bukkit.compressor.Compressor;
 import com.piggest.minecraft.bukkit.compressor.Compressor_manager;
-import com.piggest.minecraft.bukkit.config.Config_auto_saver;
-import com.piggest.minecraft.bukkit.config.Lottery_config;
-import com.piggest.minecraft.bukkit.config.Map_config;
-import com.piggest.minecraft.bukkit.config.Price_config;
+import com.piggest.minecraft.bukkit.config.*;
 import com.piggest.minecraft.bukkit.custom_map.Custom_map_command_executor;
 import com.piggest.minecraft.bukkit.custom_map.Fonts_manager;
 import com.piggest.minecraft.bukkit.custom_map.Map_init_listener;
@@ -87,7 +84,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private int exp_saver_remove_repaircost_exp = 0;
 
 	private Price_config price_config = new Price_config(this);
-	private Map_config map_config = new Map_config();
+	private Map_config map_config;
+	private Screen_config screen_config;
 
 	private Dropper_shop_manager shop_manager = null;
 	private Depository_manager depository_manager = null;
@@ -186,6 +184,10 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		fonts_manager = new Fonts_manager();
 		fonts_manager.register_all_fonts();
 		this.getLogger().info("字体注册完成");
+
+		this.screen_config = new Screen_config();
+		this.screen_config.load();
+		this.getLogger().info("自定义屏幕渲染器加载完成");
 
 		this.map_config = new Map_config();
 		this.map_config.load();
@@ -414,7 +416,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	}
 
 	public void save_maps() {
-		this.getLogger().info("正在保存自定义地图数据");
+		this.getLogger().info("正在保存自定义屏幕和地图数据");
+		this.screen_config.save();
 		this.map_config.save();
 	}
 
@@ -606,5 +609,9 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	public boolean use_placeholder() {
 		return this.use_placeholder;
+	}
+
+	public Screen_config get_screen_config() {
+		return this.screen_config;
 	}
 }
