@@ -1,9 +1,7 @@
 package com.piggest.minecraft.bukkit.custom_map;
 
-import org.bukkit.entity.Player;
 import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapPalette;
-import org.bukkit.map.MapView;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -11,25 +9,14 @@ import java.awt.image.BufferedImage;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
-public abstract class Static_image_map_render extends Custom_map_render {
-	protected BufferedImage image;
-	protected boolean render_completed = false;
-
-	@Override
-	public void render(MapView map, MapCanvas canvas, Player player) {
-		if (this.render_completed == false) {
-			this.refresh(map, canvas);
-			this.render_completed = true;
-		}
+public abstract class Static_image_screen extends Screen {
+	public Static_image_screen(int width_n, int height_n, Fill_type fill_type) {
+		super(width_n, height_n, fill_type);
 	}
 
 	@Override
-	public void refresh(MapView map, MapCanvas canvas) {
-		draw_image(canvas, 0, 0, image);
-	}
-
-	public BufferedImage get_image() {
-		return this.image;
+	public int get_refresh_interval() {
+		return 0;//永不自动刷新
 	}
 
 	public static interface IntToByteFunction {

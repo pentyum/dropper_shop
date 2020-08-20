@@ -34,7 +34,9 @@ public class Screen_config extends Ext_config {
 			screen.set_id(this.get_next_id());
 		}
 		screen_map.put(screen.get_id(), screen);
-		service.scheduleAtFixedRate(screen, 1000, screen.get_refresh_interval() * 50, TimeUnit.MILLISECONDS);
+		if (screen.get_refresh_interval() > 0) {
+			service.scheduleAtFixedRate(screen, 1000, screen.get_refresh_interval() * 50, TimeUnit.MILLISECONDS);
+		}
 	}
 
 	@Override

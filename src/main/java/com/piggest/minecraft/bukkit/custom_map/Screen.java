@@ -69,7 +69,7 @@ public abstract class Screen implements ConfigurationSerializable, Runnable {
 			new_width = Custom_map_render.pic_size * this.width_n;
 			new_height = new_width * raw_height / raw_width;
 			map_width = new_width;
-			this.height_n = Local_image_map_render.get_another_n(this.width_n, new_width, new_height);
+			this.height_n = get_another_n(this.width_n, new_width, new_height);
 			map_height = Custom_map_render.pic_size * this.height_n;
 			start_x = 0;
 			start_y = (map_height - new_height) / 2;
@@ -77,7 +77,7 @@ public abstract class Screen implements ConfigurationSerializable, Runnable {
 			new_height = Custom_map_render.pic_size * this.height_n;
 			new_width = new_height * raw_width / raw_height;
 			map_height = new_height;
-			this.width_n = Local_image_map_render.get_another_n(this.height_n, new_height, new_width);
+			this.width_n = get_another_n(this.height_n, new_height, new_width);
 			map_width = Custom_map_render.pic_size * this.width_n;
 			start_y = 0;
 			start_x = (map_width - new_width) / 2;
@@ -125,6 +125,10 @@ public abstract class Screen implements ConfigurationSerializable, Runnable {
 	获取刷新间隔，单位为tick
 	 */
 	public abstract int get_refresh_interval();
+
+	public static int get_another_n(int n, int n_length, int another_length) {
+		return (int) Math.ceil((double) n * another_length / n_length);
+	}
 
 	enum Fill_type {
 		WIDTH,
