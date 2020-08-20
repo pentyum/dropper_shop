@@ -433,6 +433,8 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
+		this.screen_config.stop_refresh();
+		this.getLogger().info("停止屏幕刷新器");
 		this.save_structure();
 		for (Entry<Class<? extends Structure>, Structure_manager<? extends Structure>> entry : this.structure_manager_map
 				.entrySet()) {

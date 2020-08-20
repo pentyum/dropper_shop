@@ -74,7 +74,7 @@ public class Gif_screen extends Screen {
 
 	@Override
 	public int get_refresh_interval() {
-		return 5;
+		return 4;
 	}
 
 	@Override
