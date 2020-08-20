@@ -2,6 +2,7 @@ package com.piggest.minecraft.bukkit.custom_map;
 
 import com.google.zxing.WriterException;
 import com.piggest.minecraft.bukkit.config.Map_config;
+import com.piggest.minecraft.bukkit.config.Screen_config;
 import com.piggest.minecraft.bukkit.custom_map.clock.Analog_clock_background_map_render;
 import com.piggest.minecraft.bukkit.custom_map.clock.Analog_clock_map_render;
 import com.piggest.minecraft.bukkit.custom_map.clock.Digital_clock_map_render;
@@ -315,22 +316,67 @@ public class Custom_map_command_executor implements TabExecutor {
 		return item;
 	}
 
+	public static ItemStack[] generate_gif_maps(Player player, String pic_name, int n, boolean lock_width)
+			throws IOException {
+		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
+		Screen_config screen_config = Dropper_shop_plugin.instance.get_screen_config();
+		Screen.Fill_type fill_type;
+		int width_n = 0;
+		int height_n = 0;
+		if (lock_width == true) {
+			fill_type = Screen.Fill_type.WIDTH;
+			width_n = n;
+		} else {
+			fill_type = Screen.Fill_type.HEIGHT;
+			height_n = n;
+		}
+		Gif_screen screen = new Gif_screen(pic_name, width_n, height_n, fill_type);
+		Screen_map_render[] renders = screen.generate_renders();
+		screen_config.add_screen(screen);
+		ArrayList<ItemStack> map_list = new ArrayList<>();
+		int map_amount = screen.get_show_height_n() * screen.get_show_width_n();
+		for (Screen_map_render render : renders) {
+			ItemStack item = new ItemStack(Material.FILLED_MAP);
+			ItemMeta meta = item.getItemMeta();
+			MapMeta mapmeta = (MapMeta) meta;
+			MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
+			mapmeta.setMapView(mapview);
+			mapmeta.setDisplayName(pic_name);
+			ArrayList<String> lore = new ArrayList<>();
+			lore.add(String.format("§r文件名: %s", pic_name));
+			lore.add(String.format("§r帧数: %d", screen.get_total_frames()));
+			if (map_amount > 1) {
+				int x = render.get_x();
+				int y = render.get_y();
+				lore.add(String.format("§r部分: (%d,%d)", x, y));
+				lore.add("§r共 " + map_amount + " 张");
+			}
+			mapmeta.setLore(lore);
+			item.setItemMeta(meta);
+			map_list.add(item);
+		}
+		ItemStack[] maps = new ItemStack[map_list.size()];
+		return map_list.toArray(maps);
+	}
+
+	/*
 	public static ItemStack generate_gif_map(Player player, String pic_name) throws IOException {
 		ItemStack item = new ItemStack(Material.FILLED_MAP);
 		ItemMeta meta = item.getItemMeta();
 		MapMeta mapmeta = (MapMeta) meta;
-		Gif_map_render render = new Gif_map_render(pic_name);
+		Gif_screen render = new Gif_screen(pic_name);
 		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
 		MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
 		mapmeta.setMapView(mapview);
 		mapmeta.setDisplayName(pic_name);
-		ArrayList<String> lore = new ArrayList<String>();
+		ArrayList<String> lore = new ArrayList<>();
 		lore.add(String.format("§r文件名: %s", pic_name));
 		lore.add(String.format("§r帧数: %d", render.get_total_frames()));
 		mapmeta.setLore(lore);
 		item.setItemMeta(meta);
 		return item;
 	}
+	*/
 
 	public static void set_command_def_map(ItemStack item, Player player) {
 		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
@@ -526,14 +572,14 @@ public class Custom_map_command_executor implements TabExecutor {
 			}
 			cmr.set_pixel(x, y, color);
 			return true;
-		} else if (args[0].equalsIgnoreCase("get_image")) {
+		} else if (args[0].equalsIgnoreCase("get_image") | args[0].equalsIgnoreCase("get_gif")) {
 			if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
 				sender.sendMessage("必须由玩家执行该命令");
 				return true;
 			}
 			Player player = (Player) sender;
 			if (args.length < 4) {
-				player.sendMessage("/custom_map get_image <文件名> <格数> <锁定宽度>。锁定宽度表示图片宽度填满格数，否则为图片高度。");
+				player.sendMessage("/custom_map get_image|get_gif <文件名> <格数> <锁定宽度>。锁定宽度表示图片宽度填满格数，否则为图片高度。");
 				return true;
 			}
 			String file_name = args[1];
@@ -552,7 +598,12 @@ public class Custom_map_command_executor implements TabExecutor {
 			}
 			ItemStack[] item = null;
 			try {
-				item = generate_pic_maps(player, file_name, n, lock_width);
+				if (args[0].equalsIgnoreCase("get_gif")) {
+					item = generate_gif_maps(player, file_name, n, lock_width);
+				} else {
+					item = generate_pic_maps(player, file_name, n, lock_width);
+
+				}
 			} catch (IOException e) {
 				player.sendMessage("文件错误" + e.toString());
 				return true;
@@ -579,26 +630,6 @@ public class Custom_map_command_executor implements TabExecutor {
 				item = generate_qr_code_map(player, title, text, 3);
 			} catch (WriterException e) {
 				player.sendMessage("二维码生成错误" + e.toString());
-				return true;
-			}
-			Inventory_io.give_item_to_player(player, item);
-			return true;
-		} else if (args[0].equalsIgnoreCase("get_gif")) {
-			if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
-				sender.sendMessage("必须由玩家执行该命令");
-				return true;
-			}
-			Player player = (Player) sender;
-			if (args.length < 2) {
-				player.sendMessage("/custom_map get_gif <文件名>");
-				return true;
-			}
-			String pic_name = args[1];
-			ItemStack item = null;
-			try {
-				item = generate_gif_map(player, pic_name);
-			} catch (IOException e) {
-				player.sendMessage("文件错误" + e.toString());
 				return true;
 			}
 			Inventory_io.give_item_to_player(player, item);

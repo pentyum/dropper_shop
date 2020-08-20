@@ -1,30 +1,24 @@
 package com.piggest.minecraft.bukkit.custom_map;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.Player;
-import org.bukkit.map.MapCanvas;
-import org.bukkit.map.MapView;
 
 import javax.annotation.Nonnull;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
-public class Gif_map_render extends Static_image_map_render implements ConfigurationSerializable {
-	private String path;
-	private long timer = System.currentTimeMillis();
+public class Gif_screen extends Screen {
+	private final String path;
 	private int frame = 0;
-	private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
+	private final ArrayList<BufferedImage> images = new ArrayList<>();
 
-	public Gif_map_render(String path) throws IOException {
+	public Gif_screen(String path, int width_n, int height_n, Screen.Fill_type fill_type) throws IOException {
+		super(width_n, height_n, fill_type);
 		ImageReader reader = ImageIO.getImageReadersByFormatName("gif").next();
 		File image_file = new File(Dropper_shop_plugin.instance.getDataFolder(), "images/" + path);
 		ImageInputStream stream = ImageIO.createImageInputStream(image_file);
@@ -33,13 +27,13 @@ public class Gif_map_render extends Static_image_map_render implements Configura
 		int count = reader.getNumImages(true);
 		for (int index = 0; index < count; index++) {
 			BufferedImage frame = reader.read(index);
-			frame = resize(frame);
 			this.images.add(frame);
 		}
-		this.image = this.images.get(0);
 		this.path = path;
+		this.refresh();
 	}
 
+	/*
 	public static BufferedImage resize(BufferedImage image) {
 		int height = image.getHeight();
 		int width = image.getWidth();
@@ -67,42 +61,44 @@ public class Gif_map_render extends Static_image_map_render implements Configura
 		g.dispose();
 		return new_image;
 	}
+	*/
 
-	@Override
-	public void render(MapView map, MapCanvas canvas, Player player) {
-		long current_time = System.currentTimeMillis();
-		if (current_time - this.timer < 100) {
-			return;
-		}
+	public void refresh() {
 		this.frame++;
 		if (this.frame >= this.images.size()) {
 			this.frame = 0;
 		}
-		this.image = this.images.get(this.frame);
-		this.refresh(map, canvas);
-		this.timer = current_time;
+		BufferedImage next_image = this.images.get(this.frame);
+		this.refresh(next_image);
+	}
+
+	@Override
+	public int get_refresh_interval() {
+		return 5;
 	}
 
 	@Override
 	public @Nonnull
 	Map<String, Object> serialize() {
-		Map<String, Object> save = new HashMap<String, Object>();
+		Map<String, Object> save = super.serialize();
 		save.put("path", this.path);
-		save.put("locked", this.locked);
 		return save;
 	}
 
-	public static Gif_map_render deserialize(@Nonnull Map<String, Object> args) {
+	public static Gif_screen deserialize(@Nonnull Map<String, Object> args) {
 		String path = (String) args.get("path");
-		boolean locked = (boolean) args.get("locked");
-		Gif_map_render render = null;
+		int id = (int) args.get("id");
+		int width_n = (int) args.get("width-n");
+		int height_n = (int) args.get("height-n");
+		Screen.Fill_type fill_type = Screen.Fill_type.valueOf((String) args.get("fill-type"));
+		Gif_screen screen = null;
 		try {
-			render = new Gif_map_render(path);
-			render.locked = locked;
+			screen = new Gif_screen(path, width_n, height_n, fill_type);
+			screen.set_id(id);
 		} catch (IOException e) {
 			Dropper_shop_plugin.instance.getLogger().severe(e.toString());
 		}
-		return render;
+		return screen;
 	}
 
 	public int get_total_frames() {
