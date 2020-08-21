@@ -75,7 +75,7 @@
             <artifactId>dynmap</artifactId>
             <version>3.1</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/Dynmap-3.1-beta-2-spigot.jar</systemPath>
+            <systemPath>${project.basedir}/lib/Dynmap-3.1-beta-3a-spigot.jar</systemPath>
         </dependency>
     </dependencies>
     <build>

@@ -184,14 +184,6 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		fonts_manager = new Fonts_manager();
 		fonts_manager.register_all_fonts();
 		this.getLogger().info("字体注册完成");
-
-		this.screen_config = new Screen_config();
-		this.screen_config.load();
-		this.getLogger().info("自定义屏幕渲染器加载完成");
-
-		this.map_config = new Map_config();
-		this.map_config.load();
-		this.getLogger().info("自定义地图渲染器加载完成");
 	}
 
 	public Lottery_config get_lottery_config() {
@@ -356,8 +348,15 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.getCommand("wrench").setExecutor(wrench);
 		// 初始化指令完成
 
-
 		this.init_placeholder();
+
+		this.screen_config = new Screen_config();
+		this.screen_config.load();
+		this.getLogger().info("自定义屏幕渲染器加载完成");
+
+		this.map_config = new Map_config();
+		this.map_config.load();
+		this.getLogger().info("自定义地图渲染器加载完成");
 
 		// 初始化插件特有物品
 		Powder.init_powder();
