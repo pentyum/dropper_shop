@@ -1,7 +1,7 @@
 package com.piggest.minecraft.bukkit.custom_map.clock;
 
 import com.piggest.minecraft.bukkit.custom_map.Background_map_render;
-import com.piggest.minecraft.bukkit.custom_map.Character_section_map_render;
+import com.piggest.minecraft.bukkit.custom_map.Character_screen;
 import com.piggest.minecraft.bukkit.custom_map.Custom_map_render;
 import com.piggest.minecraft.bukkit.utils.Color_utils;
 
@@ -28,7 +28,7 @@ public class Analog_clock_background_map_render extends Background_map_render {
 		bstroke2 = new BasicStroke((float) size / 60);
 		bstroke3 = new BasicStroke((float) size / 50);
 
-		int side_amount = Character_section_map_render.get_side_amount(size);
+		int side_amount = Character_screen.get_side_amount(size);
 		int pic_size = Custom_map_render.pic_size * side_amount;
 
 		BufferedImage bi = new BufferedImage(pic_size, pic_size, BufferedImage.TYPE_INT_ARGB);

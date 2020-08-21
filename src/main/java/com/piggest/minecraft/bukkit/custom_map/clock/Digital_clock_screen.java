@@ -20,8 +20,8 @@ public class Digital_clock_screen extends Dynamic_string_screen implements Confi
 	protected Calendar date;
 
 	public Digital_clock_screen(Background_map_render background, String format, Font font, int font_size,
-								org.bukkit.Color font_color, String world_name) {
-		super(background, font, font_size, font_color, 1, 1, Fill_type.FULL);
+								org.bukkit.Color font_color, String world_name, int width_n, int height_n) {
+		super(background, font, font_size, font_color, width_n, height_n);
 		this.format = format;
 		this.format = this.format.replace('S', '_');
 		if (world_name != null) {
@@ -54,18 +54,13 @@ public class Digital_clock_screen extends Dynamic_string_screen implements Confi
 	public Map<String, Object> serialize() {
 		Map<String, Object> save = super.serialize();
 		save.put("format", this.format);
-		save.put("font-color", this.font_color);
-		save.put("font-name", this.font_name);
-		save.put("font-size", this.font_size);
 		save.put("world", this.world_name);
-		save.put("background", this.background);
-		save.put("locked", this.locked);
 		return save;
 	}
 
 	@Override
 	public int get_refresh_interval() {
-		return 10;
+		return 8;
 	}
 
 	public static Digital_clock_screen deserialize(@Nonnull Map<String, Object> args) {
@@ -78,7 +73,7 @@ public class Digital_clock_screen extends Dynamic_string_screen implements Confi
 		Background_map_render background = (Background_map_render) args.get("background");
 		boolean locked = (boolean) args.get("locked");
 		Digital_clock_screen new_render = new Digital_clock_screen(background, format, font, font_size,
-				font_color, world_name);
+				font_color, world_name, 1, 1);
 		new_render.locked = locked;
 		return new_render;
 	}

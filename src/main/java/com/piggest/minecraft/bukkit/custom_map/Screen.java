@@ -55,7 +55,7 @@ public abstract class Screen implements ConfigurationSerializable, Runnable {
 	}
 
 	public BufferedImage get_section(int section) {
-		return Character_section_map_render.get_section_of_image(this.show_img, this.width_n, section);
+		return get_section_of_image(this.show_img, this.width_n, section);
 	}
 
 
@@ -65,44 +65,48 @@ public abstract class Screen implements ConfigurationSerializable, Runnable {
 		this.time = System.currentTimeMillis();
 	}
 
-	private void transform() {
-		int raw_width = this.raw_img.getWidth();
-		int raw_height = this.raw_img.getHeight();
-		int new_width;
-		int new_height;
-		int map_width;
-		int map_height;
-		int start_x = 0;
-		int start_y = 0;
+	protected void transform() {
+		if (this.fill_type != Fill_type.NONE) {
+			int raw_width = this.raw_img.getWidth();
+			int raw_height = this.raw_img.getHeight();
+			int new_width;
+			int new_height;
+			int map_width;
+			int map_height;
+			int start_x = 0;
+			int start_y = 0;
 
-		if (this.fill_type == Fill_type.WIDTH) {//固定宽度占满，此时height_n无效
-			new_width = Custom_map_render.pic_size * this.width_n;
-			new_height = new_width * raw_height / raw_width;
-			map_width = new_width;
-			this.height_n = get_another_n(this.width_n, new_width, new_height);
-			map_height = Custom_map_render.pic_size * this.height_n;
-			start_x = 0;
-			start_y = (map_height - new_height) / 2;
-		} else if (this.fill_type == Fill_type.HEIGHT) {//固定高度占满，此时width_n无效
-			new_height = Custom_map_render.pic_size * this.height_n;
-			new_width = new_height * raw_width / raw_height;
-			map_height = new_height;
-			this.width_n = get_another_n(this.height_n, new_height, new_width);
-			map_width = Custom_map_render.pic_size * this.width_n;
-			start_y = 0;
-			start_x = (map_width - new_width) / 2;
-		} else { //全部拉伸占满，完全由height_n和width_n定义
-			new_width = Custom_map_render.pic_size * this.width_n;
-			new_height = Custom_map_render.pic_size * this.height_n;
-			map_width = new_width;
-			map_height = new_height;
+			if (this.fill_type == Fill_type.WIDTH) {//固定宽度占满，此时height_n无效
+				new_width = Custom_map_render.pic_size * this.width_n;
+				new_height = new_width * raw_height / raw_width;
+				map_width = new_width;
+				this.height_n = get_another_n(this.width_n, new_width, new_height);
+				map_height = Custom_map_render.pic_size * this.height_n;
+				start_x = 0;
+				start_y = (map_height - new_height) / 2;
+			} else if (this.fill_type == Fill_type.HEIGHT) {//固定高度占满，此时width_n无效
+				new_height = Custom_map_render.pic_size * this.height_n;
+				new_width = new_height * raw_width / raw_height;
+				map_height = new_height;
+				this.width_n = get_another_n(this.height_n, new_height, new_width);
+				map_width = Custom_map_render.pic_size * this.width_n;
+				start_y = 0;
+				start_x = (map_width - new_width) / 2;
+			} else { //全部拉伸占满，完全由height_n和width_n定义
+				new_width = Custom_map_render.pic_size * this.width_n;
+				new_height = Custom_map_render.pic_size * this.height_n;
+				map_width = new_width;
+				map_height = new_height;
+			}
+
+			Image scaled_image = this.raw_img.getScaledInstance(new_width, new_height, Image.SCALE_DEFAULT);
+			this.show_img = new BufferedImage(map_width, map_height, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g = this.show_img.createGraphics();
+			g.drawImage(scaled_image, start_x, start_y, null);
+			g.dispose();
+		} else {
+			this.show_img = this.raw_img;
 		}
-
-		Image scaled_image = this.raw_img.getScaledInstance(new_width, new_height, Image.SCALE_DEFAULT);
-		this.show_img = new BufferedImage(map_width, map_height, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = this.show_img.createGraphics();
-		g.drawImage(scaled_image, start_x, start_y, null);
-		g.dispose();
 	}
 
 	@Override
@@ -124,6 +128,14 @@ public abstract class Screen implements ConfigurationSerializable, Runnable {
 		return this.height_n;
 	}
 
+	public int get_show_width() {
+		return this.width_n * Custom_map_render.pic_size;
+	}
+
+	public int get_show_height() {
+		return this.height_n * Custom_map_render.pic_size;
+	}
+
 	public Screen_map_render[] generate_renders() {
 		int map_quantity = this.get_show_width_n() * this.get_show_height_n();
 		Screen_map_render[] renders = new Screen_map_render[map_quantity];
@@ -140,9 +152,21 @@ public abstract class Screen implements ConfigurationSerializable, Runnable {
 		return (int) Math.ceil((double) n * another_length / n_length);
 	}
 
+	public static BufferedImage get_section_of_image(BufferedImage bi, int side_amount, int section) {
+		int start_y = (section / side_amount) * Custom_map_render.pic_size;
+		int start_x = (section % side_amount) * Custom_map_render.pic_size;
+		return bi.getSubimage(start_x, start_y, Custom_map_render.pic_size, Custom_map_render.pic_size);
+	}
+
+	public BufferedImage get_current_raw_img() {
+		return this.raw_img;
+	}
+
 	protected enum Fill_type {
 		WIDTH,
 		HEIGHT,
-		FULL
+		FULL,
+		NONE
 	}
+
 }

@@ -13,7 +13,7 @@ public class Qr_code_screen extends Static_image_screen implements Configuration
 	private int margin = 3;
 
 	public Qr_code_screen(String text, int margin) throws WriterException {
-		super(1,1,Fill_type.FULL);
+		super(1, 1, Fill_type.NONE);
 		this.raw_img = Qr_code_utils.generate(text, margin);
 		this.text = text;
 		this.margin = margin;
@@ -28,7 +28,6 @@ public class Qr_code_screen extends Static_image_screen implements Configuration
 		save.put("locked", this.locked);
 		return save;
 	}
-
 
 	public static Qr_code_screen deserialize(@Nonnull Map<String, Object> args) {
 		String text = (String) args.get("text");

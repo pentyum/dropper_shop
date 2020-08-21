@@ -1,6 +1,6 @@
 package com.piggest.minecraft.bukkit.custom_map.clock;
 
-import com.piggest.minecraft.bukkit.custom_map.Character_section_map_render;
+import com.piggest.minecraft.bukkit.custom_map.Character_screen;
 import com.piggest.minecraft.bukkit.custom_map.Custom_map_render;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Clock_utils;
@@ -13,24 +13,22 @@ import java.util.Calendar;
 import java.util.Map;
 
 public class Analog_clock_screen extends Digital_clock_screen {
-	private String style;
-	private BasicStroke bstroke_sec;
-	private BasicStroke bstroke_min;
-	private BasicStroke bstroke_hr;
+	private final String style;
+	private final BasicStroke bstroke_sec;
+	private final BasicStroke bstroke_min;
+	private final BasicStroke bstroke_hr;
 
-	private int pic_size;
-	private int side_amount;
+	private final int pic_size;
 
 	public Analog_clock_screen(Analog_clock_background_map_render background, String style, Font font, int size,
 							   Color font_color, String world_name) {
-		super(background, "HH:mm:ss", font, size, font_color, world_name);
+		super(background, "HH:mm:ss", font, size, font_color, world_name, Character_screen.get_side_amount(size), Character_screen.get_side_amount(size));
 		this.style = style;
 		bstroke_sec = new BasicStroke((float) this.font_size / 100);
 		bstroke_min = new BasicStroke((float) this.font_size / 58);
 		bstroke_hr = new BasicStroke((float) this.font_size / 43);
 
-		this.side_amount = Character_section_map_render.get_side_amount(this.font_size);
-		this.pic_size = Custom_map_render.pic_size * side_amount;
+		this.pic_size = this.get_show_width();
 		this.refresh();
 	}
 

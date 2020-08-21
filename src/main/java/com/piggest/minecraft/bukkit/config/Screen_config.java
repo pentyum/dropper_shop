@@ -23,8 +23,7 @@ public class Screen_config extends Ext_config {
 		ConfigurationSerialization.registerClass(Gif_screen.class);
 		ConfigurationSerialization.registerClass(Local_image_screen.class);
 		ConfigurationSerialization.registerClass(Qr_code_screen.class);
-		ConfigurationSerialization.registerClass(Character_map_render.class);
-		ConfigurationSerialization.registerClass(Character_section_map_render.class);
+		ConfigurationSerialization.registerClass(Character_screen.class);
 		ConfigurationSerialization.registerClass(Digital_clock_screen.class);
 		ConfigurationSerialization.registerClass(Analog_clock_screen.class);
 

@@ -157,16 +157,15 @@ public class Custom_map_command_executor implements TabExecutor {
 
 	public static ItemStack[] generate_char_maps(Player player, Color background_color, char c, Font font,
 												 int font_size, Color font_color) {
-		int side_amount = Character_section_map_render.get_side_amount(font_size);
-		int map_amount = side_amount * side_amount;
-		ItemStack[] maps = new ItemStack[map_amount];
-		for (int i = 0; i < map_amount; i++) {
+		Background_map_render background = new Background_map_render(background_color);
+		Character_screen screen = new Character_screen(background, c, font, font_size, font_color);
+		Screen_map_render[] renders = screen.generate_renders();
+		ItemStack[] maps = new ItemStack[renders.length];
+		for (int i = 0; i < renders.length; i++) {
+			Screen_map_render render = renders[i];
 			ItemStack item = new ItemStack(Material.FILLED_MAP);
 			ItemMeta meta = item.getItemMeta();
 			MapMeta mapmeta = (MapMeta) meta;
-			Background_map_render background = new Background_map_render(background_color);
-			Character_map_render render = new Character_section_map_render(background, c, font, font_size, font_color,
-					i);
 			MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
 			mapmeta.setMapView(mapview);
 			mapmeta.setDisplayName(String.valueOf(c));
@@ -177,11 +176,11 @@ public class Custom_map_command_executor implements TabExecutor {
 			lore.add("§r字号: " + font_size);
 			lore.add(String.format("§r文字颜色: (%d,%d,%d)", font_color.getRed(), font_color.getGreen(),
 					font_color.getBlue()));
-			if (map_amount > 1) {
-				int y = (i / side_amount);
-				int x = (i % side_amount);
+			if (renders.length > 1) {
+				int y = render.get_y();
+				int x = render.get_x();
 				lore.add(String.format("§r部分: (%d,%d)", x, y));
-				lore.add("§r共 " + map_amount + " 张");
+				lore.add("§r共 " + renders.length + " 张");
 			}
 			mapmeta.setLore(lore);
 			item.setItemMeta(meta);
@@ -197,7 +196,7 @@ public class Custom_map_command_executor implements TabExecutor {
 		MapMeta mapmeta = (MapMeta) meta;
 		Background_map_render background = new Background_map_render(background_color);
 		Digital_clock_screen screen = new Digital_clock_screen(background, format, font, font_size, font_color,
-				world_name);
+				world_name, 1, 1);
 		Screen_map_render render = screen.generate_renders()[0];
 		MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
 		mapmeta.setMapView(mapview);
@@ -222,10 +221,8 @@ public class Custom_map_command_executor implements TabExecutor {
 		Analog_clock_screen screen = new Analog_clock_screen(background, style, font, font_size,
 				font_color, world_name);
 		Screen_map_render[] renders = screen.generate_renders();
-		int side_amount = Character_section_map_render.get_side_amount(font_size);
-		int map_amount = side_amount * side_amount;
-		ItemStack[] maps = new ItemStack[map_amount];
-		for (int i = 0; i < map_amount; i++) {
+		ItemStack[] maps = new ItemStack[renders.length];
+		for (int i = 0; i < renders.length; i++) {
 			Screen_map_render render = renders[i];
 			ItemStack item = new ItemStack(Material.FILLED_MAP);
 			ItemMeta meta = item.getItemMeta();
@@ -242,11 +239,11 @@ public class Custom_map_command_executor implements TabExecutor {
 			lore.add(String.format("§r文字颜色: (%d,%d,%d)", font_color.getRed(), font_color.getGreen(),
 					font_color.getBlue()));
 			lore.add(String.format("§r世界: %s", world_name == null ? "真实世界" : world_name));
-			if (map_amount > 1) {
-				int y = (i / side_amount);
-				int x = (i % side_amount);
+			if (renders.length > 1) {
+				int y = render.get_y();
+				int x = render.get_x();
 				lore.add(String.format("§r部分: (%d,%d)", x, y));
-				lore.add("§r共 " + map_amount + " 张");
+				lore.add("§r共 " + renders.length + " 张");
 			}
 			mapmeta.setLore(lore);
 			item.setItemMeta(meta);

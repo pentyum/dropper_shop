@@ -12,7 +12,7 @@ public class Placeholder_screen extends Dynamic_string_screen {
 
 	public Placeholder_screen(Background_map_render background, String text, Font font, int font_size,
 							  Color font_color) {
-		super(background, font, font_size, font_color, 1, 1, Fill_type.FULL);
+		super(background, font, font_size, font_color, 1, 1);
 		this.text = text;
 	}
 

@@ -3,7 +3,8 @@ package com.piggest.minecraft.bukkit.dropper_shop;
 import com.google.zxing.NotFoundException;
 import com.piggest.minecraft.bukkit.config.Price_config;
 import com.piggest.minecraft.bukkit.custom_map.Custom_map_render;
-import com.piggest.minecraft.bukkit.custom_map.Static_image_map_render;
+import com.piggest.minecraft.bukkit.custom_map.Screen;
+import com.piggest.minecraft.bukkit.custom_map.Screen_map_render;
 import com.piggest.minecraft.bukkit.grinder.Grinder;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
@@ -202,15 +203,7 @@ public class Dropper_shop_command_executor implements TabExecutor {
 			} else if (args[0].equalsIgnoreCase("scan_qr_code")) {
 				Vector direction = player.getLocation().getDirection();
 				RayTraceResult result = player.getWorld().rayTraceEntities(player.getEyeLocation(), direction, 5,
-						new Predicate<Entity>() {
-							@Override
-							public boolean test(Entity e) {
-								if (e.getType() == EntityType.PLAYER) {
-									return false;
-								}
-								return true;
-							}
-						});
+						e -> e.getType() != EntityType.PLAYER);
 				if (result == null) {
 					player.sendMessage("未检测到实体");
 					return true;
@@ -224,9 +217,10 @@ public class Dropper_shop_command_executor implements TabExecutor {
 					ItemFrame item_frame = (ItemFrame) entity;
 					ItemStack item = item_frame.getItem();
 					Custom_map_render render = Custom_map_render.get_render_from_item(item);
-					if (render instanceof Static_image_map_render) {
-						Static_image_map_render image_render = (Static_image_map_render) render;
-						BufferedImage image = image_render.get_image();
+					if (render instanceof Screen_map_render) {
+						Screen_map_render image_render = (Screen_map_render) render;
+						Screen screen = image_render.get_screen();
+						BufferedImage image = screen.get_current_raw_img();
 						String text = null;
 						try {
 							text = Qr_code_utils.scan(image);

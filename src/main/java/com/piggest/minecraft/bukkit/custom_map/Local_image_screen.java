@@ -25,6 +25,7 @@ public class Local_image_screen extends Static_image_screen {
 		this.refresh();
 	}
 
+
 	@Nonnull
 	@Override
 	public Map<String, Object> serialize() {
