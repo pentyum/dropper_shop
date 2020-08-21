@@ -47,5 +47,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT" level="project" />
   </component>
 </module>

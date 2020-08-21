@@ -50,6 +50,10 @@ public class Fonts_manager {
 				return true;
 			} else if (name.endsWith(".TTF")) {
 				return true;
+			} else if (name.endsWith(".otf")) {
+				return true;
+			} else if (name.endsWith(".OTF")) {
+				return true;
 			}
 			return false;
 		}
