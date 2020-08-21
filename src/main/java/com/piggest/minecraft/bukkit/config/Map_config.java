@@ -20,10 +20,6 @@ public class Map_config extends Ext_config {
 	public Map_config() {
 		super("maps.yml");
 		ConfigurationSerialization.registerClass(Empty_map_render.class);
-
-		ConfigurationSerialization.registerClass(Background_map_render.class);
-		ConfigurationSerialization.registerClass(Analog_clock_background_map_render.class);
-
 		ConfigurationSerialization.registerClass(Screen_map_render.class);
 	}
 

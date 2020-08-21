@@ -42,7 +42,7 @@ public class Screen_map_render extends Custom_map_render implements Configuratio
 			return;
 		}
 		BufferedImage img = screen.get_section(this.section);
-		Static_image_screen.draw_image(canvas, 0, 0, img);
+		canvas.drawImage(0, 0, img);
 		this.time = upstream_time;
 	}
 

@@ -30,17 +30,17 @@ public class Stock_subtitle_screen extends Rolling_subtitle_screen {
 			Sina_stock[] stocks = Sina_stock.get_stock_info(stock_list.toArray(stocks_array));
 			for (Sina_stock stock : stocks) {
 				stock_str.append(stock.toString());
-				stock_str.append("   ");
+				stock_str.append("    ");
 			}
 		} catch (Exception e) {
-			stock_str = new StringBuilder(e.getLocalizedMessage());
+			e.printStackTrace();
 		}
 		this.set_str(stock_str.toString());
 	}
 
 	@Override
 	public void refresh() {
-		if (this.time * this.get_refresh_interval() >= 40) {//两秒更新一次
+		if (this.time * this.get_refresh_interval() >= 100) {//五秒更新一次
 			this.time = 0;
 			this.update_stock_info();
 		}
@@ -63,10 +63,10 @@ public class Stock_subtitle_screen extends Rolling_subtitle_screen {
 		int font_size = (int) args.get("font-size");
 		Background_map_render background = (Background_map_render) args.get("background");
 		List<String> stock_list = (List<String>) args.get("stock-list");
-		float speed = (float) args.get("speed");
+		double speed = (double) args.get("speed");
 		boolean locked = (boolean) args.get("locked");
 		int length_n = (int) args.get("width-n");
-		Stock_subtitle_screen new_screen = new Stock_subtitle_screen(background, stock_list, font, font_size, font_color, length_n, speed);
+		Stock_subtitle_screen new_screen = new Stock_subtitle_screen(background, stock_list, font, font_size, font_color, length_n, (float) speed);
 		new_screen.locked = locked;
 		return new_screen;
 	}
