@@ -27,6 +27,8 @@ public class Screen_config extends Ext_config {
 		ConfigurationSerialization.registerClass(Digital_clock_screen.class);
 		ConfigurationSerialization.registerClass(Analog_clock_screen.class);
 		ConfigurationSerialization.registerClass(Rolling_subtitle_screen.class);
+		ConfigurationSerialization.registerClass(Stock_subtitle_screen.class);
+
 
 		int threads = Runtime.getRuntime().availableProcessors();
 		this.service = Executors.newScheduledThreadPool(threads);
