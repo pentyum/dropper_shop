@@ -342,11 +342,6 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.radio_manager = new Radio_manager();
 		// 初始化管理器完成
 
-		// 初始化指令
-		this.init_command();
-		Wrench_command_executor wrench = new Wrench_command_executor();
-		this.getCommand("wrench").setExecutor(wrench);
-		// 初始化指令完成
 
 		this.init_placeholder();
 
@@ -357,6 +352,12 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.map_config = new Map_config();
 		this.map_config.load();
 		this.getLogger().info("自定义地图渲染器加载完成");
+
+		// 初始化指令
+		this.init_command();
+		Wrench_command_executor wrench = new Wrench_command_executor();
+		this.getCommand("wrench").setExecutor(wrench);
+		// 初始化指令完成
 
 		// 初始化插件特有物品
 		Powder.init_powder();
