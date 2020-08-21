@@ -159,6 +159,7 @@ public class Custom_map_command_executor implements TabExecutor {
 												 int font_size, Color font_color) {
 		Background_map_render background = new Background_map_render(background_color);
 		Character_screen screen = new Character_screen(background, c, font, font_size, font_color);
+		screen_config.add_screen(screen);
 		Screen_map_render[] renders = screen.generate_renders();
 		ItemStack[] maps = new ItemStack[renders.length];
 		for (int i = 0; i < renders.length; i++) {
@@ -197,6 +198,7 @@ public class Custom_map_command_executor implements TabExecutor {
 		Background_map_render background = new Background_map_render(background_color);
 		Digital_clock_screen screen = new Digital_clock_screen(background, format, font, font_size, font_color,
 				world_name, 1, 1);
+		screen_config.add_screen(screen);
 		Screen_map_render render = screen.generate_renders()[0];
 		MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
 		mapmeta.setMapView(mapview);
@@ -220,6 +222,7 @@ public class Custom_map_command_executor implements TabExecutor {
 				font_color, font_size);
 		Analog_clock_screen screen = new Analog_clock_screen(background, style, font, font_size,
 				font_color, world_name);
+		screen_config.add_screen(screen);
 		Screen_map_render[] renders = screen.generate_renders();
 		ItemStack[] maps = new ItemStack[renders.length];
 		for (int i = 0; i < renders.length; i++) {
@@ -258,6 +261,7 @@ public class Custom_map_command_executor implements TabExecutor {
 		ItemMeta meta = item.getItemMeta();
 		MapMeta mapmeta = (MapMeta) meta;
 		Qr_code_screen screen = new Qr_code_screen(text, margin);
+		screen_config.add_screen(screen);
 		Screen_map_render render = screen.generate_renders()[0];
 		MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
 		mapmeta.setMapView(mapview);
@@ -292,8 +296,8 @@ public class Custom_map_command_executor implements TabExecutor {
 		} else {
 			screen = new Local_image_screen(pic_name, width_n, height_n, fill_type);
 		}
-		Screen_map_render[] renders = screen.generate_renders();
 		screen_config.add_screen(screen);
+		Screen_map_render[] renders = screen.generate_renders();
 		ItemStack[] map_list = new ItemStack[renders.length];
 		for (int i = 0; i < renders.length; i++) {
 			Screen_map_render render = renders[i];
@@ -325,6 +329,7 @@ public class Custom_map_command_executor implements TabExecutor {
 															 int font_size, Color font_color, int length_n, float speed) {
 		Background_map_render background = new Background_map_render(background_color);
 		Rolling_subtitle_screen screen = new Rolling_subtitle_screen(background, str, font, font_size, font_color, length_n, speed);
+		screen_config.add_screen(screen);
 		Screen_map_render[] renders = screen.generate_renders();
 		ItemStack[] maps = new ItemStack[renders.length];
 		for (int i = 0; i < renders.length; i++) {
@@ -360,6 +365,7 @@ public class Custom_map_command_executor implements TabExecutor {
 	public static ItemStack[] generate_stock_subtitle_maps(Player player, String[] stock_ids, Font font, int font_size, int length_n, float speed) {
 		Background_map_render background = new Background_map_render(Color.BLACK);
 		Stock_subtitle_screen screen = new Stock_subtitle_screen(background, stock_ids, font, font_size, Color.YELLOW, length_n, speed);
+		screen_config.add_screen(screen);
 		Screen_map_render[] renders = screen.generate_renders();
 		ItemStack[] maps = new ItemStack[renders.length];
 		for (int i = 0; i < renders.length; i++) {

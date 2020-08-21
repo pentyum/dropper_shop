@@ -137,6 +137,7 @@ public abstract class Screen implements ConfigurationSerializable, Runnable {
 	}
 
 	public Screen_map_render[] generate_renders() {
+		assert this.id > 0;
 		int map_quantity = this.get_show_width_n() * this.get_show_height_n();
 		Screen_map_render[] renders = new Screen_map_render[map_quantity];
 		Arrays.setAll(renders, i -> new Screen_map_render(i, this.id));
