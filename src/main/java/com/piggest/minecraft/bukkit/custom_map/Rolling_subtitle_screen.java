@@ -40,7 +40,7 @@ public class Rolling_subtitle_screen extends String_screen {
 
 	@Override
 	public int get_refresh_interval() {
-		return 2;
+		return 4;
 	}
 
 	public void set_str(String new_str) {
@@ -54,6 +54,10 @@ public class Rolling_subtitle_screen extends String_screen {
 		save.put("string", this.str);
 		save.put("speed", this.speed);
 		return save;
+	}
+
+	public float get_speed() {
+		return this.speed;
 	}
 
 	public static Rolling_subtitle_screen deserialize(@Nonnull Map<String, Object> args) {

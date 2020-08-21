@@ -6,19 +6,24 @@ import org.bukkit.Color;
 
 import javax.annotation.Nonnull;
 import java.awt.Font;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 public class Stock_subtitle_screen extends Rolling_subtitle_screen {
-	List<String> stock_list;
+	private final List<String> stock_list;
+	private int time = 0;
+
+	public Stock_subtitle_screen(Background_map_render background, String[] stock_list, Font font, int font_size, Color font_color, int length_n, float speed) {
+		this(background, Arrays.asList(stock_list), font, font_size, font_color, length_n, speed);
+	}
 
 	public Stock_subtitle_screen(Background_map_render background, List<String> stock_list, Font font, int font_size, Color font_color, int length_n, float speed) {
 		super(background, "Error", font, font_size, font_color, length_n, speed);
 		this.stock_list = stock_list;
 	}
 
-	@Override
-	public void refresh() {
+	private void update_stock_info() {
 		StringBuilder stock_str = new StringBuilder();
 		String[] stocks_array = new String[stock_list.size()];
 		try {
@@ -31,7 +36,16 @@ public class Stock_subtitle_screen extends Rolling_subtitle_screen {
 			stock_str = new StringBuilder(e.getLocalizedMessage());
 		}
 		this.set_str(stock_str.toString());
+	}
+
+	@Override
+	public void refresh() {
+		if (this.time * this.get_refresh_interval() >= 40) {//两秒更新一次
+			this.time = 0;
+			this.update_stock_info();
+		}
 		super.refresh();
+		this.time++;
 	}
 
 	@Nonnull

@@ -15,6 +15,7 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -36,7 +37,7 @@ public class Custom_map_command_executor implements TabExecutor {
 	static Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
 	static Screen_config screen_config = Dropper_shop_plugin.instance.get_screen_config();
 
-	private static final ArrayList<String> sub_cmd = new ArrayList<String>() {
+	private static final ArrayList<String> sub_cmd = new ArrayList<>() {
 		private static final long serialVersionUID = -6116323601639805386L;
 
 		{
@@ -48,10 +49,12 @@ public class Custom_map_command_executor implements TabExecutor {
 			add("get_image");
 			add("get_gif");
 			add("get_qr_code");
+			add("get_rolling_subtitle");
+			add("get_stock_subtitle");
 			add("reload");
 		}
 	};
-	private static final ArrayList<String> size_list = new ArrayList<String>() {
+	private static final ArrayList<String> size_list = new ArrayList<>() {
 		private static final long serialVersionUID = -4372329620166289408L;
 
 		{
@@ -73,7 +76,7 @@ public class Custom_map_command_executor implements TabExecutor {
 			add("200");
 		}
 	};
-	private static final ArrayList<String> n_list = new ArrayList<String>() {
+	private static final ArrayList<String> n_list = new ArrayList<>() {
 		private static final long serialVersionUID = 3906690741866082030L;
 
 		{
@@ -91,25 +94,33 @@ public class Custom_map_command_executor implements TabExecutor {
 			return Tab_list.contains(sub_cmd, args[0]);
 		}
 		if (args[0].equalsIgnoreCase("get_char") || args[0].equalsIgnoreCase("get_digital_clock")
-				|| args[0].equalsIgnoreCase("get_analog_clock")) {
-			if (args.length == 2 || args.length == 6) {
+				|| args[0].equalsIgnoreCase("get_analog_clock") || args[0].equalsIgnoreCase("get_rolling_subtitle")) {
+			if (args.length == 2 || args.length == 6) { //颜色
 				return Tab_list.color_list;
-			} else if (args.length == 4) {
+			} else if (args.length == 4) { //字体
 				Set<String> fonts_set = Dropper_shop_plugin.instance.get_fonts_manager().get_all_name();
 				ArrayList<String> fonts_list = new ArrayList<>(fonts_set);
 				return Tab_list.contains(fonts_list, args[3]);
-			} else if (args.length == 3) {
+			} else if (args.length == 3) { //内容
 				if (args[0].equalsIgnoreCase("get_digital_clock")) {
 					return Tab_list.time_format;
 				} else if (args[0].equalsIgnoreCase("get_analog_clock")) {
 					return null;
 				}
-			} else if (args.length == 5) {
+			} else if (args.length == 5) { //字号
 				return size_list;
-			} else if (args.length == 7) {
+			} else if (args.length == 7) { //世界名称
 				if (args[0].equalsIgnoreCase("get_digital_clock") || args[0].equalsIgnoreCase("get_analog_clock")) {
 					return Tab_list.world_name_list;
 				}
+			}
+		} else if (args[0].equalsIgnoreCase("get_stock_subtitle")) {
+			if (args.length == 3) { //字体
+				Set<String> fonts_set = Dropper_shop_plugin.instance.get_fonts_manager().get_all_name();
+				ArrayList<String> fonts_list = new ArrayList<>(fonts_set);
+				return Tab_list.contains(fonts_list, args[2]);
+			} else if (args.length == 4) { //字号
+				return size_list;
 			}
 		} else if (args[0].equalsIgnoreCase("set_cdm")) {
 			if (sender instanceof Player) {
@@ -125,7 +136,7 @@ public class Custom_map_command_executor implements TabExecutor {
 					return null;
 				}
 			}
-		} else if (args[0].equalsIgnoreCase("get_image")) {
+		} else if (args[0].equalsIgnoreCase("get_image") || args[0].equalsIgnoreCase("get_gif")) {
 			if (sender instanceof Player) {
 				if (args.length == 2) {
 					File font_folder = new File(Dropper_shop_plugin.instance.getDataFolder(), "images");
@@ -138,17 +149,6 @@ public class Custom_map_command_executor implements TabExecutor {
 					return n_list;
 				} else if (args.length == 4) {
 					return Tab_list.true_false_list;
-				}
-			}
-		} else if (args[0].equalsIgnoreCase("get_gif")) {
-			if (sender instanceof Player) {
-				if (args.length == 2) {
-					File font_folder = new File(Dropper_shop_plugin.instance.getDataFolder(), "images");
-					ArrayList<String> file_name_list = new ArrayList<>();
-					for (File file : font_folder.listFiles()) {
-						file_name_list.add(file.getName());
-					}
-					return file_name_list;
 				}
 			}
 		}
@@ -321,24 +321,72 @@ public class Custom_map_command_executor implements TabExecutor {
 		return map_list;
 	}
 
-	/*
-	public static ItemStack generate_gif_map(Player player, String pic_name) throws IOException {
-		ItemStack item = new ItemStack(Material.FILLED_MAP);
-		ItemMeta meta = item.getItemMeta();
-		MapMeta mapmeta = (MapMeta) meta;
-		Gif_screen render = new Gif_screen(pic_name);
-		Map_config map_config = Dropper_shop_plugin.instance.get_map_config();
-		MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
-		mapmeta.setMapView(mapview);
-		mapmeta.setDisplayName(pic_name);
-		ArrayList<String> lore = new ArrayList<>();
-		lore.add(String.format("§r文件名: %s", pic_name));
-		lore.add(String.format("§r帧数: %d", render.get_total_frames()));
-		mapmeta.setLore(lore);
-		item.setItemMeta(meta);
-		return item;
+	public static ItemStack[] generate_rolling_subtitle_maps(Player player, Color background_color, String str, Font font,
+															 int font_size, Color font_color, int length_n, float speed) {
+		Background_map_render background = new Background_map_render(background_color);
+		Rolling_subtitle_screen screen = new Rolling_subtitle_screen(background, str, font, font_size, font_color, length_n, speed);
+		Screen_map_render[] renders = screen.generate_renders();
+		ItemStack[] maps = new ItemStack[renders.length];
+		for (int i = 0; i < renders.length; i++) {
+			Screen_map_render render = renders[i];
+			ItemStack item = new ItemStack(Material.FILLED_MAP);
+			ItemMeta meta = item.getItemMeta();
+			MapMeta mapmeta = (MapMeta) meta;
+			MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
+			mapmeta.setMapView(mapview);
+			mapmeta.setDisplayName("滚动字幕");
+			ArrayList<String> lore = new ArrayList<>();
+			lore.add(String.format("§r内容: %s", str));
+			lore.add(String.format("§r速度: %.1f", screen.get_speed()));
+			lore.add(String.format("§r背景颜色: (%d,%d,%d)", background_color.getRed(), background_color.getGreen(),
+					background_color.getBlue()));
+			lore.add("§r字体: " + font.getFontName(Locale.SIMPLIFIED_CHINESE));
+			lore.add("§r字号: " + font_size);
+			lore.add(String.format("§r文字颜色: (%d,%d,%d)", font_color.getRed(), font_color.getGreen(), font_color.getBlue()));
+
+			if (renders.length > 1) {
+				int x = render.get_x();
+				int y = render.get_y();
+				lore.add(String.format("§r部分: (%d,%d)", x, y));
+				lore.add("§r共 " + renders.length + " 张");
+			}
+			mapmeta.setLore(lore);
+			item.setItemMeta(meta);
+			maps[i] = item;
+		}
+		return maps;
 	}
-	*/
+
+	public static ItemStack[] generate_stock_subtitle_maps(Player player, String[] stock_ids, Font font, int font_size, int length_n, float speed) {
+		Background_map_render background = new Background_map_render(Color.BLACK);
+		Stock_subtitle_screen screen = new Stock_subtitle_screen(background, stock_ids, font, font_size, Color.YELLOW, length_n, speed);
+		Screen_map_render[] renders = screen.generate_renders();
+		ItemStack[] maps = new ItemStack[renders.length];
+		for (int i = 0; i < renders.length; i++) {
+			Screen_map_render render = renders[i];
+			ItemStack item = new ItemStack(Material.FILLED_MAP);
+			ItemMeta meta = item.getItemMeta();
+			MapMeta mapmeta = (MapMeta) meta;
+			MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
+			mapmeta.setMapView(mapview);
+			mapmeta.setDisplayName("行情");
+			ArrayList<String> lore = new ArrayList<>();
+			//lore.add(String.format("§r内容: %s", str));
+			lore.add(String.format("§r速度: %.1f", screen.get_speed()));
+			lore.add("§r字体: " + font.getFontName(Locale.SIMPLIFIED_CHINESE));
+			lore.add("§r字号: " + font_size);
+			if (renders.length > 1) {
+				int x = render.get_x();
+				int y = render.get_y();
+				lore.add(String.format("§r部分: (%d,%d)", x, y));
+				lore.add("§r共 " + renders.length + " 张");
+			}
+			mapmeta.setLore(lore);
+			item.setItemMeta(meta);
+			maps[i] = item;
+		}
+		return maps;
+	}
 
 	public static void set_command_def_map(ItemStack item, Player player) {
 		MapMeta meta = (MapMeta) item.getItemMeta();
@@ -594,6 +642,87 @@ public class Custom_map_command_executor implements TabExecutor {
 			}
 			Inventory_io.give_item_to_player(player, item);
 			return true;
+		} else if (args[0].equalsIgnoreCase("get_rolling_subtitle")) {
+			if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
+				sender.sendMessage("必须由玩家执行该命令");
+				return true;
+			}
+			Player player = (Player) sender;
+
+			if (args.length < 8) {
+				player.sendMessage("/custom_map get_rolling_subtitle <背景色> <内容> <字体> <字号> <文字颜色> <长度> <移动速度>。");
+				return true;
+			}
+			String background_color_string = args[1];
+			Font font = Dropper_shop_plugin.instance.get_fonts_manager().get_font(args[3]);
+			int font_size = 28;
+			try {
+				font_size = Integer.parseInt(args[4]);
+			} catch (NumberFormatException e) {
+				player.sendMessage("字号格式错误，已设置为" + font_size);
+			}
+			String font_color_string = args[5];
+			Color background_color = Color_utils.string_color_map.get(background_color_string);
+			Color font_color = Color_utils.string_color_map.get(font_color_string);
+			if (background_color == null) {
+				player.sendMessage("背景颜色错误");
+				return true;
+			}
+			if (font_color == null) {
+				player.sendMessage("字体颜色错误");
+				return true;
+			}
+			int length_n = 5;
+			try {
+				length_n = Integer.parseInt(args[6]);
+			} catch (NumberFormatException e) {
+				player.sendMessage("长度格式错误，已设置为" + length_n);
+			}
+
+			float speed = 5;
+			try {
+				speed = Float.parseFloat(args[7]);
+			} catch (NumberFormatException e) {
+				player.sendMessage("速度格式错误，已设置为" + speed);
+			}
+
+			ItemStack[] items = generate_rolling_subtitle_maps(player, background_color, args[2], font, font_size, font_color, length_n, speed);
+			Inventory_io.give_item_to_player(player, items);
+		} else if (args[0].equalsIgnoreCase("get_stock_subtitle")) {
+			if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
+				sender.sendMessage("必须由玩家执行该命令");
+				return true;
+			}
+			Player player = (Player) sender;
+
+			if (args.length < 6) {
+				player.sendMessage("/custom_map get_stock_subtitle <内容> <字体> <字号> <长度> <移动速度>。");
+				return true;
+			}
+			String[] stock_ids = args[1].split(",");
+			Font font = Dropper_shop_plugin.instance.get_fonts_manager().get_font(args[2]);
+			int font_size = 28;
+			try {
+				font_size = Integer.parseInt(args[3]);
+			} catch (NumberFormatException e) {
+				player.sendMessage("字号格式错误，已设置为" + font_size);
+			}
+			int length_n = 5;
+			try {
+				length_n = Integer.parseInt(args[4]);
+			} catch (NumberFormatException e) {
+				player.sendMessage("长度格式错误，已设置为" + length_n);
+			}
+
+			float speed = 5;
+			try {
+				speed = Float.parseFloat(args[5]);
+			} catch (NumberFormatException e) {
+				player.sendMessage("速度格式错误，已设置为" + speed);
+			}
+
+			ItemStack[] items = generate_stock_subtitle_maps(player, stock_ids, font, font_size, length_n, speed);
+			Inventory_io.give_item_to_player(player, items);
 		} else if (args[0].equalsIgnoreCase("reload")) {
 			screen_config.reload();
 			map_config.reload();
