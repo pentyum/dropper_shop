@@ -20,8 +20,8 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 
 public class Http_download {
-	private int cache = 10 * 1024;
-	private File save_dir;
+	private final int cache = 10 * 1024;
+	private final File save_dir;
 
 	public Http_download(File save_dir) {
 		if (!save_dir.isDirectory()) {

@@ -30,7 +30,6 @@ public class Digital_clock_screen extends Dynamic_string_screen implements Confi
 				this.format = this.format.replace('s', '_');
 			}
 		}
-		this.refresh();
 	}
 
 	@Override

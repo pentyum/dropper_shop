@@ -2,38 +2,42 @@ package com.piggest.minecraft.bukkit.custom_map;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Color_utils;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.LineMetrics;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
 import java.util.Map;
 
-public class Character_screen extends Static_image_screen implements ConfigurationSerializable {
+public class Character_screen extends String_screen {
 	protected char character;
-	protected String font_name;
-	protected org.bukkit.Color font_color;
-	protected int font_size;
-	protected Background_map_render background;
 
 	public static int get_side_amount(int font_size) {
 		return font_size / Custom_map_render.pic_size + 1;
 	}
 
-	public static void draw_mid_string(Graphics2D g, String str, Font font, int pic_width, int pic_height, int font_size) {
+	public static int get_str_width(String str, Font font, int font_size) {
+		font = font.deriveFont(Font.PLAIN, font_size);
+		Canvas c = new Canvas();
+		FontMetrics fm = c.getFontMetrics(font);
+		return fm.stringWidth(str);
+	}
+
+	public static void draw_mid_string(Graphics2D g, String str, Font font, int pic_width, int pic_height, int font_size, float x) {
 		font = font.deriveFont(Font.PLAIN, font_size);
 		g.setFont(font);
 		FontRenderContext context = g.getFontRenderContext();
 		LineMetrics lineMetrics = font.getLineMetrics(str, context);
-		FontMetrics fm = g.getFontMetrics(font);
-		int textWidth = fm.stringWidth(str);
-		float offset = (pic_width - textWidth) / 2;
 		float y = (pic_height + lineMetrics.getAscent() - lineMetrics.getDescent() - lineMetrics.getLeading()) / 2;
 
-		g.drawString(str, offset, y);
+		g.drawString(str, x, y);
+	}
+
+	public static void draw_mid_string(Graphics2D g, String str, Font font, int pic_width, int pic_height, int font_size) {
+		int textWidth = get_str_width(str, font, font_size);
+		float offset = (pic_width - textWidth) / 2;
+		draw_mid_string(g, str, font, pic_width, pic_height, font_size, offset);
 	}
 
 	public static BufferedImage char_to_image(Background_map_render background, char character, Font font,
@@ -58,29 +62,29 @@ public class Character_screen extends Static_image_screen implements Configurati
 
 	public Character_screen(Background_map_render background, char character, Font font, int font_size,
 							org.bukkit.Color font_color) {
-		super(Character_screen.get_side_amount(font_size), Character_screen.get_side_amount(font_size), Fill_type.NONE);
-		this.background = background;
+		super(background, font, font_size, font_color, Character_screen.get_side_amount(font_size), Character_screen.get_side_amount(font_size));
 		BufferedImage bi = char_to_image(background, character, font, font_size, font_color);
 		this.character = character;
 		this.raw_img = bi;
-		this.font_color = font_color;
-		this.font_size = font_size;
-		this.font_name = font.getPSName();
 		this.refresh();
 	}
-
 
 	@Override
 	public @Nonnull
 	Map<String, Object> serialize() {
-		HashMap<String, Object> save = new HashMap<String, Object>();
+		Map<String, Object> save = super.serialize();
 		save.put("character", this.character);
-		save.put("font-color", this.font_color);
-		save.put("font-name", this.font_name);
-		save.put("font-size", this.font_size);
-		save.put("background", this.background);
-		save.put("locked", this.locked);
 		return save;
+	}
+
+	@Override
+	public void refresh() {
+		this.refresh(this.raw_img);
+	}
+
+	@Override
+	public int get_refresh_interval() {
+		return 0;
 	}
 
 	public static Character_screen deserialize(@Nonnull Map<String, Object> args) {

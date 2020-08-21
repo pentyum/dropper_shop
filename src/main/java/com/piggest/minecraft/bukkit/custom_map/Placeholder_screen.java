@@ -3,7 +3,6 @@ package com.piggest.minecraft.bukkit.custom_map;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Color;
-import org.bukkit.entity.Player;
 
 import java.awt.*;
 

@@ -1,7 +1,6 @@
 package com.piggest.minecraft.bukkit.custom_map.clock;
 
 import com.piggest.minecraft.bukkit.custom_map.Character_screen;
-import com.piggest.minecraft.bukkit.custom_map.Custom_map_render;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Clock_utils;
 import org.bukkit.Color;
@@ -29,7 +28,6 @@ public class Analog_clock_screen extends Digital_clock_screen {
 		bstroke_hr = new BasicStroke((float) this.font_size / 43);
 
 		this.pic_size = this.get_show_width();
-		this.refresh();
 	}
 
 	@Override
