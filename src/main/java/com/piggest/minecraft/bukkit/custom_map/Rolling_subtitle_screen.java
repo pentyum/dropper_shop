@@ -67,10 +67,10 @@ public class Rolling_subtitle_screen extends String_screen {
 		int font_size = (int) args.get("font-size");
 		Background_map_render background = (Background_map_render) args.get("background");
 		String string = (String) args.get("string");
-		float speed = (float) args.get("speed");
+		double speed = (double) args.get("speed");
 		boolean locked = (boolean) args.get("locked");
 		int length_n = (int) args.get("width-n");
-		Rolling_subtitle_screen new_screen = new Rolling_subtitle_screen(background, string, font, font_size, font_color, length_n, speed);
+		Rolling_subtitle_screen new_screen = new Rolling_subtitle_screen(background, string, font, font_size, font_color, length_n, (float) speed);
 		new_screen.locked = locked;
 		return new_screen;
 	}
