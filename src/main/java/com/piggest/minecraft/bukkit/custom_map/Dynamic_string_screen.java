@@ -20,15 +20,16 @@ public abstract class Dynamic_string_screen extends String_screen {
 		}
 		this.str_cache = this.get_current_string();
 		BufferedImage img = background.get_image(this.get_show_width(), this.get_show_height());
+
 		Graphics2D g = img.createGraphics();
-
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-		g.setColor(awt_font_color);
-		Character_screen.draw_mid_string(g, str_cache, font, this.get_show_width(), this.get_show_height(), font_size);
-
+		this.draw_in_background(g);
 		g.dispose();
 		this.refresh(img);
 	}
 
+	protected void draw_in_background(Graphics2D g) {
+		g.setColor(awt_font_color);
+		Character_screen.draw_central_string(g, str_cache, font, this.get_show_width(), this.get_show_height(), font_size);
+	}
 }

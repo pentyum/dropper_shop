@@ -9,11 +9,11 @@ import java.net.URISyntaxException;
 import java.util.Arrays;
 
 public class Sina_stock {
-	String id;
-	String name;
-	float share_price;
-	float rise_value;
-	float rise_percent;
+	private String id;
+	private final String name;
+	private final float share_price;
+	private final float rise_value;
+	private final float rise_percent;
 
 	public Sina_stock(String id, String name, float share_price, float rise_value, float rise_percent) {
 		this.id = id;
@@ -72,4 +72,25 @@ public class Sina_stock {
 	public String toString() {
 		return String.format("%s %.2f %.2f %.2f%%", this.name, this.share_price, this.rise_value, this.rise_percent);
 	}
+
+	public float get_share_price() {
+		return share_price;
+	}
+
+	public float get_rise_value() {
+		return rise_value;
+	}
+
+	public float get_rise_percent() {
+		return rise_percent;
+	}
+
+	public String get_id() {
+		return this.id;
+	}
+
+	public String get_name() {
+		return this.name;
+	}
+
 }

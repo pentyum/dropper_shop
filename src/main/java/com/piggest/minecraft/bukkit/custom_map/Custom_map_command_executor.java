@@ -51,6 +51,7 @@ public class Custom_map_command_executor implements TabExecutor {
 			add("get_qr_code");
 			add("get_rolling_subtitle");
 			add("get_stock_subtitle");
+			add("get_stock_panel");
 			add("reload");
 		}
 	};
@@ -121,6 +122,12 @@ public class Custom_map_command_executor implements TabExecutor {
 				return Tab_list.contains(fonts_list, args[2]);
 			} else if (args.length == 4) { //字号
 				return size_list;
+			}
+		} else if (args[0].equalsIgnoreCase("get_stock_panel")) {
+			if (args.length == 3) { //字体
+				Set<String> fonts_set = Dropper_shop_plugin.instance.get_fonts_manager().get_all_name();
+				ArrayList<String> fonts_list = new ArrayList<>(fonts_set);
+				return Tab_list.contains(fonts_list, args[2]);
 			}
 		} else if (args[0].equalsIgnoreCase("set_cdm")) {
 			if (sender instanceof Player) {
@@ -381,6 +388,36 @@ public class Custom_map_command_executor implements TabExecutor {
 			lore.add(String.format("§r速度: %.1f", screen.get_speed()));
 			lore.add("§r字体: " + font.getFontName(Locale.SIMPLIFIED_CHINESE));
 			lore.add("§r字号: " + font_size);
+			if (renders.length > 1) {
+				int x = render.get_x();
+				int y = render.get_y();
+				lore.add(String.format("§r部分: (%d,%d)", x, y));
+				lore.add("§r共 " + renders.length + " 张");
+			}
+			mapmeta.setLore(lore);
+			item.setItemMeta(meta);
+			maps[i] = item;
+		}
+		return maps;
+	}
+
+	public static ItemStack[] generate_stock_panel_maps(Player player, String stock_id, Font font, int size_n) {
+		Background_map_render background = new Background_map_render(Color.BLACK);
+		Stock_panel_screen screen = new Stock_panel_screen(background, stock_id, font, size_n);
+		screen_config.add_screen(screen);
+		Screen_map_render[] renders = screen.generate_renders();
+		ItemStack[] maps = new ItemStack[renders.length];
+		for (int i = 0; i < renders.length; i++) {
+			Screen_map_render render = renders[i];
+			ItemStack item = new ItemStack(Material.FILLED_MAP);
+			ItemMeta meta = item.getItemMeta();
+			MapMeta mapmeta = (MapMeta) meta;
+			MapView mapview = map_config.create_new_map(player.getWorld(), render, null);
+			mapmeta.setMapView(mapview);
+			mapmeta.setDisplayName(stock_id);
+			ArrayList<String> lore = new ArrayList<>();
+			//lore.add(String.format("§r内容: %s", str));
+			lore.add("§r字体: " + font.getFontName(Locale.SIMPLIFIED_CHINESE));
 			if (renders.length > 1) {
 				int x = render.get_x();
 				int y = render.get_y();
@@ -728,6 +765,27 @@ public class Custom_map_command_executor implements TabExecutor {
 			}
 
 			ItemStack[] items = generate_stock_subtitle_maps(player, stock_ids, font, font_size, length_n, speed);
+			Inventory_io.give_item_to_player(player, items);
+		} else if (args[0].equalsIgnoreCase("get_stock_panel")) {
+			if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
+				sender.sendMessage("必须由玩家执行该命令");
+				return true;
+			}
+			Player player = (Player) sender;
+
+			if (args.length < 4) {
+				player.sendMessage("/custom_map get_stock_panel <内容> <字体> <大小>。");
+				return true;
+			}
+			String stock_id = args[1];
+			Font font = Dropper_shop_plugin.instance.get_fonts_manager().get_font(args[2]);
+			int size_n = 1;
+			try {
+				size_n = Integer.parseInt(args[3]);
+			} catch (NumberFormatException e) {
+				player.sendMessage("大小格式错误，已设置为" + size_n);
+			}
+			ItemStack[] items = generate_stock_panel_maps(player, stock_id, font, size_n);
 			Inventory_io.give_item_to_player(player, items);
 		} else if (args[0].equalsIgnoreCase("reload")) {
 			screen_config.reload();

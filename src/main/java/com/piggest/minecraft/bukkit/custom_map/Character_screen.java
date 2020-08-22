@@ -23,8 +23,22 @@ public class Character_screen extends String_screen {
 		FontMetrics fm = c.getFontMetrics(font);
 		return fm.stringWidth(str);
 	}
+	/*
+	public static void draw_vertically_mid_string(Graphics2D g, String str, Font font, int pic_width, int pic_height, int font_size, float x) {
+		font = font.deriveFont(Font.PLAIN, font_size);
+		g.setFont(font);
+		FontRenderContext context = g.getFontRenderContext();
+		LineMetrics lineMetrics = font.getLineMetrics(str, context);
+		float y = (pic_height + lineMetrics.getAscent() - lineMetrics.getDescent() - lineMetrics.getLeading()) / 2;
 
-	public static void draw_mid_string(Graphics2D g, String str, Font font, int pic_width, int pic_height, int font_size, float x) {
+		g.drawString(str, x, y);
+	}
+	*/
+
+	/**
+	 * 绘制垂直居中字符串
+	 */
+	public static void draw_vertically_mid_string(Graphics2D g, String str, Font font, int pic_height, int font_size, float x) {
 		font = font.deriveFont(Font.PLAIN, font_size);
 		g.setFont(font);
 		FontRenderContext context = g.getFontRenderContext();
@@ -34,10 +48,24 @@ public class Character_screen extends String_screen {
 		g.drawString(str, x, y);
 	}
 
-	public static void draw_mid_string(Graphics2D g, String str, Font font, int pic_width, int pic_height, int font_size) {
+	/**
+	 * 绘制居中字符串
+	 */
+	public static void draw_mid_string(Graphics2D g, String str, Font font, int pic_width, int font_size, float y) {
+		font = font.deriveFont(Font.PLAIN, font_size);
+		g.setFont(font);
 		int textWidth = get_str_width(str, font, font_size);
-		float offset = (pic_width - textWidth) / 2;
-		draw_mid_string(g, str, font, pic_width, pic_height, font_size, offset);
+		float offset = (pic_width - textWidth) / 2f;
+		g.drawString(str, offset, y);
+	}
+
+	/**
+	 * 绘制正中心字符串
+	 */
+	public static void draw_central_string(Graphics2D g, String str, Font font, int pic_width, int pic_height, int font_size) {
+		int textWidth = get_str_width(str, font, font_size);
+		float offset = (pic_width - textWidth) / 2f;
+		draw_vertically_mid_string(g, str, font, pic_height, font_size, offset);
 	}
 
 	public static BufferedImage char_to_image(Background_map_render background, char character, Font font,
@@ -54,7 +82,7 @@ public class Character_screen extends String_screen {
 
 		g.setColor(awt_font_color);
 
-		draw_mid_string(g, String.valueOf(character), font, pic_size, pic_size, font_size);
+		draw_central_string(g, String.valueOf(character), font, pic_size, pic_size, font_size);
 
 		g.dispose();
 		return bi;

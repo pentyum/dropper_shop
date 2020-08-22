@@ -28,7 +28,7 @@ public class Rolling_subtitle_screen extends String_screen {
 		Graphics2D g = img.createGraphics();
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setColor(awt_font_color);
-		Character_screen.draw_mid_string(g, this.str, this.font, this.get_show_width(), this.get_show_height(), this.font_size, this.head_x);
+		Character_screen.draw_vertically_mid_string(g, this.str, this.font, this.get_show_height(), this.font_size, this.head_x);
 		g.dispose();
 		this.head_x -= this.speed;
 		this.refresh(img);
