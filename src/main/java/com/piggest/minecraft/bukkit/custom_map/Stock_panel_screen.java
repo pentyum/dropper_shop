@@ -1,5 +1,6 @@
 package com.piggest.minecraft.bukkit.custom_map;
 
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.stock.Sina_stock;
 
@@ -33,8 +34,9 @@ public class Stock_panel_screen extends Dynamic_string_screen {
 			this.stock_cache = stocks[0];
 			return String.format("%.2f", stock_cache.get_share_price());
 		} catch (InterruptedException | IOException | URISyntaxException | IndexOutOfBoundsException e) {
-			e.printStackTrace();
-			return e.toString();
+			String err_msg = e.toString();
+			Dropper_shop_plugin.instance.getLogger().warning("[股市面板]" + err_msg);
+			return err_msg;
 		}
 	}
 

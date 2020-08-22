@@ -11,7 +11,7 @@ import java.time.Duration;
 
 public class Http_get {
 	public static String get_content(String url) throws IOException, InterruptedException, URISyntaxException {
-		HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(1)).build();
+		HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofMillis(500)).build();
 		URL url_obj = new URL(url);
 		URI uri = url_obj.toURI();
 
