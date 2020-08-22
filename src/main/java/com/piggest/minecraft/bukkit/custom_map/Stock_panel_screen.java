@@ -30,8 +30,7 @@ public class Stock_panel_screen extends Dynamic_string_screen {
 	@Override
 	public String get_current_string() {
 		try {
-			Sina_stock[] stocks = Sina_stock.get_stock_info(stock_id);
-			this.stock_cache = stocks[0];
+			this.stock_cache = Sina_stock.get_stock_info_fast(stock_id);
 			return String.format("%.2f", stock_cache.get_share_price());
 		} catch (InterruptedException | IOException | URISyntaxException | IndexOutOfBoundsException e) {
 			String err_msg = e.toString();

@@ -7,13 +7,16 @@ import com.piggest.minecraft.bukkit.utils.Http_get;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class Sina_stock {
+	private static HashMap<String, Sina_stock> stock_cache = new HashMap<>();
 	private String id;
 	private final String name;
 	private final float share_price;
 	private final float rise_value;
 	private final float rise_percent;
+	private final long time;
 
 	public Sina_stock(String id, String name, float share_price, float rise_value, float rise_percent) {
 		this.id = id;
@@ -21,6 +24,7 @@ public class Sina_stock {
 		this.share_price = share_price;
 		this.rise_value = rise_value;
 		this.rise_percent = rise_percent;
+		this.time = System.currentTimeMillis();
 	}
 
 	/*
@@ -64,8 +68,20 @@ public class Sina_stock {
 		Sina_stock[] stocks = parse_all_info(all_info, stock_ids.length);
 		for (int i = 0; i < stocks.length; i++) {
 			stocks[i].id = stock_ids[i];
+			Sina_stock.stock_cache.put(stocks[i].id, stocks[i]);
 		}
 		return stocks;
+	}
+
+	public static Sina_stock get_stock_info_fast(String stock_id) throws InterruptedException, IOException, URISyntaxException {
+		Sina_stock stock = stock_cache.get(stock_id);
+		if (stock == null) {
+			return get_stock_info(stock_id)[0];
+		}
+		if (System.currentTimeMillis() - stock.time > 5 * 1000) {
+			return get_stock_info(stock_id)[0];
+		}
+		return stock;
 	}
 
 	@Override
