@@ -8,9 +8,10 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Set;
 
 public class Sina_stock {
-	private static HashMap<String, Sina_stock> stock_cache = new HashMap<>();
+	private static final HashMap<String, Sina_stock> stock_cache = new HashMap<>();
 	private String id;
 	private final String name;
 	private final float share_price;
@@ -63,6 +64,15 @@ public class Sina_stock {
 		}
 	}
 
+	public static void refresh_cache() throws InterruptedException, IOException, URISyntaxException {
+		synchronized (stock_cache) {
+			Set<String> keyset = stock_cache.keySet();
+			String[] stock_ids = new String[keyset.size()];
+			stock_ids = stock_cache.keySet().toArray(stock_ids);
+			get_stock_info(stock_ids);
+		}
+	}
+
 	public static Sina_stock[] get_stock_info(String... stock_ids) throws InterruptedException, IOException, URISyntaxException {
 		String all_info = get_simple_info(stock_ids);
 		Sina_stock[] stocks = parse_all_info(all_info, stock_ids.length);
@@ -75,11 +85,9 @@ public class Sina_stock {
 
 	public static Sina_stock get_stock_info_fast(String stock_id) throws InterruptedException, IOException, URISyntaxException {
 		Sina_stock stock = stock_cache.get(stock_id);
-		if (stock == null) {
-			return get_stock_info(stock_id)[0];
-		}
-		if (System.currentTimeMillis() - stock.time > 5 * 1000) {
-			return get_stock_info(stock_id)[0];
+		if (stock == null || System.currentTimeMillis() - stock.time > 10 * 1000) {
+			refresh_cache();
+			return stock_cache.get(stock_id);
 		}
 		return stock;
 	}
