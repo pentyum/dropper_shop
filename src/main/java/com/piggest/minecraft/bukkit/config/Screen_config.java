@@ -46,7 +46,7 @@ public class Screen_config extends Ext_config {
 	}
 
 	public synchronized void add_screen(Screen screen) {
-		if (screen.get_id() == 0) {//新添加的screen
+		if (screen.get_id() < 0) {//新添加的screen
 			screen.set_id(this.get_next_id());
 			this.screen_list.add(screen);
 			this.set("screen-list", this.screen_list);
@@ -64,6 +64,7 @@ public class Screen_config extends Ext_config {
 		if (screen_list == null) {
 			screen_list = new ArrayList<>();
 		}
+		Dropper_shop_plugin.instance.getLogger().info("发现" + screen_list.size() + "个Screen");
 		for (Screen screen : screen_list) {
 			this.add_screen(screen);
 		}

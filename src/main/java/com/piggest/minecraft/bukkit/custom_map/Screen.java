@@ -11,7 +11,7 @@ import java.util.Map;
 
 
 public abstract class Screen implements ConfigurationSerializable, Runnable {
-	protected int id = 0;
+	protected int id = -1; //未分配ID
 	protected long time = 0;
 	protected BufferedImage raw_img;
 	private BufferedImage show_img;
