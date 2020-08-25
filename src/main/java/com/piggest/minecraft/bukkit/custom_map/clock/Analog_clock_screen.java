@@ -32,6 +32,10 @@ public class Analog_clock_screen extends Digital_clock_screen {
 
 	@Override
 	public void refresh() {
+		if (this.get_current_string().equals(this.str_cache)) {
+			return;
+		}
+		this.str_cache = this.get_current_string();
 		BufferedImage image = this.background.get_image_cache_copy();
 
 		Graphics2D g = image.createGraphics();
