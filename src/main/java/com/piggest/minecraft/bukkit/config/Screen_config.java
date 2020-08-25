@@ -48,10 +48,10 @@ public class Screen_config extends Ext_config {
 	public synchronized void add_screen(Screen screen) {
 		if (screen.get_id() < 0) {//新添加的screen
 			screen.set_id(this.get_next_id());
-			this.screen_list.add(screen);
-			this.set("screen-list", this.screen_list);
 		}
+		this.screen_list.add(screen);
 		screen_map.put(screen.get_id(), screen);
+		this.set("screen-list", this.screen_list);
 		//Dropper_shop_plugin.instance.getLogger().info("添加" + screen.getClass().getSimpleName() + "ID:" + screen.get_id());
 		if (screen.get_refresh_interval() > 0) {
 			service.scheduleAtFixedRate(screen, 1000, screen.get_refresh_interval() * 50, TimeUnit.MILLISECONDS);
@@ -65,7 +65,6 @@ public class Screen_config extends Ext_config {
 		if (screen_list == null) {
 			screen_list = new ArrayList<>();
 		}
-		this.screen_list = screen_list;
 		Dropper_shop_plugin.instance.getLogger().info("发现" + screen_list.size() + "个Screen");
 		for (Screen screen : screen_list) {
 			this.add_screen(screen);
