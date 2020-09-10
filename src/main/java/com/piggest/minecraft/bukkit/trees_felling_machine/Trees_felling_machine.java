@@ -6,10 +6,7 @@ import com.piggest.minecraft.bukkit.material_ext.Tool_material;
 import com.piggest.minecraft.bukkit.structure.Auto_io;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Ownable;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.Tag;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Hopper;
@@ -40,8 +37,9 @@ public class Trees_felling_machine extends Multi_block_with_gui implements Auto_
 	private int end_z;
 	private int total_blocks;
 	private int scanned_blocks = 0;
-	private Random random = new Random();
+	private final Random random = new Random();
 	private ItemStack buffer_item = null;
+
 	private static final int[][] axe_hopper_check_list = {{0, 1, 2}, {2, 1, 0}, {0, 1, -2}, {-2, 1, 0}}; // 注入斧头
 	private static final int[][] product_chest_check_list = {{0, -1, 2}, {2, -1, 0}, {0, -1, -2},
 			{-2, -1, 0}};
@@ -100,6 +98,67 @@ public class Trees_felling_machine extends Multi_block_with_gui implements Auto_
 		return this.get_current_pointer_location();
 	}
 
+	public void do_next_nether() {
+		ItemStack axe = this.get_axe();
+		Block check_block = null;
+		int y;
+		if (axe == null) {
+			return;
+		}
+		if (this.get_chest() == null) {
+			return;
+		}
+		for (y = 130; y >= 30; y--) { // 从顶部开始往下检测
+			Block block = this.get_location().getWorld().getBlockAt(this.current_x, y, this.current_z);
+			Material type = block.getType();
+			if (type != Material.AIR && type != Material.NETHERRACK && type != Material.BEDROCK && type != Material.WEEPING_VINES && type != Material.WEEPING_VINES_PLANT && type != Material.TWISTING_VINES && type != Material.TWISTING_VINES_PLANT) { // 获得第一个非空气方块的类型
+				check_block = block;
+				break;
+			}
+		}
+
+		if (check_block != null) {
+			if (Tag.WART_BLOCKS.isTagged(check_block.getType())) {// 第一个非空气方块是树叶，则准备判定为树
+				Stack<Block> tree_stack = new Stack<>();
+				for (; y >= 50; y--) { // 继续往下检测，找到原木方块
+					Block block = this.get_location().getWorld().getBlockAt(this.current_x, y, this.current_z);
+					Material type = block.getType();
+					if (Tag.LOGS.isTagged(type) || Tag.WART_BLOCKS.isTagged(type)) {
+						tree_stack.push(block);
+					} else {
+						if (type != Material.AIR && type != Material.WEEPING_VINES && type != Material.WEEPING_VINES_PLANT && type != Material.TWISTING_VINES && type != Material.TWISTING_VINES_PLANT) {
+							break;
+						}
+					}
+				}
+				while (!tree_stack.isEmpty()) {
+					Block block = tree_stack.pop();
+					if (!this.get_owner().isOnline()) { // 玩家不在线砍树机不工作，指针不动
+						return;
+					}
+					BlockBreakEvent event = new BlockBreakEvent(block, this.get_owner().getPlayer());// 新建一个方块破坏事件
+					Bukkit.getServer().getPluginManager().callEvent(event);
+					if (event.isCancelled()) { // 事件被取消了
+						continue;// 直接跳过当前方块
+					}
+					Material type = block.getType();
+					if (Tag.LOGS.isTagged(type) || Tag.WART_BLOCKS.isTagged(type) || type == Material.SHROOMLIGHT) { // 如果是原木或者树叶或者菌光体方块则进入砍伐程序
+						ItemStack item = new ItemStack(block.getType());
+						if (this.get_axe() == null) {
+							return;
+						}
+						if (!this.insert_item_to_chest(item)) { // 箱子满了，也直接返回，指针不动
+							return;
+						}
+						block.setType(Material.AIR);
+						this.use_axe();
+					}
+				}
+			}
+		}
+		this.pointer_move_to_next();
+	}
+
 	public void do_next() {
 		ItemStack axe = this.get_axe();
 		Block check_block = null;
@@ -112,8 +171,8 @@ public class Trees_felling_machine extends Multi_block_with_gui implements Auto_
 		}
 		for (y = 250; y >= 63; y--) { // 从高空开始往下检测
 			Block block = this.get_location().getWorld().getBlockAt(this.current_x, y, this.current_z);
-			if (block.getType() != Material.AIR && block.getType() != Material.VINE
-					&& block.getType() != Material.SNOW) { // 获得第一个非空气方块的类型
+			Material type = block.getType();
+			if (type != Material.AIR && type != Material.VINE && type != Material.SNOW) { // 获得第一个非空气方块的类型
 				check_block = block;
 				break;
 			}
@@ -433,5 +492,9 @@ public class Trees_felling_machine extends Multi_block_with_gui implements Auto_
 		Trees_felling_machine structure = new Trees_felling_machine();
 		structure.set_from_save(args);
 		return structure;
+	}
+
+	public boolean is_nether_mode() {
+		return this.get_world().getEnvironment() == World.Environment.NETHER;
 	}
 }

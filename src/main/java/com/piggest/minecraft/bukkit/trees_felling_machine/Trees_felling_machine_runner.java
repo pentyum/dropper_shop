@@ -35,7 +35,11 @@ public class Trees_felling_machine_runner extends Sync_structure_runner<Trees_fe
 			}
 		}
 		if (machine.is_working()) {
-			machine.do_next();
+			if (machine.is_nether_mode()) {
+				machine.do_next_nether();
+			} else {
+				machine.do_next();
+			}
 		}
 		return true;
 	}
