@@ -34,18 +34,19 @@ public class Digital_clock_screen extends Dynamic_string_screen implements Confi
 
 	@Override
 	public String get_current_string() {
+		String time_str = format;
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		if (this.world_name == null) {
 			this.date = Calendar.getInstance();
-			return sdf.format(date.getTime());
+			time_str = sdf.format(date.getTime());
 		} else {
 			World world = Bukkit.getWorld(world_name);
 			if (world != null) {
 				this.date = Server_date.get_world_date(world);
-				return sdf.format(date.getTime());
+				time_str = sdf.format(date.getTime());
 			}
 		}
-		return format;
+		return time_str;
 	}
 
 	@Nonnull

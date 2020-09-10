@@ -15,10 +15,11 @@ public abstract class Dynamic_string_screen extends String_screen {
 	public abstract String get_current_string();
 
 	public void refresh() {
-		if (this.get_current_string().equals(this.str_cache)) {
+		String current_string = this.get_current_string();
+		if (current_string.equals(this.str_cache)) {
 			return;
 		}
-		this.str_cache = this.get_current_string();
+		this.str_cache = current_string;
 		BufferedImage img = background.get_image(this.get_show_width(), this.get_show_height());
 
 		Graphics2D g = img.createGraphics();
