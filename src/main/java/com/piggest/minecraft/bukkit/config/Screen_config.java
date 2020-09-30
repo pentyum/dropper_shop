@@ -36,7 +36,10 @@ public class Screen_config extends Ext_config {
 		ConfigurationSerialization.registerClass(Stock_subtitle_screen.class);
 		ConfigurationSerialization.registerClass(Stock_panel_screen.class);
 
-		int threads = Runtime.getRuntime().availableProcessors();
+		int threads = Runtime.getRuntime().availableProcessors() - 1;
+		if (threads <= 0) {
+			threads = 1;
+		}
 		this.service = Executors.newScheduledThreadPool(threads);
 		Dropper_shop_plugin.instance.getLogger().info("[屏幕渲染器]启动" + threads + "线程刷新");
 	}
