@@ -85,7 +85,9 @@ public class Sina_stock {
 
 	public static Sina_stock get_stock_info_fast(String stock_id) throws InterruptedException, IOException, URISyntaxException {
 		Sina_stock stock = stock_cache.get(stock_id);
-		if (stock == null || System.currentTimeMillis() - stock.time > 10 * 1000) {
+		if (stock == null) {
+			return get_stock_info(stock_id)[0];
+		} else if (System.currentTimeMillis() - stock.time > 10 * 1000) {
 			refresh_cache();
 			return stock_cache.get(stock_id);
 		}
