@@ -22,8 +22,8 @@ import java.util.List;
 
 public class Tool_craft_listener implements Listener {
 	public static final List<String> raw_tool_material = Arrays
-			.asList(new String[]{Material.GOLD_INGOT.getKey().toString(), Material.COBBLESTONE.getKey().toString(),
-					Material.IRON_INGOT.getKey().toString(), Material.DIAMOND.getKey().toString()});
+			.asList(Material.GOLD_INGOT.getKey().toString(), Material.COBBLESTONE.getKey().toString(),
+					Material.IRON_INGOT.getKey().toString(), Material.DIAMOND.getKey().toString(), Material.NETHERITE_INGOT.getKey().toString());
 
 	@EventHandler
 	public void on_prepare_craft(PrepareItemCraftEvent event) {

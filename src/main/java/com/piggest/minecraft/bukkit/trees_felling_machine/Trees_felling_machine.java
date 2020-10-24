@@ -6,6 +6,7 @@ import com.piggest.minecraft.bukkit.material_ext.Tool_material;
 import com.piggest.minecraft.bukkit.structure.Auto_io;
 import com.piggest.minecraft.bukkit.structure.Multi_block_with_gui;
 import com.piggest.minecraft.bukkit.structure.Ownable;
+import com.piggest.minecraft.bukkit.tools.Tool_type;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -43,6 +44,7 @@ public class Trees_felling_machine extends Multi_block_with_gui implements Auto_
 	private static final int[][] axe_hopper_check_list = {{0, 1, 2}, {2, 1, 0}, {0, 1, -2}, {-2, 1, 0}}; // 注入斧头
 	private static final int[][] product_chest_check_list = {{0, -1, 2}, {2, -1, 0}, {0, -1, -2},
 			{-2, -1, 0}};
+	public static final int axe_slot = 13;
 	public static final int owner_indicator = 15;
 
 	private int r = 32;
@@ -295,20 +297,19 @@ public class Trees_felling_machine extends Multi_block_with_gui implements Auto_
 	}
 
 	public ItemStack get_axe() {
-		ItemStack item = this.gui.getItem(13);
+		ItemStack item = this.gui.getItem(axe_slot);
 		if (item == null) {
 			return null;
 		}
-		Material type = item.getType();
-		if (type == Material.DIAMOND_AXE || type == Material.GOLDEN_AXE || type == Material.IRON_AXE
-				|| type == Material.STONE_AXE || type == Material.WOODEN_AXE) {
+		Tool_type tool_type = Tool_type.get_tool_type(item);
+		if (tool_type == Tool_type.AXE) {
 			return item;
 		}
 		return null;
 	}
 
 	public void set_axe(ItemStack item) {
-		this.gui.setItem(13, item);
+		this.gui.setItem(axe_slot, item);
 	}
 
 	public boolean insert_item_to_chest(ItemStack item) {
@@ -381,9 +382,9 @@ public class Trees_felling_machine extends Multi_block_with_gui implements Auto_
 
 	public boolean add_a_axe(ItemStack src_item) {
 		if (src_item != null) {
-			if (src_item.getType().name().contains("_AXE")) {
-				if (Grinder.is_empty(this.gui.getItem(13))) {
-					this.gui.setItem(13, src_item.clone());
+			if (Tool_type.get_tool_type(src_item) == Tool_type.AXE) {
+				if (Grinder.is_empty(this.gui.getItem(axe_slot))) {
+					this.gui.setItem(axe_slot, src_item.clone());
 					src_item.setAmount(0);
 					return true;
 				}

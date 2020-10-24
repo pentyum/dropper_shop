@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 
 public enum Tool_type {
 	PICKAXE("镐"), AXE("斧"), HOE("锄"), SHOVEL("锹"), SWORD("剑");
-	private String name;
+	private final String name;
 
 	Tool_type(String name) {
 		this.name = name;

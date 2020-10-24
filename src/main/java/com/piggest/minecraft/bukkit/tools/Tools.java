@@ -19,8 +19,8 @@ public class Tools {
 	private static final NamespacedKey shovel_recipe_namespace = Dropper_shop_plugin.get_key("shovel_recipe");
 	private static final NamespacedKey hoe_recipe_namespace = Dropper_shop_plugin.get_key("hoe_recipe");
 	private static final NamespacedKey sword_recipe_namespace = Dropper_shop_plugin.get_key("sword_recipe");
-	static final List<NamespacedKey> tools_namespace = Arrays.asList(new NamespacedKey[]{pickaxe_recipe_namespace,
-			axe_recipe_namespace, shovel_recipe_namespace, hoe_recipe_namespace, sword_recipe_namespace});
+	static final List<NamespacedKey> tools_namespace = Arrays.asList(pickaxe_recipe_namespace,
+			axe_recipe_namespace, shovel_recipe_namespace, hoe_recipe_namespace, sword_recipe_namespace);
 
 	public static final ArrayList<Tools> pickaxe_config = new ArrayList<>();
 	public static final ArrayList<Tools> axe_config = new ArrayList<>();

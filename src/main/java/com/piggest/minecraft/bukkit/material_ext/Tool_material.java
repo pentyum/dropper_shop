@@ -44,11 +44,15 @@ public interface Tool_material {
 		}
 	}
 
-	public static enum Raw_material implements Tool_material {
-		WOODEN(59, 1, 15, "木"), GOLDEN(32, 1, 22, "金"), STONE(131, 2, 5, "石"), IRON(250, 3, 14, "铁"),
-		DIAMOND(1561, 2, 10, "钻石");
+	enum Raw_material implements Tool_material {
+		WOODEN(59, 1, 15, "木"),
+		GOLDEN(32, 1, 22, "金"),
+		STONE(131, 2, 5, "石"),
+		IRON(250, 3, 14, "铁"),
+		DIAMOND(1561, 4, 10, "钻石"),
+		NETHERITE(2031, 4, 15, "下界合金");
 
-		public static final HashMap<Material, Raw_material> raw_material_map = new HashMap<Material, Raw_material>() {
+		public static final HashMap<Material, Raw_material> raw_material_map = new HashMap<>() {
 			private static final long serialVersionUID = -3631472477554673517L;
 
 			{
@@ -93,13 +97,23 @@ public interface Tool_material {
 				put(Material.DIAMOND_PICKAXE, DIAMOND);
 				put(Material.DIAMOND_SHOVEL, DIAMOND);
 				put(Material.DIAMOND_SWORD, DIAMOND);
+
+				put(Material.NETHERITE_AXE, NETHERITE);
+				put(Material.NETHERITE_BOOTS, NETHERITE);
+				put(Material.NETHERITE_CHESTPLATE, NETHERITE);
+				put(Material.NETHERITE_HELMET, NETHERITE);
+				put(Material.NETHERITE_HOE, NETHERITE);
+				put(Material.NETHERITE_LEGGINGS, NETHERITE);
+				put(Material.NETHERITE_PICKAXE, NETHERITE);
+				put(Material.NETHERITE_SHOVEL, NETHERITE);
+				put(Material.NETHERITE_SWORD, NETHERITE);
 			}
 		};
 
-		private int max_durbility;
-		private int level;
-		private int enchantment_ability;
-		private String name;
+		private final int max_durbility;
+		private final int level;
+		private final int enchantment_ability;
+		private final String name;
 
 		Raw_material(int max_durbility, int level, int enchantment_ability, String name) {
 			this.max_durbility = max_durbility;
