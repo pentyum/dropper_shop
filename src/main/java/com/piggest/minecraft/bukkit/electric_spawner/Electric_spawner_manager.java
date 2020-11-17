@@ -109,6 +109,9 @@ public class Electric_spawner_manager extends Gui_structure_manager<Electric_spa
 		probability_list = new Entity_probability[]{new Entity_probability(EntityType.BLAZE, 2)};
 		this.probability_map.put(Material.BLAZE_ROD.getKey().toString(), probability_list);
 
+		probability_list = new Entity_probability[]{new Entity_probability(EntityType.SHULKER, 2)};
+		this.probability_map.put(Material.SHULKER_SHELL.getKey().toString(), probability_list);
+
 		probability_list = new Entity_probability[]{new Entity_probability(EntityType.GUARDIAN, 1)};
 		this.probability_map.put(Material.PRISMARINE_SHARD.getKey().toString(), probability_list);
 
@@ -124,6 +127,9 @@ public class Electric_spawner_manager extends Gui_structure_manager<Electric_spa
 		probability_list = new Entity_probability[]{new Entity_probability(EntityType.HUSK, 1)};
 		this.probability_map.put(Material.SAND.getKey().toString(), probability_list);
 
+		/*
+		动物
+		 */
 		probability_list = new Entity_probability[]{new Entity_probability(EntityType.SQUID, 2)};
 		this.probability_map.put(Material.INK_SAC.getKey().toString(), probability_list);
 
@@ -176,6 +182,29 @@ public class Electric_spawner_manager extends Gui_structure_manager<Electric_spa
 
 		this.spawn_config_map.put(EntityType.SILVERFISH, new Entity_spawn_config(500, 1600));
 		this.spawn_config_map.put(EntityType.ENDERMITE, new Entity_spawn_config(800, 2000));
+
+		/*
+		动物
+		 */
+		this.spawn_config_map.put(EntityType.PANDA, new Entity_spawn_config(5000, 1200));
+		this.spawn_config_map.put(EntityType.CHICKEN, new Entity_spawn_config(1000, 1000));
+		this.spawn_config_map.put(EntityType.PIG, new Entity_spawn_config(1200, 1000));
+		this.spawn_config_map.put(EntityType.SHEEP, new Entity_spawn_config(1200, 1000));
+		this.spawn_config_map.put(EntityType.COW, new Entity_spawn_config(1200, 1000));
+		this.spawn_config_map.put(EntityType.RABBIT, new Entity_spawn_config(1200, 1000));
+		this.spawn_config_map.put(EntityType.SQUID, new Entity_spawn_config(1200, 1000));
+		this.spawn_config_map.put(EntityType.FOX, new Entity_spawn_config(1500, 1000));
+		this.spawn_config_map.put(EntityType.CAT, new Entity_spawn_config(1500, 1000));
+		this.spawn_config_map.put(EntityType.PARROT, new Entity_spawn_config(1500, 1000));
+		this.spawn_config_map.put(EntityType.WOLF, new Entity_spawn_config(1600, 1500));
+		this.spawn_config_map.put(EntityType.BEE, new Entity_spawn_config(1200, 1200));
+		this.spawn_config_map.put(EntityType.BAT, new Entity_spawn_config(1000, 1000));
+		this.spawn_config_map.put(EntityType.HORSE, new Entity_spawn_config(2000, 1200));
+		this.spawn_config_map.put(EntityType.DONKEY, new Entity_spawn_config(2400, 1200));
+		this.spawn_config_map.put(EntityType.LLAMA, new Entity_spawn_config(2000, 1500));
+		this.spawn_config_map.put(EntityType.MUSHROOM_COW, new Entity_spawn_config(4000, 1200));
+		this.spawn_config_map.put(EntityType.TURTLE, new Entity_spawn_config(2000, 1000));
+		this.spawn_config_map.put(EntityType.POLAR_BEAR, new Entity_spawn_config(2000, 1500));
 	}
 
 	@Override
