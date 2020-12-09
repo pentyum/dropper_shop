@@ -21,6 +21,9 @@ public enum Tool_type {
 	public static Tool_type get_tool_type(ItemStack item) {
 		String id_name = Material_ext.get_id_name(item);
 		String[] splitted = id_name.split("_");
+		if (splitted.length < 2) {
+			return null;
+		}
 		switch (splitted[1]) {
 			case "pickaxe":
 				return PICKAXE;
