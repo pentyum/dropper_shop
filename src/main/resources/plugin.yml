@@ -288,6 +288,9 @@ permissions:
   scb_eco.take:
     description: Take money.
     default: op
+  scb_eco.set:
+    description: Set money.
+    default: op
   scb_eco.import:
     description: Import money from another economy plugin.
     default: op

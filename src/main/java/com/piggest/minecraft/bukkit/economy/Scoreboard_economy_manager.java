@@ -197,7 +197,7 @@ public class Scoreboard_economy_manager implements TabExecutor {
 					player.sendMessage("转账失败，原因: " + withdraw_res.errorMessage);
 				}
 				return true;
-			} else if (args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("take")) {
+			} else if (args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("take") || args[0].equalsIgnoreCase("set")) {
 				if (args[0].equalsIgnoreCase("give") && !sender.hasPermission("scb_eco.give")) {
 					sender.sendMessage("你没有权限给玩家添加货币");
 					return true;
@@ -206,8 +206,12 @@ public class Scoreboard_economy_manager implements TabExecutor {
 					sender.sendMessage("你没有权限扣除玩家的货币");
 					return true;
 				}
+				if (args[0].equalsIgnoreCase("set") && !sender.hasPermission("scb_eco.set")) {
+					sender.sendMessage("你没有权限设置玩家的货币");
+					return true;
+				}
 				if (args.length < 3) {
-					sender.sendMessage("/scb_eco give|take <玩家名称> <数量> <货币名称>");
+					sender.sendMessage("/scb_eco give|take|set <玩家名称> <数量> <货币名称>");
 					return true;
 				}
 				int amount = 0;
@@ -248,6 +252,25 @@ public class Scoreboard_economy_manager implements TabExecutor {
 						}
 					} else {
 						sender.sendMessage("扣除失败，原因: " + deposit_res.errorMessage);
+					}
+				} else if (args[0].equalsIgnoreCase("set")) {
+					double current_money = eco.getBalance(to_player);
+					EconomyResponse set_res;
+					if (amount > current_money) {
+						set_res = eco.depositPlayer(to_player, amount - current_money);
+					} else if (amount < current_money) {
+						set_res = eco.withdrawPlayer(to_player, current_money - amount);
+					} else {
+						sender.sendMessage("货币数量一致，无须更改");
+						return true;
+					}
+					if (set_res.type == EconomyResponse.ResponseType.SUCCESS) {
+						sender.sendMessage("成功将" + to_player.getName() + "设置为" + fmt_amount);
+						if (to_player.isOnline()) {
+							to_player.getPlayer().sendMessage("你已经被设置为" + fmt_amount);
+						}
+					} else {
+						sender.sendMessage("设置失败，原因: " + set_res.errorMessage);
 					}
 				}
 				return true;
@@ -333,13 +356,16 @@ public class Scoreboard_economy_manager implements TabExecutor {
 				if (sender.hasPermission("scb_eco.take")) {
 					sub_cmd.add("take");
 				}
+				if (sender.hasPermission("scb_eco.set")) {
+					sub_cmd.add("set");
+				}
 				return sub_cmd;
 			}
 			if (args[0].equalsIgnoreCase("bal")) {
 				if (args.length == 2) {
 					return Tab_list.get_online_player_name_list();
 				}
-			} else if (args[0].equalsIgnoreCase("pay") || args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("take")) {
+			} else if (args[0].equalsIgnoreCase("pay") || args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("take") || args[0].equalsIgnoreCase("set")) {
 				if (args.length == 2) {
 					return Tab_list.get_online_player_name_list();
 				} else if (args.length == 3) {
