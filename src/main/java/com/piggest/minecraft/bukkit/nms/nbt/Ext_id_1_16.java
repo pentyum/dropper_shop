@@ -1,8 +1,8 @@
 package com.piggest.minecraft.bukkit.nms.nbt;
 
-import net.minecraft.server.v1_16_R2.NBTTagCompound;
-import net.minecraft.server.v1_16_R2.NBTTagString;
-import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack;
+import net.minecraft.server.v1_16_R3.NBTTagCompound;
+import net.minecraft.server.v1_16_R3.NBTTagString;
+import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 public class Ext_id_1_16 implements Ext_id {
@@ -11,7 +11,7 @@ public class Ext_id_1_16 implements Ext_id {
 	 */
 	@Override
 	public String get_ext_id(ItemStack item) {
-		net.minecraft.server.v1_16_R2.ItemStack nms_item = CraftItemStack.asNMSCopy(item);
+		net.minecraft.server.v1_16_R3.ItemStack nms_item = CraftItemStack.asNMSCopy(item);
 		if (!nms_item.hasTag()) {
 			return null;
 		}
@@ -28,7 +28,7 @@ public class Ext_id_1_16 implements Ext_id {
 	 */
 	@Override
 	public boolean has_ext_id(ItemStack item) {
-		net.minecraft.server.v1_16_R2.ItemStack nms_item = CraftItemStack.asNMSCopy(item);
+		net.minecraft.server.v1_16_R3.ItemStack nms_item = CraftItemStack.asNMSCopy(item);
 		if (!nms_item.hasTag()) {
 			return false;
 		}
@@ -41,7 +41,7 @@ public class Ext_id_1_16 implements Ext_id {
 	 */
 	@Override
 	public ItemStack set_ext_id(ItemStack item, String ext_id) {
-		net.minecraft.server.v1_16_R2.ItemStack nms_item = CraftItemStack.asNMSCopy(item);
+		net.minecraft.server.v1_16_R3.ItemStack nms_item = CraftItemStack.asNMSCopy(item);
 		NBTTagCompound tag = (nms_item.hasTag()) ? nms_item.getTag() : new NBTTagCompound();
 		tag.set("ext_id", NBTTagString.a(ext_id));
 		nms_item.setTag(tag);

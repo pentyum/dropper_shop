@@ -8,8 +8,8 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.reflect.StructureModifier;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
-import net.minecraft.server.v1_16_R2.BiomeBase;
-import net.minecraft.server.v1_16_R2.BiomeStorage;
+import net.minecraft.server.v1_16_R3.BiomeBase;
+import net.minecraft.server.v1_16_R3.BiomeStorage;
 import org.bukkit.block.Biome;
 
 import java.util.Arrays;

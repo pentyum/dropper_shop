@@ -1,8 +1,8 @@
 package com.piggest.minecraft.bukkit.nms.map;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import net.minecraft.server.v1_16_R2.WorldMap;
-import org.bukkit.craftbukkit.v1_16_R2.map.CraftMapView;
+import net.minecraft.server.v1_16_R3.WorldMap;
+import org.bukkit.craftbukkit.v1_16_R3.map.CraftMapView;
 import org.bukkit.map.MapView;
 
 import java.lang.reflect.Field;

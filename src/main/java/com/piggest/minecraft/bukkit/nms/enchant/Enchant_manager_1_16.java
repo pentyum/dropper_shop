@@ -2,10 +2,10 @@ package com.piggest.minecraft.bukkit.nms.enchant;
 
 import com.google.common.collect.Lists;
 import com.piggest.minecraft.bukkit.material_ext.Tool_material;
-import net.minecraft.server.v1_16_R2.*;
-import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftInventoryView;
-import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack;
-import org.bukkit.craftbukkit.v1_16_R2.util.CraftNamespacedKey;
+import net.minecraft.server.v1_16_R3.*;
+import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftInventoryView;
+import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_16_R3.util.CraftNamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentOffer;
 import org.bukkit.inventory.InventoryView;
