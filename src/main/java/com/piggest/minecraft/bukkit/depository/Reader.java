@@ -27,16 +27,14 @@ public class Reader {
 			"storage_num");
 
 	public static Location get_location(PersistentDataContainer reader_data_container) {
-		PersistentDataContainer location_container = reader_data_container.get(Dropper_shop_namespace.location, PersistentDataType.TAG_CONTAINER);
-		int x = location_container.get(Dropper_shop_namespace.x, PersistentDataType.INTEGER);
-		int y = location_container.get(Dropper_shop_namespace.y, PersistentDataType.INTEGER);
-		int z = location_container.get(Dropper_shop_namespace.z, PersistentDataType.INTEGER);
-		String world_name = location_container.get(Dropper_shop_namespace.world, PersistentDataType.STRING);
+		int x = reader_data_container.get(Dropper_shop_namespace.x, PersistentDataType.INTEGER);
+		int y = reader_data_container.get(Dropper_shop_namespace.y, PersistentDataType.INTEGER);
+		int z = reader_data_container.get(Dropper_shop_namespace.z, PersistentDataType.INTEGER);
+		String world_name = reader_data_container.get(Dropper_shop_namespace.world, PersistentDataType.STRING);
 		return new Location(Bukkit.getWorld(world_name), x, y, z);
 	}
 
 	/**
-	 *
 	 * @param reader_data_container
 	 * @return 存储内容的全名
 	 */
@@ -51,6 +49,21 @@ public class Reader {
 
 	public static int get_content_num(PersistentDataContainer reader_data_container) {
 		return reader_data_container.get(storage_num, PersistentDataType.INTEGER);
+	}
+
+	public static void set_content_full_name(PersistentDataContainer reader_data_container, String full_name) {
+		reader_data_container.set(storage_material, PersistentDataType.STRING, full_name);
+	}
+
+	public static void set_location(PersistentDataContainer reader_data_container, Location location) {
+		reader_data_container.set(Dropper_shop_namespace.x, PersistentDataType.INTEGER, location.getBlockX());
+		reader_data_container.set(Dropper_shop_namespace.y, PersistentDataType.INTEGER, location.getBlockY());
+		reader_data_container.set(Dropper_shop_namespace.z, PersistentDataType.INTEGER, location.getBlockZ());
+		reader_data_container.set(Dropper_shop_namespace.world, PersistentDataType.STRING, location.getWorld().getName());
+	}
+
+	public static void set_content_num(PersistentDataContainer reader_data_container, int num) {
+		reader_data_container.set(storage_num, PersistentDataType.INTEGER, num);
 	}
 
 	/*
@@ -128,14 +141,15 @@ public class Reader {
 
 	 */
 
-	public static ArrayList<String> get_lore(Location loc, String material, int num) {
+	public static ArrayList<String> make_lore(PersistentDataContainer data_container) {
 		ArrayList<String> lore = new ArrayList<>();
-		lore.add("§r存储器位置: " + loc.getWorld().getName());
-		lore.add("§rx: " + loc.getBlockX());
-		lore.add("§ry: " + loc.getBlockY());
-		lore.add("§rz: " + loc.getBlockZ());
-		lore.add("§r物品: " + material);
-		lore.add("§r数量: " + num);
+		Location location = Reader.get_location(data_container);
+		lore.add("§r存储器位置: " + location.getWorld().getName());
+		lore.add("§rx: " + location.getBlockX());
+		lore.add("§ry: " + location.getBlockY());
+		lore.add("§rz: " + location.getBlockZ());
+		lore.add("§r物品: " + Reader.get_content_full_name(data_container));
+		lore.add("§r数量: " + Reader.get_content_num(data_container));
 		return lore;
 	}
 

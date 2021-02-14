@@ -50,6 +50,7 @@ public class Depository_listener implements Listener {
 			if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 				PersistentDataContainer data_container = item_meta.getPersistentDataContainer();
 				String material_str = Reader.get_content_full_name(data_container);
+
 				Material material = Material_ext.get_material(material_str);
 				Location loc = Reader.get_location(data_container);
 				// Bukkit.getLogger().info(loc.toString());

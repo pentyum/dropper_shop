@@ -10,6 +10,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,7 +21,7 @@ enum Depository_sub_cmd {
 	info, input, output, remove, connect;
 
 	public static ArrayList<String> get_list(CommandSender sender) {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		for (Depository_sub_cmd cmd : Depository_sub_cmd.values()) {
 			list.add(cmd.name());
 		}
@@ -171,7 +172,11 @@ public class Depository_command_executor implements TabExecutor {
 					return true;
 				}
 				ItemMeta item_meta = item.getItemMeta();
-				item_meta.setLore(Reader.get_lore(depository.get_location(), args[1], current_num));
+				PersistentDataContainer data_container = item_meta.getPersistentDataContainer();
+				Reader.set_location(data_container, depository.get_location());
+				Reader.set_content_full_name(data_container, args[1]);
+				Reader.set_content_num(data_container, current_num);
+				item_meta.setLore(Reader.make_lore(data_container));
 				item.setItemMeta(item_meta);
 				item.setType(Material_ext.get_material(args[1]));
 				player.sendMessage("[存储器]连接成功");
