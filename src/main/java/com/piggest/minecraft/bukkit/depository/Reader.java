@@ -13,6 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,12 +39,17 @@ public class Reader {
 	 * @param reader_data_container
 	 * @return 存储内容的全名
 	 */
+	@Nullable
 	public static String get_content_full_name(PersistentDataContainer reader_data_container) {
 		return reader_data_container.get(storage_material, PersistentDataType.STRING);
 	}
 
+	@Nullable
 	public static String get_content_id_name(PersistentDataContainer reader_data_container) {
 		String full_name = get_content_full_name(reader_data_container);
+		if (full_name == null) {
+			return null;
+		}
 		return Material_ext.full_name_to_id_name(full_name);
 	}
 
