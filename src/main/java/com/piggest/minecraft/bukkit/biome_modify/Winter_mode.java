@@ -3,7 +3,6 @@ package com.piggest.minecraft.bukkit.biome_modify;
 import org.bukkit.block.Biome;
 
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 public class Winter_mode {
 	HashMap<Biome, Biome> winter_biome_map = new HashMap<>();

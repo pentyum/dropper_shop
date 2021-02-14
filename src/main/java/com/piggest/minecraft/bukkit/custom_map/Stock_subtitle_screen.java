@@ -5,7 +5,7 @@ import com.piggest.minecraft.bukkit.utils.stock.Sina_stock;
 import org.bukkit.Color;
 
 import javax.annotation.Nonnull;
-import java.awt.Font;
+import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;

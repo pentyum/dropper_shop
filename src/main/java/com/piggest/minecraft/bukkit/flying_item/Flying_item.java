@@ -1,7 +1,6 @@
 package com.piggest.minecraft.bukkit.flying_item;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import net.milkbowl.vault.chat.Chat;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;

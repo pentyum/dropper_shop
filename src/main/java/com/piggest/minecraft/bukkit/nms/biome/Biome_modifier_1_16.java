@@ -2,13 +2,6 @@ package com.piggest.minecraft.bukkit.nms.biome;
 
 //import com.piggest.minecraft.bukkit.biome_modify.Biome_modify;
 
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import net.minecraft.server.v1_16_R3.BiomeBase;
-import org.bukkit.block.Biome;
-import org.bukkit.craftbukkit.v1_16_R3.block.CraftBlock;
-
-import java.lang.reflect.Field;
-
 public class Biome_modifier_1_16 implements Biome_modifier {
 	/*
 	private Field temp_field;

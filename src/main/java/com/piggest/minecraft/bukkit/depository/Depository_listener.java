@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
 
 public class Depository_listener implements Listener {
 	@EventHandler
@@ -47,9 +48,10 @@ public class Depository_listener implements Listener {
 		ItemMeta item_meta = item.getItemMeta();
 		if (Reader.is_reader(item)) {
 			if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-				String material_str = Reader.lore_parse_material_str(item_meta.getLore());
+				PersistentDataContainer data_container = item_meta.getPersistentDataContainer();
+				String material_str = Reader.get_content_full_name(data_container);
 				Material material = Material_ext.get_material(material_str);
-				Location loc = Reader.lore_parse_loction(item_meta.getLore());
+				Location loc = Reader.get_location(data_container);
 				// Bukkit.getLogger().info(loc.toString());
 				Depository depository = Dropper_shop_plugin.instance.get_depository_manager().get(loc);
 				if (material == null) {
@@ -103,7 +105,7 @@ public class Depository_listener implements Listener {
 						event.getPlayer().getInventory().addItem(new_item);
 					}
 				}
-				Reader.item_lore_update(item);
+				Reader.lore_update(item);
 				event.setCancelled(true);
 			}
 		}

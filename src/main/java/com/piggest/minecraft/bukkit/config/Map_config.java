@@ -1,7 +1,8 @@
 package com.piggest.minecraft.bukkit.config;
 
-import com.piggest.minecraft.bukkit.custom_map.*;
-import com.piggest.minecraft.bukkit.custom_map.clock.Analog_clock_background_map_render;
+import com.piggest.minecraft.bukkit.custom_map.Custom_map_render;
+import com.piggest.minecraft.bukkit.custom_map.Empty_map_render;
+import com.piggest.minecraft.bukkit.custom_map.Screen_map_render;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;

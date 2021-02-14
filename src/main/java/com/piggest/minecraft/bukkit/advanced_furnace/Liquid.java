@@ -5,7 +5,9 @@ import com.piggest.minecraft.bukkit.material_ext.Material_ext;
 import com.piggest.minecraft.bukkit.teleport_machine.Elements_composition;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 
@@ -31,7 +33,9 @@ public enum Liquid implements Chemical {
 	public static int get_item_unit(ItemStack item) {
 		String id_name = Material_ext.get_id_name(item);
 		if (id_name.equals(Reader.id_name)) {
-			id_name = Reader.get_content_id_name(item);
+			ItemMeta meta = item.getItemMeta();
+			PersistentDataContainer container = meta.getPersistentDataContainer();
+			id_name = Reader.get_content_id_name(container);
 		}
 		switch (id_name) {
 			case "water_bucket":
@@ -50,7 +54,9 @@ public enum Liquid implements Chemical {
 	public static int get_container_max_unit(ItemStack item) {
 		String id_name = Material_ext.get_id_name(item);
 		if (id_name.equals(Reader.id_name)) {
-			id_name = Reader.get_content_id_name(item);
+			ItemMeta meta = item.getItemMeta();
+			PersistentDataContainer container = meta.getPersistentDataContainer();
+			id_name = Reader.get_content_id_name(container);
 		}
 		switch (id_name) {
 			case "bucket":
@@ -65,7 +71,9 @@ public enum Liquid implements Chemical {
 	public static Liquid get_liquid(ItemStack item) {
 		String id_name = Material_ext.get_id_name(item);
 		if (id_name.equals(Reader.id_name)) {
-			id_name = Reader.get_content_id_name(item);
+			ItemMeta meta = item.getItemMeta();
+			PersistentDataContainer container = meta.getPersistentDataContainer();
+			id_name = Reader.get_content_id_name(container);
 		}
 		switch (id_name) {
 			case "water_bucket":
@@ -102,7 +110,9 @@ public enum Liquid implements Chemical {
 	public static ItemStack get_fill_container(Liquid liquid, ItemStack container) {
 		String id_name = Material_ext.get_id_name(container);
 		if (id_name.equals(Reader.id_name)) {
-			id_name = Reader.get_content_id_name(container);
+			ItemMeta meta = container.getItemMeta();
+			PersistentDataContainer data_container = meta.getPersistentDataContainer();
+			id_name = Reader.get_content_id_name(data_container);
 		}
 		switch (liquid) {
 			case lava:

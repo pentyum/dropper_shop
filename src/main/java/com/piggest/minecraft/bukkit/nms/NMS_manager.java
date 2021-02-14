@@ -1,9 +1,6 @@
 package com.piggest.minecraft.bukkit.nms;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.nms.biome.Biome_modifier;
-import com.piggest.minecraft.bukkit.nms.biome.Biome_modifier_1_16;
-import com.piggest.minecraft.bukkit.nms.biome.Packet_map_chunk_listener_1_16;
 import com.piggest.minecraft.bukkit.nms.difficulty.Local_difficulty;
 import com.piggest.minecraft.bukkit.nms.difficulty.Local_difficulty_1_16;
 import com.piggest.minecraft.bukkit.nms.enchant.Enchant_manager;

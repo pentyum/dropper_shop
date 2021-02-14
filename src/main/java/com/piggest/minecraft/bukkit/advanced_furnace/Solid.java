@@ -7,6 +7,8 @@ import com.piggest.minecraft.bukkit.teleport_machine.Elements_composition;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
 
 public enum Solid implements Chemical {
 	iron_ore(1000, "铁矿石"), iron_powder(1000, "铁粉"), iron_ingot(1000, "铁锭"), gold_ore(1000, "金矿石"),
@@ -40,7 +42,9 @@ public enum Solid implements Chemical {
 			return log;
 		}
 		if (name.equals(Reader.id_name)) {
-			name = Reader.get_content_id_name(itemstack);
+			ItemMeta meta = itemstack.getItemMeta();
+			PersistentDataContainer container = meta.getPersistentDataContainer();
+			name = Reader.get_content_id_name(container);
 		}
 		return Solid.get_solid(name);
 	}

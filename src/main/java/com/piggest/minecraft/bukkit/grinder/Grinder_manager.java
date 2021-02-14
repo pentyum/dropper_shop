@@ -1,6 +1,5 @@
 package com.piggest.minecraft.bukkit.grinder;
 
-import com.piggest.minecraft.bukkit.compressor.Compressor_recipe;
 import com.piggest.minecraft.bukkit.config.Recipe_config;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.gui.Gui_slot_type;

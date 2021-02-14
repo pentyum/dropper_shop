@@ -2,6 +2,7 @@ package com.piggest.minecraft.bukkit.wrench;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
+import com.piggest.minecraft.bukkit.utils.Inventory_io;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -128,11 +129,13 @@ public class Wrench_command_executor implements CommandExecutor {
 						sender.sendMessage("[扳手]只有玩家才能获得扳手");
 					} else {
 						Player player = (Player) sender;
-						player.getInventory().addItem(Material_ext.new_item("wrench", 1));
+						Inventory_io.give_item_to_player(player, Material_ext.new_item("wrench", 1));
+						sender.sendMessage("你已经获得扳手");
 					}
 				} else {
 					sender.sendMessage("[扳手]你没有权限直接获得扳手");
 				}
+				return true;
 			}
 		}
 		return false;

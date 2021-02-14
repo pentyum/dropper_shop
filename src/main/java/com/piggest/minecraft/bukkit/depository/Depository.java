@@ -125,19 +125,24 @@ public class Depository extends Multi_block_with_gui implements Ownable, Auto_io
 		return this.remove(type, 1);
 	}
 
-	public synchronized ItemStack remove(String name, int num) {
-		Integer current_num = this.contents.get(name);
+	/**
+	 * @param full_name 移除物品的全名
+	 * @param num       移除数量
+	 * @return 取出的新ItemStack
+	 */
+	public synchronized ItemStack remove(String full_name, int num) {
+		Integer current_num = this.contents.get(full_name);
 		if (current_num == null) {
 			return null;
 		}
 		if (current_num - num <= 0) {
 			num = current_num;
-			this.contents.remove(name);
+			this.contents.remove(full_name);
 		} else {
-			this.contents.put(name, current_num - num);
+			this.contents.put(full_name, current_num - num);
 		}
 		if (num > 0) {
-			ItemStack item = Material_ext.new_item_full_name(name, num);
+			ItemStack item = Material_ext.new_item_full_name(full_name, num);
 			return item;
 		} else {
 			return null;

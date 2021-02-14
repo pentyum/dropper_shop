@@ -2,7 +2,6 @@ package com.piggest.minecraft.bukkit.anti_thunder;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.structure.Async_structure_runner;
-import com.piggest.minecraft.bukkit.structure.Structure;
 import org.bukkit.OfflinePlayer;
 
 public class Anti_thunder_runner extends Async_structure_runner<Anti_thunder> {

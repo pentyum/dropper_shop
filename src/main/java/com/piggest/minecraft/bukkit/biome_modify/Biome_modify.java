@@ -1,16 +1,5 @@
 package com.piggest.minecraft.bukkit.biome_modify;
 
-import com.piggest.minecraft.bukkit.nms.NMS_manager;
-import org.bukkit.block.Biome;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
-import org.bukkit.entity.Player;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
 /*
 public class Biome_modify implements TabExecutor {
 	private HashMap<Biome, Float> custom_temp = new HashMap<>();

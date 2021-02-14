@@ -29,7 +29,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 public class Dropper_shop_command_executor implements TabExecutor {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

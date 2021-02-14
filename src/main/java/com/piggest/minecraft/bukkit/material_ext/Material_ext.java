@@ -3,6 +3,7 @@ package com.piggest.minecraft.bukkit.material_ext;
 import com.piggest.minecraft.bukkit.advanced_furnace.Gas_bottle;
 import com.piggest.minecraft.bukkit.advanced_furnace.Status;
 import com.piggest.minecraft.bukkit.depository.Reader;
+import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_namespace;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.utils.language.Item_zh_cn;
@@ -22,8 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Material_ext {
-	public static final NamespacedKey ext_id_namespacedkey = Dropper_shop_plugin.get_key("ext_id");
-	private static HashMap<NamespacedKey, ItemStack> ext_material_map = new HashMap<NamespacedKey, ItemStack>();
+	private static final HashMap<NamespacedKey, ItemStack> ext_material_map = new HashMap<>();
 
 	protected String material_name;
 	protected String chinese_name;
@@ -79,7 +79,7 @@ public abstract class Material_ext {
 		if (meta == null) {
 			return item.getType().getKey().toString();
 		}
-		String ext_id = meta.getPersistentDataContainer().get(ext_id_namespacedkey, PersistentDataType.STRING);
+		String ext_id = meta.getPersistentDataContainer().get(Dropper_shop_namespace.ext_id, PersistentDataType.STRING);
 		if (ext_id != null) {
 			return ext_id;
 		}
@@ -188,7 +188,7 @@ public abstract class Material_ext {
 			// return null;
 		}
 		ItemMeta meta = item.getItemMeta();
-		meta.getPersistentDataContainer().set(ext_id_namespacedkey, PersistentDataType.STRING, full_name);
+		meta.getPersistentDataContainer().set(Dropper_shop_namespace.ext_id, PersistentDataType.STRING, full_name);
 		// item = NMS_manager.ext_id_provider.set_ext_id(item, full_name);
 		// return item;
 	}
@@ -237,7 +237,9 @@ public abstract class Material_ext {
 	public static Status is_empty_container(ItemStack item) {
 		String id_name = Material_ext.get_id_name(item);
 		if (id_name.equals(Reader.id_name)) {
-			id_name = Reader.get_content_id_name(item);
+			ItemMeta meta = item.getItemMeta();
+			PersistentDataContainer container = meta.getPersistentDataContainer();
+			id_name = Reader.get_content_id_name(container);
 		}
 		switch (id_name) {
 			case "bucket":
@@ -251,6 +253,14 @@ public abstract class Material_ext {
 			default:
 				return null;
 		}
+	}
+
+	public static String full_name_to_id_name(String full_name) {
+		String[] namespace_and_key = full_name.split(":");
+		if (namespace_and_key.length == 2) {
+			return namespace_and_key[1];
+		}
+		return null;
 	}
 
 	public static ItemStack[] split_to_max_stack_size(ItemStack item) {
@@ -270,7 +280,9 @@ public abstract class Material_ext {
 	public static ItemStack get_empty_container(ItemStack item) {
 		String id_name = Material_ext.get_id_name(item);
 		if (id_name.equals(Reader.id_name)) {
-			id_name = Reader.get_content_id_name(item);
+			ItemMeta meta = item.getItemMeta();
+			PersistentDataContainer container = meta.getPersistentDataContainer();
+			id_name = Reader.get_content_id_name(container);
 		}
 		switch (id_name) {
 			case "lava_bucket":

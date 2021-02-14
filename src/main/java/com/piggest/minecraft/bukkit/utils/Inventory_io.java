@@ -12,9 +12,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class Inventory_io {
 	public static boolean move_item_to_inventoryholder(Inventory inventory, int slot, InventoryHolder holder) {
@@ -85,10 +85,10 @@ public class Inventory_io {
 	public static int item_get_amount(ItemStack item) {
 		if (Reader.is_reader(item)) {
 			ItemMeta meta = item.getItemMeta();
-			List<String> lore = meta.getLore();
-			Location loc = Reader.lore_parse_loction(lore);
+			PersistentDataContainer data_container = meta.getPersistentDataContainer();
+			Location loc = Reader.get_location(data_container);
 			Depository depository = Dropper_shop_plugin.instance.get_depository_manager().get(loc);
-			String full_name = Reader.lore_parse_material_str(lore);
+			String full_name = Reader.get_content_full_name(data_container);
 			return depository.get_material_num(full_name);
 		} else {
 			return item.getAmount();
@@ -102,15 +102,15 @@ public class Inventory_io {
 		ItemStack move_item = null;
 		if (Reader.is_reader(item)) {
 			ItemMeta meta = item.getItemMeta();
-			List<String> lore = meta.getLore();
-			Location loc = Reader.lore_parse_loction(lore);
-			String full_name = Reader.lore_parse_material_str(lore);
+			PersistentDataContainer data_container = meta.getPersistentDataContainer();
+			Location loc = Reader.get_location(data_container);
+			String full_name = Reader.get_content_full_name(data_container);
 			Depository depository = Dropper_shop_plugin.instance.get_depository_manager().get(loc);
 			if (depository == null) {
 				return null;
 			}
 			move_item = depository.remove(full_name, quantity);
-			Reader.item_lore_update(item);
+			Reader.lore_update(item);
 		} else {
 			synchronized (item) {
 				move_item = item.clone();
@@ -130,10 +130,10 @@ public class Inventory_io {
 		}
 		if (Reader.is_reader(item)) {
 			ItemMeta meta = item.getItemMeta();
-			List<String> lore = meta.getLore();
-			Location loc = Reader.lore_parse_loction(lore);
+			PersistentDataContainer data_container = meta.getPersistentDataContainer();
+			Location loc = Reader.get_location(data_container);
 			Depository depository = Dropper_shop_plugin.instance.get_depository_manager().get(loc);
-			String full_name = Reader.lore_parse_material_str(lore);
+			String full_name = Reader.get_content_full_name(data_container);
 			if (depository == null) {
 				return true;
 			}
