@@ -7,6 +7,8 @@ import com.piggest.minecraft.bukkit.structure.Structure_runner;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 
+import javax.annotation.Nonnull;
+
 public class Advanced_furnace_manager extends Gui_structure_manager<Advanced_furnace> implements Has_runner {
 	public static Advanced_furnace_manager instance = null;
 	private final Material[][][] model = {
@@ -108,6 +110,7 @@ public class Advanced_furnace_manager extends Gui_structure_manager<Advanced_fur
 		return new Structure_runner[]{new Advanced_furnace_io_runner(this), new Advanced_furnace_reaction_runner(this), new Advanced_furnace_temp_runner(this), new Advanced_furnace_upgrade_runner(this)};
 	}
 
+	@Nonnull
 	@Override
 	public String get_permission_head() {
 		return "adv_furnace";

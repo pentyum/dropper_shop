@@ -6,6 +6,9 @@ import com.piggest.minecraft.bukkit.structure.Structure_manager;
 import com.piggest.minecraft.bukkit.structure.Structure_runner;
 import org.bukkit.Material;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class Anti_thunder_manager extends Structure_manager<Anti_thunder> implements Has_runner {
 	public static Anti_thunder_manager instance;
 	private final Material[][][] model = {
@@ -20,6 +23,7 @@ public class Anti_thunder_manager extends Structure_manager<Anti_thunder> implem
 		instance = this;
 	}
 
+	@Nonnull
 	@Override
 	public String get_permission_head() {
 		return "anti_thunder";
@@ -46,5 +50,11 @@ public class Anti_thunder_manager extends Structure_manager<Anti_thunder> implem
 	@Override
 	public Structure_runner[] init_runners() {
 		return new Structure_runner[]{new Anti_thunder_runner(this)};
+	}
+
+	@Nullable
+	@Override
+	public String get_gui_name() {
+		return null;
 	}
 }

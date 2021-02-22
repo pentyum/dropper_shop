@@ -8,6 +8,8 @@ import com.piggest.minecraft.bukkit.structure.Structure_runner;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 
+import javax.annotation.Nonnull;
+
 public class Trees_felling_machine_manager extends Gui_structure_manager<Trees_felling_machine> implements Has_runner {
 	private final Material[][][] model = {
 			{{Material.CHISELED_QUARTZ_BLOCK, Material.QUARTZ_PILLAR, Material.CHISELED_QUARTZ_BLOCK},
@@ -72,6 +74,7 @@ public class Trees_felling_machine_manager extends Gui_structure_manager<Trees_f
 		return new Structure_runner[]{new Trees_felling_machine_runner(this)};
 	}
 
+	@Nonnull
 	@Override
 	public String get_permission_head() {
 		return "trees_felling_machine";

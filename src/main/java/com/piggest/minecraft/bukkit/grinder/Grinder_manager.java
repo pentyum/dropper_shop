@@ -1,7 +1,6 @@
 package com.piggest.minecraft.bukkit.grinder;
 
 import com.piggest.minecraft.bukkit.config.Recipe_config;
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
@@ -11,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,7 +87,7 @@ public class Grinder_manager extends Gui_structure_manager<Grinder> implements H
 		//Dropper_shop_plugin.instance.getLogger().info("[磨粉机]开始加载合成表");
 		List<?> recipe_list = this.recipe_config.get_config().getList("grinder-recipe");
 		if (recipe_list == null || recipe_list.size() == 0) {
-			Dropper_shop_plugin.instance.getLogger().info("[磨粉机]合成表为空，加载自带合成表");
+			this.logger.info("合成表为空，加载自带合成表");
 			this.add_recipe(Material.COBBLESTONE, Material.GRAVEL, 2, 600); // 圆石
 			this.add_recipe(Material.GRAVEL, Material.SAND, 2, 200); // 砂砾
 			this.add_recipe(Material.SANDSTONE, Material.SAND, 4, 400); // 砂石
@@ -171,10 +171,10 @@ public class Grinder_manager extends Gui_structure_manager<Grinder> implements H
 			this.add_recipe(Material.DRIED_KELP_BLOCK, Material.DRIED_KELP, 9, 200); // 干海带
 
 			this.recipe_config.save();
-			Dropper_shop_plugin.instance.getLogger().info("[磨粉机]已将自带合成表保存至文件" + this.recipe_config.get_file_name());
+			this.logger.info("已将自带合成表保存至文件" + this.recipe_config.get_file_name());
 		} else {
 			int count = 0;
-			Dropper_shop_plugin.instance.getLogger().info("[磨粉机]开始加载已保存的合成表");
+			this.logger.info("开始加载已保存的合成表");
 			for (Object recipe_obj : recipe_list) {
 				if (recipe_obj instanceof Grinder_recipe) {
 					Grinder_recipe recipe = (Grinder_recipe) recipe_obj;
@@ -182,7 +182,7 @@ public class Grinder_manager extends Gui_structure_manager<Grinder> implements H
 					count++;
 				}
 			}
-			Dropper_shop_plugin.instance.getLogger().info("[磨粉机]加载了" + count + "个合成表");
+			this.logger.info("加载了" + count + "个合成表");
 		}
 	}
 
@@ -201,6 +201,7 @@ public class Grinder_manager extends Gui_structure_manager<Grinder> implements H
 		return new int[]{0};
 	}
 
+	@Nonnull
 	@Override
 	public String get_permission_head() {
 		return "grinder";

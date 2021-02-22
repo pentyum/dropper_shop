@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.inventory.InventoryType;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 
 public class Electric_spawner_manager extends Gui_structure_manager<Electric_spawner> implements Has_runner {
@@ -232,6 +233,7 @@ public class Electric_spawner_manager extends Gui_structure_manager<Electric_spa
 		return new Structure_runner[]{new Electric_spawner_runner(this)};
 	}
 
+	@Nonnull
 	@Override
 	public String get_permission_head() {
 		return "electric_spawner";

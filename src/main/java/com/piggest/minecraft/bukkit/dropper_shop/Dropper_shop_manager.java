@@ -5,6 +5,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class Dropper_shop_manager extends Structure_manager<Dropper_shop> {
 	public static Dropper_shop_manager instance = null;
 
@@ -60,6 +63,7 @@ public class Dropper_shop_manager extends Structure_manager<Dropper_shop> {
 		return shop;
 	}
 
+	@Nonnull
 	@Override
 	public String get_permission_head() {
 		return "dropper_shop";
@@ -72,6 +76,12 @@ public class Dropper_shop_manager extends Structure_manager<Dropper_shop> {
 
 	@Override
 	public int[] get_center() {
+		return null;
+	}
+
+	@Nullable
+	@Override
+	public String get_gui_name() {
 		return null;
 	}
 }

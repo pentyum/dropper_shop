@@ -43,7 +43,7 @@ public abstract class Async_structure_runner<T extends Structure> extends Struct
 		int max_time = this.get_cycle() * 50;
 		long sleep_time = max_time - (System.currentTimeMillis() - start_time);
 		if (sleep_time < 0) {
-			Dropper_shop_plugin.instance.getLogger().warning(this.getClass().getSimpleName() + "线程执行超时" + (-sleep_time) + "ms");
+			manager.get_logger().warning(this.getClass().getSimpleName() + "线程执行超时" + (-sleep_time) + "ms");
 		}
 	}
 }

@@ -5,6 +5,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class Lottery_pool_manager extends Structure_manager<Lottery_pool> {
 	public static Lottery_pool_manager instance = null;
 
@@ -37,6 +40,7 @@ public class Lottery_pool_manager extends Structure_manager<Lottery_pool> {
 		}
 	}
 
+	@Nonnull
 	@Override
 	public String get_permission_head() {
 		return "lottery";
@@ -52,4 +56,9 @@ public class Lottery_pool_manager extends Structure_manager<Lottery_pool> {
 		return null;
 	}
 
+	@Nullable
+	@Override
+	public String get_gui_name() {
+		return null;
+	}
 }

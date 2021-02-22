@@ -1,7 +1,6 @@
 package com.piggest.minecraft.bukkit.structure;
 
 import com.piggest.minecraft.bukkit.config.Structure_config;
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.utils.Chunk_location;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -24,6 +23,8 @@ public abstract class Structure_manager<T extends Structure> {
 	protected HashMap<World, HashMap<Location, T>> structure_map = new HashMap<>();
 	protected Structure_manager_runner structure_manager_runner;
 	protected Structure_runner<T>[] structure_runners = null;
+	protected Structure_completeness_checker structure_completeness_checker = new Structure_completeness_checker(this);
+	protected Structure_manager_logger logger = new Structure_manager_logger(this);
 
 	public Structure_manager(Class<T> structure_class) {
 		this.structure_class = structure_class;
@@ -44,7 +45,7 @@ public abstract class Structure_manager<T extends Structure> {
 	public void load_config_from_world(World world) {
 		Structure_config config = new Structure_config(world, this.get_permission_head());
 		this.config_map.put(world, config);
-		//Dropper_shop_plugin.instance.getLogger().info(world.getName() + "的" + this.get_permission_head() + "的配置文件已读取");
+		//this.logger.info(world.getName() + "的" + this.get_permission_head() + "的配置文件已读取");
 	}
 
 	public T get(Location loc) {
@@ -85,12 +86,31 @@ public abstract class Structure_manager<T extends Structure> {
 		this.structure_map.get(structure.get_world()).remove(structure.get_location());
 	}
 
+	/**
+	 * 检查该管理器下全部结构的完整性，不完整的将被删除。
+	 *
+	 * @return 被移除的结构数量
+	 */
+	public int check_structures_completeness() {
+		ArrayList<T> to_remove = new ArrayList<>();
+		for (World world : Bukkit.getWorlds()) {
+			Collection<T> structures = this.get_all_structures_in_world(world);
+			for (T structure : structures) {
+				if (!structure.completed()) {
+					to_remove.add(structure);
+				}
+			}
+		}
+		to_remove.forEach(this::remove);
+		return to_remove.size();
+	}
+
 	public void load_world_structures(World world) {
 		Structure_config config = this.config_map.get(world);
 		List<Structure> list = config.getList();
 		this.structure_map.put(world, new HashMap<>());
 		if (list == null) {
-			Dropper_shop_plugin.instance.getLogger().info(world.getName() + "已加载0个" + this.structure_class.getSimpleName());
+			this.logger.info(world.getName() + "已加载0个" + this.structure_class.getSimpleName());
 			return;
 		}
 		for (Structure structure : list) {
@@ -103,19 +123,14 @@ public abstract class Structure_manager<T extends Structure> {
 				this.add(structure);
 			}
 		}
-		Dropper_shop_plugin.instance.getLogger().info(world.getName() + "已加载" + list.size() + "个" + this.structure_class.getSimpleName());
+		this.logger.info(world.getName() + "已加载" + list.size() + "个" + this.structure_class.getSimpleName());
 	}
 
 	public void start_structure_manager_runner() {
 		if (this.structure_manager_runner != null) {
-			if (this.structure_manager_runner.is_asynchronously()) {
-				this.structure_manager_runner.runTaskTimerAsynchronously(Dropper_shop_plugin.instance,
-						this.structure_manager_runner.get_delay(), this.structure_manager_runner.get_cycle());
-			} else {
-				this.structure_manager_runner.runTaskTimer(Dropper_shop_plugin.instance,
-						this.structure_manager_runner.get_delay(), this.structure_manager_runner.get_cycle());
-			}
+			this.structure_manager_runner.start();
 		}
+		this.structure_completeness_checker.start();
 		if (this instanceof Has_runner) {
 			for (Structure_runner<T> runner : this.structure_runners) {
 				runner.start();
@@ -132,7 +147,7 @@ public abstract class Structure_manager<T extends Structure> {
 			for (Structure structure : structures_to_remove) {
 				structure.remove();
 			}
-			Dropper_shop_plugin.instance.getLogger().info(world.getName() + "已卸载" + structures_to_remove.length + "个" + this.structure_class.getSimpleName());
+			this.logger.info(world.getName() + "已卸载" + structures_to_remove.length + "个" + this.structure_class.getSimpleName());
 			world_structures_map.remove(world);
 		}
 	}
@@ -214,6 +229,7 @@ public abstract class Structure_manager<T extends Structure> {
 		return null;
 	}
 
+	@Nonnull
 	public abstract String get_permission_head();
 
 	public HashSet<T> get_all_structures_in_chunk(Chunk_location chunk_location) {
@@ -250,6 +266,12 @@ public abstract class Structure_manager<T extends Structure> {
 		}
 	}
 
+	/**
+	 * 获取该结构管理器下某世界中的全部结构
+	 *
+	 * @param world
+	 * @return 全部结构的集合，该集合不是副本。
+	 */
 	public Collection<T> get_all_structures_in_world(@Nonnull World world) {
 		return this.structure_map.get(world).values();
 	}
@@ -263,7 +285,7 @@ public abstract class Structure_manager<T extends Structure> {
 	public void load_instance_from_world_config(World world) {
 		Structure_config config = this.config_map.get(world);
 		if (config == null) {
-			Dropper_shop_plugin.instance.getLogger().warning(world.getName() + "的" + this.get_permission_head() + "的配置文件未读取，请先读取后再实例化！");
+			this.logger.warning(world.getName() + "的" + this.get_permission_head() + "的配置文件未读取，请先读取后再实例化！");
 			return;
 		}
 		config.load();
@@ -275,4 +297,10 @@ public abstract class Structure_manager<T extends Structure> {
 		}
 	}
 
+	public Structure_manager_logger get_logger() {
+		return this.logger;
+	}
+
+	@Nullable
+	public abstract String get_gui_name();
 }

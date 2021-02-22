@@ -10,6 +10,8 @@ import com.piggest.minecraft.bukkit.teleport_machine.dynmap.Dynmap_refresher;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 
+import javax.annotation.Nonnull;
+
 public class Teleport_machine_manager extends Gui_structure_manager<Teleport_machine> implements Has_runner {
 	private Dynmap_manager dynmap_manager = new Dynmap_manager(this);
 	private final int[] process_bar = new int[]{0};
@@ -114,6 +116,7 @@ public class Teleport_machine_manager extends Gui_structure_manager<Teleport_mac
 		}
 	}
 
+	@Nonnull
 	@Override
 	public String get_permission_head() {
 		return "teleport_machine";

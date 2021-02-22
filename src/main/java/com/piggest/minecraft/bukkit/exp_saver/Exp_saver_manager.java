@@ -7,6 +7,8 @@ import com.piggest.minecraft.bukkit.structure.Structure_runner;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 
+import javax.annotation.Nonnull;
+
 public class Exp_saver_manager extends Gui_structure_manager<Exp_saver> implements Has_runner {
 	public static Exp_saver_manager instance = null;
 
@@ -75,6 +77,7 @@ public class Exp_saver_manager extends Gui_structure_manager<Exp_saver> implemen
 		return new int[]{0};
 	}
 
+	@Nonnull
 	@Override
 	public String get_permission_head() {
 		return "exp_saver";

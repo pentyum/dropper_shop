@@ -1,7 +1,6 @@
 package com.piggest.minecraft.bukkit.compressor;
 
 import com.piggest.minecraft.bukkit.config.Recipe_config;
-import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
 import com.piggest.minecraft.bukkit.gui.Gui_slot_type;
 import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 import com.piggest.minecraft.bukkit.material_ext.Material_ext;
@@ -11,13 +10,14 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class Compressor_manager extends Gui_structure_manager<Compressor> implements Has_runner {
 	private final Recipe_config recipe_config = new Recipe_config("compressor.yml", Compressor_recipe.class);
-	private HashMap<String, Compressor_recipe> recipe = new HashMap<String, Compressor_recipe>();
+	private final HashMap<String, Compressor_recipe> recipe = new HashMap<>();
 	// private HashMap<String, String> main_recipe = new HashMap<String, String>();
 	// private HashMap<String, Integer> recipe_quantity = new HashMap<String,
 	// Integer>();
@@ -78,6 +78,7 @@ public class Compressor_manager extends Gui_structure_manager<Compressor> implem
 		return new Structure_runner[]{new Compressor_io_runner(this), new Compressor_runner(this)};
 	}
 
+	@Nonnull
 	@Override
 	public String get_permission_head() {
 		return "compressor";
@@ -146,7 +147,7 @@ public class Compressor_manager extends Gui_structure_manager<Compressor> implem
 		//Dropper_shop_plugin.instance.getLogger().info("[压缩机]开始加载合成表");
 		List<?> recipe_list = this.recipe_config.get_config().getList("compressor-recipe");
 		if (recipe_list == null || recipe_list.size() == 0) {
-			Dropper_shop_plugin.instance.getLogger().info("[压缩机]合成表为空，加载自带合成表");
+			this.logger.info("合成表为空，加载自带合成表");
 			this.add_recipe(Material.IRON_NUGGET, 9, Material.IRON_INGOT, 500);
 			this.add_recipe(Material.IRON_INGOT, 9, Material.IRON_BLOCK, 500);
 
@@ -173,9 +174,9 @@ public class Compressor_manager extends Gui_structure_manager<Compressor> implem
 
 			this.add_recipe(Material.POPPED_CHORUS_FRUIT, 1, Material.PURPUR_BLOCK, 100);
 			this.recipe_config.save();
-			Dropper_shop_plugin.instance.getLogger().info("[压缩机]已将自带合成表保存至文件" + this.recipe_config.get_file_name());
+			this.logger.info("已将自带合成表保存至文件" + this.recipe_config.get_file_name());
 		} else {
-			Dropper_shop_plugin.instance.getLogger().info("[压缩机]开始加载已保存的合成表");
+			this.logger.info("开始加载已保存的合成表");
 			int count = 0;
 			for (Object recipe_obj : recipe_list) {
 				if (recipe_obj instanceof Compressor_recipe) {
@@ -184,7 +185,7 @@ public class Compressor_manager extends Gui_structure_manager<Compressor> implem
 					count++;
 				}
 			}
-			Dropper_shop_plugin.instance.getLogger().info("[压缩机]加载了" + count + "个合成表");
+			this.logger.info("加载了" + count + "个合成表");
 		}
 	}
 

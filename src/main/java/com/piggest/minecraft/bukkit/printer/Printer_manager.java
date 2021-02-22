@@ -4,6 +4,8 @@ import com.piggest.minecraft.bukkit.gui.Gui_structure_manager;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 
+import javax.annotation.Nonnull;
+
 public class Printer_manager extends Gui_structure_manager<Printer> {
 	private Material[][][] model = {
 			{{Material.IRON_BLOCK, Material.IRON_BLOCK, Material.IRON_BLOCK},
@@ -43,6 +45,7 @@ public class Printer_manager extends Gui_structure_manager<Printer> {
 		return null;
 	}
 
+	@Nonnull
 	@Override
 	public String get_permission_head() {
 		return "printer";

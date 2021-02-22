@@ -3,6 +3,9 @@ package com.piggest.minecraft.bukkit.pigman_switch;
 import com.piggest.minecraft.bukkit.structure.Structure_manager;
 import org.bukkit.Material;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class Pigman_switch_manager extends Structure_manager<Pigman_switch> {
 	private final Material[][][] model = {
 			{{Material.SANDSTONE, Material.SANDSTONE, Material.SANDSTONE},
@@ -52,6 +55,7 @@ public class Pigman_switch_manager extends Structure_manager<Pigman_switch> {
 	}
 	*/
 
+	@Nonnull
 	@Override
 	public String get_permission_head() {
 		return "pigman_switch";
@@ -67,4 +71,9 @@ public class Pigman_switch_manager extends Structure_manager<Pigman_switch> {
 		return new int[]{this.center_x, this.center_y, this.center_z};
 	}
 
+	@Nullable
+	@Override
+	public String get_gui_name() {
+		return null;
+	}
 }

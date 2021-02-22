@@ -7,6 +7,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 
+import javax.annotation.Nonnull;
+
 public class Depository_manager extends Gui_structure_manager<Depository> implements Has_runner {
 	public static Depository_manager instance = null;
 	private final Material[][][] model = {
@@ -95,6 +97,7 @@ public class Depository_manager extends Gui_structure_manager<Depository> implem
 		return new Structure_runner[]{new Depository_item_importer(this), new Depository_runner(this)};
 	}
 
+	@Nonnull
 	@Override
 	public String get_permission_head() {
 		return "depository";
