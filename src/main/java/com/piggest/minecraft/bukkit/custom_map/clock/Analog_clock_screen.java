@@ -28,6 +28,9 @@ public class Analog_clock_screen extends Digital_clock_screen {
 		bstroke_hr = new BasicStroke((float) this.font_size / 43);
 
 		this.pic_size = this.get_show_width();
+		if (this.pic_size > 128) { //图片过大取消秒针
+			this.format = "HH:mm";
+		}
 	}
 
 	@Override
@@ -57,7 +60,7 @@ public class Analog_clock_screen extends Digital_clock_screen {
 		g.setStroke(bstroke_min);
 		g.drawLine(this.pic_size / 2, this.pic_size / 2, pos_data.min_head_x, pos_data.min_head_y); // 画分针
 
-		if (this.world_name == null) {
+		if (this.world_name == null && this.pic_size <= 128) {
 			g.setStroke(bstroke_sec);
 			g.drawLine(pos_data.sec_tail_x, pos_data.sec_tail_y, pos_data.sec_head_x, pos_data.sec_head_y); // 画秒针
 		}

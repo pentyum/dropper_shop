@@ -128,6 +128,9 @@ public abstract class Screen implements ConfigurationSerializable, Runnable {
 		return this.height_n;
 	}
 
+	/**
+	 * 获取显示大小
+	 */
 	public int get_show_width() {
 		return this.width_n * Custom_map_render.pic_size;
 	}

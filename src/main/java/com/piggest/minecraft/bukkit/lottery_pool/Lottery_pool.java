@@ -73,7 +73,7 @@ public class Lottery_pool extends Multi_block_structure {
 			return false;
 		}
 		World world = this.get_location().getWorld();
-		Predicate<Entity> predicate = new Predicate<Entity>() {
+		Predicate<Entity> predicate = new Predicate<>() {
 			@Override
 			public boolean test(Entity entity) {
 				if (entity.getType() == EntityType.ENDER_CRYSTAL) {
