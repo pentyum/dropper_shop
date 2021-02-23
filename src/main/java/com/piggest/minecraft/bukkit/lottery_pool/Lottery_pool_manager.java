@@ -46,6 +46,7 @@ public class Lottery_pool_manager extends Structure_manager<Lottery_pool> {
 		return "lottery";
 	}
 
+	@Nonnull
 	@Override
 	public Material[][][] get_model() {
 		return null;

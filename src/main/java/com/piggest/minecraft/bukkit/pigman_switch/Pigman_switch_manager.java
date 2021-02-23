@@ -61,6 +61,7 @@ public class Pigman_switch_manager extends Structure_manager<Pigman_switch> {
 		return "pigman_switch";
 	}
 
+	@Nonnull
 	@Override
 	public Material[][][] get_model() {
 		return this.model;

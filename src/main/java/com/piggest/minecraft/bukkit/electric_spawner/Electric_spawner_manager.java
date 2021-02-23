@@ -239,6 +239,7 @@ public class Electric_spawner_manager extends Gui_structure_manager<Electric_spa
 		return "electric_spawner";
 	}
 
+	@Nonnull
 	@Override
 	public Material[][][] get_model() {
 		return this.model;

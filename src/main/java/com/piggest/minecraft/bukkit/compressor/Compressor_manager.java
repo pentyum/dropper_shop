@@ -84,6 +84,7 @@ public class Compressor_manager extends Gui_structure_manager<Compressor> implem
 		return "compressor";
 	}
 
+	@Nonnull
 	@Override
 	public Material[][][] get_model() {
 		return this.model;

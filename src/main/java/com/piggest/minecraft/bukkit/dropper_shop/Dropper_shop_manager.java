@@ -69,6 +69,7 @@ public class Dropper_shop_manager extends Structure_manager<Dropper_shop> {
 		return "dropper_shop";
 	}
 
+	@Nonnull
 	@Override
 	public Material[][][] get_model() {
 		return null;

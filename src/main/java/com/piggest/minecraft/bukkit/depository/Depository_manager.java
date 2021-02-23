@@ -103,6 +103,7 @@ public class Depository_manager extends Gui_structure_manager<Depository> implem
 		return "depository";
 	}
 
+	@Nonnull
 	@Override
 	public Material[][][] get_model() {
 		return this.model;

@@ -207,6 +207,7 @@ public class Grinder_manager extends Gui_structure_manager<Grinder> implements H
 		return "grinder";
 	}
 
+	@Nonnull
 	@Override
 	public Material[][][] get_model() {
 		return this.model;

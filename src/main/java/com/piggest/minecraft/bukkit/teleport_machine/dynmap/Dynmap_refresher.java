@@ -7,18 +7,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 public class Dynmap_refresher extends Structure_manager_runner {
-
-	private Teleport_machine_manager manager;
-
 	public Dynmap_refresher(Teleport_machine_manager manager) {
-		this.manager = manager;
+		super(manager);
 	}
 
 	@Override
-	public void run() {
-		Dynmap_manager dynmap_manager = manager.get_dynmap_manager();
+	public void exec() {
+		Teleport_machine_manager teleport_machine_manager = (Teleport_machine_manager) this.manager;
+		Dynmap_manager dynmap_manager = teleport_machine_manager.get_dynmap_manager();
 		for (World world : Bukkit.getServer().getWorlds()) {
-			for (Teleport_machine machine : this.manager.get_all_structures_in_world(world)) {
+			for (Teleport_machine machine : teleport_machine_manager.get_all_structures_in_world(world)) {
 				dynmap_manager.handle_teleport_machine_update(machine);
 			}
 		}

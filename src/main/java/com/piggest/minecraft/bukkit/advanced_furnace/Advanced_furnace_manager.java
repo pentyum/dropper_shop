@@ -116,6 +116,7 @@ public class Advanced_furnace_manager extends Gui_structure_manager<Advanced_fur
 		return "adv_furnace";
 	}
 
+	@Nonnull
 	@Override
 	public Material[][][] get_model() {
 		return this.model;

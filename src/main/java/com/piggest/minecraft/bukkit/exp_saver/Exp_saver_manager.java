@@ -83,6 +83,7 @@ public class Exp_saver_manager extends Gui_structure_manager<Exp_saver> implemen
 		return "exp_saver";
 	}
 
+	@Nonnull
 	@Override
 	public Material[][][] get_model() {
 		return this.model;

@@ -7,10 +7,12 @@ import org.bukkit.World;
 import java.util.Collection;
 
 public abstract class Async_structure_runner<T extends Structure> extends Structure_runner<T> {
-	protected Structure_manager<T> manager;
+	protected final Structure_manager<T> manager;
+	protected final int max_time;
 
 	public Async_structure_runner(Structure_manager<T> manager) {
 		this.manager = manager;
+		this.max_time = this.get_cycle() * 50;
 		//this.setName(this.manager.get_permission_head() + ":" + this.getClass().getSimpleName());
 	}
 
@@ -40,7 +42,6 @@ public abstract class Async_structure_runner<T extends Structure> extends Struct
 				}
 			}
 		}
-		int max_time = this.get_cycle() * 50;
 		long sleep_time = max_time - (System.currentTimeMillis() - start_time);
 		if (sleep_time < 0) {
 			manager.get_logger().warning(this.getClass().getSimpleName() + "线程执行超时" + (-sleep_time) + "ms");

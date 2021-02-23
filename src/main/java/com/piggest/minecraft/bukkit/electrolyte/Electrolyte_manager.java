@@ -22,6 +22,7 @@ public class Electrolyte_manager extends Structure_manager<Electrolyte> {
 		return null;
 	}
 
+	@Nonnull
 	@Override
 	public Material[][][] get_model() {
 		// TODO 自动生成的方法存根

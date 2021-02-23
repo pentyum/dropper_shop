@@ -7,7 +7,7 @@ import org.bukkit.World;
 import java.util.Collection;
 
 public abstract class Sync_structure_runner<T extends Structure> extends Structure_runner<T> {
-	Structure_manager<T> manager;
+	private final Structure_manager<T> manager;
 
 	public Sync_structure_runner(Structure_manager<T> manager) {
 		this.manager = manager;

@@ -23,4 +23,9 @@ public class Structure_manager_logger extends PluginLogger {
 		logRecord.setMessage(this.log_prefix + logRecord.getMessage());
 		super.log(logRecord);
 	}
+
+	@Nonnull
+	public String get_predix() {
+		return this.log_prefix;
+	}
 }

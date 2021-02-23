@@ -29,6 +29,7 @@ public class Anti_thunder_manager extends Structure_manager<Anti_thunder> implem
 		return "anti_thunder";
 	}
 
+	@Nonnull
 	@Override
 	public Material[][][] get_model() {
 		return this.model;

@@ -80,6 +80,7 @@ public class Trees_felling_machine_manager extends Gui_structure_manager<Trees_f
 		return "trees_felling_machine";
 	}
 
+	@Nonnull
 	@Override
 	public Material[][][] get_model() {
 		return this.model;

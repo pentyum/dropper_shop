@@ -4,10 +4,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 
+import java.util.Arrays;
+import java.util.function.IntFunction;
+
 public class Chunk_location {
-	private int x;
-	private int z;
-	private String world_name;
+	private final int x;
+	private final int z;
+	private final String world_name;
 
 	public Chunk_location(String world_name, int x, int z) {
 		this.world_name = world_name;
@@ -78,5 +81,17 @@ public class Chunk_location {
 		seed = seed + (long) (x * x * 0x4c1906) + (long) (x * 0x5ac0db) + (long) (z * z) * 0x4307a7L
 				+ (long) (z * 0x5f24f) ^ 0x3ad8025f;
 		return seed;
+	}
+
+	/**
+	 * 基于Chunk[]批量建立Chunk_location对象
+	 *
+	 * @param chunks 区块数组
+	 * @return Chunk_location数组
+	 */
+	public static Chunk_location[] create_chunk_locations(Chunk[] chunks) {
+		Chunk_location[] locations = new Chunk_location[chunks.length];
+		Arrays.parallelSetAll(locations, i -> new Chunk_location(chunks[i]));
+		return locations;
 	}
 }

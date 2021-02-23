@@ -51,6 +51,7 @@ public class Printer_manager extends Gui_structure_manager<Printer> {
 		return "printer";
 	}
 
+	@Nonnull
 	@Override
 	public Material[][][] get_model() {
 		return this.model;

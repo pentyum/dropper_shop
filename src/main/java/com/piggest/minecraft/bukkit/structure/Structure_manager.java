@@ -2,10 +2,7 @@ package com.piggest.minecraft.bukkit.structure;
 
 import com.piggest.minecraft.bukkit.config.Structure_config;
 import com.piggest.minecraft.bukkit.utils.Chunk_location;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 
@@ -94,7 +91,7 @@ public abstract class Structure_manager<T extends Structure> {
 	public int check_structures_completeness() {
 		ArrayList<T> to_remove = new ArrayList<>();
 		for (World world : Bukkit.getWorlds()) {
-			Collection<T> structures = this.get_all_structures_in_world(world);
+			Collection<T> structures = this.get_loaded_structures_in_world(world);
 			for (T structure : structures) {
 				if (!structure.completed()) {
 					to_remove.add(structure);
@@ -232,12 +229,14 @@ public abstract class Structure_manager<T extends Structure> {
 	@Nonnull
 	public abstract String get_permission_head();
 
+	@Nullable
 	public HashSet<T> get_all_structures_in_chunk(Chunk_location chunk_location) {
 		return this.chunk_structure_map.get(chunk_location);
 	}
 
+	@Nonnull
 	public HashSet<T> get_all_structures_around_chunk(Chunk_location chunk_location, int r) {
-		HashSet<T> result = new HashSet<T>();
+		HashSet<T> result = new HashSet<>();
 		int center_x = chunk_location.get_x();
 		int center_z = chunk_location.get_z();
 		int x, z;
@@ -253,6 +252,7 @@ public abstract class Structure_manager<T extends Structure> {
 		return result;
 	}
 
+	@Nonnull
 	public abstract Material[][][] get_model(); // model[y][z][x]
 
 	public abstract int[] get_center();
@@ -272,8 +272,29 @@ public abstract class Structure_manager<T extends Structure> {
 	 * @param world
 	 * @return 全部结构的集合，该集合不是副本。
 	 */
+	@Nonnull
 	public Collection<T> get_all_structures_in_world(@Nonnull World world) {
 		return this.structure_map.get(world).values();
+	}
+
+	/**
+	 * 获取该结构管理器下某世界中的全部的已被加载的结构
+	 *
+	 * @param world
+	 * @return 全部结构的集合，该集合是副本。
+	 */
+	@Nonnull
+	public HashSet<T> get_loaded_structures_in_world(@Nonnull World world) {
+		Chunk[] loaded_chunks = world.getLoadedChunks();
+		Chunk_location[] loaded_chunk_locations = Chunk_location.create_chunk_locations(loaded_chunks);
+		HashSet<T> loaded_structures = new HashSet<>();
+		for (Chunk_location chunk_location : loaded_chunk_locations) {
+			HashSet<T> all_structures_in_chunk = this.get_all_structures_in_chunk(chunk_location);
+			if (all_structures_in_chunk != null) {
+				loaded_structures.addAll(all_structures_in_chunk);
+			}
+		}
+		return loaded_structures;
 	}
 
 	public void load_instance_from_config() {

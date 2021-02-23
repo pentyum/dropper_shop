@@ -122,6 +122,7 @@ public class Teleport_machine_manager extends Gui_structure_manager<Teleport_mac
 		return "teleport_machine";
 	}
 
+	@Nonnull
 	@Override
 	public Material[][][] get_model() {
 		return this.model;

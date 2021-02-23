@@ -93,6 +93,7 @@ public abstract class Material_ext {
 	/**
 	 * 根据内部ID生成ItemStack，等效于new ItemStack(Material)
 	 */
+	@Nullable
 	public static ItemStack new_item(NamespacedKey namespacedkey, int num) {
 		return new_item(namespacedkey, num, null);
 	}
@@ -100,6 +101,7 @@ public abstract class Material_ext {
 	/**
 	 * 以名称新建物品，如果原版中没找到，则到本插件中寻找。
 	 **/
+	@Nullable
 	public static ItemStack new_item_full_name(String full_name, int num) {
 		return new_item(get_namespacedkey(full_name), num);
 	}
@@ -107,6 +109,7 @@ public abstract class Material_ext {
 	/**
 	 * 以名称新建物品，如果原版中没找到，则到本插件中寻找。
 	 **/
+	@Nullable
 	public static ItemStack new_item(String id_name, int num) {
 		NamespacedKey namespacedkey = null;
 		if (Material.getMaterial(id_name.toUpperCase()) == null) {
@@ -120,10 +123,15 @@ public abstract class Material_ext {
 	/**
 	 * 新建特定namespacedkey的物品。
 	 **/
+	@Nullable
 	private static ItemStack new_item(NamespacedKey namespacedkey, int num, Map<Enchantment, Integer> enchantments) {
-		ItemStack new_item = null;
+		ItemStack new_item;
 		if (namespacedkey.getNamespace().equals(NamespacedKey.MINECRAFT)) {
-			new_item = new ItemStack(get_material(namespacedkey), num);
+			Material material = get_material(namespacedkey);
+			if (material == null) {
+				return null;
+			}
+			new_item = new ItemStack(material, num);
 		} else {
 			new_item = Material_ext.ext_material_map.get(namespacedkey).clone();
 			new_item.setAmount(num);
@@ -139,6 +147,7 @@ public abstract class Material_ext {
 	 *
 	 * @return 注册出的物品.
 	 **/
+	@Nonnull
 	public static ItemStack register(NamespacedKey namespacedkey, Material material_base, String name, int model_data) {
 		ItemStack item = new ItemStack(material_base);
 		ItemMeta itemmeta = item.getItemMeta();
@@ -193,6 +202,7 @@ public abstract class Material_ext {
 		// return item;
 	}
 
+	@Nullable
 	private static Material get_material(NamespacedKey namespacedkey) { // 根据内部ID获得材质
 		if (namespacedkey.getNamespace().equals(NamespacedKey.MINECRAFT)) {
 			return Material.getMaterial(namespacedkey.getKey().toUpperCase());
@@ -206,6 +216,7 @@ public abstract class Material_ext {
 		}
 	}
 
+	@Nullable
 	public static Material get_material(String full_name) {
 		NamespacedKey namespacedkey = Material_ext.get_namespacedkey(full_name);
 		return get_material(namespacedkey);
@@ -243,7 +254,6 @@ public abstract class Material_ext {
 		}
 		switch (id_name) {
 			case "bucket":
-				return Status.liquid;
 			case "glass_bottle":
 				return Status.liquid;
 			case "gas_bottle":
