@@ -56,11 +56,7 @@ public class Dropper_shop_manager extends Structure_manager<Dropper_shop> {
 
 	@Override
 	public Dropper_shop find_existed(Location loc) {
-		Dropper_shop shop = this.get(loc);
-		if (shop == null) {
-			return null;
-		}
-		return shop;
+		return this.get(loc);
 	}
 
 	@Nonnull

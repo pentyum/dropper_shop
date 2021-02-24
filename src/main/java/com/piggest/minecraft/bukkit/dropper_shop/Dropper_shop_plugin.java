@@ -331,7 +331,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		}
 		 */
 		// 处理冬天模式完成
-		this.getLogger().info("冬天模式不再支持1.16.2");
+		//this.getLogger().info("冬天模式不再支持1.16.2");
 
 		Tab_list.init();
 

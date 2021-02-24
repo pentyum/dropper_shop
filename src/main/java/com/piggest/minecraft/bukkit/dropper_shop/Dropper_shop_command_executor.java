@@ -51,16 +51,17 @@ public class Dropper_shop_command_executor implements TabExecutor {
 				sender.sendMessage("请使用/dropper_shop make");
 				return true;
 			}
-			if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
-				sender.sendMessage("必须由玩家执行该命令");
-				return true;
-			}
+
 			String sub_cmd = args[0].toLowerCase();
 			List<String> need_player_cmd = Arrays.asList("make", "remove", "setprice", "show_full_name", "show_full_time",
 					"show_time", "show_date", "show_elements", "show_inhabited_time", "set_inhabited_time", "show_light",
 					"scan_qr_code", "get_item");
 
 			if (need_player_cmd.contains(sub_cmd)) {
+				if (!(sender instanceof Player)) { // 如果sender与Player类不匹配
+					sender.sendMessage("必须由玩家执行该命令");
+					return true;
+				}
 				Player player = (Player) sender;
 				Location loc = player.getLocation();
 				Chunk chunk = loc.getChunk();
@@ -298,6 +299,11 @@ public class Dropper_shop_command_executor implements TabExecutor {
 
 	@Override
 	public List<String> onTabComplete(@Nonnull CommandSender sender, @Nonnull Command command, @Nonnull String alias, String[] args) {
+		if (args.length == 1) {
+			return Arrays.asList("make", "remove", "setprice", "show_full_name", "show_full_time",
+					"show_time", "show_date", "show_elements", "show_inhabited_time", "set_inhabited_time", "show_light",
+					"scan_qr_code", "get_item", "show_thread", "show_structures", "download_img");
+		}
 		if (args[0].equalsIgnoreCase("get_item")) {
 			if (args.length == 2) {
 				ArrayList<String> ext_item_list = Material_ext.get_ext_full_name_list();
