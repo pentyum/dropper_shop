@@ -13,9 +13,9 @@ public class Structure_manager_logger extends Logger {
 	public Structure_manager_logger(Structure_manager<? extends Structure> structure_manager) {
 		super(structure_manager.getClass().getCanonicalName(), null);
 		if (structure_manager.get_gui_name() != null) {
-			this.log_prefix = "[" + structure_manager.get_gui_name() + "]";
+			this.log_prefix = "[" + structure_manager.get_gui_name() + "] ";
 		} else {
-			this.log_prefix = "[" + structure_manager.get_permission_head() + "]";
+			this.log_prefix = "[" + structure_manager.get_permission_head() + "] ";
 		}
 		this.setParent(Dropper_shop_plugin.instance.getLogger());
 		this.setLevel(Level.ALL);

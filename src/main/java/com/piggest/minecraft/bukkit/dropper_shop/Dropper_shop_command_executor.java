@@ -264,11 +264,24 @@ public class Dropper_shop_command_executor implements TabExecutor {
 				sender.sendMessage("Thread: " + Thread.currentThread().getId());
 			} else if (args[0].equalsIgnoreCase("show_structures")) {
 				Collection<Structure_manager<? extends Structure>> structure_managers = Dropper_shop_plugin.instance.get_structure_manager().values();
-				for (World world : Bukkit.getWorlds()) {
-					for (Structure_manager<? extends Structure> structure_manager : structure_managers) {
-						sender.sendMessage(world.getName() + ":" + structure_manager.get_logger().get_predix()
-								+ "总共" + structure_manager.get_all_structures_in_world(world).size() + "个"
-								+ "，已加载" + structure_manager.get_loaded_structures_in_world(world).size() + "个");
+				if (args.length == 2) {
+					World world = Bukkit.getWorld(args[1]);
+					if (world != null) {
+						for (Structure_manager<? extends Structure> structure_manager : structure_managers) {
+							sender.sendMessage(world.getName() + ":" + structure_manager.get_logger().get_predix()
+									+ "总共" + structure_manager.get_all_structures_in_world(world).size() + "个"
+									+ "，已加载" + structure_manager.get_loaded_structures_in_world(world).size() + "个");
+						}
+					} else {
+						sender.sendMessage("世界名称错误");
+					}
+				} else {
+					for (World world : Bukkit.getWorlds()) {
+						for (Structure_manager<? extends Structure> structure_manager : structure_managers) {
+							sender.sendMessage(world.getName() + ":" + structure_manager.get_logger().get_predix()
+									+ "总共" + structure_manager.get_all_structures_in_world(world).size() + "个"
+									+ "，已加载" + structure_manager.get_loaded_structures_in_world(world).size() + "个");
+						}
 					}
 				}
 				return true;

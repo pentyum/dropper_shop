@@ -12,7 +12,7 @@ public class Dynmap_refresher extends Structure_manager_runner {
 	}
 
 	@Override
-	public void exec() {
+	public int exec() {
 		Teleport_machine_manager teleport_machine_manager = (Teleport_machine_manager) this.manager;
 		Dynmap_manager dynmap_manager = teleport_machine_manager.get_dynmap_manager();
 		for (World world : Bukkit.getServer().getWorlds()) {
@@ -20,7 +20,7 @@ public class Dynmap_refresher extends Structure_manager_runner {
 				dynmap_manager.handle_teleport_machine_update(machine);
 			}
 		}
-
+		return 0;
 	}
 
 	@Override

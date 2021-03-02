@@ -8,21 +8,22 @@ public class Structure_completeness_checker extends Structure_manager_runner {
 	}
 
 	@Override
-	public void exec() {
-		int remove_num = manager.check_structures_completeness();
-		if (remove_num > 0) {
-			manager.get_logger().info("自动移除了" + remove_num + "个无效结构");
+	public int exec() {
+		int[] num = manager.check_structures_completeness();
+		if (num[1] > 0) {
+			manager.get_logger().info("自动移除了" + num[1] + "个无效结构");
 		}
+		return num[0];
 	}
 
 	@Override
 	public int get_cycle() {
-		return 400;
+		return 1000;
 	}
 
 	@Override
 	public int get_delay() {
-		return 400;
+		return 1000;
 	}
 
 	@Override

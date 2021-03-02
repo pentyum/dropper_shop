@@ -15,14 +15,17 @@ public abstract class Structure_manager_runner extends BukkitRunnable {
 	@Override
 	public void run() {
 		long start_time = System.currentTimeMillis();
-		this.exec();
+		int total_check = this.exec();
 		long sleep_time = max_time - (System.currentTimeMillis() - start_time);
 		if (sleep_time < 0) {
-			manager.get_logger().warning(this.getClass().getSimpleName() + "线程执行超时" + (-sleep_time) + "ms");
+			String msg = this.getClass().getSimpleName() + "线程(" + Thread.currentThread().getId() + ")执行超时" + (-sleep_time) + "ms";
+			msg += ",总检测结构数量" + total_check;
+			manager.get_logger().warning(msg);
 		}
 	}
 
-	public abstract void exec();
+
+	public abstract int exec();
 
 	/**
 	 * 获得线程运行周期

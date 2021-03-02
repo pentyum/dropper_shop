@@ -86,20 +86,22 @@ public abstract class Structure_manager<T extends Structure> {
 	/**
 	 * 检查该管理器下全部结构的完整性，不完整的将被删除。
 	 *
-	 * @return 被移除的结构数量
+	 * @return 长度为2的数组，第一个值为总共检查的数量，第二个值为被移除的结构数量
 	 */
-	public int check_structures_completeness() {
+	public int[] check_structures_completeness() {
 		ArrayList<T> to_remove = new ArrayList<>();
+		int total_check = 0;
 		for (World world : Bukkit.getWorlds()) {
 			Collection<T> structures = this.get_loaded_structures_in_world(world);
 			for (T structure : structures) {
 				if (!structure.completed()) {
 					to_remove.add(structure);
 				}
+				total_check++;
 			}
 		}
 		to_remove.forEach(this::remove);
-		return to_remove.size();
+		return new int[]{total_check, to_remove.size()};
 	}
 
 	public void load_world_structures(World world) {
@@ -264,6 +266,7 @@ public abstract class Structure_manager<T extends Structure> {
 		for (Structure_runner runner : this.structure_runners) {
 			runner.cancel();
 		}
+		this.structure_completeness_checker.cancel();
 	}
 
 	/**

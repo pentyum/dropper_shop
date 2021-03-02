@@ -44,7 +44,7 @@ public abstract class Async_structure_runner<T extends Structure> extends Struct
 		}
 		long sleep_time = max_time - (System.currentTimeMillis() - start_time);
 		if (sleep_time < 0) {
-			manager.get_logger().warning(this.getClass().getSimpleName() + "线程执行超时" + (-sleep_time) + "ms");
+			manager.get_logger().warning(this.getClass().getSimpleName() + "线程(" + Thread.currentThread().getId() + ")执行超时" + (-sleep_time) + "ms");
 		}
 	}
 }
