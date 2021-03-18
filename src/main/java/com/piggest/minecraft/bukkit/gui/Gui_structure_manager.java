@@ -5,6 +5,7 @@ import com.piggest.minecraft.bukkit.structure.Structure_manager;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 
 public abstract class Gui_structure_manager<T extends Multi_block_with_gui> extends Structure_manager<T> {
@@ -39,6 +40,7 @@ public abstract class Gui_structure_manager<T extends Multi_block_with_gui> exte
 		return this.locked_slots;
 	}
 
+	@Nonnull
 	public abstract String get_gui_name();
 
 	public abstract InventoryType get_inventory_type();

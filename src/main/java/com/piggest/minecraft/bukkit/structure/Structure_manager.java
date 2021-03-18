@@ -325,6 +325,6 @@ public abstract class Structure_manager<T extends Structure> {
 		return this.logger;
 	}
 
-	@Nullable
+	@Nonnull
 	public abstract String get_gui_name();
 }

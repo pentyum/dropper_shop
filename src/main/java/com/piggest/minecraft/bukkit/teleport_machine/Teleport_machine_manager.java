@@ -133,6 +133,7 @@ public class Teleport_machine_manager extends Gui_structure_manager<Teleport_mac
 		return this.center;
 	}
 
+	@Nonnull
 	@Override
 	public String get_gui_name() {
 		return "魔术传送机";

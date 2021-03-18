@@ -42,6 +42,7 @@ public class Grinder_manager extends Gui_structure_manager<Grinder> implements H
 		this.recipe_config.load();
 	}
 
+	@Nonnull
 	public String get_gui_name() {
 		return this.gui_name;
 	}

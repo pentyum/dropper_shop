@@ -53,6 +53,7 @@ public class Compressor_manager extends Gui_structure_manager<Compressor> implem
 		this.recipe_config.load();
 	}
 
+	@Nonnull
 	@Override
 	public String get_gui_name() {
 		return this.gui_name;

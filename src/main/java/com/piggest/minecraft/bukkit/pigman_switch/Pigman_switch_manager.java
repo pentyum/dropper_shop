@@ -72,9 +72,9 @@ public class Pigman_switch_manager extends Structure_manager<Pigman_switch> {
 		return new int[]{this.center_x, this.center_y, this.center_z};
 	}
 
-	@Nullable
+	@Nonnull
 	@Override
 	public String get_gui_name() {
-		return null;
+		return "猪人生成抑制器";
 	}
 }

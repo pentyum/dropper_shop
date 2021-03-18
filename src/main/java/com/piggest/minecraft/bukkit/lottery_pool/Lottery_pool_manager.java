@@ -57,9 +57,9 @@ public class Lottery_pool_manager extends Structure_manager<Lottery_pool> {
 		return null;
 	}
 
-	@Nullable
+	@Nonnull
 	@Override
 	public String get_gui_name() {
-		return null;
+		return "抽奖机";
 	}
 }

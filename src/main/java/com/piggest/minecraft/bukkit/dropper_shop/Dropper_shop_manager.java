@@ -76,9 +76,9 @@ public class Dropper_shop_manager extends Structure_manager<Dropper_shop> {
 		return null;
 	}
 
-	@Nullable
+	@Nonnull
 	@Override
 	public String get_gui_name() {
-		return null;
+		return "投掷器商店";
 	}
 }

@@ -67,6 +67,7 @@ public class Depository_manager extends Gui_structure_manager<Depository> implem
 		return null;
 	}
 
+	@Nonnull
 	@Override
 	public String get_gui_name() {
 		return "存储器";

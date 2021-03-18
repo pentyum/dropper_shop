@@ -208,6 +208,7 @@ public class Electric_spawner_manager extends Gui_structure_manager<Electric_spa
 		this.spawn_config_map.put(EntityType.POLAR_BEAR, new Entity_spawn_config(2000, 1500));
 	}
 
+	@Nonnull
 	@Override
 	public String get_gui_name() {
 		return "刷怪机";

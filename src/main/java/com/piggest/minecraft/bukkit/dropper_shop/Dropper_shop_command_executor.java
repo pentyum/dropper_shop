@@ -268,7 +268,7 @@ public class Dropper_shop_command_executor implements TabExecutor {
 					World world = Bukkit.getWorld(args[1]);
 					if (world != null) {
 						for (Structure_manager<? extends Structure> structure_manager : structure_managers) {
-							sender.sendMessage(world.getName() + ":" + structure_manager.get_logger().get_predix()
+							sender.sendMessage(world.getName() + ":" + structure_manager.get_gui_name()
 									+ "总共" + structure_manager.get_all_structures_in_world(world).size() + "个"
 									+ "，已加载" + structure_manager.get_loaded_structures_in_world(world).size() + "个");
 						}
@@ -278,7 +278,7 @@ public class Dropper_shop_command_executor implements TabExecutor {
 				} else {
 					for (World world : Bukkit.getWorlds()) {
 						for (Structure_manager<? extends Structure> structure_manager : structure_managers) {
-							sender.sendMessage(world.getName() + ":" + structure_manager.get_logger().get_predix()
+							sender.sendMessage(world.getName() + ":" + structure_manager.get_gui_name()
 									+ "总共" + structure_manager.get_all_structures_in_world(world).size() + "个"
 									+ "，已加载" + structure_manager.get_loaded_structures_in_world(world).size() + "个");
 						}

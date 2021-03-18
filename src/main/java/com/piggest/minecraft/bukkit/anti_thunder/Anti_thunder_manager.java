@@ -53,9 +53,9 @@ public class Anti_thunder_manager extends Structure_manager<Anti_thunder> implem
 		return new Structure_runner[]{new Anti_thunder_runner(this)};
 	}
 
-	@Nullable
+	@Nonnull
 	@Override
 	public String get_gui_name() {
-		return null;
+		return "避雷针";
 	}
 }

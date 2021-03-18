@@ -85,6 +85,7 @@ public class Advanced_furnace_manager extends Gui_structure_manager<Advanced_fur
 	 * boolean new_structure) { return this.find(loc, new_structure); }
 	 */
 
+	@Nonnull
 	@Override
 	public String get_gui_name() {
 		return "高级熔炉";
