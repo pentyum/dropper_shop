@@ -32,9 +32,10 @@ public class Map_init_listener implements Listener {
 	@EventHandler
 	public void on_copy_map(InventoryClickEvent event) {
 		Inventory inv = event.getInventory();
-		if (inv.getType() == InventoryType.CRAFTING || inv.getType() == InventoryType.WORKBENCH) {
+		InventoryType inv_type = inv.getType();
+		if (inv_type == InventoryType.CRAFTING || inv_type == InventoryType.WORKBENCH || inv_type == InventoryType.CARTOGRAPHY) {
 			HumanEntity player = event.getWhoClicked();
-			if (event.getSlot() == 0 && event.getSlotType() == InventoryType.SlotType.RESULT) {
+			if (event.getSlotType() == InventoryType.SlotType.RESULT) {
 				ItemStack item = event.getCurrentItem();
 				if (Custom_map_render.get_render_from_item(item) != null) {
 					if (!player.hasPermission("custom_map.copy")) {
