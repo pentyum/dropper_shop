@@ -314,25 +314,6 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		// 处理冬天模式
-		/*
-		this.biome_modify = new Biome_modify();
-		boolean winter_mode_enabled = this.config.getBoolean("winter-mode");
-		if (winter_mode_enabled) {
-			this.getLogger().info("开启冬天模式");
-			this.biome_modify.get_winter_mode().enable(this.biome_modify);
-		}
-		try {
-			this.protocol_manager = ProtocolLibrary.getProtocolManager();
-			protocol_manager.addPacketListener(NMS_manager.packet_map_chunk_listener);
-			this.getLogger().info("生物群系伪装开启成功！");
-		} catch (Exception e) {
-			this.getLogger().warning("生物群系伪装开启失败，请检查ProtocalLib是否安装！");
-		}
-		 */
-		// 处理冬天模式完成
-		//this.getLogger().info("冬天模式不再支持1.16.2");
-
 		Tab_list.init();
 
 		this.init_eco();

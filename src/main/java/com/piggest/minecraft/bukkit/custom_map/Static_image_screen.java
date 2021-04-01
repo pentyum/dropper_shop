@@ -6,10 +6,13 @@ import org.bukkit.map.MapPalette;
 import javax.annotation.Nonnull;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
 public abstract class Static_image_screen extends Screen {
+	public static HashMap<Color, Byte> match_color_cache = new HashMap<>();
+
 	public Static_image_screen(int width_n, int height_n, Fill_type fill_type) {
 		super(width_n, height_n, fill_type);
 	}
@@ -33,6 +36,15 @@ public abstract class Static_image_screen extends Screen {
 		IntStream.range(0, array.length).parallel().forEach(i -> array[i] = generator.applyAsByte(i));
 	}
 
+	public static byte matchColor(@Nonnull Color color) {
+		Byte color_byte = match_color_cache.get(color);
+		if (color_byte == null) {
+			color_byte = MapPalette.matchColor(color);
+			match_color_cache.put(color, color_byte);
+		}
+		return color_byte;
+	}
+
 	@SuppressWarnings("deprecation")
 	public static byte[] imageToBytes(@Nonnull Image image) {
 		BufferedImage temp = new BufferedImage(image.getWidth(null), image.getHeight(null),
@@ -46,7 +58,7 @@ public abstract class Static_image_screen extends Screen {
 
 		byte[] result = new byte[temp.getWidth() * temp.getHeight()];
 
-		parallelSetAll_byte(result, i -> MapPalette.matchColor(new Color(pixels[i], true)));
+		parallelSetAll_byte(result, i -> matchColor(new Color(pixels[i], true)));
 		return result;
 	}
 
