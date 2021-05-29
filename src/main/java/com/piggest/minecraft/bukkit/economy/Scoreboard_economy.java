@@ -638,7 +638,7 @@ public class Scoreboard_economy implements Economy, ConfigurationSerializable, L
 		ServicePriority priority = ServicePriority.Normal;
 		try {
 			priority = ServicePriority.valueOf((String) args.get("priority"));
-		} catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException | NullPointerException e) {
 			Dropper_shop_plugin.instance.getLogger().warning("货币优先级设置错误，已设置为默认值NORMAL");
 		}
 		return new Scoreboard_economy(name, display_name, default_balance, transfer_fee, priority);
