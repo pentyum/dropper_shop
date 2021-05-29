@@ -56,12 +56,21 @@ public class Scoreboard_economy_manager implements TabExecutor {
 	}
 
 	public void register_economy(Scoreboard_economy eco) {
-		eco.register_service();
-		eco.register_scoreboard();
-		eco.register_listener();
 		eco.set_id(eco_list.size());
 		eco_map.put(eco.getName(), eco);
 		eco_list.add(eco);
+	}
+
+	public void register_all_service() {
+		this.eco_list.forEach(Scoreboard_economy::register_service);
+	}
+
+	public void register_all_scoreboard() {
+		this.eco_list.forEach(Scoreboard_economy::register_scoreboard);
+	}
+
+	public void register_all_listener() {
+		this.eco_list.forEach(Scoreboard_economy::register_listener);
 	}
 
 	@Nullable

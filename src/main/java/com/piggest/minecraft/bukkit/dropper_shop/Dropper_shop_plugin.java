@@ -210,10 +210,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		return this.economy_manager.get_economy(eco_name);
 	}
 
-	private boolean init_eco() {
-		if (!Bukkit.getPluginManager().isPluginEnabled("Vault")) {
-			return false;
-		}
+	private void register_eco() {
 		if (this.config.getBoolean("enable-scoreboard-eco")) {
 			this.getLogger().info("计分板货币系统开启");
 			List<?> scoreboard_eco_list = this.config.getList("scoreboard-eco");
@@ -227,6 +224,14 @@ public class Dropper_shop_plugin extends JavaPlugin {
 				}
 			}
 		}
+	}
+
+	private boolean init_eco() {
+		if (!Bukkit.getPluginManager().isPluginEnabled("Vault")) {
+			return false;
+		}
+		this.economy_manager.register_all_scoreboard();
+		this.economy_manager.register_all_listener();
 		Economy eco = this.get_economy();
 		this.getLogger().info("经济系统加载完成，目前默认经济系统类型为" + eco.getClass().getName() + "，名称为" + eco.getName() + " " + eco.currencyNameSingular());
 		return true;
@@ -310,6 +315,12 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.getCommand("my_space").setExecutor(new My_space_command_executor());
 		this.getCommand("scb_eco").setExecutor(this.economy_manager);
 		this.getCommand("flying_item").setExecutor(new Flying_item());
+	}
+
+	@Override
+	public void onLoad() {
+		this.register_eco();
+		this.economy_manager.register_all_service();
 	}
 
 	@Override

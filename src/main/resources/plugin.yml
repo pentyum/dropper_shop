@@ -294,5 +294,5 @@ permissions:
   scb_eco.import:
     description: Import money from another economy plugin.
     default: op
-depend: [Vault]
-softdepend: [ProtocolLib,PlaceholderAPI]
+depend: [ Vault ]
+softdepend: [ ProtocolLib,PlaceholderAPI ]

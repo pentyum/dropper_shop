@@ -29,17 +29,19 @@ scoreboard-eco:
   display-name: 金币
   default-balance: 100
   transfer-fee: 5
+  priority: Normal
 - ==: com.piggest.minecraft.bukkit.economy.Scoreboard_economy
   name: copper_coin
   display-name: 铜币
   default-balance: 5000
   transfer-fee: 5
+  priority: Highest
 
 winter-mode: false
 sync-realtime-worlds:
   new_world: 0
 
-wrench-price: 
+wrench-price:
   world: 200
   world_nether: 200
   world_the_end: 200

@@ -637,9 +637,10 @@ public class Scoreboard_economy implements Economy, ConfigurationSerializable, L
 		int transfer_fee = (int) args.get("transfer-fee");
 		ServicePriority priority = ServicePriority.Normal;
 		try {
-			priority = ServicePriority.valueOf((String) args.get("priority"));
+			String priority_str = (String) args.get("priority");
+			priority = ServicePriority.valueOf(priority_str);
 		} catch (IllegalArgumentException | NullPointerException e) {
-			Dropper_shop_plugin.instance.getLogger().warning("货币优先级设置错误，已设置为默认值NORMAL");
+			Dropper_shop_plugin.instance.getLogger().warning(name + "货币优先级设置错误，已设置为默认值" + priority.name());
 		}
 		return new Scoreboard_economy(name, display_name, default_balance, transfer_fee, priority);
 	}
