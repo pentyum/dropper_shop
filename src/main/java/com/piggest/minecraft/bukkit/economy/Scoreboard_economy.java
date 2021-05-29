@@ -29,6 +29,7 @@ public class Scoreboard_economy implements Economy, ConfigurationSerializable, L
 	private int id;
 	private final int max_bal = 2000000000;
 	private int transfer_fee = 0;
+	private final ServicePriority priority;
 
 	@EventHandler
 	public void on_login(PlayerJoinEvent event) {
@@ -39,11 +40,12 @@ public class Scoreboard_economy implements Economy, ConfigurationSerializable, L
 		}
 	}
 
-	public Scoreboard_economy(String currency_name, String display_name, int default_balance, int transfer_fee) {
+	public Scoreboard_economy(String currency_name, String display_name, int default_balance, int transfer_fee, ServicePriority priority) {
 		this.name = currency_name;
 		this.display_name = display_name;
 		this.default_balance = default_balance;
 		this.transfer_fee = transfer_fee;
+		this.priority = priority;
 	}
 
 	public void register_scoreboard() {
@@ -55,7 +57,7 @@ public class Scoreboard_economy implements Economy, ConfigurationSerializable, L
 	}
 
 	public void register_service() {
-		Bukkit.getServicesManager().register(Economy.class, this, Dropper_shop_plugin.instance, ServicePriority.Normal);
+		Bukkit.getServicesManager().register(Economy.class, this, Dropper_shop_plugin.instance, this.priority);
 	}
 
 	public void register_listener() {
@@ -624,6 +626,7 @@ public class Scoreboard_economy implements Economy, ConfigurationSerializable, L
 		config.put("display-name", this.display_name);
 		config.put("default-balance", this.default_balance);
 		config.put("transfer-fee", this.transfer_fee);
+		config.put("priority", this.priority.name());
 		return config;
 	}
 
@@ -632,6 +635,12 @@ public class Scoreboard_economy implements Economy, ConfigurationSerializable, L
 		String display_name = (String) args.get("display-name");
 		int default_balance = (int) args.get("default-balance");
 		int transfer_fee = (int) args.get("transfer-fee");
-		return new Scoreboard_economy(name, display_name, default_balance, transfer_fee);
+		ServicePriority priority = ServicePriority.Normal;
+		try {
+			priority = ServicePriority.valueOf((String) args.get("priority"));
+		} catch (IllegalArgumentException e) {
+			Dropper_shop_plugin.instance.getLogger().warning("货币优先级设置错误，已设置为默认值NORMAL");
+		}
+		return new Scoreboard_economy(name, display_name, default_balance, transfer_fee, priority);
 	}
 }

@@ -27,8 +27,8 @@ public class Upgrade_component {
 	public static final String time_id_name = "time_upgrade_component";
 
 	public static ItemStack[] component_item = new ItemStack[Depository.capacity_level.length];
-	public static ItemStack[] overload_component_item = new ItemStack[5];
-	public static ItemStack[] time_component_item = new ItemStack[5];
+	public static ItemStack[] overload_component_item = new ItemStack[6];
+	public static ItemStack[] time_component_item = new ItemStack[6];
 
 	public static Upgrade_component_type get_type(ItemStack item) {
 		if (item == null) {
@@ -199,6 +199,7 @@ public class Upgrade_component {
 		NamespacedKey overload2 = new NamespacedKey(Dropper_shop_plugin.instance, "overload_component_2");
 		NamespacedKey overload3 = new NamespacedKey(Dropper_shop_plugin.instance, "overload_component_3");
 		NamespacedKey overload4 = new NamespacedKey(Dropper_shop_plugin.instance, "overload_component_4");
+		NamespacedKey overload5 = new NamespacedKey(Dropper_shop_plugin.instance, "overload_component_5");
 
 		ShapedRecipe sr0 = new ShapedRecipe(overload0, Upgrade_component.overload_component_item[0]);
 		sr0.shape("igi", "gcg", "igi");
@@ -239,6 +240,14 @@ public class Upgrade_component {
 		sr4.setIngredient('b', Material.DIAMOND_BLOCK);
 		Dropper_shop_plugin.instance.add_recipe(sr4);
 		Dropper_shop_plugin.instance.getLogger().info("高级熔炉高速升级4->5模块合成表已经添加");
+
+		ShapedRecipe sr5 = new ShapedRecipe(overload5, Upgrade_component.overload_component_item[5]);
+		sr5.shape("bcb", "cpc", "bcb");
+		sr5.setIngredient('c', Material.CONDUIT);
+		sr5.setIngredient('p', Material.IRON_AXE);
+		sr5.setIngredient('b', Material.NETHERITE_BLOCK);
+		Dropper_shop_plugin.instance.add_recipe(sr5);
+		Dropper_shop_plugin.instance.getLogger().info("高级熔炉高速升级5->6模块合成表已经添加");
 	}
 
 	private static void set_time_recipe() {
@@ -247,6 +256,7 @@ public class Upgrade_component {
 		NamespacedKey time2 = new NamespacedKey(Dropper_shop_plugin.instance, "time_component_2");
 		NamespacedKey time3 = new NamespacedKey(Dropper_shop_plugin.instance, "time_component_3");
 		NamespacedKey time4 = new NamespacedKey(Dropper_shop_plugin.instance, "time_component_4");
+		NamespacedKey time5 = new NamespacedKey(Dropper_shop_plugin.instance, "time_component_5");
 
 		ShapedRecipe sr0 = new ShapedRecipe(time0, Upgrade_component.time_component_item[0]);
 		sr0.shape("iri", "rhr", "iri");
@@ -287,6 +297,14 @@ public class Upgrade_component {
 		sr4.setIngredient('b', Material.DIAMOND_BLOCK);
 		Dropper_shop_plugin.instance.add_recipe(sr4);
 		Dropper_shop_plugin.instance.getLogger().info("高级熔炉高速升级4->5模块合成表已经添加");
+
+		ShapedRecipe sr5 = new ShapedRecipe(time5, Upgrade_component.time_component_item[5]);
+		sr5.shape("bcb", "cpc", "bcb");
+		sr5.setIngredient('c', Material.CONDUIT);
+		sr5.setIngredient('p', Material.IRON_HOE);
+		sr5.setIngredient('b', Material.NETHERITE_BLOCK);
+		Dropper_shop_plugin.instance.add_recipe(sr5);
+		Dropper_shop_plugin.instance.getLogger().info("高级熔炉高速升级5->6模块合成表已经添加");
 	}
 
 	public static void set_recipe() {
