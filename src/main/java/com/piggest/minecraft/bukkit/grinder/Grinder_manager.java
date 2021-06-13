@@ -101,6 +101,7 @@ public class Grinder_manager extends Gui_structure_manager<Grinder> implements H
 			this.add_recipe(Material.GLOWSTONE, Material.GLOWSTONE_DUST, 4, 400); // 荧石
 			this.add_recipe(Material.QUARTZ_BLOCK, Material.QUARTZ, 4, 800); // 石英
 			this.add_recipe(Material.REDSTONE_ORE, Material.REDSTONE, 8, 500); // 红石矿
+			this.add_recipe(Material.AMETHYST_BLOCK, Material.AMETHYST_SHARD, 4, 600); // 紫水晶块
 
 			this.add_recipe(Material.DIRT, Material.CLAY_BALL, 2, 300); // 泥土
 			this.add_recipe(Material.BRICK, Material.CLAY_BALL, 1, 100); // 红砖

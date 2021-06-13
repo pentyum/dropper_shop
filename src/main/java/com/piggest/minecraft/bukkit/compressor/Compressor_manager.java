@@ -156,6 +156,9 @@ public class Compressor_manager extends Gui_structure_manager<Compressor> implem
 			this.add_recipe(Material.GOLD_NUGGET, 9, Material.GOLD_INGOT, 500);
 			this.add_recipe(Material.GOLD_INGOT, 9, Material.GOLD_BLOCK, 500);
 
+			this.add_recipe(Material.COPPER_INGOT, 9, Material.COPPER_BLOCK, 500);
+			this.add_recipe(Material.NETHERITE_INGOT, 9, Material.NETHERITE_BLOCK, 500);
+
 			this.add_recipe(Material.DIAMOND, 9, Material.DIAMOND_BLOCK, 500);
 			this.add_recipe(Material.REDSTONE, 9, Material.REDSTONE_BLOCK, 500);
 			this.add_recipe(Material.COAL, 9, Material.COAL_BLOCK, 500);
@@ -169,6 +172,8 @@ public class Compressor_manager extends Gui_structure_manager<Compressor> implem
 			this.add_recipe(Material.ICE, 9, Material.PACKED_ICE, 500);
 			this.add_recipe(Material.PACKED_ICE, 9, Material.BLUE_ICE, 500);
 
+			this.add_recipe(Material.POINTED_DRIPSTONE, 4, Material.DRIPSTONE_BLOCK, 500);
+			this.add_recipe(Material.AMETHYST_SHARD, 4, Material.AMETHYST_BLOCK, 500);
 			this.add_recipe(Material.SNOW, 4, Material.SNOW_BLOCK, 200);
 			this.add_recipe(Material.GLOWSTONE_DUST, 4, Material.GLOWSTONE, 200);
 			this.add_recipe(Material.QUARTZ, 4, Material.QUARTZ_BLOCK, 200);

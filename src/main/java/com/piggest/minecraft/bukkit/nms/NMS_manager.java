@@ -15,7 +15,7 @@ public class NMS_manager {
 		Dropper_shop_plugin.instance.getLogger().info("当前NMS:" + version);
 		NMS_version nms_version = NMS_version.parse_version(version);
 		switch (nms_version) {
-			case v1_16:
+			case v1_17:
 				Dropper_shop_plugin.instance.getLogger().info("已适配NMS:" + version);
 				raid_provider = new Raid_trigger_1_17();
 				local_difficulty = new Local_difficulty_1_17();
