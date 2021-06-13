@@ -6,7 +6,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class Dropper_shop_manager extends Structure_manager<Dropper_shop> {
 	public static Dropper_shop_manager instance = null;

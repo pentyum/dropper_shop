@@ -14,7 +14,7 @@ public class Ingot extends Material_ext {
 	public final static Material model_base = Material.BRICK;
 	public final static ArrayList<Ingot> ingot_config = new ArrayList<>();
 	public final static HashMap<String, Ingot> ingot_map = new HashMap<>();
-	private Tool_material.Custom_material tool_material;
+	private final Tool_material.Custom_material tool_material;
 
 	public Ingot(Tool_material.Custom_material tool_material) {
 		super(tool_material.name().toLowerCase(), tool_material.get_display_name() + "锭");
@@ -27,7 +27,6 @@ public class Ingot extends Material_ext {
 
 	public static void init_ingot_config() {
 		ingot_config.add(null);
-		ingot_config.add(new Ingot(Tool_material.Custom_material.COPPER));
 		ingot_config.add(new Ingot(Tool_material.Custom_material.ALUMINUM));
 		ingot_config.add(new Ingot(Tool_material.Custom_material.TIN));
 		ingot_config.add(new Ingot(Tool_material.Custom_material.SILVER));

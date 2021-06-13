@@ -37,7 +37,7 @@ public class Tool_craft_listener implements Listener {
 		ShapedRecipe sr = (ShapedRecipe) recipe;
 		if (Tools.tools_namespace.contains(sr.getKey())) {
 			CraftingInventory inventory = event.getInventory();
-			ArrayList<ItemStack> brick_list = new ArrayList<ItemStack>();
+			ArrayList<ItemStack> brick_list = new ArrayList<>();
 			for (int i = 1; i <= 6; i++) {
 				ItemStack item = inventory.getItem(i);
 				if (!Grinder.is_empty(item)) {

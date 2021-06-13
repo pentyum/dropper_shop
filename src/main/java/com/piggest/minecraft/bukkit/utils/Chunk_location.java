@@ -5,7 +5,6 @@ import org.bukkit.Chunk;
 import org.bukkit.World;
 
 import java.util.Arrays;
-import java.util.function.IntFunction;
 
 public class Chunk_location {
 	private final int x;

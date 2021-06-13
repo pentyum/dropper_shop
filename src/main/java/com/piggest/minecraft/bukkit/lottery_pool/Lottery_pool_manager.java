@@ -6,7 +6,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class Lottery_pool_manager extends Structure_manager<Lottery_pool> {
 	public static Lottery_pool_manager instance = null;

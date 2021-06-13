@@ -1,16 +1,16 @@
 package com.piggest.minecraft.bukkit.nms;
 
-import net.minecraft.server.v1_16_R3.PersistentRaid;
-import net.minecraft.server.v1_16_R3.WorldServer;
+import net.minecraft.server.level.WorldServer;
+import net.minecraft.world.entity.raid.PersistentRaid;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_16_R3.block.CraftBlock;
+import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_17_R1.block.CraftBlock;
 
 import java.lang.reflect.Field;
 import java.util.Map;
 
-public class Raid_trigger_1_16 implements Raid_trigger {
+public class Raid_trigger_1_17 implements Raid_trigger {
 	public Raid_info trigger_raid(Location loc, int bad_omen_level) {
 		CraftBlock craft_block = (CraftBlock) loc.getBlock();
 		CraftWorld world = (CraftWorld) loc.getWorld();
@@ -23,7 +23,7 @@ public class Raid_trigger_1_16 implements Raid_trigger {
 
 		Field next_id_field;
 		int next_id = 0;
-		Map<Integer, net.minecraft.server.v1_16_R3.Raid> raid_map = persistentraid.raids;
+		Map<Integer, net.minecraft.world.entity.raid.Raid> raid_map = persistentraid.b;
 		try {
 			next_id_field = PersistentRaid.class.getDeclaredField("c");
 			next_id_field.setAccessible(true);
@@ -34,19 +34,19 @@ public class Raid_trigger_1_16 implements Raid_trigger {
 			e.printStackTrace();
 			return null;
 		}
-		net.minecraft.server.v1_16_R3.Raid raid = new net.minecraft.server.v1_16_R3.Raid(next_id, world_nms,
+		net.minecraft.world.entity.raid.Raid raid = new net.minecraft.world.entity.raid.Raid(next_id, world_nms,
 				craft_block.getPosition());
 		if (bad_omen_level > raid.getMaxBadOmenLevel()) {
 			bad_omen_level = raid.getMaxBadOmenLevel();
 		}
-		raid.badOmenLevel = bad_omen_level;
+
+		raid.J = bad_omen_level;
 		raid_map.put(next_id, raid);
 		persistentraid.b();
-		Raid_info info = this.get_info(raid);
-		return info;
+		return this.get_info(raid);
 	}
 
-	public Raid_info get_info(net.minecraft.server.v1_16_R3.Raid raid) {
+	public Raid_info get_info(net.minecraft.world.entity.raid.Raid raid) {
 		if (raid == null) {
 			return null;
 		}

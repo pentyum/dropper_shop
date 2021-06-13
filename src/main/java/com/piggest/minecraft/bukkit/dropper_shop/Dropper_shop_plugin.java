@@ -2,9 +2,6 @@ package com.piggest.minecraft.bukkit.dropper_shop;
 
 import com.comphenix.protocol.ProtocolManager;
 import com.piggest.minecraft.bukkit.advanced_furnace.*;
-import com.piggest.minecraft.bukkit.anti_thunder.Anti_thunder;
-import com.piggest.minecraft.bukkit.anti_thunder.Anti_thunder_listener;
-import com.piggest.minecraft.bukkit.anti_thunder.Anti_thunder_manager;
 import com.piggest.minecraft.bukkit.compressor.Compressor;
 import com.piggest.minecraft.bukkit.compressor.Compressor_manager;
 import com.piggest.minecraft.bukkit.config.*;
@@ -95,7 +92,6 @@ public class Dropper_shop_plugin extends JavaPlugin {
 	private Lottery_pool_manager lottery_pool_manager = null;
 	private Trees_felling_machine_manager trees_felling_machine_manager = null;
 	private Pigman_switch_manager pigman_switch_manager = null;
-	private Anti_thunder_manager anti_thunder_manager = null;
 	private Teleport_machine_manager teleport_machine_manager = null;
 	private Compressor_manager compressor_manager = null;
 	private Electric_spawner_manager electric_spawner_manager = null;
@@ -123,8 +119,7 @@ public class Dropper_shop_plugin extends JavaPlugin {
 
 	private Listener[] structure_listeners = {new Depository_listener(), new Dropper_shop_listener(),
 			new Upgrade_component_listener(), new Grinder_listener(), new Advanced_furnace_listener(),
-			new Exp_saver_listener(), new Pigman_spawn_listener(), new Anti_thunder_listener(),
-			new Elements_listener()};
+			new Exp_saver_listener(), new Pigman_spawn_listener(), new Elements_listener()};
 
 	private NMS_manager nms_manager = null;
 	private Config_auto_saver auto_saver = new Config_auto_saver(this);
@@ -258,7 +253,6 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.lottery_pool_manager = new Lottery_pool_manager();
 		this.trees_felling_machine_manager = new Trees_felling_machine_manager();
 		this.pigman_switch_manager = new Pigman_switch_manager();
-		this.anti_thunder_manager = new Anti_thunder_manager();
 		this.teleport_machine_manager = new Teleport_machine_manager();
 		this.compressor_manager = new Compressor_manager();
 		this.electric_spawner_manager = new Electric_spawner_manager();
@@ -271,7 +265,6 @@ public class Dropper_shop_plugin extends JavaPlugin {
 		this.structure_manager_map.put(Lottery_pool.class, lottery_pool_manager);
 		this.structure_manager_map.put(Trees_felling_machine.class, trees_felling_machine_manager);
 		this.structure_manager_map.put(Pigman_switch.class, pigman_switch_manager);
-		this.structure_manager_map.put(Anti_thunder.class, anti_thunder_manager);
 		this.structure_manager_map.put(Teleport_machine.class, teleport_machine_manager);
 		this.structure_manager_map.put(Compressor.class, compressor_manager);
 		this.structure_manager_map.put(Electric_spawner.class, electric_spawner_manager);

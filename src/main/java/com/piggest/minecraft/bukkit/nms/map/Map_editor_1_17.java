@@ -1,16 +1,16 @@
 package com.piggest.minecraft.bukkit.nms.map;
 
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import net.minecraft.server.v1_16_R3.WorldMap;
-import org.bukkit.craftbukkit.v1_16_R3.map.CraftMapView;
+import net.minecraft.world.level.saveddata.maps.WorldMap;
+import org.bukkit.craftbukkit.v1_17_R1.map.CraftMapView;
 import org.bukkit.map.MapView;
 
 import java.lang.reflect.Field;
 
-public class Map_editor_1_16 implements Map_editor {
+public class Map_editor_1_17 implements Map_editor {
 	Field worldmap_field;
 
-	public Map_editor_1_16() {
+	public Map_editor_1_17() {
 		try {
 			worldmap_field = CraftMapView.class.getDeclaredField("worldMap");
 			worldmap_field.setAccessible(true);
@@ -36,7 +36,7 @@ public class Map_editor_1_16 implements Map_editor {
 			e.printStackTrace();
 		}
 		if (world_map != null) {
-			world_map.colors = colors;
+			world_map.g = colors;
 		}
 	}
 }

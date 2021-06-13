@@ -5,7 +5,6 @@ import com.piggest.minecraft.bukkit.advanced_furnace.Status;
 import com.piggest.minecraft.bukkit.depository.Reader;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_namespace;
 import com.piggest.minecraft.bukkit.dropper_shop.Dropper_shop_plugin;
-import com.piggest.minecraft.bukkit.nms.NMS_manager;
 import com.piggest.minecraft.bukkit.utils.language.Item_zh_cn;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -80,10 +79,6 @@ public abstract class Material_ext {
 			return item.getType().getKey().toString();
 		}
 		String ext_id = meta.getPersistentDataContainer().get(Dropper_shop_namespace.ext_id, PersistentDataType.STRING);
-		if (ext_id != null) {
-			return ext_id;
-		}
-		ext_id = NMS_manager.ext_id_provider.get_ext_id(item);
 		if (ext_id != null) {
 			return ext_id;
 		}

@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="dropper_shop" target="11" />
+      <module name="dropper_shop" target="16" />
     </bytecodeTargetLevel>
   </component>
   <component name="EclipseCompilerSettings">

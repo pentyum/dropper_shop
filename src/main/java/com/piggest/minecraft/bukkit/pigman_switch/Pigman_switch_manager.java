@@ -4,7 +4,6 @@ import com.piggest.minecraft.bukkit.structure.Structure_manager;
 import org.bukkit.Material;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class Pigman_switch_manager extends Structure_manager<Pigman_switch> {
 	private final Material[][][] model = {
